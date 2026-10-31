@@ -9,7 +9,6 @@ import { extendTailwindMerge } from 'tailwind-merge';
  * `z-popover` is a z-index.
  */
 const MD3_TYPE_SCALE = [
-  'display-large',
   'display-medium',
   'display-small',
   'headline-large',
@@ -26,42 +25,18 @@ const MD3_TYPE_SCALE = [
   'label-small',
 ];
 
-const isAppHeight = (value: string) => /^app(?:-\d+)?$/.test(value);
-
 const twMerge = extendTailwindMerge<'md3-type'>({
   extend: {
     theme: {
-      text: ['micro', 'tiny', 'nano'],
       radius: ['xs', 'lg-inc'],
     },
     classGroups: {
       // MD3 typographic classes are custom CSS (src/index.css) that already carries the line height:
       // they replace each other and Tailwind's sizes, but do not remove any `leading-*`.
       'md3-type': [{ text: MD3_TYPE_SCALE }],
-      // The app height (src/index.css): `h-app`, `max-h-app-70`...
-      h: [{ h: [isAppHeight] }],
-      'min-h': [{ 'min-h': [isAppHeight] }],
-      'max-h': [{ 'max-h': [isAppHeight] }],
-      z: [
-        {
-          z: [
-            'base',
-            'above',
-            'raised',
-            'sticky-inner',
-            'sticky',
-            'fab',
-            'banner',
-            'modal',
-            'modal-loading',
-            'popover',
-            'system-dialog',
-            'toast',
-            'mobile-overlay',
-            'mobile-overlay-top',
-          ],
-        },
-      ],
+      // The app height (src/index.css).
+      h: ['h-app'],
+      z: [{ z: ['modal', 'popover', 'toast', 'mobile-overlay'] }],
     },
     conflictingClassGroups: {
       'md3-type': ['font-size'],

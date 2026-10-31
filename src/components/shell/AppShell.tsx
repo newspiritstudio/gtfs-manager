@@ -6,8 +6,8 @@ import SideNav, { type ShellFeed } from './SideNav';
 import TopBar from './TopBar';
 
 /**
- * La closca de l'Àgora: a l'escriptori, la barra lateral i la capçalera són un sol marc
- * (surface-container-low) i el contingut hi seu com un panell arrodonit; només el panell fa scroll.
+ * The app shell: on desktop, the sidebar and the header form a single frame
+ * (surface-container-low) and the content sits in it as a rounded panel; only the panel scrolls.
  */
 export default function AppShell({
   feeds,

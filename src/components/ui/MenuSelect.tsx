@@ -9,9 +9,9 @@ import { cn } from '@/lib/utils';
 export interface MenuSelectOption {
   value: string;
   label: string;
-  /** Icona al començament de la fila i del camp (una bandera, per exemple). */
+  /** Icon at the start of the row and of the field (a flag, for example). */
   icon?: ReactNode;
-  /** Text secundari a la dreta de la fila (un recompte). */
+  /** Secondary text on the right of the row (a count). */
   trailing?: string;
 }
 
@@ -24,10 +24,10 @@ interface MenuSelectProps {
 }
 
 /**
- * Desplegable de MD3 amb menú propi (no el natiu): el camp és el mateix que `Select` i la llista
- * porta icona, recompte i la marca de la fila triada, com el `Dropdown` de l'Àgora. Patró ARIA
- * listbox: fletxes, Inici/Fi, Retorn o espai per triar, Escape per tancar i la primera lletra per
- * saltar a una opció.
+ * MD3 dropdown with its own menu (not the native one): the field is the same as `Select` and the
+ * list carries an icon, a count and a mark on the selected row. ARIA
+ * listbox pattern: arrows, Home/End, Enter or Space to select, Escape to close and the first letter
+ * to jump to an option.
  */
 export default function MenuSelect({
   label,
@@ -99,7 +99,7 @@ export default function MenuSelect({
       Escape: close,
     };
     if (event.key === 'Tab') {
-      // El focus torna al camp abans que la llista desaparegui, i el Tab continua des d'allà.
+      // Focus returns to the field before the list disappears, and Tab continues from there.
       setOpen(false);
       triggerRef.current?.focus();
       return;

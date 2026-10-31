@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 
-/** Etiqueta flotant dels gràfics: superfície inversa, com els tooltips de l'Àgora. */
+/** Floating chart label: inverse surface, a dark chip on any theme. */
 export function ChartTooltip({
   x,
   y,
@@ -28,7 +28,7 @@ export function ChartTooltip({
   );
 }
 
-/** Cinc graons d'un sol to (primary), de clar a fosc, per a magnituds. */
+/** Five steps of a single hue (primary), light to dark, for magnitudes. */
 export const SEQUENTIAL_STEPS = [18, 36, 56, 78, 100];
 
 export function sequentialColor(value: number, max: number): string {

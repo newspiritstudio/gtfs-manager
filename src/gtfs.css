@@ -1,4 +1,4 @@
-/* Mapes (Leaflet) amb els tokens de l'Àgora: controls, atribució i etiquetes. */
+/* Maps (Leaflet) styled with the design tokens: controls, attribution and tooltips. */
 .gtfs-map {
   font-family: inherit;
   z-index: 0;

@@ -1,5 +1,5 @@
 /**
- * Els tokens de moviment de l'Àgora Design System: molles (rigidesa/amortiment). Espacial (amb rebot) per a posició i mida; d'efecte (sense rebot) per a color i opacitat.
+ * Motion tokens: springs (stiffness/damping). Spatial (bouncy) for position and size; effects (no bounce) for colour and opacity.
  */
 export const SPRING = {
   fastSpatial: { type: 'spring', stiffness: 1400, damping: 67 },

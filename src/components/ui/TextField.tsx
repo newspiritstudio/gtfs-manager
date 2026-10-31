@@ -9,7 +9,7 @@ interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement
   helper?: string;
 }
 
-/** Camp de text MD3 amb etiqueta flotant (les mateixes classes `md3-field-*` que l'Àgora). */
+/** MD3 text field with a floating label (`md3-field-*` classes in src/index.css). */
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextField(
   { label, error, helper, className, id, required, ...props },
   ref

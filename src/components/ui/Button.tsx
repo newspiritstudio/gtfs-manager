@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import Spinner from './Spinner';
 
-/** Les cinc variants MD3 de botó de l'Àgora: un sol primari per pantalla. */
+/** The five MD3 button variants: a single primary per screen. */
 export type ButtonVariant = 'primary' | 'tonal' | 'outline' | 'ghost' | 'destructive';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
