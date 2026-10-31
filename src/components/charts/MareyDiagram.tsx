@@ -19,6 +19,7 @@ export default function MareyDiagram({
   onTripClick,
   height = 520,
   label,
+  stations,
 }: {
   stops: PatternStop[];
   trips: DayTrip[];
@@ -27,6 +28,11 @@ export default function MareyDiagram({
   height?: number;
   /** Description of the chart for people who cannot see it; without it the diagram is hidden (the timetable replaces it). */
   label?: string;
+  /**
+   * The station of each stop: a trip is placed by station, not by stop_id, because each direction
+   * (or even each departure) may use a different platform of the same station.
+   */
+  stations?: Record<string, string>;
 }) {
   const [hover, setHover] = useState<{
     tripId: string;
@@ -35,7 +41,14 @@ export default function MareyDiagram({
     label: string;
   } | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-  const distanceOf = useMemo(() => new Map(stops.map((s) => [s.stopId, s.distance])), [stops]);
+  const stationOf = useMemo(() => (id: string) => stations?.[id] ?? id, [stations]);
+  const distanceOf = useMemo(() => {
+    const out = new Map<string, number>();
+    // The first time the axis passes a station: a loop line comes back to it.
+    for (const s of stops)
+      if (!out.has(stationOf(s.stopId))) out.set(stationOf(s.stopId), s.distance);
+    return out;
+  }, [stops, stationOf]);
   const total = Math.max(1, stops[stops.length - 1]?.distance ?? 1);
 
   const series = useMemo(
@@ -45,7 +58,7 @@ export default function MareyDiagram({
           trip,
           points: trip.times
             .map(([stopId, arr, dep]) => {
-              const d = distanceOf.get(stopId);
+              const d = distanceOf.get(stationOf(stopId));
               const pts: [number, number][] = [];
               if (d === undefined) return pts;
               if (arr !== null) pts.push([arr, d]);
@@ -55,7 +68,7 @@ export default function MareyDiagram({
             .flat(),
         }))
         .filter((s) => s.points.length >= 2),
-    [trips, distanceOf]
+    [trips, distanceOf, stationOf]
   );
 
   const times = series.flatMap((s) => s.points.map((p) => p[0]));

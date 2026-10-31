@@ -69,7 +69,7 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
   const tabsId = useId();
   const { t, locale } = useI18n();
   const router = useRouter();
-  const { route, patterns, lines, serviceDates, variants, axis } = detail;
+  const { route, patterns, lines, serviceDates, variants, axis, stations } = detail;
   const [view, setView] = useState<View>('diagram');
   const [patternKey, setPatternKey] = useState(patterns[0]?.key ?? '');
   const [date, setDate] = useState(() => defaultServiceDate(serviceDates) ?? '');
@@ -373,6 +373,7 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
                 <MareyDiagram
                   label={t('routes.mareyHint')}
                   stops={mareyStops}
+                  stations={stations}
                   trips={allTrips}
                   color={route.color}
                   onTripClick={(id) =>

@@ -34,6 +34,22 @@ export interface RouteDetail {
    * trips of every variant fit on it. Null without siblings.
    */
   axis: PatternStop[] | null;
+  /**
+   * The station of each stop the route's trips use (its parent station, else its name). Many
+   * agencies give each platform its own stop_id (FGC: PC1 and PC2 at Plaça Catalunya), and a trip
+   * has to be drawn on the axis at its station.
+   */
+  stations: Record<string, string>;
+}
+
+/** The station a stop belongs to: its parent station, else its name, else itself. */
+function stationKey(
+  stopId: string,
+  stop: { name: string | null; parent: string | null } | undefined
+): string {
+  if (stop?.parent) return `p:${stop.parent}`;
+  if (stop?.name) return `n:${stop.name.trim().toLowerCase()}`;
+  return stopId;
 }
 
 /** Other routes of the same line: same short name, agency and colour. */
@@ -126,11 +142,8 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
       }, null)
     : null;
 
-  const stopIds = [
-    ...new Set(
-      [...patternRows, ...[...usual.values()].flat()].flatMap((p) => p.pattern.split('>'))
-    ),
-  ];
+  // Every stop of every path: the trips of the day can use any of them.
+  const stopIds = [...new Set(allPatternRows.flatMap((p) => p.pattern.split('>')))];
   const stopRows = stopIds.length
     ? await sql<
         {
@@ -257,6 +270,7 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
     siblings,
     variants,
     axis,
+    stations: Object.fromEntries(stopIds.map((id) => [id, stationKey(id, stopById.get(id))])),
   };
 }
 
