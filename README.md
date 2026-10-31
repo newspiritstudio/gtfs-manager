@@ -5,17 +5,22 @@ feeds, the open format public transport agencies use to publish their timetables
 be visual: a network map, a diagram of every line, timetables, Marey diagrams, the service
 calendar, validation, and an editor for every file in the feed.
 
-Built with Next.js (App Router), React, TypeScript, Tailwind CSS 4 with Material Design 3 tokens,
-`motion`, Leaflet, Drizzle ORM and PostgreSQL. Made by [New Spirit Studio](https://newspirit.studio).
+Everything runs in your browser. Feeds are stored in a SQLite database (WebAssembly) in the
+browser's private file system, so they never leave your computer and survive a reload; export a
+feed as a ZIP to keep a copy or move it elsewhere. There are no accounts and no server-side code:
+the site is a set of static files that any web server can host.
+
+Built with Vite, React, TypeScript, Tailwind CSS 4 with Material Design 3 tokens, `motion`,
+Leaflet and SQLite WASM. Made by [New Spirit Studio](https://newspirit.studio).
 
 ## Features
 
 - **Import** a GTFS ZIP or folder. Import streams end to end, so feeds with millions of stop
   times (such as Renfe Cercanías) load fine. You can also **start a blank feed**.
 - **Public feed catalog** (`/catalog`): 68 open feeds with current service from 20 countries in
-  Europe, the Americas, Oceania and Israel, sorted by name and filterable by country. It shows when
-  each feed was last published and imports it in one click; the server only downloads from the
-  URLs in the catalog.
+  Europe, the Americas, Oceania and Israel, sorted by name and filterable by country. Your browser
+  downloads a feed directly from its publisher, which only works when the publisher allows it
+  (CORS); otherwise the app links to the ZIP so you can download it and import the file.
 - **Explore**: an overview with key figures, the network map, a line gallery, a page per line
   (diagram, map, timetable, Marey diagram and calendar), stops with their departures for the day,
   trips, and the service calendar.
@@ -27,11 +32,11 @@ Built with Next.js (App Router), React, TypeScript, Tailwind CSS 4 with Material
 
 ## Validation
 
-The validator (`src/server/gtfs/validate.ts`) runs SQL checks over the imported feed. Besides the
+The validator (`src/engine/gtfs/validate.ts`) runs SQL checks over the imported feed. Besides the
 specification's own (missing files, unknown references, times going backwards...), it includes
 Google's
 [static errors and warnings](https://developers.google.com/transit/gtfs/guides/static-errors-warnings)
-with the same severity, and each issue shows Google's title (`src/server/gtfs/rules-google.ts`).
+with the same severity, and each issue shows Google's title (`src/engine/gtfs/rules-google.ts`).
 Routes whose `route_type` is valid but missing from Google's list of
 [supported extended route types](https://developers.google.com/transit/gtfs/reference/extended-route-types)
 get a warning. Where Google names a threshold it is used (headways over 30 minutes or of one minute
@@ -46,9 +51,9 @@ unmodelled (fares, pathways, translations, attributions) are not run yet. Import
 A feed can have up to three [GTFS Realtime](https://gtfs.org/documentation/realtime/reference/)
 sources: vehicle positions, trip updates and service alerts. Set them on the feed's **Realtime**
 page as public `https` URLs of the protobuf files; catalog entries can bring their own (FGC's come
-from its Opendatasoft portal). The server downloads and decodes them (`src/server/realtime/`), fills
-in delays from absolute times using the static schedule and the agency time zone, and checks the
-data. Snapshots are cached for 15 seconds and the pages poll every 20 seconds while visible.
+from its Opendatasoft portal). The browser downloads and decodes them (`src/engine/realtime/`),
+fills in delays from absolute times using the static schedule and the agency time zone, and checks
+the data. Snapshots are cached for 15 seconds and the pages poll every 20 seconds while visible.
 
 The checks follow Google's
 [realtime errors and warnings](https://developers.google.com/transit/gtfs-realtime/guides/realtime-errors-warnings):
@@ -66,8 +71,8 @@ over a year ahead) but no other thresholds, so these are this app's own:
 | Suspicious delay                     | over 3 hours                     |
 | Given delay and stop time contradict | more than 60 s apart             |
 
-Realtime URLs are fetched by the server, so it only follows `https` URLs whose host (and every
-redirect target) resolves to public addresses, with a 20 MB cap. `gtfs-realtime.proto` is vendored
+Realtime URLs are fetched by your browser, with a 20 MB cap, so the source must allow cross-origin
+requests (CORS); a source that does not shows a `cors` issue. `gtfs-realtime.proto` is vendored
 from [google/transit](https://github.com/google/transit) (Apache-2.0); after updating it, run
 `npm run realtime:proto`.
 
@@ -80,54 +85,57 @@ that every locale has every key and the same variables. Catalan is the fallback 
 Public pages (home, catalog, and one page per catalog entry) have one URL per language. English is
 unprefixed (`/catalog`) and the rest are prefixed (`/ca/catalog`, `/ja/catalog/fgc`). Every page
 has a canonical URL, `hreflang` alternates, Open Graph tags and schema.org structured data, and is
-listed in `/sitemap.xml`. The workspace (`/feeds`, `/new`) is `noindex`. `SITE_URL` sets the public
-origin (default: https://gtfs.newspirit.studio).
+listed in `/sitemap.xml`. The build prerenders these pages to HTML, so they work without
+JavaScript and search engines read them as they are. The workspace (`/feeds`, `/new`) is
+`noindex`. `VITE_SITE_URL` sets the public origin at build time (default:
+https://gtfs.newspirit.studio).
 
 ## Getting started
 
-Requirements: Node.js 22 or later (`.nvmrc` pins 24), npm 10 and PostgreSQL.
+Requirements: Node.js 22 or later (`.nvmrc` pins 24) and npm 10, only to build the site.
 
 ```bash
 npm ci
-cp env.example .env.local        # then set DATABASE_URL
-npm run db:migrate
-npm run dev                      # http://localhost:3000 (the editor is at /feeds)
+npm run dev                      # http://localhost:5173 (your feeds are at /feeds)
+npm run build                    # static site in dist/
+npm run preview                  # serve dist/ at http://localhost:4173
 ```
 
-Import a feed from the command line:
-
-```bash
-npm run gtfs:import -- ~/Downloads/fomento_transit --name "Renfe Cercanías"
-npm run gtfs:import -- fgc.zip --catalog fgc    # link it to a catalog entry
-```
+To host it, serve `dist/` from any static web server; [deploy/README.md](deploy/README.md) has the
+two rules it needs.
 
 ## Scripts
 
-| Command                                  | What it does                                    |
-| ---------------------------------------- | ----------------------------------------------- |
-| `npm run dev`                            | Development server                              |
-| `npm run build` / `npm start`            | Production build and server                     |
-| `npm run type-check` / `lint` / `format` | TypeScript, ESLint (zero warnings), Prettier    |
-| `npm run test -- --run`                  | Unit tests (Vitest)                             |
-| `npm run i18n:check`                     | Complete strings and variables in all 9 locales |
-| `npm run db:generate` / `db:migrate`     | Drizzle migrations                              |
-| `npm run gtfs:import`                    | Import a GTFS folder or ZIP                     |
-| `npm run landing:network`                | Regenerate the home page animation data         |
-| `npm run realtime:proto`                 | Rebuild the GTFS Realtime protobuf descriptor   |
+| Command                                  | What it does                                             |
+| ---------------------------------------- | -------------------------------------------------------- |
+| `npm run dev`                            | Development server                                       |
+| `npm run build` / `preview`              | Build the static site (with prerendered pages); serve it |
+| `npm run type-check` / `lint` / `format` | TypeScript, ESLint (zero warnings), Prettier             |
+| `npm run test -- --run`                  | Unit tests (Vitest)                                      |
+| `npm run i18n:check`                     | Complete strings and variables in all 9 locales          |
+| `npm run gtfs:import`                    | Import a GTFS folder or ZIP into a local SQLite file     |
+| `npm run landing:network`                | Regenerate the home page animation data                  |
+| `npm run realtime:proto`                 | Rebuild the GTFS Realtime protobuf descriptor            |
 
 ## Project structure
 
 ```text
-app/            Pages (App Router) and /api route handlers
+src/app/        The app: routes, error pages, the prerender entry
+src/pages/      One component per page
 src/features/   One folder per area: overview, network, routes, stops, trips, calendar,
                 validation, data, generator, feeds, catalog, landing, realtime
 src/components/ Shared pieces: app shell, UI primitives, maps (Leaflet), charts, loading skeletons
-src/server/     Database (Drizzle/Postgres) and GTFS logic: import, export, validation,
-                network, details, trip generator, catalog, realtime
-shared/         Contracts shared by client and server: GTFS spec, values, catalog, generator,
-                realtime
+src/engine/     Runs in a Web Worker: the SQLite database and the GTFS logic (import, export,
+                validation, network, details, trip generator, realtime), answering the app's
+                local /api requests (src/engine/api/) and page loaders (src/engine/loaders.ts)
+src/lib/        Browser utilities: the engine client, router, i18n, SEO, catalog downloads
+shared/         Contracts: GTFS spec, values, catalog, generator, realtime
 src/locales/    One JSON file per language
+scripts/        Prerender, locale check, command-line import, landing data
 ```
+
+The page talks to the engine through `src/lib/engine.ts` (`useEngine`, `callEngine`,
+`localFetch`); only those types cross the boundary, which ESLint enforces.
 
 `shared/gtfs-spec.ts` is the single source of truth for the GTFS files and fields the app
 understands: import, export, validation, the generic editor and the database schema all derive
@@ -139,7 +147,7 @@ Each visit shows one of the networks in `src/features/landing/networks.ts`, pick
 New York City Subway, Milan, Toulouse, Metrovalencia, BART and LA Metro Rail), with the real trains
 of a weekday between 7 and 10 am and a caption that explains what you are looking at. The data in
 `public/landing-networks/` comes from each operator's open GTFS feed. To regenerate it, import each
-feed from the catalog (or with `npm run gtfs:import -- feed.zip --catalog <id>`) and run
+feed into a local SQLite file (`npm run gtfs:import -- feed.zip --catalog <id>`) and run
 `npm run landing:network` (or `npm run landing:network -- fgc bart` for some of them). The day used
 is the Tuesday, Wednesday or Thursday with the most trips in the next four weeks.
 
@@ -150,7 +158,7 @@ is the Tuesday, Wednesday or Thursday with the most trips in the next four weeks
   catalog page links to the file's page. The AMB, STM and TFI files were cropped to the symbol.
 - Country flags (`public/flags/`) are from [circle-flags](https://github.com/HatScripts/circle-flags)
   v2.8.0 (MIT).
-- `src/server/realtime/gtfs-realtime.proto` is the official GTFS Realtime definition from
+- `src/engine/realtime/gtfs-realtime.proto` is the official GTFS Realtime definition from
   [google/transit](https://github.com/google/transit), under the Apache License 2.0.
 - Feed data belongs to each operator and is used under its open data licence.
 

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import { cn } from '@/lib/utils';
 
 /** Horizontal bar list: label on the left, bar and value on the right. */

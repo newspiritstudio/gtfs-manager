@@ -1,7 +1,5 @@
-'use client';
-
 import { ArrowDown, ArrowUp, Clock, LineChart, MapPin, Route as RouteIcon, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/router';
 import { useMemo, useState } from 'react';
 import type { DayTrip, NetworkStop, PatternStop } from '@shared/contracts';
 import { formatClock, haversineMeters } from '@shared/gtfs-values';

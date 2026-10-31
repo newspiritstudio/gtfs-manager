@@ -2,7 +2,6 @@
 
 @config '../tailwind.config.js';
 @source "../src/**/*.{js,ts,jsx,tsx}";
-@source "../app/**/*.{js,ts,jsx,tsx}";
 
 /* Design tokens follow Material Design 3 (colour roles, type scale, shape scale, state layers).
    Tokens are CSS custom properties on :root; tailwind.config.js exposes them as utilities

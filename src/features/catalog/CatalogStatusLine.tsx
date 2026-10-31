@@ -1,9 +1,7 @@
-'use client';
-
 import { CircleCheck, CircleDashed, CircleX } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { CatalogStatus } from '@shared/catalog';
-import { apiFetch } from '@/lib/api';
+import { catalogStatuses } from '@/lib/catalog';
 import { useI18n } from '@/lib/i18n/client';
 import { formatNumber, formatRelative } from '@/lib/i18n/format';
 import { cn } from '@/lib/utils';
@@ -14,7 +12,7 @@ export function useCatalogStatuses() {
   const [failed, setFailed] = useState(false);
   useEffect(() => {
     let alive = true;
-    apiFetch<CatalogStatus[]>('/api/catalog')
+    catalogStatuses()
       .then((list) => alive && setStatuses(Object.fromEntries(list.map((s) => [s.id, s]))))
       // If the check fails we know nothing about the sources: do not mark them as down.
       .catch(() => alive && setFailed(true));

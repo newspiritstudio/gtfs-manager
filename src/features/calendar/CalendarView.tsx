@@ -1,8 +1,5 @@
-'use client';
-
 import { CalendarDays, CalendarRange } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { Link, useRouter, useSearchParams } from '@/lib/router';
 import { useState } from 'react';
 import CalendarHeatmap from '@/components/charts/CalendarHeatmap';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
@@ -10,7 +7,7 @@ import SearchField from '@/components/ui/SearchField';
 import { formatGtfsDate, formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
-import type { ServiceRow } from '@/server/gtfs/details';
+import type { ServiceRow } from '@/engine/gtfs/details';
 
 const DAY_FIELDS = [
   'monday',
@@ -70,9 +67,7 @@ export default function CalendarView({
           <CalendarHeatmap
             data={tripsByDate}
             selected={selected}
-            onSelect={(date) =>
-              router.replace(`/feeds/${feedId}/calendar?date=${date}`, { scroll: false })
-            }
+            onSelect={(date) => router.replace(`/feeds/${feedId}/calendar?date=${date}`)}
             unit={(n) => t('units.trips', { count: n })}
           />
         </CardContent>

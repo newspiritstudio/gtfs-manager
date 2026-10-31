@@ -6,7 +6,8 @@ export type Locale = (typeof LOCALES)[number];
  * missing in a language appear in Catalan, the source of the translations (`MESSAGES.ca`).
  */
 export const DEFAULT_LOCALE: Locale = 'en';
-export const LOCALE_COOKIE = 'gtfs-locale';
+/** Where the chosen language is remembered (localStorage). */
+export const LOCALE_STORAGE_KEY = 'gtfs-locale';
 
 /** Each language's name in itself: that is how someone who does not understand the current language looks for it. */
 export const LOCALE_NAMES: Record<Locale, string> = {

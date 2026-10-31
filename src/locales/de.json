@@ -56,8 +56,8 @@
     "max": "Max.: {value}"
   },
   "errors": {
-    "database": "Verbindung zur Datenbank nicht möglich",
-    "databaseHint": "Prüfen Sie DATABASE_URL in .env.local und ob PostgreSQL läuft.",
+    "database": "Die Browser-Datenbank kann nicht geöffnet werden",
+    "databaseHint": "Ihr Browser blockiert möglicherweise den Speicher dieser Website (zum Beispiel in einem privaten Fenster). Laden Sie die Seite neu, um es erneut zu versuchen.",
     "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
     "invalidForm": "Markierte Felder prüfen.",
     "notFound": "Seite nicht gefunden",
@@ -89,7 +89,7 @@
     "blankTitle": "Ein neuer Feed",
     "blankSubtitle": "Beginnen Sie mit dem Verkehrsunternehmen und fügen Sie dann Haltestellen, Linien und Fahrten hinzu.",
     "dropTitle": "Ordner oder ZIP-Datei hier ablegen",
-    "dropHint": "Die Dateien werden einzeln mit Fortschrittsanzeige hochgeladen; auch eine stop_times von mehreren hundert MB passt.",
+    "dropHint": "Die Dateien werden in Ihrem Browser gelesen und nirgendwohin hochgeladen; auch eine stop_times von Hunderten MB passt.",
     "pickFolder": "Ordner auswählen",
     "pickZip": "ZIP-Datei auswählen",
     "zipError": "Die ZIP-Datei konnte nicht gelesen werden.",
@@ -122,6 +122,9 @@
     "created": "Feed erstellt",
     "downloading": "Download von {source}…",
     "downloadFailed": "Der Feed konnte nicht von der Quelle heruntergeladen werden.",
+    "downloadBlocked": "Die Quelle erlaubt dem Browser nicht, den Feed herunterzuladen.",
+    "downloadBlockedHint": "Laden Sie das ZIP von der Quelle herunter und importieren Sie es hier als Datei: Es verlässt nie Ihren Browser.",
+    "downloadZip": "ZIP herunterladen",
     "retry": "Erneut versuchen",
     "needFiles": "Wählen Sie einen Ordner oder ein ZIP zum Importieren."
   },
@@ -726,7 +729,7 @@
     "features": {
       "import": {
         "title": "Große Feeds importieren",
-        "body": "Laden Sie eine GTFS-ZIP-Datei oder einen Ordner hoch. Der Import liest die Dateien im Streaming und bewältigt Feeds wie Renfe Cercanías mit fast zwei Millionen Haltezeiten."
+        "body": "Öffnen Sie eine GTFS-ZIP-Datei oder einen Ordner. Der Browser liest die Dateien im Streaming, so passen auch Feeds wie Renfe Cercanías mit fast zwei Millionen Haltezeiten."
       },
       "visualize": {
         "title": "Das Netz sehen",
@@ -769,11 +772,11 @@
       },
       "large": {
         "q": "Funktioniert es mit großen Feeds?",
-        "a": "Ja. Der Import liest die Dateien im Streaming und speichert die Daten in PostgreSQL. Feeds wie Renfe Cercanías mit mehr als 130.000 Fahrten werden vollständig importiert und erkundet."
+        "a": "Ja. Der Import liest die Dateien im Streaming und speichert die Daten in einer SQLite-Datenbank in Ihrem Browser. Feeds wie Renfe Cercanías mit mehr als 130.000 Fahrten werden vollständig importiert und erkundet."
       },
       "data": {
         "q": "Wo werden die Daten gespeichert?",
-        "a": "Auf dem Server von GTFS Manager, mit einer verschlüsselten Sicherung jede Nacht. Die Feeds dort sind öffentlich: Alle können sie ansehen und herunterladen, aber nur Personen mit Bearbeitungszugang können sie importieren, ändern oder löschen."
+        "a": "Nur in Ihrem Browser: Die Feeds liegen im privaten Speicher dieser Website auf Ihrem Gerät und werden nie an einen Server gesendet. Um eine Kopie aufzubewahren oder sie auf ein anderes Gerät zu bringen, exportieren Sie sie als GTFS-ZIP. Wenn Sie die Website-Daten löschen, werden sie gelöscht."
       },
       "export": {
         "q": "Kann ich den Feed wieder exportieren?",
@@ -818,7 +821,6 @@
     "subtitle": "GTFS-Realtime-Daten des Betreibers, mit dem Fahrplan abgeglichen",
     "editSources": "Quellen bearbeiten",
     "showOnMap": "Auf der Karte zeigen",
-    "noSources": "Dieser Feed hat keine GTFS-Realtime-Quelle.",
     "noSourcesHint": "Füge die GTFS-Realtime-URLs des Betreibers hinzu, um Fahrzeuge live, Verspätungen und Meldungen zu sehen.",
     "sources": "Echtzeitquellen",
     "sourcesHint": "Öffentliche GTFS-Realtime-Protobuf-Dateien (https). Eine, zwei oder alle drei.",
@@ -856,7 +858,7 @@
       "connectionFailed": "Keine Verbindung zur Quelle möglich",
       "httpFailed": "Die Quelle antwortet mit einem HTTP-Fehler",
       "tooLarge": "Die Datei ist größer als 20 MB",
-      "blockedHost": "Adresse nicht erlaubt: Sie muss öffentlich und https sein",
+      "cors": "Die Quelle erlaubt dem Browser keinen Zugriff (CORS)",
       "decodeFailed": "Die Quelle ist keine gültige GTFS-Realtime-Nachricht",
       "missingFields": "In der Nachricht fehlen Pflichtfelder",
       "fullDatasetRequired": "Die Nachricht ist kein vollständiger Datensatz (FULL_DATASET)",

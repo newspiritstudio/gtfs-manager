@@ -14,12 +14,11 @@ pull requests are all welcome.
 ```bash
 nvm use                 # Node.js 24 (see .nvmrc); 22 or later works
 npm ci
-cp env.example .env.local
-npm run db:migrate
 npm run dev
 ```
 
-You need a PostgreSQL database; set `DATABASE_URL` in `.env.local`.
+There is nothing else to set up: the app, its database (SQLite WASM) and the GTFS logic all run in
+the browser.
 
 ## Conventions
 
@@ -30,11 +29,13 @@ You need a PostgreSQL database; set `DATABASE_URL` in `.env.local`.
   100 columns) and ESLint must pass with zero warnings. The pre-commit hook runs both on staged
   files.
 - **Imports.** Use the `@/*` (→ `src/*`) and `@shared/*` (→ `shared/*`) aliases instead of deep
-  relative paths. Client code must not import `src/server/` at runtime.
+  relative paths. The page reaches the engine (`src/engine/`, a Web Worker) only through
+  `src/lib/engine.ts`; it may import the engine's types, not its code.
 - **Contracts.** GTFS files and fields come from `shared/gtfs-spec.ts`; request and response types
   shared by client and server go in `shared/`.
-- **Database.** Change `src/server/db/schema.ts`, then `npm run db:generate`; don't hand-write
-  migration SQL.
+- **Database.** The schema is `src/engine/db/schema.ts`. Each visitor's database lives in their
+  browser, so a change to an existing table must come with a migration there that upgrades the
+  data already stored.
 - **Animation.** Import from `motion/react`, never `framer-motion`.
 - **Tests.** Vitest and Testing Library, co-located as `*.test.ts(x)`. Add a test for every bug
   fix and for validation or import logic.

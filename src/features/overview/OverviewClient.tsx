@@ -1,7 +1,5 @@
-'use client';
-
 import { Maximize2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/router';
 import CalendarHeatmap from '@/components/charts/CalendarHeatmap';
 import HourBars from '@/components/charts/HourBars';
 import { NetworkMap } from '@/components/map';

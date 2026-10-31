@@ -56,8 +56,8 @@
     "max": "Max : {value}"
   },
   "errors": {
-    "database": "Impossible de se connecter à la base de données",
-    "databaseHint": "Vérifiez DATABASE_URL dans .env.local et que PostgreSQL est démarré.",
+    "database": "Impossible d'ouvrir la base de données du navigateur",
+    "databaseHint": "Votre navigateur bloque peut-être le stockage de ce site (dans une fenêtre privée, par exemple). Rechargez la page pour réessayer.",
     "generic": "Une erreur s'est produite. Veuillez réessayer.",
     "invalidForm": "Vérifiez les champs signalés.",
     "notFound": "Page introuvable",
@@ -89,7 +89,7 @@
     "blankTitle": "Un nouveau flux",
     "blankSubtitle": "Commencez par l'agence, puis ajoutez arrêts, lignes et courses.",
     "dropTitle": "Déposez le dossier ou le ZIP ici",
-    "dropHint": "Les fichiers sont envoyés un par un avec leur progression ; un stop_times de plusieurs centaines de Mo passe aussi.",
+    "dropHint": "Les fichiers sont lus dans votre navigateur et ne sont envoyés nulle part ; un stop_times de plusieurs centaines de Mo passe aussi.",
     "pickFolder": "Choisir un dossier",
     "pickZip": "Choisir un ZIP",
     "zipError": "Le ZIP n'a pas pu être lu.",
@@ -122,6 +122,9 @@
     "created": "Flux créé",
     "downloading": "Téléchargement depuis {source}…",
     "downloadFailed": "Le flux n'a pas pu être téléchargé depuis sa source.",
+    "downloadBlocked": "La source ne permet pas au navigateur de télécharger le feed.",
+    "downloadBlockedHint": "Téléchargez le ZIP depuis la source et importez-le ici comme fichier : il ne quitte jamais votre navigateur.",
+    "downloadZip": "Télécharger le ZIP",
     "retry": "Réessayer",
     "needFiles": "Choisissez un dossier ou un ZIP à importer."
   },
@@ -726,7 +729,7 @@
     "features": {
       "import": {
         "title": "Importer de gros flux",
-        "body": "Téléversez un ZIP ou un dossier GTFS. L'import traite les fichiers en flux continu et gère des flux comme Renfe Cercanías, avec près de deux millions d'horaires aux arrêts."
+        "body": "Ouvrez un ZIP ou un dossier GTFS. Le navigateur lit les fichiers en flux continu, ce qui permet d'importer des feeds comme Renfe Cercanías et ses presque deux millions d'horaires de passage."
       },
       "visualize": {
         "title": "Visualiser le réseau",
@@ -769,11 +772,11 @@
       },
       "large": {
         "q": "Gère-t-il les gros flux ?",
-        "a": "Oui. L'import traite les fichiers en flux continu et stocke les données dans PostgreSQL. Des flux comme Renfe Cercanías, avec plus de 130 000 courses, sont importés et explorés en entier."
+        "a": "Oui. L'import traite les fichiers en flux continu et stocke les données dans une base SQLite au sein de votre navigateur. Des feeds comme Renfe Cercanías, avec plus de 130 000 courses, sont importés et explorés en entier."
       },
       "data": {
         "q": "Où sont stockées les données ?",
-        "a": "Sur le serveur de GTFS Manager, avec une sauvegarde chiffrée chaque nuit. Les feeds qu'il contient sont publics : tout le monde peut les consulter et les télécharger, mais seules les personnes ayant un accès en édition peuvent les importer, les modifier ou les supprimer."
+        "a": "Uniquement dans votre navigateur : les feeds sont conservés dans le stockage privé de ce site sur votre appareil et ne sont jamais envoyés à un serveur. Pour en garder une copie ou les passer sur un autre appareil, exportez-les en ZIP GTFS. Effacer les données du site les supprime."
       },
       "export": {
         "q": "Puis-je exporter à nouveau le flux ?",
@@ -818,7 +821,6 @@
     "subtitle": "Données GTFS Realtime de l'opérateur, vérifiées par rapport aux horaires",
     "editSources": "Modifier les sources",
     "showOnMap": "Voir sur la carte",
-    "noSources": "Ce feed n'a aucune source GTFS Realtime.",
     "noSourcesHint": "Ajoutez les URL GTFS Realtime de l'opérateur pour voir les véhicules en direct, les retards et les alertes.",
     "sources": "Sources temps réel",
     "sourcesHint": "Fichiers protobuf GTFS Realtime publics (https). Vous pouvez en indiquer un, deux ou les trois.",
@@ -856,7 +858,7 @@
       "connectionFailed": "Impossible de se connecter à la source",
       "httpFailed": "La source répond par une erreur HTTP",
       "tooLarge": "Le fichier dépasse 20 Mo",
-      "blockedHost": "Adresse non autorisée : elle doit être publique et en https",
+      "cors": "La source ne permet pas au navigateur de la lire (CORS)",
       "decodeFailed": "La source n'est pas un message GTFS Realtime valide",
       "missingFields": "Des champs obligatoires manquent dans le message",
       "fullDatasetRequired": "Le message n'est pas un jeu complet (FULL_DATASET)",

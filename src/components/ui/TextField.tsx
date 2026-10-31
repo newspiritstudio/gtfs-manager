@@ -1,5 +1,3 @@
-'use client';
-
 import { forwardRef, useId } from 'react';
 import { cn } from '@/lib/utils';
 

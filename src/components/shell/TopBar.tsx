@@ -1,14 +1,11 @@
-'use client';
-
-import { ChevronRight, Download } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { ChevronRight } from 'lucide-react';
+import { Link, usePathname } from '@/lib/router';
 import { GTFS_CATALOG } from '@shared/catalog';
-import { ButtonLink } from '@/components/ui/Button';
 import { useI18n } from '@/lib/i18n/client';
 import { splitLocalePath } from '@/lib/i18n/paths';
 import { useCrumbLabel } from './CrumbLabel';
 import { activeFeedNav, feedIdFromPath } from './nav';
+import ExportButton from './ExportButton';
 import { LanguageSelect, ThemeToggle } from './Preferences';
 import type { ShellFeed } from './SideNav';
 
@@ -90,12 +87,7 @@ export default function TopBar({ feeds }: { feeds: ShellFeed[] }) {
         </ol>
       </nav>
       <div className="flex items-center gap-1">
-        {feedId ? (
-          <ButtonLink href={`/api/feeds/${feedId}/export`} variant="tonal" size="sm" download>
-            <Download />
-            {t('feed.export')}
-          </ButtonLink>
-        ) : null}
+        {feedId ? <ExportButton feedId={feedId} /> : null}
         <LanguageSelect />
         <ThemeToggle />
       </div>

@@ -1,9 +1,10 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# Agent notes
 
-## This is NOT the Next.js you know
+Read [README.md](README.md) (architecture and project structure) and
+[CONTRIBUTING.md](CONTRIBUTING.md) (conventions and checks) before changing code.
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
+- The app is a static site. There is no server: never add one, nor code that assumes one.
+- Data work runs in the Web Worker under `src/engine/`; the page calls it through
+  `src/lib/engine.ts`.
+- Run `npm run type-check`, `npm run lint`, `npm run test -- --run`, `npm run i18n:check` and
+  `npm run build` before you finish.

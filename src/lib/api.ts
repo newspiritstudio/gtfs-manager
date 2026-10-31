@@ -1,3 +1,5 @@
+import { localFetch } from './engine';
+
 /** Error from an /api call with the code the server returns (`error`) and the details. */
 export class ApiError extends Error {
   constructor(
@@ -9,8 +11,9 @@ export class ApiError extends Error {
   }
 }
 
+/** A call to the local API (`src/engine/api`), answered by the engine's worker. */
 export async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
+  const response = await localFetch(url, {
     ...init,
     headers:
       init?.body && typeof init.body === 'string'
@@ -28,28 +31,29 @@ export async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-/** Uploads a file with progress (fetch gives none for uploads). */
-export function uploadWithProgress(
+/** Sends a file to the local API; `onProgress` gets 1 once the engine has taken it all. */
+export async function uploadWithProgress(
   url: string,
   body: Blob,
   onProgress: (fraction: number) => void
 ): Promise<unknown> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', url);
-    xhr.setRequestHeader('Content-Type', 'text/csv');
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) onProgress(e.loaded / e.total);
-    };
-    xhr.onload = () => {
-      let parsed: { error?: string; details?: unknown } = {};
-      try {
-        parsed = JSON.parse(xhr.responseText);
-      } catch {}
-      if (xhr.status >= 200 && xhr.status < 300) resolve(parsed);
-      else reject(new ApiError(xhr.status, parsed.error ?? 'requestFailed', parsed.details));
-    };
-    xhr.onerror = () => reject(new ApiError(0, 'network'));
-    xhr.send(body);
+  const result = await apiFetch(url, {
+    method: 'PUT',
+    body,
+    headers: { 'Content-Type': 'text/csv' },
   });
+  onProgress(1);
+  return result;
+}
+
+/** Downloads a file the local API generates (such as a feed export) under its own name. */
+export async function downloadFrom(url: string): Promise<void> {
+  const response = await localFetch(url);
+  if (!response.ok) throw new ApiError(response.status, 'downloadFailed');
+  const name =
+    /filename="([^"]+)"/.exec(response.headers.get('content-disposition') ?? '')?.[1] ?? 'gtfs.zip';
+  const href = URL.createObjectURL(await response.blob());
+  const link = Object.assign(document.createElement('a'), { href, download: name });
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(href), 60_000);
 }

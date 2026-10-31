@@ -56,8 +56,8 @@
     "max": "最大值：{value}"
   },
   "errors": {
-    "database": "无法连接到数据库",
-    "databaseHint": "请检查 .env.local 中的 DATABASE_URL，并确认 PostgreSQL 正在运行。",
+    "database": "无法打开浏览器数据库",
+    "databaseHint": "浏览器可能阻止了本网站的存储（例如在隐私窗口中）。请重新加载页面再试一次。",
     "generic": "出错了，请重试。",
     "invalidForm": "请检查高亮的字段。",
     "notFound": "找不到页面",
@@ -89,7 +89,7 @@
     "blankTitle": "新数据源",
     "blankSubtitle": "先填写运营机构，再添加站点、线路和车次。",
     "dropTitle": "将文件夹或 ZIP 拖到此处",
-    "dropHint": "文件逐个上传并显示进度；数百 MB 的 stop_times 也可以。",
+    "dropHint": "文件在你的浏览器中读取，不会上传到任何地方；数百 MB 的 stop_times 也能处理。",
     "pickFolder": "选择文件夹",
     "pickZip": "选择 ZIP",
     "zipError": "无法读取该 ZIP。",
@@ -119,6 +119,9 @@
     "created": "数据源已创建",
     "downloading": "正在从 {source} 下载…",
     "downloadFailed": "无法从来源下载该数据源。",
+    "downloadBlocked": "该来源不允许浏览器下载此数据源。",
+    "downloadBlockedHint": "请从来源下载 ZIP，并作为文件在此导入：数据不会离开你的浏览器。",
+    "downloadZip": "下载 ZIP",
     "retry": "重试",
     "needFiles": "请选择要导入的文件夹或 ZIP。"
   },
@@ -707,7 +710,7 @@
     "features": {
       "import": {
         "title": "导入大型数据源",
-        "body": "上传 GTFS ZIP 或文件夹。导入时按流处理文件，可处理 Renfe Cercanías 这类拥有近两百万条停靠时间的数据源。"
+        "body": "打开 GTFS ZIP 或文件夹。浏览器按流读取文件，因此像 Renfe Cercanías 这样拥有近两百万条停靠时刻的数据源也能处理。"
       },
       "visualize": {
         "title": "看清线网",
@@ -750,11 +753,11 @@
       },
       "large": {
         "q": "能处理大型数据源吗？",
-        "a": "可以。导入时按流处理文件，并将数据存入 PostgreSQL。像 Renfe Cercanías 这样拥有超过 130,000 个车次的数据源，也能完整导入和浏览。"
+        "a": "可以。导入时按流处理文件，并将数据存入浏览器内的 SQLite 数据库。像 Renfe Cercanías 这样拥有超过 130,000 个车次的数据源，也能完整导入和浏览。"
       },
       "data": {
         "q": "数据存放在哪里？",
-        "a": "保存在 GTFS Manager 的服务器上，每晚进行一次加密备份。其中的数据源是公开的：任何人都可以浏览和下载，但只有拥有编辑权限的人才能导入、修改或删除。"
+        "a": "只在你的浏览器中：数据源保存在本网站于你设备上的私有存储中，从不发送到任何服务器。如需保留副本或转移到其他设备，请导出为 GTFS ZIP。清除网站数据会将其删除。"
       },
       "export": {
         "q": "可以再次导出数据源吗？",
@@ -799,7 +802,6 @@
     "subtitle": "运营方的 GTFS Realtime 数据，与时刻表对照检查",
     "editSources": "编辑数据源",
     "showOnMap": "在地图上查看",
-    "noSources": "此数据源没有任何 GTFS Realtime 来源。",
     "noSourcesHint": "添加运营方的 GTFS Realtime URL，即可查看实时车辆、延误和通告。",
     "sources": "实时数据源",
     "sourcesHint": "公开的 GTFS Realtime protobuf 文件（https）。可以填写一个、两个或全部三个。",
@@ -836,7 +838,7 @@
       "connectionFailed": "无法连接到数据源",
       "httpFailed": "数据源返回 HTTP 错误",
       "tooLarge": "文件超过 20 MB",
-      "blockedHost": "地址不允许：必须是公开的 https 地址",
+      "cors": "该来源不允许浏览器读取 (CORS)",
       "decodeFailed": "数据源不是有效的 GTFS Realtime 消息",
       "missingFields": "消息缺少必填字段",
       "fullDatasetRequired": "消息不是完整数据集（FULL_DATASET）",

@@ -72,7 +72,7 @@ for (const locale of LOCALES.slice(1)) {
 }
 
 const pattern = /\bt\(\s*'([a-zA-Z0-9_.]+)'/g;
-for (const file of ['app', 'src', 'shared'].flatMap((d) => walk(join(root, d)))) {
+for (const file of ['src', 'shared'].flatMap((d) => walk(join(root, d)))) {
   const source = readFileSync(file, 'utf8');
   for (const match of source.matchAll(pattern)) {
     if (!keys.ca.has(match[1]))

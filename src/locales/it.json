@@ -56,8 +56,8 @@
     "max": "Max: {value}"
   },
   "errors": {
-    "database": "Impossibile connettersi al database",
-    "databaseHint": "Controlla DATABASE_URL in .env.local e che PostgreSQL sia in esecuzione.",
+    "database": "Impossibile aprire il database del browser",
+    "databaseHint": "Il browser potrebbe bloccare l'archiviazione di questo sito (ad esempio in una finestra privata). Ricarica la pagina per riprovare.",
     "generic": "Qualcosa è andato storto. Riprova.",
     "invalidForm": "Controlla i campi evidenziati.",
     "notFound": "Pagina non trovata",
@@ -89,7 +89,7 @@
     "blankTitle": "Un nuovo feed",
     "blankSubtitle": "Inizia dall'agenzia; poi aggiungi fermate, linee e corse.",
     "dropTitle": "Trascina qui la cartella o lo ZIP",
-    "dropHint": "I file vengono caricati uno alla volta con l'avanzamento; anche uno stop_times da centinaia di MB è supportato.",
+    "dropHint": "I file vengono letti nel tuo browser e non vengono caricati da nessuna parte; anche uno stop_times di centinaia di MB ci sta.",
     "pickFolder": "Scegli una cartella",
     "pickZip": "Scegli uno ZIP",
     "zipError": "Impossibile leggere lo ZIP.",
@@ -122,6 +122,9 @@
     "created": "Feed creato",
     "downloading": "Download da {source}…",
     "downloadFailed": "Impossibile scaricare il feed dalla sua fonte.",
+    "downloadBlocked": "La fonte non consente al browser di scaricare il feed.",
+    "downloadBlockedHint": "Scarica lo ZIP dalla fonte e importalo qui come file: non lascia mai il tuo browser.",
+    "downloadZip": "Scarica lo ZIP",
     "retry": "Riprova",
     "needFiles": "Scegli una cartella o uno ZIP da importare."
   },
@@ -726,7 +729,7 @@
     "features": {
       "import": {
         "title": "Importa feed di grandi dimensioni",
-        "body": "Carica uno ZIP o una cartella GTFS. L'importazione elabora i file in streaming e gestisce feed come Renfe Cercanías, con quasi due milioni di orari alle fermate."
+        "body": "Apri uno ZIP o una cartella GTFS. Il browser legge i file in streaming, così ci stanno feed come Renfe Cercanías, con quasi due milioni di orari di fermata."
       },
       "visualize": {
         "title": "Visualizza la rete",
@@ -769,11 +772,11 @@
       },
       "large": {
         "q": "Gestisce feed di grandi dimensioni?",
-        "a": "Sì. L'importazione elabora i file in streaming e salva i dati in PostgreSQL. Feed come Renfe Cercanías, con oltre 130.000 corse, vengono importati ed esplorati per intero."
+        "a": "Sì. L'importazione elabora i file in streaming e salva i dati in un database SQLite all'interno del tuo browser. Feed come Renfe Cercanías, con oltre 130.000 corse, vengono importati ed esplorati per intero."
       },
       "data": {
         "q": "Dove vengono salvati i dati?",
-        "a": "Sul server di GTFS Manager, con un backup cifrato ogni notte. I feed presenti sono pubblici: chiunque può consultarli e scaricarli, ma solo le persone con accesso in modifica possono importarli, modificarli o eliminarli."
+        "a": "Solo nel tuo browser: i feed restano nell'archiviazione privata di questo sito sul tuo dispositivo e non vengono mai inviati a nessun server. Per conservarne una copia o spostarli su un altro dispositivo, esportali come ZIP GTFS. Cancellando i dati del sito, vengono eliminati."
       },
       "export": {
         "q": "Posso esportare di nuovo il feed?",
@@ -818,7 +821,6 @@
     "subtitle": "Dati GTFS Realtime dell'operatore, confrontati con l'orario",
     "editSources": "Modifica le fonti",
     "showOnMap": "Mostra sulla mappa",
-    "noSources": "Questo feed non ha alcuna fonte GTFS Realtime.",
     "noSourcesHint": "Aggiungi gli URL GTFS Realtime dell'operatore per vedere i veicoli in diretta, i ritardi e gli avvisi.",
     "sources": "Fonti in tempo reale",
     "sourcesHint": "File protobuf GTFS Realtime pubblici (https). Puoi indicarne uno, due o tutti e tre.",
@@ -856,7 +858,7 @@
       "connectionFailed": "Impossibile connettersi alla fonte",
       "httpFailed": "La fonte risponde con un errore HTTP",
       "tooLarge": "Il file supera i 20 MB",
-      "blockedHost": "Indirizzo non consentito: deve essere pubblico e https",
+      "cors": "La fonte non consente al browser di leggerla (CORS)",
       "decodeFailed": "La fonte non è un messaggio GTFS Realtime valido",
       "missingFields": "Mancano campi obbligatori nel messaggio",
       "fullDatasetRequired": "Il messaggio non è un insieme completo (FULL_DATASET)",

@@ -1,7 +1,4 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { LOCALES } from './config';
 import { isPublicPath, localizedPath, splitLocalePath } from './paths';
 
 describe('adreces per idioma', () => {
@@ -23,12 +20,5 @@ describe('adreces per idioma', () => {
     expect(isPublicPath('/catalog/fgc')).toBe(true);
     expect(isPublicPath('/feeds')).toBe(false);
     expect(isPublicPath('/new')).toBe(false);
-  });
-
-  it('the proxy knows every language', () => {
-    // The proxy `matcher` must be a literal: this checks it has not fallen behind.
-    const source = readFileSync(join(process.cwd(), 'proxy.ts'), 'utf8');
-    const group = /'\/\(([a-z|]+)\)'/.exec(source)?.[1].split('|').sort();
-    expect(group).toEqual([...LOCALES].sort());
   });
 });

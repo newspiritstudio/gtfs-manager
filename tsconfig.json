@@ -8,26 +8,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "incremental": true,
     "paths": {
       "@/*": ["./src/*"],
       "@shared/*": ["./shared/*"]
     },
-    "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "types": ["vitest/globals", "node", "@testing-library/jest-dom", "vite/client"],
     "moduleDetection": "force",
     "allowJs": true
   },
-  "include": ["app", "next-env.d.ts", "src", "shared", "scripts", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
+  "include": ["src", "shared", "scripts", "vite.config.ts"],
   "exclude": ["node_modules"]
 }

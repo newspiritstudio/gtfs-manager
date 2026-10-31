@@ -3,7 +3,7 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 
 export default [
-  { ignores: ['.next/**', 'node_modules/**', 'src/server/db/migrations/**', 'next-env.d.ts'] },
+  { ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'tmp/**'] },
   {
     files: ['**/*.ts', '**/*.tsx'],
     plugins: { '@typescript-eslint': tsPlugin, 'react-hooks': reactHooksPlugin },
@@ -35,9 +35,10 @@ export default [
           paths: [{ name: 'framer-motion', message: "Use 'motion/react'." }],
           patterns: [
             {
-              group: ['@/server/*'],
+              group: ['@/engine/*', '!@/engine/protocol', '!@/engine/loaders'],
               allowTypeImports: true,
-              message: 'Client code must not import src/server at runtime.',
+              message:
+                'The page talks to the engine through src/lib/engine.ts (it runs in a worker).',
             },
           ],
         },

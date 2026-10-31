@@ -1,9 +1,8 @@
-'use client';
-
 import JSZip from 'jszip';
 import {
   CheckCircle2,
   CloudDownload,
+  Download,
   FileArchive,
   FilePlus2,
   FileText,
@@ -13,17 +12,19 @@ import {
   Upload,
   XCircle,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/lib/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FileImportReport } from '@shared/contracts';
+import { catalogEntry, catalogZipUrl, type CatalogEntry } from '@shared/catalog';
 import { GTFS_TABLES, tableForFile } from '@shared/gtfs-spec';
 import Badge from '@/components/ui/Badge';
-import Button from '@/components/ui/Button';
+import Button, { ButtonLink } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { SegmentedControl } from '@/components/ui/Tabs';
 import TextField from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch, ApiError, uploadWithProgress } from '@/lib/api';
+import { downloadCatalogZip } from '@/lib/catalog';
 import { formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
@@ -65,18 +66,23 @@ export interface CatalogPick {
 }
 
 type DownloadState =
-  { status: 'loading'; loaded: number; total: number | null } | { status: 'failed' } | null;
+  | { status: 'loading'; loaded: number; total: number | null }
+  | { status: 'failed' }
+  /** The source does not let the browser download it (CORS): it has to come in as a file. */
+  | { status: 'blocked'; url: string | null }
+  | null;
 
-/** Downloads the ZIP of a catalog entry with progress (the server bridges to the source). */
+/** Downloads the ZIP of a catalog entry, straight from the source, with progress. */
 async function downloadCatalog(
-  id: string,
+  entry: CatalogEntry,
   signal: AbortSignal,
   onProgress: (loaded: number, total: number | null) => void
 ): Promise<File> {
-  const response = await fetch(`/api/catalog/${encodeURIComponent(id)}/zip`, { signal });
-  if (!response.ok || !response.body) throw new ApiError(response.status, 'sourceUnavailable');
-  const total = Number(response.headers.get('content-length')) || null;
-  const reader = response.body.getReader();
+  const { body, size } = await downloadCatalogZip(entry);
+  const name = `${entry.id}.zip`;
+  if (body instanceof Uint8Array) return new File([body as Uint8Array<ArrayBuffer>], name);
+  const reader = body.getReader();
+  signal.addEventListener('abort', () => void reader.cancel(), { once: true });
   const chunks: Uint8Array<ArrayBuffer>[] = [];
   let loaded = 0;
   for (;;) {
@@ -84,9 +90,9 @@ async function downloadCatalog(
     if (done) break;
     chunks.push(value as Uint8Array<ArrayBuffer>);
     loaded += value.byteLength;
-    onProgress(loaded, total);
+    onProgress(loaded, size);
   }
-  return new File(chunks, `${id}.zip`, { type: 'application/zip' });
+  return new File(chunks, name, { type: 'application/zip' });
 }
 
 function isHttpUrl(value: string): boolean {
@@ -196,15 +202,25 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
     if (!catalog) return;
     const controller = new AbortController();
     setDownload({ status: 'loading', loaded: 0, total: null });
-    downloadCatalog(catalog.id, controller.signal, (loaded, total) =>
+    const entry = catalogEntry(catalog.id);
+    if (!entry) {
+      setDownload({ status: 'failed' });
+      return;
+    }
+    downloadCatalog(entry, controller.signal, (loaded, total) =>
       setDownload({ status: 'loading', loaded, total })
     )
       .then(async (file) => {
         await pickZip(file, '');
         setDownload(null);
       })
-      .catch(() => {
-        if (!controller.signal.aborted) setDownload({ status: 'failed' });
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return;
+        if (error instanceof Error && error.message === 'cors') {
+          setDownload({ status: 'blocked', url: catalogZipUrl(entry.source) });
+        } else {
+          setDownload({ status: 'failed' });
+        }
       });
     return () => controller.abort();
   }, [catalog, attempt, pickZip]);
@@ -356,13 +372,20 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
           {mode === 'import' && download ? (
             <div className="flex flex-col items-center gap-3 rounded-lg bg-surface-container-highest px-6 py-10 text-center">
               <span className="flex size-14 items-center justify-center rounded-xl bg-primary-tint text-primary [&_svg]:size-7">
-                {download.status === 'failed' ? <XCircle /> : <CloudDownload />}
+                {download.status === 'loading' ? <CloudDownload /> : <XCircle />}
               </span>
               <p className="text-title-medium text-on-surface">
-                {download.status === 'failed'
-                  ? t('newFeed.downloadFailed')
-                  : t('newFeed.downloading', { source: catalog?.operator ?? '' })}
+                {download.status === 'loading'
+                  ? t('newFeed.downloading', { source: catalog?.operator ?? '' })
+                  : download.status === 'blocked'
+                    ? t('newFeed.downloadBlocked')
+                    : t('newFeed.downloadFailed')}
               </p>
+              {download.status === 'blocked' ? (
+                <p className="max-w-md text-body-medium text-on-surface-variant">
+                  {t('newFeed.downloadBlockedHint')}
+                </p>
+              ) : null}
               {download.status === 'loading' ? (
                 <>
                   <span
@@ -394,6 +417,24 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
                     {download.total ? ` / ${formatBytes(locale, download.total)}` : ''}
                   </p>
                 </>
+              ) : download.status === 'blocked' ? (
+                <div className="flex flex-wrap justify-center gap-2">
+                  {download.url ? (
+                    <ButtonLink
+                      href={download.url}
+                      variant="tonal"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Download />
+                      {t('newFeed.downloadZip')}
+                    </ButtonLink>
+                  ) : null}
+                  <Button variant="outline" onClick={() => setDownload(null)}>
+                    <FileArchive />
+                    {t('newFeed.pickZip')}
+                  </Button>
+                </div>
               ) : (
                 <Button variant="tonal" onClick={() => setAttempt((n) => n + 1)}>
                   <RotateCcw />

@@ -1,7 +1,5 @@
-'use client';
-
 import { LayoutGrid, List, Route as RouteIcon } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import { useMemo, useState } from 'react';
 import type { NetworkRoute } from '@shared/contracts';
 import { transitModeForRouteType, type TransitMode } from '@shared/gtfs-spec';

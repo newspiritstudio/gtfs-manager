@@ -1,5 +1,3 @@
-'use client';
-
 import { Ban, Radio } from 'lucide-react';
 import type { RealtimeTripUpdate } from '@shared/realtime';
 import Badge from '@/components/ui/Badge';

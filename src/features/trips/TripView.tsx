@@ -1,7 +1,5 @@
-'use client';
-
 import { CalendarDays, Clock, Link2, Map as MapIcon, Ruler, TrainFront } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import { useMemo, useState } from 'react';
 import type { PatternStop } from '@shared/contracts';
 import { addDays, formatClock, haversineMeters } from '@shared/gtfs-values';
@@ -18,7 +16,7 @@ import { currentStopUpdate } from '@/features/realtime/delay';
 import { useRealtime } from '@/features/realtime/useRealtime';
 import { formatDistance, formatDuration } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
-import type { TripDetail } from '@/server/gtfs/details';
+import type { TripDetail } from '@/engine/gtfs/details';
 
 export default function TripView({ feedId, detail }: { feedId: string; detail: TripDetail }) {
   const { t, locale } = useI18n();

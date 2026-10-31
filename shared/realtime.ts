@@ -126,7 +126,7 @@ export const REALTIME_CHECKS = {
   connectionFailed: { severity: 'error', google: 'FETCHER_CONNECTION_ERROR' },
   httpFailed: { severity: 'error', google: 'FETCHER_HTTP_ERROR' },
   tooLarge: { severity: 'error', google: null },
-  blockedHost: { severity: 'error', google: null },
+  cors: { severity: 'error', google: null },
   decodeFailed: { severity: 'error', google: 'PROTO_PARSE_ERROR' },
   missingFields: { severity: 'error', google: 'PROTO_MISSING_FIELDS_ERROR' },
   // Feed header and entities.
@@ -210,7 +210,7 @@ export type RealtimeSourceError = Extract<
   | 'connectionFailed'
   | 'httpFailed'
   | 'tooLarge'
-  | 'blockedHost'
+  | 'cors'
   | 'decodeFailed'
   | 'missingFields'
 >;

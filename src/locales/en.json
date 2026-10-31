@@ -56,8 +56,8 @@
     "max": "Max: {value}"
   },
   "errors": {
-    "database": "Cannot connect to the database",
-    "databaseHint": "Check DATABASE_URL in .env.local and that PostgreSQL is running.",
+    "database": "Cannot open the browser database",
+    "databaseHint": "Your browser may be blocking storage for this site (in a private window, for example). Reload the page to try again.",
     "generic": "Something went wrong. Please try again.",
     "invalidForm": "Check the highlighted fields.",
     "notFound": "Page not found",
@@ -89,7 +89,7 @@
     "blankTitle": "A new feed",
     "blankSubtitle": "Start with the agency; then add stops, routes and trips.",
     "dropTitle": "Drop the folder or ZIP here",
-    "dropHint": "Files upload one by one with progress; a stop_times of hundreds of MB fits too.",
+    "dropHint": "Files are read in your browser and never uploaded; a stop_times of hundreds of MB fits too.",
     "pickFolder": "Choose a folder",
     "pickZip": "Choose a ZIP",
     "zipError": "The ZIP could not be read.",
@@ -122,6 +122,9 @@
     "created": "Feed created",
     "downloading": "Downloading from {source}…",
     "downloadFailed": "The feed could not be downloaded from its source.",
+    "downloadBlocked": "The source does not let the browser download the feed.",
+    "downloadBlockedHint": "Download the ZIP from the source and import it here as a file: it never leaves your browser.",
+    "downloadZip": "Download the ZIP",
     "retry": "Try again",
     "needFiles": "Choose a folder or a ZIP to import."
   },
@@ -726,7 +729,7 @@
     "features": {
       "import": {
         "title": "Import large feeds",
-        "body": "Upload a GTFS ZIP or folder. Files are read as a stream, which copes with feeds like Renfe Cercanías and its almost two million stop times."
+        "body": "Open a GTFS ZIP or folder. Your browser reads the files as a stream, which copes with feeds like Renfe Cercanías and its almost two million stop times."
       },
       "visualize": {
         "title": "See the network",
@@ -769,11 +772,11 @@
       },
       "large": {
         "q": "Does it handle large feeds?",
-        "a": "Yes. Files are read as a stream and the data is stored in PostgreSQL. Feeds like Renfe Cercanías, with more than 130,000 trips, are imported and explored in full."
+        "a": "Yes. Files are read as a stream and the data is stored in a SQLite database inside your browser. Feeds like Renfe Cercanías, with more than 130,000 trips, are imported and explored in full."
       },
       "data": {
         "q": "Where is the data stored?",
-        "a": "On the GTFS Manager server, with an encrypted backup every night. The feeds on it are public: anyone can browse and download them, but only people with editing access can import, change or delete them."
+        "a": "Only in your browser: feeds are kept in this site's private storage on your device and are never sent to any server. To keep a copy or move them to another device, export them as a GTFS ZIP. Clearing the site's data deletes them."
       },
       "export": {
         "q": "Can I export the feed again?",
@@ -818,7 +821,6 @@
     "subtitle": "The operator's GTFS Realtime data, checked against the schedule",
     "editSources": "Edit sources",
     "showOnMap": "Show on map",
-    "noSources": "This feed has no GTFS Realtime source.",
     "noSourcesHint": "Add the operator's GTFS Realtime URLs to see live vehicles, delays and alerts.",
     "sources": "Realtime sources",
     "sourcesHint": "Public GTFS Realtime protobuf files (https). You can set one, two or all three.",
@@ -856,7 +858,7 @@
       "connectionFailed": "Could not connect to the source",
       "httpFailed": "The source answers with an HTTP error",
       "tooLarge": "The file is larger than 20 MB",
-      "blockedHost": "Address not allowed: it must be public and https",
+      "cors": "The source does not let the browser read it (CORS)",
       "decodeFailed": "The source is not a valid GTFS Realtime message",
       "missingFields": "Required fields are missing from the message",
       "fullDatasetRequired": "The message is not a full dataset (FULL_DATASET)",

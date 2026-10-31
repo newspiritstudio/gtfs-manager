@@ -1,5 +1,3 @@
-'use client';
-
 import { Fragment, useMemo, useState } from 'react';
 import { addDays, gtfsDateToUtc } from '@shared/gtfs-values';
 import { formatGtfsDate, formatNumber } from '@/lib/i18n/format';

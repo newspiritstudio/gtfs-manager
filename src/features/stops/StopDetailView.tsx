@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Accessibility,
   ArrowDownToLine,
@@ -9,8 +7,7 @@ import {
   MapPin,
   Navigation,
 } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { Link, useRouter } from '@/lib/router';
 import { useEffect, useMemo, useState } from 'react';
 import type { StopDeparture } from '@shared/contracts';
 import { formatClock } from '@shared/gtfs-values';
@@ -32,7 +29,7 @@ import { defaultServiceDate } from '@/lib/dates';
 import { formatDistance, formatGtfsDate } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
-import type { StopDetail } from '@/server/gtfs/details';
+import type { StopDetail } from '@/engine/gtfs/details';
 
 /** Remounted when the stop changes (e.g. from the nearby ones) so the filter and date are not carried over. */
 export default function StopDetailView(props: { feedId: string; detail: StopDetail }) {

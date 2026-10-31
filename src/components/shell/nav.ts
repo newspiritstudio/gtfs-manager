@@ -20,8 +20,6 @@ export interface FeedNavItem {
   path: string;
   icon: LucideIcon;
   mobile?: boolean;
-  /** Only with the editing controls (see `src/server/editor.ts`). */
-  editorOnly?: boolean;
 }
 
 export const FEED_NAV: FeedNavItem[] = [
@@ -33,13 +31,8 @@ export const FEED_NAV: FeedNavItem[] = [
   { key: 'validation', path: '/validation', icon: ShieldCheck },
   { key: 'realtime', path: '/realtime', icon: Radio },
   { key: 'data', path: '/data', icon: Table2 },
-  { key: 'generator', path: '/generator', icon: WandSparkles, editorOnly: true },
+  { key: 'generator', path: '/generator', icon: WandSparkles },
 ];
-
-/** The feed sections this visitor can use. */
-export function feedNav(editor: boolean): FeedNavItem[] {
-  return editor ? FEED_NAV : FEED_NAV.filter((i) => !i.editorOnly);
-}
 
 export const HOME_ICON = House;
 export const FEEDS_ICON = Database;

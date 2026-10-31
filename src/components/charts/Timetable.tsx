@@ -1,6 +1,4 @@
-'use client';
-
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import type { DayTrip, PatternStop } from '@shared/contracts';
 import { formatClock } from '@shared/gtfs-values';
 

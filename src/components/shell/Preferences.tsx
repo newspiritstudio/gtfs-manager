@@ -1,12 +1,8 @@
-'use client';
-
 import { Languages, Monitor, Moon, Sun } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import IconButton from '@/components/ui/IconButton';
 import { useI18n } from '@/lib/i18n/client';
-import { LOCALE_COOKIE, LOCALE_NAMES, LOCALE_TAGS, LOCALES, type Locale } from '@/lib/i18n/config';
-import { isPublicPath, localizedPath, splitLocalePath } from '@/lib/i18n/paths';
+import { LOCALE_NAMES, LOCALE_TAGS, LOCALES, type Locale } from '@/lib/i18n/config';
 import {
   applyTheme,
   readThemePreference,
@@ -48,25 +44,14 @@ export function ThemeToggle() {
 }
 
 export function LanguageSelect() {
-  const { t, locale } = useI18n();
-  const router = useRouter();
-  const pathname = usePathname();
+  const { t, locale, setLocale } = useI18n();
   return (
     <label className="relative inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-label-large text-on-surface-variant state-layer has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[var(--md-sys-color-secondary)]">
       <Languages aria-hidden className="size-5" />
       <span className="sr-only">{t('language.label')}</span>
       <select
         value={locale}
-        onChange={(e) => {
-          const next = e.target.value as Locale;
-          document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
-          // Public pages have one address per language. It goes there with a full load: the shell (and
-          // with it `<html lang>` and the texts) is not re-rendered on a client navigation. Other pages
-          // re-render with the new cookie.
-          const { path } = splitLocalePath(pathname);
-          if (isPublicPath(path)) window.location.assign(localizedPath(next, path));
-          else router.refresh();
-        }}
+        onChange={(e) => setLocale(e.target.value as Locale)}
         className="cursor-pointer appearance-none bg-transparent text-label-large text-on-surface focus:outline-none [&>option]:bg-surface [&>option]:text-on-surface"
       >
         {LOCALES.map((l) => (

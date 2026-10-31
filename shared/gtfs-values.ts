@@ -199,3 +199,16 @@ export function tidyRouteName(name: string | null): string | null {
     .trim();
   return tidy || null;
 }
+/**
+ * The reference day for the "one day" figures: the one with most trips from today on, or the one with most
+ * trips in the whole period if the feed has already expired.
+ */
+export function referenceDateFrom(tripsByDate: { date: string; trips: number }[]): string | null {
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const pick = (list: { date: string; trips: number }[]) =>
+    list.reduce<{ date: string; trips: number } | null>(
+      (best, d) => (d.trips > 0 && (!best || d.trips > best.trips) ? d : best),
+      null
+    );
+  return (pick(tripsByDate.filter((d) => d.date >= today)) ?? pick(tripsByDate))?.date ?? null;
+}

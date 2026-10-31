@@ -1,5 +1,3 @@
-'use client';
-
 import { cn } from '@/lib/utils';
 
 /** Floating chart label: inverse surface, a dark chip on any theme. */

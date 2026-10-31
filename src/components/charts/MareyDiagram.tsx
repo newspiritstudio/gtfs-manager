@@ -1,5 +1,3 @@
-'use client';
-
 import { useMemo, useRef, useState } from 'react';
 import type { DayTrip, PatternStop } from '@shared/contracts';
 import { formatClock } from '@shared/gtfs-values';

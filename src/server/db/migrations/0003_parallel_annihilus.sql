@@ -1,1 +1,0 @@
-ALTER TABLE "feeds" ADD COLUMN "realtime" jsonb;

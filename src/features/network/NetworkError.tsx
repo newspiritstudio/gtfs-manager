@@ -1,5 +1,3 @@
-'use client';
-
 import { CircleAlert, RotateCcw } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { useI18n } from '@/lib/i18n/client';

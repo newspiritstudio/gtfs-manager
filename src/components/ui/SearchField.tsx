@@ -1,5 +1,3 @@
-'use client';
-
 import { Search, X } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';

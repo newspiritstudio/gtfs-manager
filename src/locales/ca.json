@@ -56,8 +56,8 @@
     "max": "Màxim: {value}"
   },
   "errors": {
-    "database": "No es pot connectar amb la base de dades",
-    "databaseHint": "Revisa DATABASE_URL a .env.local i que PostgreSQL estigui en marxa.",
+    "database": "No s'ha pogut obrir la base de dades del navegador",
+    "databaseHint": "Potser el navegador bloqueja l'emmagatzematge d'aquest lloc (per exemple, en una finestra privada). Torna a carregar la pàgina per provar-ho de nou.",
     "generic": "No s'ha pogut fer. Torna-ho a provar.",
     "invalidForm": "Revisa els camps marcats.",
     "notFound": "No hem trobat aquesta pàgina",
@@ -89,7 +89,7 @@
     "blankTitle": "Un feed nou",
     "blankSubtitle": "Comença per l'operador; després hi afegiràs parades, línies i viatges.",
     "dropTitle": "Deixa anar aquí la carpeta o el ZIP",
-    "dropHint": "Es pugen fitxer a fitxer amb progrés; un stop_times de centenars de MB també hi cap.",
+    "dropHint": "Els fitxers es llegeixen al teu navegador i no es pugen enlloc; un stop_times de centenars de MB també hi cap.",
     "pickFolder": "Tria una carpeta",
     "pickZip": "Tria un ZIP",
     "zipError": "No s'ha pogut llegir el ZIP.",
@@ -122,6 +122,9 @@
     "created": "Feed creat",
     "downloading": "Descarregant de {source}…",
     "downloadFailed": "No s'ha pogut descarregar el feed de la font.",
+    "downloadBlocked": "La font no deixa que el navegador baixi el feed.",
+    "downloadBlockedHint": "Baixa el ZIP des de la font i importa'l aquí com a fitxer: no surt mai del teu navegador.",
+    "downloadZip": "Baixa el ZIP",
     "retry": "Torna-ho a provar",
     "needFiles": "Tria una carpeta o un ZIP per importar."
   },
@@ -726,7 +729,7 @@
     "features": {
       "import": {
         "title": "Importa feeds grans",
-        "body": "Puja un ZIP o una carpeta GTFS. La importació va en streaming i aguanta feeds com Renfe Cercanías, amb gairebé dos milions d'hores de pas."
+        "body": "Obre un ZIP o una carpeta GTFS. El navegador llegeix els fitxers en streaming, i així hi caben feeds com Renfe Cercanías, amb gairebé dos milions d'horaris de parada."
       },
       "visualize": {
         "title": "Visualitza la xarxa",
@@ -769,11 +772,11 @@
       },
       "large": {
         "q": "Funciona amb feeds grans?",
-        "a": "Sí. La importació llegeix els fitxers en streaming i desa les dades a PostgreSQL. Feeds com Renfe Cercanías, amb més de 130.000 viatges, s'importen i s'exploren sencers."
+        "a": "Sí. La importació llegeix els fitxers en streaming i desa les dades en una base de dades SQLite dins del teu navegador. Feeds com Renfe Cercanías, amb més de 130.000 viatges, s'importen i s'exploren sencers."
       },
       "data": {
         "q": "On es desen les dades?",
-        "a": "Al servidor de GTFS Manager, amb una còpia de seguretat xifrada cada nit. Els feeds que hi ha són públics: tothom els pot consultar i descarregar, però només les persones amb accés d'edició els poden importar, modificar o esborrar."
+        "a": "Només al teu navegador: els feeds es desen a l'emmagatzematge privat d'aquest lloc al teu dispositiu i no s'envien mai a cap servidor. Per guardar-ne una còpia o passar-los a un altre dispositiu, exporta'ls com a ZIP GTFS. Si esborres les dades del lloc, s'esborren."
       },
       "export": {
         "q": "Puc tornar a exportar el feed?",
@@ -818,7 +821,6 @@
     "subtitle": "Dades GTFS Realtime de l'operador, comprovades amb l'horari",
     "editSources": "Edita les fonts",
     "showOnMap": "Mostra-ho al mapa",
-    "noSources": "Aquest feed no té cap font de GTFS Realtime.",
     "noSourcesHint": "Afegeix les URL de GTFS Realtime de l'operador per veure els vehicles en directe, els retards i els avisos.",
     "sources": "Fonts de temps real",
     "sourcesHint": "Fitxers protobuf GTFS Realtime públics (https). Pots posar-ne un, dos o tots tres.",
@@ -856,7 +858,7 @@
       "connectionFailed": "No s'ha pogut connectar amb la font",
       "httpFailed": "La font respon amb un error HTTP",
       "tooLarge": "El fitxer supera els 20 MB",
-      "blockedHost": "Adreça no permesa: ha de ser https i pública",
+      "cors": "La font no permet que el navegador la llegeixi (CORS)",
       "decodeFailed": "La font no és un missatge GTFS Realtime vàlid",
       "missingFields": "Falten camps obligatoris al missatge",
       "fullDatasetRequired": "El missatge no és un conjunt complet (FULL_DATASET)",

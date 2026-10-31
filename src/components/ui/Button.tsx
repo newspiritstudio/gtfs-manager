@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import Spinner from './Spinner';
@@ -99,7 +99,7 @@ export function ButtonLink({
   variant?: ButtonVariant;
   size?: ButtonSize;
 }) {
-  const external = /^https?:/.test(href) || href.startsWith('/api/');
+  const external = /^https?:/.test(href);
   if (external) {
     return (
       <a href={href} className={cn(buttonClasses(variant, size), className)} {...props}>

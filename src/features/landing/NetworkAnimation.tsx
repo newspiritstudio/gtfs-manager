@@ -1,8 +1,6 @@
-'use client';
-
 import { Pause, Play, Shuffle } from 'lucide-react';
 import { useReducedMotion } from 'motion/react';
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import IconButton from '@/components/ui/IconButton';
 import { formatClock } from '@shared/gtfs-values';

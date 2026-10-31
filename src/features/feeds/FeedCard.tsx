@@ -6,7 +6,7 @@ import {
   Route,
   TrainFront,
 } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import type { FeedSummary } from '@shared/contracts';
 import Badge from '@/components/ui/Badge';
 import type { Translate } from '@/lib/i18n/translate';

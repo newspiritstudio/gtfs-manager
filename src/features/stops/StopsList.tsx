@@ -1,7 +1,5 @@
-'use client';
-
 import { MapPin } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import { useMemo, useState } from 'react';
 import type { NetworkRoute, NetworkStop } from '@shared/contracts';
 import Button from '@/components/ui/Button';

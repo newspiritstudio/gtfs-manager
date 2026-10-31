@@ -1,5 +1,3 @@
-'use client';
-
 import L from 'leaflet';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { NetworkData, NetworkStop } from '@shared/contracts';

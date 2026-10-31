@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';

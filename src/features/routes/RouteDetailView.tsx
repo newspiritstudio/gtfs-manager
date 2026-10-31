@@ -1,5 +1,3 @@
-'use client';
-
 import {
   CalendarDays,
   Clock,
@@ -11,8 +9,7 @@ import {
   Table2,
   TrainFront,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { Link, useRouter } from '@/lib/router';
 import { useEffect, useId, useMemo, useState, useSyncExternalStore } from 'react';
 import type { DayTrip, PatternStop, RouteVariant } from '@shared/contracts';
 import { transitModeForRouteType } from '@shared/gtfs-spec';
@@ -38,7 +35,7 @@ import { defaultServiceDate } from '@/lib/dates';
 import { formatDistance, formatDuration, formatGtfsDate } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
-import type { RouteDetail } from '@/server/gtfs/details';
+import type { RouteDetail } from '@/engine/gtfs/details';
 
 type View = 'diagram' | 'map' | 'timetable' | 'marey' | 'calendar';
 

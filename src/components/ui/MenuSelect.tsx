@@ -1,5 +1,3 @@
-'use client';
-
 import { Check, ChevronDown } from 'lucide-react';
 import { motion as m, useReducedMotion } from 'motion/react';
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';

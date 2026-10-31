@@ -1,8 +1,5 @@
-'use client';
-
 import { Download, ExternalLink, Globe2 } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Link, usePathname, useRouter, useSearchParams } from '@/lib/router';
 import { useMemo, useState } from 'react';
 import { CATALOG_LOGOS, type CatalogEntry } from '@shared/catalog';
 import { transitModeForRouteType } from '@shared/gtfs-spec';
@@ -11,7 +8,6 @@ import ModeIcon from '@/components/ui/ModeIcon';
 import { ButtonLink } from '@/components/ui/Button';
 import SearchField from '@/components/ui/SearchField';
 import MenuSelect from '@/components/ui/MenuSelect';
-import { useEditor } from '@/lib/editor';
 import { useI18n } from '@/lib/i18n/client';
 import { localizedPath } from '@/lib/i18n/paths';
 import CountryFlag from './CountryFlag';
@@ -25,7 +21,6 @@ export default function CatalogGallery({
   imported: Record<string, string>;
 }) {
   const { t, locale } = useI18n();
-  const editor = useEditor();
   const { statuses, failed: statusFailed } = useCatalogStatuses();
   const router = useRouter();
   const pathname = usePathname();
@@ -37,7 +32,7 @@ export default function CatalogGallery({
     const next = new URLSearchParams(params);
     if (value && value !== 'all') next.set(key, value);
     else next.delete(key);
-    router.replace(`${pathname}${next.size ? `?${next}` : ''}`, { scroll: false });
+    router.replace(`${pathname}${next.size ? `?${next}` : ''}`);
   };
 
   const countryName = useMemo(() => new Intl.DisplayNames([locale], { type: 'region' }), [locale]);
@@ -166,20 +161,18 @@ export default function CatalogGallery({
                       {t('catalog.open')}
                       <span className="sr-only"> · {entry.name}</span>
                     </ButtonLink>
-                    {editor ? (
-                      <ButtonLink href={`/new?catalog=${entry.id}`} variant="ghost">
-                        {t('catalog.reimport')}
-                        <span className="sr-only"> · {entry.name}</span>
-                      </ButtonLink>
-                    ) : null}
+                    <ButtonLink href={`/new?catalog=${entry.id}`} variant="ghost">
+                      {t('catalog.reimport')}
+                      <span className="sr-only"> · {entry.name}</span>
+                    </ButtonLink>
                   </>
-                ) : editor ? (
+                ) : (
                   <ButtonLink href={`/new?catalog=${entry.id}`} variant="tonal">
                     <Download />
                     {t('catalog.import')}
                     <span className="sr-only"> · {entry.name}</span>
                   </ButtonLink>
-                ) : null}
+                )}
                 <ButtonLink
                   href={entry.homepage}
                   variant="ghost"

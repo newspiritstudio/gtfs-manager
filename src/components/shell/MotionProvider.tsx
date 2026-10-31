@@ -1,5 +1,3 @@
-'use client';
-
 import { MotionConfig } from 'motion/react';
 
 /** Honours the system's "reduce motion": transform animations are skipped. */

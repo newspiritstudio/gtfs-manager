@@ -1,15 +1,12 @@
-'use client';
-
-import { Download, Menu, MoreHorizontal, X } from 'lucide-react';
+import { Menu, MoreHorizontal, X } from 'lucide-react';
 import { AnimatePresence, motion as m } from 'motion/react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/lib/router';
 import { useEffect, useRef, useState } from 'react';
-import { ButtonLink } from '@/components/ui/Button';
 import IconButton from '@/components/ui/IconButton';
 import { useI18n } from '@/lib/i18n/client';
 import { SPRING } from '@/lib/motion';
 import { cn } from '@/lib/utils';
+import ExportButton from './ExportButton';
 import BrandMark from './BrandMark';
 import StudioByline from './StudioByline';
 import { activeFeedNav, FEED_NAV, feedIdFromPath } from './nav';
@@ -105,17 +102,7 @@ export function MobileHeader({ feeds }: { feeds: ShellFeed[] }) {
               </div>
               <NavContent feeds={feeds} onNavigate={() => setOpen(false)} />
               <div className="mt-auto flex flex-wrap items-center gap-2 p-4">
-                {feedId ? (
-                  <ButtonLink
-                    href={`/api/feeds/${feedId}/export`}
-                    variant="tonal"
-                    size="sm"
-                    download
-                  >
-                    <Download />
-                    {t('feed.export')}
-                  </ButtonLink>
-                ) : null}
+                {feedId ? <ExportButton feedId={feedId} /> : null}
                 <LanguageSelect />
               </div>
             </m.div>

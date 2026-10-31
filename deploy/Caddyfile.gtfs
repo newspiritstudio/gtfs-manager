@@ -1,37 +1,28 @@
-# GTFS Manager — separate compose stack in /opt/gtfs-manager on the server. Caddy reaches it
-# through the `gtfs-net` network, which it shares only with the app container; Postgres stays on
-# `gtfs-db`, internal. Literal host, like the other blocks: the generic `https://` asks an
-# `ask` endpoint that does not know this domain for permission to issue.
-# This block is pasted into agora-app/deployments/agora-newspiritstudio/Caddyfile.
+# GTFS Manager: static files, nothing runs on the server. The feeds live in each visitor's
+# browser. `deploy.sh` uploads a release to /opt/gtfs-manager/site/releases/<revision> and points
+# `current` at it; the Caddy container sees /opt/gtfs-manager/site as /srv/gtfs-manager.
 gtfs.newspirit.studio {
 	encode zstd gzip
+	root * /srv/gtfs-manager/current
 
-	# The app has no sign-in yet: reading is public, and every change (import, edit, delete)
-	# goes through the API with a method other than GET/HEAD, so those ask for the editor's
-	# password (1Password › «Àgora producció» › gtfs-manager/editor).
-	@write {
-		path /api/*
-		not method GET HEAD OPTIONS
+	header {
+		X-Frame-Options DENY
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
 	}
-	basic_auth @write {
-		editor <bcrypt hash: caddy hash-password>
-	}
+	# Hashed file names never change; the HTML is checked on every visit.
+	@hashed path /assets/* /fonts/*
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+	@images path /flags/* /catalog-logos/* /landing-networks/*
+	header @images Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+	@html not path /assets/* /fonts/* /flags/* /catalog-logos/* /landing-networks/*
+	header @html Cache-Control "no-cache"
 
-	# Editing mode: the same password, asked for before `/editor` sets the cookie that shows the
-	# editing controls. The browser then sends it with every change, with no second prompt.
-	@editor path /editor
-	basic_auth @editor {
-		editor <bcrypt hash: caddy hash-password>
-	}
-
-	reverse_proxy gtfs-manager:3000 {
-		header_up X-Forwarded-For {remote_host}
-	}
-
-	handle_errors 502 503 504 {
-		header Retry-After 60
-		respond "GTFS Manager will be back shortly." 503
-	}
+	# A prerendered public page if there is one; otherwise the app itself, which routes in the
+	# browser (the workspace, and the "not found" page).
+	try_files {path} {path}/index.html /404.html
+	file_server
 }
 
 # The longer name redirects to the canonical one (a single address for search engines).

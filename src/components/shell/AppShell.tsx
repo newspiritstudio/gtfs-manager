@@ -1,5 +1,3 @@
-'use client';
-
 import { useI18n } from '@/lib/i18n/client';
 import { MobileHeader, MobileNavigationBar } from './MobileChrome';
 import SideNav, { type ShellFeed } from './SideNav';

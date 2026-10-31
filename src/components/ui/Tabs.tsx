@@ -1,5 +1,3 @@
-'use client';
-
 import { motion as m } from 'motion/react';
 import { useId } from 'react';
 import { SPRING } from '@/lib/motion';

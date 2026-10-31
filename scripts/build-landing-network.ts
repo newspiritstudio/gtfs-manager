@@ -4,13 +4,18 @@
  * route has none, with the stops of its longest trip) and the real trains of a
  * weekday within the window. Each feed must already be imported from the catalog:
  *
- *   npm run landing:network               # all networks
- *   npm run landing:network -- fgc bart   # only these
+ *   npm run gtfs:import -- /path/to/fgc --name FGC --catalog fgc   # into tmp/gtfs.sqlite3
+ *   npm run landing:network                      # all networks
+ *   npm run landing:network -- fgc bart          # only these
+ *   npm run landing:network -- fgc --db other.sqlite3
+ *
+ * It reads the SQLite file `gtfs:import` writes (`tmp/gtfs.sqlite3`, or the `--db` one).
  *
  * The day is the Tuesday, Wednesday or Thursday of the next four weeks with the most trips.
  * Each train is [route, departure, arrival, start fraction, end fraction]: the position along the
  * path, interpolated in time between the first and last stop of the trip.
  */
+import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { addDays, routeColors, utcToGtfsDate } from '@shared/gtfs-values';
@@ -19,7 +24,8 @@ import {
   type LandingNetwork,
   type LandingNetworkConfig,
 } from '../src/features/landing/networks';
-import { getSql } from '../src/server/db/client';
+import { getSql, setDriver } from '../src/engine/db/client';
+import { nodeDriver } from '../src/engine/db/node-driver';
 
 const WIDTH = 600;
 const PAD = 16;
@@ -33,8 +39,9 @@ function activeServices(sql: Sql, feedId: string, date: string) {
   return sql`
     SELECT service_id FROM calendar
     WHERE feed_id = ${feedId} AND start_date <= ${date} AND end_date >= ${date}
-      AND (ARRAY[sunday, monday, tuesday, wednesday, thursday, friday, saturday])[
-        extract(dow FROM to_date(${date}, 'YYYYMMDD'))::int + 1] = 1
+      AND CASE strftime('%w', substr(${date}, 1, 4) || '-' || substr(${date}, 5, 2) || '-' || substr(${date}, 7, 2))
+        WHEN '0' THEN sunday WHEN '1' THEN monday WHEN '2' THEN tuesday WHEN '3' THEN wednesday
+        WHEN '4' THEN thursday WHEN '5' THEN friday ELSE saturday END = 1
     UNION
     SELECT service_id FROM calendar_dates
     WHERE feed_id = ${feedId} AND date = ${date} AND exception_type = 1
@@ -53,7 +60,7 @@ async function busiestWeekday(sql: Sql, feedId: string): Promise<string> {
     ).getUTCDay();
     if (dow < 2 || dow > 4) continue;
     const [row] = await sql<{ n: number }[]>`
-      SELECT count(*)::int AS n FROM trips
+      SELECT count(*) AS n FROM trips
       WHERE feed_id = ${feedId} AND service_id IN (${activeServices(sql, feedId, date)})`;
     if (row.n > best.trips) best = { date, trips: row.n };
   }
@@ -97,8 +104,8 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
     const [shape] = await sql<{ shapeId: string }[]>`
       SELECT s.shape_id AS "shapeId" FROM shapes s
       WHERE s.feed_id = ${feed.id} AND s.shape_id IN (
-        SELECT shape_id FROM trips WHERE feed_id = ${feed.id} AND route_id IN ${sql(group.routeIds)})
-      GROUP BY 1 ORDER BY count(*) DESC LIMIT 1`;
+        SELECT shape_id FROM trips WHERE feed_id = ${feed.id} AND route_id IN (SELECT value FROM json_each(${group.routeIds})))
+      GROUP BY s.shape_id ORDER BY count(*) DESC LIMIT 1`;
     let pts: Pt[];
     if (shape) {
       pts = await sql<Pt[]>`
@@ -109,8 +116,8 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
       const [trip] = await sql<{ tripId: string }[]>`
         SELECT st.trip_id AS "tripId" FROM stop_times st
         JOIN trips t ON t.feed_id = st.feed_id AND t.trip_id = st.trip_id
-        WHERE st.feed_id = ${feed.id} AND t.route_id IN ${sql(group.routeIds)}
-        GROUP BY 1 ORDER BY count(*) DESC LIMIT 1`;
+        WHERE st.feed_id = ${feed.id} AND t.route_id IN (SELECT value FROM json_each(${group.routeIds}))
+        GROUP BY st.trip_id ORDER BY count(*) DESC LIMIT 1`;
       if (!trip) continue;
       pts = await sql<Pt[]>`
         SELECT s.stop_lat AS lat, s.stop_lon AS lon FROM stop_times st
@@ -214,17 +221,19 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
   >`
     WITH ends AS (
       SELECT st.trip_id,
-        (array_agg(st.stop_id ORDER BY st.stop_sequence))[1] AS first_stop,
-        (array_agg(st.stop_id ORDER BY st.stop_sequence DESC))[1] AS last_stop,
-        min(st.departure_time) AS dep, max(st.arrival_time) AS arr
+        first_value(st.stop_id) OVER (PARTITION BY st.trip_id ORDER BY st.stop_sequence
+          ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS first_stop,
+        last_value(st.stop_id) OVER (PARTITION BY st.trip_id ORDER BY st.stop_sequence
+          ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_stop,
+        min(st.departure_time) OVER (PARTITION BY st.trip_id) AS dep,
+        max(st.arrival_time) OVER (PARTITION BY st.trip_id) AS arr
       FROM stop_times st
       JOIN trips t ON t.feed_id = st.feed_id AND t.trip_id = st.trip_id
       WHERE st.feed_id = ${feed.id} AND t.service_id IN (${activeServices(sql, feed.id, date)})
-      GROUP BY st.trip_id
     )
     SELECT t.route_id AS "routeId", e.dep, e.arr,
       a.stop_lat AS "fromLat", a.stop_lon AS "fromLon", b.stop_lat AS "toLat", b.stop_lon AS "toLon"
-    FROM ends e
+    FROM (SELECT DISTINCT trip_id, first_stop, last_stop, dep, arr FROM ends) e
     JOIN trips t ON t.feed_id = ${feed.id} AND t.trip_id = e.trip_id
     JOIN stops a ON a.feed_id = t.feed_id AND a.stop_id = e.first_stop
     JOIN stops b ON b.feed_id = t.feed_id AND b.stop_id = e.last_stop
@@ -259,10 +268,15 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
 }
 
 async function main() {
-  const only = process.argv.slice(2);
+  const argv = process.argv.slice(2);
+  const only = argv.filter((a, i) => !a.startsWith('--') && !argv[i - 1]?.startsWith('--'));
   const configs = only.length
     ? LANDING_NETWORKS.filter((n) => only.includes(n.id))
     : LANDING_NETWORKS;
+  const dbIndex = process.argv.indexOf('--db');
+  const dbPath = path.resolve(dbIndex >= 0 ? process.argv[dbIndex + 1] : 'tmp/gtfs.sqlite3');
+  if (!existsSync(dbPath)) throw new Error(`${dbPath} not found: run gtfs:import first`);
+  setDriver(nodeDriver(dbPath));
   const sql = getSql();
   const dir = path.join(process.cwd(), 'public/landing-networks');
   await mkdir(dir, { recursive: true });
@@ -274,7 +288,6 @@ async function main() {
       `${config.id}: ${network.date}, ${network.lines.length} lines, ${network.trains.length} trains`
     );
   }
-  await sql.end();
 }
 
 main().catch((error) => {

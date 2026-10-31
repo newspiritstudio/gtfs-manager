@@ -1,5 +1,3 @@
-'use client';
-
 import { CheckCircle2, CircleAlert, X } from 'lucide-react';
 import { AnimatePresence, motion as m } from 'motion/react';
 import { createContext, useCallback, useContext, useState } from 'react';

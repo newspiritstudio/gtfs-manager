@@ -1,8 +1,6 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import type { NetworkData } from '@shared/contracts';
-import { apiFetch } from '@/lib/api';
+import { callEngine } from '@/lib/engine';
 
 /**
  * The feed's network (lines, paths and stops), loaded in the browser for the maps.
@@ -16,8 +14,12 @@ export function useNetwork(feedId: string, enabled = true) {
     if (!enabled) return;
     let alive = true;
     setError(false);
-    apiFetch<NetworkData>(`/api/feeds/${feedId}/network`)
-      .then((d) => alive && setData(d))
+    callEngine('getNetwork', feedId)
+      .then((d) => {
+        if (!alive) return;
+        if (d) setData(d);
+        else setError(true);
+      })
       .catch(() => alive && setError(true));
     return () => {
       alive = false;

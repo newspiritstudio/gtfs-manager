@@ -1,5 +1,3 @@
-'use client';
-
 import {
   AlertOctagon,
   AlertTriangle,
@@ -12,7 +10,7 @@ import {
   Settings2,
   TrainFront,
 } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/lib/router';
 import { useMemo, useState } from 'react';
 import {
   pickRealtimeText,
@@ -35,7 +33,6 @@ import TextField from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch } from '@/lib/api';
 import { formatNumber, formatRelative } from '@/lib/i18n/format';
-import { useEditor } from '@/lib/editor';
 import { useI18n } from '@/lib/i18n/client';
 import { currentStopUpdate, delayTone, formatDelay, tripDelay } from './delay';
 import { useRealtime, type RealtimeResponse } from './useRealtime';
@@ -45,7 +42,6 @@ export default function RealtimeView({ feedId }: { feedId: string }) {
   const { t } = useI18n();
   const { data, snapshot, error, loading, refresh, setData } = useRealtime(feedId);
   const [editing, setEditing] = useState(false);
-  const editor = useEditor();
   const config = data?.config;
   const hasSources = config && Object.keys(config.sources).length > 0;
 
@@ -57,12 +53,10 @@ export default function RealtimeView({ feedId }: { feedId: string }) {
         actions={
           hasSources ? (
             <>
-              {editor ? (
-                <Button variant="outline" onClick={() => setEditing((v) => !v)}>
-                  <Settings2 />
-                  {t('realtime.editSources')}
-                </Button>
-              ) : null}
+              <Button variant="outline" onClick={() => setEditing((v) => !v)}>
+                <Settings2 />
+                {t('realtime.editSources')}
+              </Button>
               <ButtonLink href={`/feeds/${feedId}/map`} variant="tonal">
                 <MapIcon />
                 {t('realtime.showOnMap')}
@@ -86,10 +80,10 @@ export default function RealtimeView({ feedId }: { feedId: string }) {
         <div className="space-y-4">
           {hasSources ? null : (
             <p className="px-1 text-body-medium text-on-surface-variant">
-              {t(editor ? 'realtime.noSourcesHint' : 'realtime.noSources')}
+              {t('realtime.noSourcesHint')}
             </p>
           )}
-          {editor && (!hasSources || editing) ? (
+          {!hasSources || editing ? (
             <SourcesForm
               feedId={feedId}
               config={data.config}

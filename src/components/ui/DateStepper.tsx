@@ -1,5 +1,3 @@
-'use client';
-
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { addDays, gtfsDateToIso } from '@shared/gtfs-values';
 import { formatGtfsDate } from '@/lib/i18n/format';
