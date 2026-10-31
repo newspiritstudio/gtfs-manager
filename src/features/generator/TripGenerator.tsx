@@ -10,9 +10,11 @@ import Button from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import IconButton from '@/components/ui/IconButton';
 import SearchField from '@/components/ui/SearchField';
+import Checkbox from '@/components/ui/Checkbox';
 import Select from '@/components/ui/Select';
 import { GeneratorBodySkeleton } from '@/components/skeletons/PageSkeletons';
 import TextField from '@/components/ui/TextField';
+import TimeField from '@/components/ui/TimeField';
 import { useToast } from '@/components/ui/Toast';
 import NetworkError from '@/features/network/NetworkError';
 import { useNetwork } from '@/features/network/useNetwork';
@@ -194,7 +196,7 @@ export default function TripGenerator({
             <Select
               label={t('generator.route')}
               value={effectiveRouteId}
-              onChange={(e) => setRouteId(e.target.value)}
+              onChange={(v) => setRouteId(v)}
               options={routes.map((r) => {
                 const name = r.shortName || r.routeId;
                 const label = r.longName ? `${name} · ${r.longName}` : name;
@@ -208,7 +210,7 @@ export default function TripGenerator({
             <Select
               label={t('generator.service')}
               value={serviceId}
-              onChange={(e) => setServiceId(e.target.value)}
+              onChange={(v) => setServiceId(v)}
               options={services.map((s) => ({ value: s, label: s }))}
             />
             <TextField
@@ -220,7 +222,7 @@ export default function TripGenerator({
             <Select
               label={t('generator.direction')}
               value={direction}
-              onChange={(e) => setDirection(e.target.value as '' | '0' | '1')}
+              onChange={(v) => setDirection(v as '' | '0' | '1')}
               options={[
                 { value: '', label: t('generator.noDirection') },
                 { value: '0', label: t('enums.direction_id.0') },
@@ -345,17 +347,11 @@ export default function TripGenerator({
         <Card>
           <CardHeader title={t('generator.schedule')} icon={<Clock />} />
           <CardContent className="grid gap-3 sm:grid-cols-2">
-            <TextField
-              label={t('generator.first')}
-              type="time"
-              value={first}
-              onChange={(e) => setFirst(e.target.value)}
-            />
-            <TextField
+            <TimeField label={t('generator.first')} value={first} onChange={setFirst} />
+            <TimeField
               label={t('generator.last')}
-              type="time"
               value={last}
-              onChange={(e) => setLast(e.target.value)}
+              onChange={setLast}
               error={departures ? null : t('generator.errors.badWindow')}
             />
             <TextField
@@ -380,15 +376,9 @@ export default function TripGenerator({
               placeholder={effectivePrefix}
               onChange={(e) => setPrefix(e.target.value.replace(/[^\w.-]/g, ''))}
             />
-            <label className="flex min-h-11 items-center gap-3 px-1 text-body-medium text-on-surface md:min-h-10">
-              <input
-                type="checkbox"
-                checked={createShape}
-                onChange={(e) => setCreateShape(e.target.checked)}
-                className="size-5 accent-[var(--md-sys-color-primary)]"
-              />
+            <Checkbox checked={createShape} onChange={setCreateShape} className="px-0">
               {t('generator.createShape')}
-            </label>
+            </Checkbox>
           </CardContent>
         </Card>
       </div>

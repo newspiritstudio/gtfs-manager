@@ -37,7 +37,9 @@
     "close": "Schließen",
     "date": "Datum",
     "nextDay": "Nächster Tag",
+    "nextMonth": "Nächster Monat",
     "previousDay": "Vorheriger Tag",
+    "previousMonth": "Vorheriger Monat",
     "noResults": "Keine Ergebnisse.",
     "seeAll": "Alle anzeigen",
     "showMore": "Mehr anzeigen",
@@ -58,6 +60,8 @@
   "errors": {
     "database": "Die Browser-Datenbank kann nicht geöffnet werden",
     "databaseHint": "Ihr Browser blockiert möglicherweise den Speicher dieser Website (zum Beispiel in einem privaten Fenster). Laden Sie die Seite neu, um es erneut zu versuchen.",
+    "databaseBusy": "GTFS Manager ist in einem anderen Tab geöffnet",
+    "databaseBusyHint": "Ihre Feeds können nur in einem Tab gleichzeitig geöffnet sein. Schließen Sie den anderen Tab oder das andere Fenster von GTFS Manager und versuchen Sie es erneut.",
     "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
     "invalidForm": "Markierte Felder prüfen.",
     "notFound": "Seite nicht gefunden",

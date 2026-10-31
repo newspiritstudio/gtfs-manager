@@ -4,7 +4,7 @@
  */
 import { useEffect, useState } from 'react';
 import type { LoaderName, Loaders } from '@/engine/loaders';
-import type { EngineReply, EngineRequest } from '@/engine/protocol';
+import type { EngineReply, EngineRequest, EngineStorage } from '@/engine/protocol';
 import { useRefreshKey } from './router';
 
 type Pending = { resolve: (reply: EngineReply) => void };
@@ -72,11 +72,27 @@ export async function callEngine<N extends LoaderName>(
   return reply.value as Awaited<ReturnType<Loaders[N]>>;
 }
 
-/** Whether the database survives a reload (false without the origin private file system). */
-export async function engineStatus(): Promise<{ persistent: boolean }> {
+/** Where the database lives (see `EngineStorage`); it waits for the database to open. */
+export async function engineStatus(): Promise<{ storage: EngineStorage }> {
   const reply = await send({ kind: 'status' });
   if (reply.kind === 'error') throw asError(reply);
-  return (reply as { value: { persistent: boolean } }).value;
+  return (reply as { value: { storage: EngineStorage } }).value;
+}
+
+/** The database's storage once it has opened; `null` until then. */
+export function useEngineStorage(): EngineStorage | null {
+  const [storage, setStorage] = useState<EngineStorage | null>(null);
+  useEffect(() => {
+    let alive = true;
+    engineStatus().then(
+      (status) => alive && setStorage(status.storage),
+      () => {}
+    );
+    return () => {
+      alive = false;
+    };
+  }, []);
+  return storage;
 }
 
 export type EngineState<T> =

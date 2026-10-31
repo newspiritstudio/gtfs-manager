@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   GTFS_SPEC,
   transitModeForRouteType,
@@ -6,6 +6,8 @@ import {
   type GtfsTable,
 } from '@shared/gtfs-spec';
 import { PointPickerMap } from '@/components/map';
+import ColorSwatchPicker from '@/components/ui/ColorSwatchPicker';
+import Combobox from '@/components/ui/Combobox';
 import Select from '@/components/ui/Select';
 import TextField from '@/components/ui/TextField';
 import { apiFetch } from '@/lib/api';
@@ -45,7 +47,6 @@ function ReferenceField({
   onChange: (v: string) => void;
   error?: string | null;
 }) {
-  const listId = useId();
   const [options, setOptions] = useState<{ value: string; label: string }[]>([]);
   useEffect(() => {
     if (!field.ref) return;
@@ -63,24 +64,14 @@ function ReferenceField({
     };
   }, [feedId, field.ref, value]);
   return (
-    <>
-      <TextField
-        label={label}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        list={listId}
-        required={field.required}
-        error={error}
-        autoComplete="off"
-      />
-      <datalist id={listId}>
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>
-            {o.label !== o.value ? o.label : undefined}
-          </option>
-        ))}
-      </datalist>
-    </>
+    <Combobox
+      label={label}
+      value={value}
+      options={options}
+      onChange={onChange}
+      required={field.required}
+      error={error}
+    />
   );
 }
 
@@ -145,7 +136,7 @@ export default function RowForm({
                 value={value}
                 required={field.required}
                 error={errorText(field.name)}
-                onChange={(e) => set(field.name, e.target.value)}
+                onChange={(v) => set(field.name, v)}
                 options={[
                   { value: '', label: t('data.noValue') },
                   ...field.enumValues.map((v) => ({
@@ -183,12 +174,10 @@ export default function RowForm({
                     maxLength={6}
                   />
                 </div>
-                <input
-                  type="color"
-                  aria-label={`${label} · ${t('data.colorPicker')}`}
-                  value={/^[0-9A-F]{6}$/i.test(value) ? `#${value}` : '#000000'}
-                  onChange={(e) => set(field.name, e.target.value.slice(1).toUpperCase())}
-                  className="mt-1 size-11 shrink-0 cursor-pointer md:size-10 rounded-sm border border-outline-variant bg-transparent"
+                <ColorSwatchPicker
+                  label={`${label} · ${t('data.colorPicker')}`}
+                  value={value}
+                  onChange={(color) => set(field.name, color)}
                 />
               </div>
             );

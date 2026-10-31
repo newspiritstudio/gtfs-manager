@@ -211,9 +211,11 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
       )
       SELECT route_id AS "routeId", json_group_array(json_array(lat, lon)) AS coords FROM (
         SELECT rt.route_id, s.stop_lat AS lat, s.stop_lon AS lon
+        -- CROSS JOIN fixes the order: from the few chosen trips to their stop times, never a
+        -- scan of every stop time probing the trips (minutes on Renfe without statistics).
         FROM rt
-        JOIN stop_times st ON st.feed_id = ${feedId} AND st.trip_id = rt.trip_id
-        JOIN stops s ON s.feed_id = st.feed_id AND s.stop_id = st.stop_id
+        CROSS JOIN stop_times st ON st.feed_id = ${feedId} AND st.trip_id = rt.trip_id
+        CROSS JOIN stops s ON s.feed_id = st.feed_id AND s.stop_id = st.stop_id
         WHERE s.stop_lat IS NOT NULL AND s.stop_lon IS NOT NULL
         ORDER BY rt.route_id, st.stop_sequence)
       GROUP BY route_id`

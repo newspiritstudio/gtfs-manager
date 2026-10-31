@@ -37,7 +37,9 @@
     "close": "Cierra",
     "date": "Fecha",
     "nextDay": "Día siguiente",
+    "nextMonth": "Mes siguiente",
     "previousDay": "Día anterior",
+    "previousMonth": "Mes anterior",
     "noResults": "No hay ningún resultado.",
     "seeAll": "Muéstralo todo",
     "showMore": "Muestra más",
@@ -58,6 +60,8 @@
   "errors": {
     "database": "No se ha podido abrir la base de datos del navegador",
     "databaseHint": "Puede que el navegador bloquee el almacenamiento de este sitio (por ejemplo, en una ventana privada). Vuelve a cargar la página para intentarlo de nuevo.",
+    "databaseBusy": "GTFS Manager está abierto en otra pestaña",
+    "databaseBusyHint": "Tus feeds solo se pueden abrir en una pestaña a la vez. Cierra la otra pestaña o ventana de GTFS Manager y vuelve a intentarlo.",
     "generic": "No se ha podido hacer. Vuelve a intentarlo.",
     "invalidForm": "Revisa los campos marcados.",
     "notFound": "No hemos encontrado esta página",

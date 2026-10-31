@@ -252,7 +252,7 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
               <Select
                 label={t('routes.pattern')}
                 value={patternKey}
-                onChange={(e) => setPatternKey(e.target.value)}
+                onChange={(v) => setPatternKey(v)}
                 options={patterns.map((p) => ({
                   value: p.key,
                   label: `→ ${p.headsign ?? p.stops[p.stops.length - 1]?.name ?? p.key} · ${t('units.stops', { count: p.stops.length })} · ${t('units.trips', { count: p.trips })}`,

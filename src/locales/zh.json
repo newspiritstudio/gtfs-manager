@@ -37,7 +37,9 @@
     "close": "关闭",
     "date": "日期",
     "nextDay": "后一天",
+    "nextMonth": "下个月",
     "previousDay": "前一天",
+    "previousMonth": "上个月",
     "noResults": "没有结果。",
     "seeAll": "查看全部",
     "showMore": "显示更多",
@@ -58,6 +60,8 @@
   "errors": {
     "database": "无法打开浏览器数据库",
     "databaseHint": "浏览器可能阻止了本网站的存储（例如在隐私窗口中）。请重新加载页面再试一次。",
+    "databaseBusy": "GTFS Manager 已在另一个标签页中打开",
+    "databaseBusyHint": "你的数据源一次只能在一个标签页中打开。请关闭 GTFS Manager 的另一个标签页或窗口，然后重试。",
     "generic": "出错了，请重试。",
     "invalidForm": "请检查高亮的字段。",
     "notFound": "找不到页面",

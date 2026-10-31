@@ -34,13 +34,16 @@ describe('route colors', () => {
     expect(['FFFFFF', '000000']).toContain(a.textColor);
   });
 
-  it('ignores a route_text_color without contrast', () => {
-    expect(routeColors('X', 'FFFF00', 'FFFFFF').textColor).toBe('000000');
+  it("honours the feed's route_text_color, even with low contrast", () => {
+    expect(routeColors('C1', '4FA6DE', 'FFFFFF').textColor).toBe('FFFFFF');
+    expect(routeColors('C4', 'FFA500', 'ffffff').textColor).toBe('FFFFFF');
   });
 
-  it('does not accept medium-contrast text (white on a 3.8:1 background)', () => {
-    expect(routeColors('L6', '797FBC', 'FFFFFF').textColor).toBe('000000');
-    expect(routeColors('L1', '0A3E8A', 'FFFFFF').textColor).toBe('FFFFFF');
+  it('picks readable text when the feed gives none or it would be invisible', () => {
+    expect(routeColors('L6', '797FBC', null).textColor).toBe('000000');
+    expect(routeColors('L1', '0A3E8A', '0A3E8A').textColor).toBe('FFFFFF');
+    // Without route_color the background is ours: the feed's text color was not meant for it.
+    expect(['FFFFFF', '000000']).toContain(routeColors('R3', null, 'ABCDEF').textColor);
   });
 });
 

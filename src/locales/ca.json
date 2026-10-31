@@ -37,7 +37,9 @@
     "close": "Tanca",
     "date": "Data",
     "nextDay": "Dia següent",
+    "nextMonth": "Mes següent",
     "previousDay": "Dia anterior",
+    "previousMonth": "Mes anterior",
     "noResults": "No hi ha cap resultat.",
     "seeAll": "Mostra-ho tot",
     "showMore": "Mostra'n més",
@@ -58,6 +60,8 @@
   "errors": {
     "database": "No s'ha pogut obrir la base de dades del navegador",
     "databaseHint": "Potser el navegador bloqueja l'emmagatzematge d'aquest lloc (per exemple, en una finestra privada). Torna a carregar la pàgina per provar-ho de nou.",
+    "databaseBusy": "GTFS Manager és obert en una altra pestanya",
+    "databaseBusyHint": "Els teus feeds només es poden obrir en una pestanya alhora. Tanca l'altra pestanya o finestra de GTFS Manager i torna-ho a provar.",
     "generic": "No s'ha pogut fer. Torna-ho a provar.",
     "invalidForm": "Revisa els camps marcats.",
     "notFound": "No hem trobat aquesta pàgina",

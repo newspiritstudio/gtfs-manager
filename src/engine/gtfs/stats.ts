@@ -12,6 +12,12 @@ import { validateFeed } from './validate';
 export async function computeStats(feedId: string): Promise<FeedStats> {
   const sql = getSql();
 
+  // Fresh table statistics first (this runs after every import and edit): without them SQLite
+  // plans the big joins over stop_times blind, and some take minutes instead of seconds.
+  // `analysis_limit` samples each index, so it costs well under a second on millions of rows.
+  await sql.unsafe('PRAGMA analysis_limit = 1000');
+  await sql.unsafe('ANALYZE');
+
   // The heavy queries (validation, time distribution) run while the others do.
   const issuesJob = validateFeed(feedId);
   const spanJob = sql<{ first: number | null; last: number | null }[]>`

@@ -7,7 +7,7 @@ import Badge from '@/components/ui/Badge';
 import ModeIcon from '@/components/ui/ModeIcon';
 import { ButtonLink } from '@/components/ui/Button';
 import SearchField from '@/components/ui/SearchField';
-import MenuSelect from '@/components/ui/MenuSelect';
+import Select from '@/components/ui/Select';
 import { useI18n } from '@/lib/i18n/client';
 import { localizedPath } from '@/lib/i18n/paths';
 import CountryFlag from './CountryFlag';
@@ -68,7 +68,7 @@ export default function CatalogGallery({
           className="w-full sm:w-96"
         />
         <div className="w-full sm:w-64">
-          <MenuSelect
+          <Select
             label={t('catalog.country')}
             value={country}
             onChange={(next) => setParam('country', next)}

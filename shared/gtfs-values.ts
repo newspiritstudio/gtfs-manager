@@ -156,22 +156,26 @@ export function fallbackRouteColor(routeId: string): string {
 }
 
 /**
- * Background and text color of a route. The feed's text color is only honored if it reaches 4.5:1
- * (WCAG 1.4.3: badges are small text); otherwise white or black is chosen.
+ * Background and text color of a route, as the feed gives them: a low contrast is the feed's
+ * choice, and the validator reports it (`routeColorContrast`). White or black is chosen only
+ * when the feed has no text color, when the background is not the feed's (no `route_color`), or
+ * when the text would be invisible (the same color as the background, or nearly).
  */
 export function routeColors(
   routeId: string,
   color: string | null | undefined,
   textColor: string | null | undefined
 ): { color: string; textColor: string } {
-  const bg =
-    color && /^[0-9A-F]{6}$/i.test(color) ? color.toUpperCase() : fallbackRouteColor(routeId);
+  const own = Boolean(color && HEX_COLOR.test(color));
+  const bg = own ? color!.toUpperCase() : fallbackRouteColor(routeId);
   const fg =
-    textColor && /^[0-9A-F]{6}$/i.test(textColor) && contrastRatio(bg, textColor) >= 4.5
+    own && textColor && HEX_COLOR.test(textColor) && contrastRatio(bg, textColor) >= 1.5
       ? textColor.toUpperCase()
       : readableTextColor(bg);
   return { color: bg, textColor: fg };
 }
+
+const HEX_COLOR = /^[0-9A-F]{6}$/i;
 
 /** The distance in meters between two points (haversine). */
 export function haversineMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {

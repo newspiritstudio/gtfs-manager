@@ -1,6 +1,7 @@
 import { Languages, Monitor, Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import IconButton from '@/components/ui/IconButton';
+import Select from '@/components/ui/Select';
 import { useI18n } from '@/lib/i18n/client';
 import { LOCALE_NAMES, LOCALE_TAGS, LOCALES, type Locale } from '@/lib/i18n/config';
 import {
@@ -46,20 +47,12 @@ export function ThemeToggle() {
 export function LanguageSelect() {
   const { t, locale, setLocale } = useI18n();
   return (
-    <label className="relative inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-label-large text-on-surface-variant state-layer has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[var(--md-sys-color-secondary)]">
-      <Languages aria-hidden className="size-5" />
-      <span className="sr-only">{t('language.label')}</span>
-      <select
-        value={locale}
-        onChange={(e) => setLocale(e.target.value as Locale)}
-        className="cursor-pointer appearance-none bg-transparent text-label-large text-on-surface focus:outline-none [&>option]:bg-surface [&>option]:text-on-surface"
-      >
-        {LOCALES.map((l) => (
-          <option key={l} value={l} lang={LOCALE_TAGS[l]}>
-            {LOCALE_NAMES[l]}
-          </option>
-        ))}
-      </select>
-    </label>
+    <Select
+      label={t('language.label')}
+      value={locale}
+      onChange={(value) => setLocale(value as Locale)}
+      compactIcon={<Languages />}
+      options={LOCALES.map((l) => ({ value: l, label: LOCALE_NAMES[l], lang: LOCALE_TAGS[l] }))}
+    />
   );
 }

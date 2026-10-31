@@ -37,7 +37,9 @@
     "close": "Fermer",
     "date": "Date",
     "nextDay": "Jour suivant",
+    "nextMonth": "Mois suivant",
     "previousDay": "Jour précédent",
+    "previousMonth": "Mois précédent",
     "noResults": "Aucun résultat.",
     "seeAll": "Tout voir",
     "showMore": "Afficher plus",
@@ -58,6 +60,8 @@
   "errors": {
     "database": "Impossible d'ouvrir la base de données du navigateur",
     "databaseHint": "Votre navigateur bloque peut-être le stockage de ce site (dans une fenêtre privée, par exemple). Rechargez la page pour réessayer.",
+    "databaseBusy": "GTFS Manager est ouvert dans un autre onglet",
+    "databaseBusyHint": "Vos flux ne peuvent être ouverts que dans un seul onglet à la fois. Fermez l'autre onglet ou fenêtre de GTFS Manager et réessayez.",
     "generic": "Une erreur s'est produite. Veuillez réessayer.",
     "invalidForm": "Vérifiez les champs signalés.",
     "notFound": "Page introuvable",

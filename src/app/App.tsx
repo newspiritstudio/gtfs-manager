@@ -5,9 +5,10 @@ import { PREFIXED_LOCALES } from '@/lib/i18n/paths';
 import AppShell from '@/components/shell/AppShell';
 import MotionProvider from '@/components/shell/MotionProvider';
 import { ToastProvider } from '@/components/ui/Toast';
-import { useEngine } from '@/lib/engine';
+import { useEngine, useEngineStorage } from '@/lib/engine';
 import { I18nProvider } from '@/lib/i18n/client';
 import LandingPage from '@/pages/public/LandingPage';
+import DatabaseBusyPage from './DatabaseBusyPage';
 import NotFoundPage from './NotFoundPage';
 import PageBoundary from './PageBoundary';
 
@@ -82,12 +83,17 @@ function Pages() {
   );
 }
 
+/** The workspace: the pages that read the visitor's database. */
+const isWorkspace = (pathname: string) => /^\/(feeds|new)(\/|$)/.test(pathname);
+
 function Shell() {
+  const { pathname } = useLocation();
+  const storage = useEngineStorage();
   // The feed list of the sidebar; public pages render before the engine answers.
   const feeds = useEngine('listFeedNames').data ?? [];
   return (
     <AppShell feeds={feeds}>
-      <Pages />
+      {storage === 'busy' && isWorkspace(pathname) ? <DatabaseBusyPage /> : <Pages />}
     </AppShell>
   );
 }

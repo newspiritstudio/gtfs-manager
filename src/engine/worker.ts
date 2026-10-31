@@ -9,17 +9,20 @@
  * Everything heavy (imports of millions of rows, validation, the ZIP) runs here, off the page.
  */
 import { setDriver } from './db/client';
-import { openBrowserDriver } from './db/opfs-driver';
+import { DatabaseBusyError, openBrowserDriver } from './db/opfs-driver';
 import { handle } from './api/router';
 import { loaders, type LoaderName } from './loaders';
-import type { EngineReply, EngineRequest } from './protocol';
+import type { EngineReply, EngineRequest, EngineStorage } from './protocol';
 
 declare const self: DedicatedWorkerGlobalScope;
 
-const ready = openBrowserDriver().then(({ driver, persistent }) => {
-  setDriver(driver);
-  return persistent;
-});
+const ready: Promise<EngineStorage> = openBrowserDriver().then(
+  ({ driver, storage }) => {
+    setDriver(driver);
+    return storage;
+  },
+  () => 'busy'
+);
 
 function reply(message: EngineReply, transfer: Transferable[] = []) {
   self.postMessage(message, transfer);
@@ -49,9 +52,11 @@ self.onmessage = ({ data }: MessageEvent<EngineRequest>) => {
 
 async function answer(data: EngineRequest) {
   try {
-    const persistent = await ready;
+    const storage = await ready;
     if (data.kind === 'status') {
-      reply({ id: data.id, kind: 'result', value: { persistent } });
+      reply({ id: data.id, kind: 'result', value: { storage } });
+    } else if (storage === 'busy') {
+      throw new DatabaseBusyError();
     } else if (data.kind === 'call') {
       const loader = loaders[data.name as LoaderName] as (...args: unknown[]) => unknown;
       if (!loader) throw new Error(`Unknown loader: ${data.name}`);

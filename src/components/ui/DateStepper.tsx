@@ -1,10 +1,12 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { addDays, gtfsDateToIso } from '@shared/gtfs-values';
+import { useRef, useState } from 'react';
+import { addDays } from '@shared/gtfs-values';
 import { formatGtfsDate } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
+import DatePicker from './DatePicker';
 import IconButton from './IconButton';
 
-/** Picks a service day (YYYYMMDD): arrows for the previous and next day, and the native calendar. */
+/** Picks a service day (YYYYMMDD): arrows for the previous and next day, and a calendar. */
 export default function DateStepper({
   value,
   onChange,
@@ -17,6 +19,8 @@ export default function DateStepper({
   max?: string;
 }) {
   const { t, locale } = useI18n();
+  const [open, setOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   return (
     <div className="inline-flex items-center gap-1 rounded-full bg-surface-container-highest p-1">
       <IconButton
@@ -27,33 +31,37 @@ export default function DateStepper({
       >
         <ChevronLeft />
       </IconButton>
-      <label className="relative flex h-8 items-center rounded-full px-2 text-label-large text-on-surface focus-within:ring-2 focus-within:ring-primary">
-        <span>
-          {capitalizeFirst(
-            formatGtfsDate(locale, value, {
-              weekday: 'short',
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-            })
-          )}
-        </span>
-        <input
-          type="date"
-          aria-label={t('common.date')}
-          value={gtfsDateToIso(value)}
-          min={min ? gtfsDateToIso(min) : undefined}
-          max={max ? gtfsDateToIso(max) : undefined}
-          onChange={(e) => e.target.value && onChange(e.target.value.replace(/-/g, ''))}
-          onClick={(e) => {
-            // The field is invisible: a click must open the calendar, not focus a hidden segment.
-            try {
-              e.currentTarget.showPicker();
-            } catch {}
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-label={`${t('common.date')}: ${formatGtfsDate(locale, value, { dateStyle: 'full' })}`}
+        onClick={() => setOpen((o) => !o)}
+        className="flex h-8 items-center rounded-full px-2 text-label-large text-on-surface hover:bg-on-surface/[0.08] focus-ring target-compact"
+      >
+        {capitalizeFirst(
+          formatGtfsDate(locale, value, {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+          })
+        )}
+      </button>
+      {open ? (
+        <DatePicker
+          anchor={buttonRef}
+          value={value}
+          min={min}
+          max={max}
+          onChange={onChange}
+          onClose={() => {
+            setOpen(false);
+            buttonRef.current?.focus();
           }}
-          className="absolute inset-0 cursor-pointer opacity-0"
         />
-      </label>
+      ) : null}
       <IconButton
         label={t('common.nextDay')}
         onClick={() => onChange(addDays(value, 1))}

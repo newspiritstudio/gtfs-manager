@@ -513,7 +513,7 @@
    TEXT FIELDS
    Every way of typing in the app carries the same background, outline, radius and focus:
    - `.md3-field-input`: input with a floating label (TextField).
-   - `.md3-field-trigger`: select or button that opens a list (Select, MenuSelect).
+   - `.md3-field-trigger`: a button that opens a list (Select).
    - `.md3-input-bare`: input without a label (search, table cells).
    MD3 outlined: 1 dp `outline` border, `on-surface` on hover, 2 dp `primary` on focus (a 2 px
    `outline` with offset -2 over the 1 px border: it follows the radius, which an inset
@@ -559,6 +559,16 @@
 }
 .md3-input-bare::placeholder {
   color: var(--md-sys-color-on-surface-muted);
+}
+
+/* Numbers are typed: no browser spin buttons (they are not Material, and too small to tap). */
+input[type='number'] {
+  appearance: textfield;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
 }
 
 /* Error borders. Modifier classes rather than Tailwind utilities: the rules above are not

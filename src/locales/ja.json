@@ -37,7 +37,9 @@
     "close": "閉じる",
     "date": "日付",
     "nextDay": "翌日",
+    "nextMonth": "次の月",
     "previousDay": "前日",
+    "previousMonth": "前の月",
     "noResults": "結果がありません。",
     "seeAll": "すべて表示",
     "showMore": "もっと見る",
@@ -58,6 +60,8 @@
   "errors": {
     "database": "ブラウザーのデータベースを開けません",
     "databaseHint": "ブラウザーがこのサイトのストレージをブロックしている可能性があります（プライベートウィンドウなど）。ページを再読み込みしてもう一度お試しください。",
+    "databaseBusy": "GTFS Manager は別のタブで開かれています",
+    "databaseBusyHint": "フィードは一度に 1 つのタブでしか開けません。GTFS Manager の別のタブまたはウィンドウを閉じて、もう一度お試しください。",
     "generic": "問題が発生しました。もう一度お試しください。",
     "invalidForm": "ハイライトされた項目を確認してください。",
     "notFound": "ページが見つかりません",
