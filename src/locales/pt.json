@@ -181,6 +181,7 @@
     "variantsOf": "Variantes de {name}",
     "allVariants": "Mostrar todas ({count})",
     "fewerVariants": "Mostrar menos",
+    "towards": "Para {stop}",
     "tripsOnDay": "Viagens neste dia",
     "firstLast": "Primeira e última",
     "length": "Extensão",
@@ -194,6 +195,7 @@
     "noTripsOnDay": "Sem viagens deste padrão em {date}.",
     "stopTrip": "Paragem / viagem",
     "mareyHint": "O tempo corre na horizontal e as paragens estão espaçadas por distância: quanto mais inclinada a linha, mais rápida a viagem. Clique numa para abrir a viagem.",
+    "mareyVariants": "Inclui as viagens das {count} variantes da linha.",
     "serviceDays": "Dias de serviço",
     "departuresByHour": "Partidas por hora em {date}"
   },

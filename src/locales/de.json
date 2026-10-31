@@ -181,6 +181,7 @@
     "variantsOf": "Varianten von {name}",
     "allVariants": "Alle anzeigen ({count})",
     "fewerVariants": "Weniger anzeigen",
+    "towards": "Nach {stop}",
     "tripsOnDay": "Fahrten an diesem Tag",
     "firstLast": "Erste und letzte",
     "length": "Länge",
@@ -194,6 +195,7 @@
     "noTripsOnDay": "Keine Fahrten dieses Musters am {date}.",
     "stopTrip": "Haltestelle / Fahrt",
     "mareyHint": "Die Zeit läuft horizontal, die Haltestellen sind nach Entfernung angeordnet: Je steiler die Linie, desto schneller die Fahrt. Klicken Sie auf eine, um die Fahrt zu öffnen.",
+    "mareyVariants": "Enthält die Fahrten aller {count} Varianten der Linie.",
     "serviceDays": "Verkehrstage",
     "departuresByHour": "Abfahrten pro Stunde am {date}"
   },

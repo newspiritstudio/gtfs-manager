@@ -181,6 +181,7 @@
     "variantsOf": "Variants de la {name}",
     "allVariants": "Mostra-les totes ({count})",
     "fewerVariants": "Mostra'n menys",
+    "towards": "Cap a {stop}",
     "tripsOnDay": "Viatges aquest dia",
     "firstLast": "Primer i darrer",
     "length": "Recorregut",
@@ -194,6 +195,7 @@
     "noTripsOnDay": "Cap viatge d'aquest recorregut el {date}.",
     "stopTrip": "Parada / viatge",
     "mareyHint": "Temps en horitzontal i parades a escala de distància en vertical: com més inclinada la línia, més ràpid va el tren. Clica'n una per obrir el viatge.",
+    "mareyVariants": "Inclou els viatges de les {count} variants de la línia.",
     "serviceDays": "Dies de servei",
     "departuresByHour": "Sortides per hora el {date}"
   },

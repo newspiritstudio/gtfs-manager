@@ -181,6 +181,7 @@
     "variantsOf": "Varianti di {name}",
     "allVariants": "Mostra tutte ({count})",
     "fewerVariants": "Mostra meno",
+    "towards": "Verso {stop}",
     "tripsOnDay": "Corse in questo giorno",
     "firstLast": "Prima e ultima",
     "length": "Lunghezza",
@@ -194,6 +195,7 @@
     "noTripsOnDay": "Nessuna corsa su questo percorso il {date}.",
     "stopTrip": "Fermata / corsa",
     "mareyHint": "Il tempo scorre in orizzontale e le fermate sono distanziate in base alla distanza: più la linea è ripida, più la corsa è veloce. Fai clic su una per aprire la corsa.",
+    "mareyVariants": "Include le corse di tutte le {count} varianti della linea.",
     "serviceDays": "Giorni di servizio",
     "departuresByHour": "Partenze per ora il {date}"
   },

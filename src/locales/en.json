@@ -181,6 +181,7 @@
     "variantsOf": "{name} variants",
     "allVariants": "Show all ({count})",
     "fewerVariants": "Show fewer",
+    "towards": "To {stop}",
     "tripsOnDay": "Trips this day",
     "firstLast": "First and last",
     "length": "Length",
@@ -194,6 +195,7 @@
     "noTripsOnDay": "No trips on this pattern on {date}.",
     "stopTrip": "Stop / trip",
     "mareyHint": "Time runs across and stops are spaced by distance: the steeper the line, the faster the trip. Click one to open the trip.",
+    "mareyVariants": "It includes the trips of all {count} variants of the line.",
     "serviceDays": "Service days",
     "departuresByHour": "Departures per hour on {date}"
   },

@@ -7,6 +7,7 @@ import type {
   NetworkRoute,
   PatternStop,
   RoutePattern,
+  RouteVariant,
   StopDeparture,
 } from '@shared/contracts';
 import { haversineMeters, routeColors } from '@shared/gtfs-values';
@@ -26,6 +27,33 @@ export interface RouteDetail {
   serviceDates: { date: string; trips: number }[];
   /** Other routes with the same short name (many agencies run one per direction). */
   siblings: NetworkRoute[];
+  /** This route and its siblings, each with its usual path; empty without siblings. */
+  variants: RouteVariant[];
+  /**
+   * The longest usual path among the variants: the vertical axis of the Marey diagram, so the
+   * trips of every variant fit on it. Null without siblings.
+   */
+  axis: PatternStop[] | null;
+}
+
+/** Other routes of the same line: same short name, agency and colour. */
+function siblingRoutes(routes: NetworkRoute[], base: NetworkRoute): NetworkRoute[] {
+  return routes.filter(
+    (r) =>
+      r.routeId !== base.routeId &&
+      r.shortName &&
+      r.shortName === base.shortName &&
+      r.agencyId === base.agencyId &&
+      r.color === base.color
+  );
+}
+
+/** The route and its siblings, for the trips of a day (Marey diagram). */
+export async function getVariantIds(feedId: string, routeId: string): Promise<string[] | null> {
+  const network = await getNetwork(feedId);
+  const base = network?.routes.find((r) => r.routeId === routeId);
+  if (!network || !base) return null;
+  return [routeId, ...siblingRoutes(network.routes, base).map((r) => r.routeId)];
 }
 
 export async function getRouteDetail(feedId: string, routeId: string): Promise<RouteDetail | null> {
@@ -34,6 +62,8 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
   if (!network) return null;
   const base = network.routes.find((r) => r.routeId === routeId);
   if (!base) return null;
+  const siblings = siblingRoutes(network.routes, base);
+  const variantIds = [routeId, ...siblings.map((r) => r.routeId)];
 
   const [extra] = await sql<
     {
@@ -51,11 +81,17 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
     WHERE r.feed_id = ${feedId} AND r.route_id = ${routeId}
     LIMIT 1`;
 
-  const patternRows = await sql<
-    { pattern: string; directionId: number | null; headsign: string | null; trips: number }[]
-  >`
+  // The paths of the route and of its siblings in one go: the variants need theirs too.
+  type PatternRow = {
+    routeId: string;
+    pattern: string;
+    directionId: number | null;
+    headsign: string | null;
+    trips: number;
+  };
+  const allPatternRows = await sql<PatternRow[]>`
     WITH seq AS (
-      SELECT t.direction_id, t.trip_headsign, p.pattern
+      SELECT t.route_id, t.direction_id, t.trip_headsign, p.pattern
       FROM trips t
       -- One trip at a time by its index: the planner used to scan the whole stop_times for the aggregate
       -- (1.9 M rows on Renfe Rodalies).
@@ -63,18 +99,38 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
         SELECT string_agg(st.stop_id, '>' ORDER BY st.stop_sequence) AS pattern
         FROM stop_times st
         WHERE st.feed_id = t.feed_id AND st.trip_id = t.trip_id) p
-      WHERE t.feed_id = ${feedId} AND t.route_id = ${routeId}
+      WHERE t.feed_id = ${feedId} AND t.route_id = ANY(${variantIds})
     )
-    SELECT pattern, direction_id AS "directionId",
+    SELECT route_id AS "routeId", pattern, direction_id AS "directionId",
            mode() WITHIN GROUP (ORDER BY nullif(trim(trip_headsign), '')) AS headsign,
            count(*)::int AS trips
     FROM seq
     WHERE pattern IS NOT NULL
-    GROUP BY pattern, direction_id
-    ORDER BY trips DESC
-    LIMIT 16`;
+    GROUP BY route_id, pattern, direction_id
+    ORDER BY trips DESC`;
+  const patternRows = allPatternRows.filter((p) => p.routeId === routeId).slice(0, 16);
 
-  const stopIds = [...new Set(patternRows.flatMap((p) => p.pattern.split('>')))];
+  // The usual path of each variant in each direction; the longest is the Marey axis.
+  const usual = new Map<string, PatternRow[]>();
+  for (const row of allPatternRows) {
+    const list = usual.get(row.routeId) ?? [];
+    if (!list.some((p) => p.directionId === row.directionId)) list.push(row);
+    usual.set(row.routeId, list);
+  }
+  const axisRow = siblings.length
+    ? [...usual.values()].flat().reduce<PatternRow | null>((best, row) => {
+        if (!best) return row;
+        const a = row.pattern.split('>').length;
+        const b = best.pattern.split('>').length;
+        return a > b || (a === b && row.trips > best.trips) ? row : best;
+      }, null)
+    : null;
+
+  const stopIds = [
+    ...new Set(
+      [...patternRows, ...[...usual.values()].flat()].flatMap((p) => p.pattern.split('>'))
+    ),
+  ];
   const stopRows = stopIds.length
     ? await sql<
         {
@@ -133,10 +189,10 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
     );
   };
 
-  const patterns: RoutePattern[] = patternRows.map((p, index) => {
+  const toStops = (pattern: string, withConnections: boolean): PatternStop[] => {
     let distance = 0;
     let prev: { lat: number | null; lon: number | null } | null = null;
-    const stops: PatternStop[] = p.pattern.split('>').map((stopId) => {
+    return pattern.split('>').map((stopId) => {
       const s = stopById.get(stopId);
       if (prev && prev.lat !== null && prev.lon !== null && s?.lat != null && s?.lon != null) {
         distance += haversineMeters(prev.lat, prev.lon, s.lat, s.lon);
@@ -148,9 +204,12 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
         lat: s?.lat ?? null,
         lon: s?.lon ?? null,
         distance: Math.round(distance),
-        connections: connectionsFor(stopId),
+        connections: withConnections ? connectionsFor(stopId) : [],
       };
     });
+  };
+  const patterns: RoutePattern[] = patternRows.map((p, index) => {
+    const stops = toStops(p.pattern, true);
     return {
       key: `p${index + 1}`,
       directionId: p.directionId,
@@ -170,14 +229,25 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
     LEFT JOIN tc ON tc.service_id = a.service_id
     GROUP BY d.date ORDER BY d.date`;
 
-  const siblings = network.routes.filter(
-    (r) =>
-      r.routeId !== routeId &&
-      r.shortName &&
-      r.shortName === base.shortName &&
-      r.agencyId === base.agencyId &&
-      r.color === base.color
-  );
+  const axis = axisRow ? toStops(axisRow.pattern, false) : null;
+  const variants: RouteVariant[] = axis
+    ? [base, ...siblings].map((r) => {
+        const rows = usual.get(r.routeId) ?? [];
+        const main = rows[0]?.pattern.split('>') ?? [];
+        return {
+          routeId: r.routeId,
+          longName: r.longName,
+          trips: r.trips,
+          from: main.length ? (stopById.get(main[0])?.name ?? null) : null,
+          to: main.length ? (stopById.get(main[main.length - 1])?.name ?? null) : null,
+          span: spanOnAxis(
+            axis,
+            rows.flatMap((row) => row.pattern.split('>')),
+            stopById
+          ),
+        };
+      })
+    : [];
 
   return {
     route: { ...base, ...extra },
@@ -185,33 +255,70 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
     lines: network.lines.filter((l) => l.routeIds.includes(routeId)),
     serviceDates,
     siblings,
+    variants,
+    axis,
   };
+}
+
+/**
+ * The stretch of the axis a variant covers, from 0 to 1. A stop is found by its id, then by its
+ * station or its name: the two directions often use different platforms of the same station.
+ */
+function spanOnAxis(
+  axis: PatternStop[],
+  stopIds: string[],
+  stopById: Map<string, { name: string | null; parent: string | null }>
+): [number, number] | null {
+  const total = axis[axis.length - 1]?.distance ?? 0;
+  if (!total) return null;
+  const key = (id: string) => {
+    const s = stopById.get(id);
+    return [
+      id,
+      s?.parent ? `p:${s.parent}` : null,
+      s?.name ? `n:${s.name.trim().toLowerCase()}` : null,
+    ];
+  };
+  const onAxis = new Map<string, number>();
+  for (const stop of axis)
+    for (const k of key(stop.stopId)) if (k && !onAxis.has(k)) onAxis.set(k, stop.distance);
+  const found: number[] = [];
+  for (const id of stopIds) {
+    const d = key(id)
+      .map((k) => (k ? onAxis.get(k) : undefined))
+      .find((v) => v !== undefined);
+    if (d !== undefined) found.push(d);
+  }
+  if (found.length < 2) return null;
+  return [Math.min(...found) / total, Math.max(...found) / total];
 }
 
 /** The trips of a route on a given day, with all their stop times. */
 export async function getRouteDay(
   feedId: string,
-  routeId: string,
+  routeIds: string[],
   date: string
 ): Promise<DayTrip[]> {
   const sql = getSql();
   const rows = await sql<
     {
       tripId: string;
+      routeId: string;
       headsign: string | null;
       directionId: number | null;
       times: [string, number | null, number | null][];
     }[]
   >`
     WITH svc AS (${activeServicesFragment(sql, feedId, date)})
-    SELECT t.trip_id AS "tripId", nullif(trim(t.trip_headsign), '') AS headsign,
+    SELECT t.trip_id AS "tripId", t.route_id AS "routeId",
+           nullif(trim(t.trip_headsign), '') AS headsign,
            t.direction_id AS "directionId",
            json_agg(json_build_array(st.stop_id, st.arrival_time, st.departure_time) ORDER BY st.stop_sequence) AS times
     FROM trips t
     JOIN stop_times st ON st.feed_id = t.feed_id AND st.trip_id = t.trip_id
-    WHERE t.feed_id = ${feedId} AND t.route_id = ${routeId}
+    WHERE t.feed_id = ${feedId} AND t.route_id = ANY(${routeIds})
       AND t.service_id IN (SELECT service_id FROM svc)
-    GROUP BY t.trip_id, t.trip_headsign, t.direction_id`;
+    GROUP BY t.trip_id, t.route_id, t.trip_headsign, t.direction_id`;
   return rows
     .map((r) => ({ ...r, patternKey: r.times.map((t) => t[0]).join('>') }))
     .sort((a, b) => firstTime(a) - firstTime(b));

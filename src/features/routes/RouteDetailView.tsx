@@ -14,7 +14,7 @@ import {
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useId, useMemo, useState, useSyncExternalStore } from 'react';
-import type { DayTrip, NetworkRoute } from '@shared/contracts';
+import type { DayTrip, PatternStop, RouteVariant } from '@shared/contracts';
 import { transitModeForRouteType } from '@shared/gtfs-spec';
 import CalendarHeatmap from '@/components/charts/CalendarHeatmap';
 import HourBars from '@/components/charts/HourBars';
@@ -69,11 +69,12 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
   const tabsId = useId();
   const { t, locale } = useI18n();
   const router = useRouter();
-  const { route, patterns, lines, serviceDates, siblings } = detail;
+  const { route, patterns, lines, serviceDates, variants, axis } = detail;
   const [view, setView] = useState<View>('diagram');
   const [patternKey, setPatternKey] = useState(patterns[0]?.key ?? '');
   const [date, setDate] = useState(() => defaultServiceDate(serviceDates) ?? '');
-  const [trips, setTrips] = useState<DayTrip[] | null>(null);
+  // Every variant's trips on the day: the Marey diagram draws them all, the rest only this route's.
+  const [allTrips, setAllTrips] = useState<DayTrip[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const isDesktop = useIsDesktop();
@@ -82,25 +83,29 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
 
   useEffect(() => {
     if (!date) {
-      setTrips([]);
+      setAllTrips([]);
       return;
     }
     let alive = true;
-    setTrips(null);
+    setAllTrips(null);
     setFailed(false);
     apiFetch<DayTrip[]>(
-      `/api/feeds/${feedId}/routes/${encodeURIComponent(route.routeId)}/trips?date=${date}`
+      `/api/feeds/${feedId}/routes/${encodeURIComponent(route.routeId)}/trips?date=${date}${variants.length ? '&variants=1' : ''}`
     )
-      .then((d) => alive && setTrips(d))
+      .then((d) => alive && setAllTrips(d))
       .catch(() => {
         if (!alive) return;
         setFailed(true);
-        setTrips([]);
+        setAllTrips([]);
       });
     return () => {
       alive = false;
     };
-  }, [feedId, route.routeId, date, attempt]);
+  }, [feedId, route.routeId, date, attempt, variants.length]);
+  const trips = useMemo(
+    () => allTrips?.filter((tr) => !tr.routeId || tr.routeId === route.routeId) ?? null,
+    [allTrips, route.routeId]
+  );
 
   const patternSignature = pattern?.stops.map((s) => s.stopId).join('>') ?? '';
   const patternTrips = useMemo(() => {
@@ -147,6 +152,13 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
   const length = pattern?.stops[pattern.stops.length - 1]?.distance ?? 0;
   const mapLines = lines.length ? lines.map((l) => l.coords) : [];
   const mode = transitModeForRouteType(route.routeType);
+  // The shared axis only when this route runs on it: some agencies give one short name to
+  // unrelated corridors (Renfe's «MD»), and then the route's own path is the axis.
+  const onAxis = variants.find((v) => v.routeId === route.routeId)?.span != null;
+  const mareyStops =
+    axis && onAxis && pattern && axis.length >= pattern.stops.length
+      ? axis
+      : (pattern?.stops ?? []);
   const first = serviceDates[0]?.date;
   const last = serviceDates[serviceDates.length - 1]?.date;
 
@@ -188,8 +200,15 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
             ) : null}
           </div>
         </div>
-        {siblings.length ? (
-          <RouteVariants feedId={feedId} current={route} siblings={siblings} />
+        {variants.length > 1 ? (
+          <RouteVariants
+            feedId={feedId}
+            currentId={route.routeId}
+            shortName={route.shortName || route.routeId}
+            color={route.color}
+            variants={variants}
+            axis={axis}
+          />
         ) : null}
       </header>
 
@@ -337,7 +356,7 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
               </p>
             )
           ) : view === 'marey' ? (
-            trips === null ? (
+            allTrips === null ? (
               <div className="h-96 overflow-hidden rounded-md">
                 <MapSkeleton />
               </div>
@@ -345,11 +364,16 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
               retry
             ) : (
               <div className="space-y-3">
-                <p className="text-body-small text-on-surface-variant">{t('routes.mareyHint')}</p>
+                <p className="text-body-small text-on-surface-variant">
+                  {t('routes.mareyHint')}
+                  {variants.length > 1
+                    ? ` ${t('routes.mareyVariants', { count: variants.length })}`
+                    : ''}
+                </p>
                 <MareyDiagram
                   label={t('routes.mareyHint')}
-                  stops={pattern.stops}
-                  trips={trips}
+                  stops={mareyStops}
+                  trips={allTrips}
                   color={route.color}
                   onTripClick={(id) =>
                     router.push(`/feeds/${feedId}/trips/${encodeURIComponent(id)}`)
@@ -403,73 +427,176 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
   );
 }
 
-const VARIANTS_SHOWN = 6;
+const VARIANTS_SHOWN = 5;
+
+interface VariantRow {
+  from: string | null;
+  to: string | null;
+  span: [number, number] | null;
+  items: RouteVariant[];
+}
+
+const sameStop = (a: string | null, b: string | null) =>
+  !!a && !!b && a.trim().toLowerCase() === b.trim().toLowerCase();
+
+/** One row per path: a variant and the one that runs it the other way round (A → B and B → A). */
+function pairVariants(variants: RouteVariant[]): VariantRow[] {
+  const rows: VariantRow[] = [];
+  for (const v of [...variants].sort((a, b) => b.trips - a.trips)) {
+    const pair = rows.find(
+      (r) => r.items.length === 1 && sameStop(r.from, v.to) && sameStop(r.to, v.from)
+    );
+    if (pair) {
+      pair.items.push(v);
+      if (v.span)
+        pair.span = pair.span
+          ? [Math.min(pair.span[0], v.span[0]), Math.max(pair.span[1], v.span[1])]
+          : v.span;
+    } else rows.push({ from: v.from, to: v.to, span: v.span, items: [v] });
+  }
+  return rows;
+}
+
+/** The stretch of the line a path covers, drawn over the whole line (the longest path). */
+function SpanStrip({ span, color }: { span: [number, number] | null; color: string }) {
+  return (
+    <span aria-hidden className="relative block h-3 w-full">
+      <span
+        className={cn(
+          'absolute inset-x-0 top-1/2 -translate-y-1/2 border-t-2 border-outline-variant',
+          !span && 'border-dashed'
+        )}
+      />
+      {span ? (
+        <>
+          <span
+            className="absolute top-1/2 h-1.5 -translate-y-1/2 rounded-full"
+            style={{
+              left: `${span[0] * 100}%`,
+              right: `${(1 - span[1]) * 100}%`,
+              backgroundColor: `#${color}`,
+            }}
+          />
+          {span.map((p, i) => (
+            <span
+              key={i}
+              className="absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-surface-container-lowest"
+              style={{ left: `${p * 100}%`, borderColor: `#${color}` }}
+            />
+          ))}
+        </>
+      ) : null}
+    </span>
+  );
+}
 
 /**
- * The other route_ids with the same short name (Renfe publishes one per origin and destination,
- * and another for the road service). They are read by path, not by identifier: those with the
- * most trips first, and the one being viewed is always shown.
+ * The route_ids of the same line (Renfe publishes one per origin and destination; Metrovalencia,
+ * one per direction and short turn). One row per path, with the stretch of the line it covers and
+ * a link for each direction; the busiest first, and the one being viewed is always shown.
  */
 function RouteVariants({
   feedId,
-  current,
-  siblings,
+  currentId,
+  shortName,
+  color,
+  variants,
+  axis,
 }: {
   feedId: string;
-  current: NetworkRoute;
-  siblings: NetworkRoute[];
+  currentId: string;
+  shortName: string;
+  color: string;
+  variants: RouteVariant[];
+  axis: PatternStop[] | null;
 }) {
   const { t } = useI18n();
   const [expanded, setExpanded] = useState(false);
-  const all = [current, ...siblings].sort((a, b) => b.trips - a.trips);
-  let shown = all;
-  if (!expanded && all.length > VARIANTS_SHOWN) {
-    shown = all.slice(0, VARIANTS_SHOWN);
-    if (!shown.includes(current)) shown = [...shown.slice(0, VARIANTS_SHOWN - 1), current];
+  const rows = useMemo(() => pairVariants(variants), [variants]);
+  const isCurrent = (r: VariantRow) => r.items.some((v) => v.routeId === currentId);
+  let shown = rows;
+  if (!expanded && rows.length > VARIANTS_SHOWN) {
+    shown = rows.slice(0, VARIANTS_SHOWN);
+    const current = rows.find(isCurrent);
+    if (current && !shown.includes(current)) shown = [...shown.slice(0, -1), current];
   }
+  // The stretch strips only help when the variants share a line: not for unrelated corridors
+  // under one short name (Renfe's «MD»).
+  const withSpans = rows.filter((r) => r.span).length * 2 >= rows.length;
+  const ends = withSpans && axis?.length ? [axis[0].name, axis[axis.length - 1].name] : null;
+  const grid = withSpans
+    ? 'sm:grid sm:grid-cols-[12rem_minmax(0,1fr)_auto] sm:items-center sm:gap-x-4'
+    : 'sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-x-4';
+
   return (
     <section className="mt-5">
       <h2 className="mb-2 text-title-small text-on-surface">
-        {t('routes.variantsOf', { name: current.shortName || current.routeId })}{' '}
-        <span className="text-body-medium text-on-surface-muted">· {all.length}</span>
+        {t('routes.variantsOf', { name: shortName })}{' '}
+        <span className="text-body-medium text-on-surface-muted">· {variants.length}</span>
       </h2>
-      <ul className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-3">
-        {shown.map((r) => {
-          const isCurrent = r.routeId === current.routeId;
-          const mode = transitModeForRouteType(r.routeType);
-          return (
-            <li key={r.routeId} className="min-w-0">
-              <Link
-                href={`/feeds/${feedId}/routes/${encodeURIComponent(r.routeId)}`}
-                aria-current={isCurrent ? 'page' : undefined}
-                className={cn(
-                  'flex items-center gap-3 rounded-md px-3 py-2 state-layer focus-ring',
-                  isCurrent
-                    ? 'bg-secondary-container text-on-secondary-container'
-                    : 'bg-surface-container-highest/60 text-on-surface state-layer-on-surface'
-                )}
+      <div className="overflow-hidden rounded-md bg-surface-container-lowest/60">
+        {ends ? (
+          <div
+            aria-hidden
+            className={cn(grid, 'hidden px-3 pt-2 text-label-small text-on-surface-muted')}
+          >
+            <span className="flex justify-between gap-2">
+              <span className="truncate">{ends[0]}</span>
+              <span className="truncate text-right">{ends[1]}</span>
+            </span>
+          </div>
+        ) : null}
+        <ul className="divide-y divide-outline-variant/50">
+          {shown.map((row) => {
+            const title =
+              row.from && row.to
+                ? `${row.from} – ${row.to}`
+                : (row.items[0].longName ?? row.items[0].routeId);
+            return (
+              <li
+                key={row.items[0].routeId}
+                className={cn(grid, 'flex flex-col gap-2 px-3 py-2.5')}
               >
-                <span
-                  title={t(`modes.${mode}`)}
-                  className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-surface-container-lowest/70 text-on-surface-variant icon-slot-4"
+                {withSpans ? <SpanStrip span={row.span} color={color} /> : null}
+                <p
+                  className="order-first min-w-0 truncate text-body-medium text-on-surface sm:order-none"
+                  title={title}
                 >
-                  <ModeIcon mode={mode} />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-body-medium">{r.longName || r.routeId}</span>
-                  <span className="block truncate font-mono text-body-small text-on-surface-muted">
-                    {r.routeId}
-                  </span>
-                </span>
-                <span className="shrink-0 text-body-small tabular-nums text-on-surface-variant">
-                  {t('units.trips', { count: r.trips })}
-                </span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-      {all.length > VARIANTS_SHOWN ? (
+                  {title}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {row.items.map((v) => {
+                    const current = v.routeId === currentId;
+                    const to = v.to ?? v.longName ?? v.routeId;
+                    return (
+                      <Link
+                        key={v.routeId}
+                        href={`/feeds/${feedId}/routes/${encodeURIComponent(v.routeId)}`}
+                        aria-current={current ? 'page' : undefined}
+                        aria-label={`${t('routes.towards', { stop: to })}, ${t('units.trips', { count: v.trips })}`}
+                        title={`route_id ${v.routeId}`}
+                        className={cn(
+                          'flex h-8 max-w-[20rem] items-center gap-1.5 rounded-full px-3 text-label-large state-layer focus-ring',
+                          current
+                            ? 'bg-secondary-container text-on-secondary-container'
+                            : 'bg-surface-container-high text-on-surface state-layer-on-surface'
+                        )}
+                      >
+                        <span aria-hidden>→</span>
+                        <span className="truncate">{to}</span>
+                        <span className="shrink-0 tabular-nums text-on-surface-variant">
+                          {t('units.trips', { count: v.trips })}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      {rows.length > VARIANTS_SHOWN ? (
         <Button
           variant="ghost"
           size="sm"
@@ -477,7 +604,7 @@ function RouteVariants({
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
         >
-          {expanded ? t('routes.fewerVariants') : t('routes.allVariants', { count: all.length })}
+          {expanded ? t('routes.fewerVariants') : t('routes.allVariants', { count: rows.length })}
         </Button>
       ) : null}
     </section>

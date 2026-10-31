@@ -193,6 +193,20 @@ export interface PatternStop {
   connections: { routeId: string; shortName: string | null; color: string; textColor: string }[];
 }
 
+/**
+ * One route_id of a line with several (same short name, agency and colour): where its usual path
+ * starts and ends, and which stretch of the line's longest path it covers.
+ */
+export interface RouteVariant {
+  routeId: string;
+  longName: string | null;
+  trips: number;
+  from: string | null;
+  to: string | null;
+  /** Start and end of the covered stretch on `RouteDetail.axis`, from 0 to 1; null if it is off it. */
+  span: [number, number] | null;
+}
+
 export interface RoutePattern {
   key: string;
   directionId: number | null;
@@ -203,6 +217,8 @@ export interface RoutePattern {
 
 export interface DayTrip {
   tripId: string;
+  /** Set when the trips of several variants come together (the Marey diagram). */
+  routeId?: string;
   headsign: string | null;
   directionId: number | null;
   patternKey: string;

@@ -176,6 +176,7 @@
     "variantsOf": "{name} のバリアント",
     "allVariants": "すべて表示（{count}）",
     "fewerVariants": "表示を減らす",
+    "towards": "{stop}方面",
     "tripsOnDay": "この日の便",
     "firstLast": "始発・終発",
     "length": "距離",
@@ -189,6 +190,7 @@
     "noTripsOnDay": "{date} にこのパターンの便はありません。",
     "stopTrip": "停留所 / 便",
     "mareyHint": "横軸は時間、停留所は距離に応じて配置されます。線が急なほど速い便です。クリックすると便を開きます。",
+    "mareyVariants": "路線の全 {count} 系統の便を含みます。",
     "serviceDays": "運行日",
     "departuresByHour": "{date} の時間帯別発車数"
   },

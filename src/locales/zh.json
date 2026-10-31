@@ -176,6 +176,7 @@
     "variantsOf": "{name} 的变体",
     "allVariants": "显示全部（{count}）",
     "fewerVariants": "收起",
+    "towards": "开往{stop}",
     "tripsOnDay": "当天车次",
     "firstLast": "首末班",
     "length": "长度",
@@ -189,6 +190,7 @@
     "noTripsOnDay": "{date} 该走向没有车次。",
     "stopTrip": "站点 / 车次",
     "mareyHint": "横轴为时间，站点按距离排布：线条越陡，车次越快。点击线条可打开该车次。",
+    "mareyVariants": "包含该线路全部 {count} 个变体的车次。",
     "serviceDays": "运营日",
     "departuresByHour": "{date} 每小时发车数"
   },
