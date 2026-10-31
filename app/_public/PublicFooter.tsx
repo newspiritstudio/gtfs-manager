@@ -14,9 +14,9 @@ const linkClass =
   'inline-flex min-h-9 items-center rounded-xs underline decoration-outline-variant underline-offset-4 hover:text-on-surface hover:decoration-current focus-ring';
 
 /**
- * Peu de les pàgines públiques: enllaços útils, les versions per idioma com a enllaços simples
- * (les rastregen els cercadors) i els crèdits que toca citar. `path` és l'adreça sense prefix
- * d'idioma (`/`, `/catalog`, `/catalog/fgc`).
+ * Footer of the public pages: useful links, per-language versions as plain links (search engines
+ * crawl them) and the credits that must be cited. `path` is the address without the language
+ * prefix (`/`, `/catalog`, `/catalog/fgc`).
  */
 export default async function PublicFooter({ path, credits }: { path: string; credits: Credit[] }) {
   const { t, locale } = await getI18n();

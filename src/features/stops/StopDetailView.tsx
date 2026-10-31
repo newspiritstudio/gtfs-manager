@@ -23,7 +23,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import DateStepper from '@/components/ui/DateStepper';
 import RouteBadge from '@/components/ui/RouteBadge';
 import { ListSkeleton } from '@/components/ui/Skeleton';
-import { groupRoutes } from '@/features/routes/groupRoutes';
+import { dedupeRouteBadges, groupRoutes } from '@/features/routes/groupRoutes';
 import { apiFetch } from '@/lib/api';
 import { defaultServiceDate } from '@/lib/dates';
 import { formatDistance, formatGtfsDate } from '@/lib/i18n/format';
@@ -31,7 +31,7 @@ import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
 import type { StopDetail } from '@/server/gtfs/details';
 
-/** Es remunta en canviar de parada (p. ex. des de les properes) perquè el filtre i la data no s'arrosseguin. */
+/** Remounted when the stop changes (e.g. from the nearby ones) so the filter and date are not carried over. */
 export default function StopDetailView(props: { feedId: string; detail: StopDetail }) {
   return <StopDetailBody key={props.detail.stop.stopId} {...props} />;
 }
@@ -45,7 +45,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const [filter, setFilter] = useState<string | null>(null);
-  const groups = useMemo(() => groupRoutes(routes), [routes]);
+  const groups = useMemo(() => dedupeRouteBadges(groupRoutes(routes)), [routes]);
 
   useEffect(() => {
     if (!date) {

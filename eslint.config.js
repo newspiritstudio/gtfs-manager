@@ -22,7 +22,7 @@ export default [
       'react-hooks/exhaustive-deps': 'warn',
       'no-restricted-imports': [
         'error',
-        { paths: [{ name: 'framer-motion', message: "Fes servir 'motion/react'." }] },
+        { paths: [{ name: 'framer-motion', message: "Use 'motion/react'." }] },
       ],
     },
   },
@@ -32,12 +32,12 @@ export default [
       'no-restricted-imports': [
         'error',
         {
-          paths: [{ name: 'framer-motion', message: "Fes servir 'motion/react'." }],
+          paths: [{ name: 'framer-motion', message: "Use 'motion/react'." }],
           patterns: [
             {
               group: ['@/server/*'],
               allowTypeImports: true,
-              message: 'El codi de client no importa src/server en temps d’execució.',
+              message: 'Client code must not import src/server at runtime.',
             },
           ],
         },

@@ -4,7 +4,7 @@ import { dateParam, intParam } from './http';
 const req = (query: string) => new Request(`http://localhost/api?${query}`);
 
 describe('dateParam', () => {
-  it('accepta una data real i rebutja el que no ho és', () => {
+  it('accepts a real date and rejects anything else', () => {
     expect(dateParam(req('date=20261031'))).toBe('20261031');
     expect(dateParam(req('date=20261345'))).toBeNull();
     expect(dateParam(req('date=20250230'))).toBeNull();
@@ -15,7 +15,7 @@ describe('dateParam', () => {
 
 describe('intParam', () => {
   const opts = { fallback: 1, min: 1, max: 100 };
-  it('limita el valor i usa el per defecte si no és un nombre', () => {
+  it('clamps the value and falls back to the default if it is not a number', () => {
     expect(intParam(req('page=5'), 'page', opts)).toBe(5);
     expect(intParam(req('page=1e21'), 'page', opts)).toBe(100);
     expect(intParam(req('page=-3'), 'page', opts)).toBe(1);

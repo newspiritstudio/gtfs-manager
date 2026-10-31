@@ -4,8 +4,8 @@ const securityHeaders = [
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
 ];
 
-// Recursos estàtics de public/: no porten hash al nom, per això una setmana (i revalidació en
-// segon pla) en lloc de «immutable». Els fitxers de /_next/static ja són immutables.
+// Static assets in public/: no hash in the name, so cache them for a week (with background
+// revalidation) instead of `immutable`. Files under /_next/static are already immutable.
 const assetCache = (value) => [{ key: 'Cache-Control', value }];
 
 /** @type {import('next').NextConfig} */
@@ -15,7 +15,7 @@ const nextConfig = {
   poweredByHeader: false,
   images: { unoptimized: true },
   transpilePackages: ['motion'],
-  // postgres.js obre sòcols: es queda fora del paquet del servidor.
+  // postgres.js opens sockets: keep it out of the server bundle.
   serverExternalPackages: ['postgres'],
   async headers() {
     return [

@@ -1,13 +1,13 @@
 /**
- * Lector CSV incremental (RFC 4180) per a fitxers GTFS que no caben a la memòria: rep el text a
- * trossos i torna les files acabades. Admet camps entre cometes amb comes, salts de línia i cometes
- * doblades, finals de línia CRLF i la marca BOM. Les línies buides no són files.
+ * Incremental CSV reader (RFC 4180) for GTFS files that do not fit in memory: takes the text in
+ * chunks and returns the finished rows. Supports quoted fields with commas, line breaks and doubled
+ * quotes, CRLF line endings and the BOM. Empty lines are not rows.
  */
 export class CsvParser {
   private field = '';
   private row: string[] = [];
   private inQuotes = false;
-  /** S'acaba de tancar unes cometes: si en ve una altra, és una cometa escapada (""). */
+  /** A quote was just closed: if another follows, it is an escaped quote (""). */
   private afterQuote = false;
   private started = false;
 
@@ -33,7 +33,7 @@ export class CsvParser {
         i = close + 1;
         continue;
       }
-      // Fora de cometes: avança fins al proper caràcter especial.
+      // Outside quotes: advance to the next special character.
       let j = i;
       while (j < len) {
         const c = text.charCodeAt(j);
@@ -64,7 +64,7 @@ export class CsvParser {
       } else if (c === 10) {
         this.endRow(out);
       }
-      // \r s'ignora: o bé ve un \n, o és un final de línia antic que no fem servir.
+      // \r is ignored: either a \n follows, or it is a legacy line ending we do not use.
       i = j + 1;
     }
     return out;
@@ -87,7 +87,7 @@ export class CsvParser {
   }
 }
 
-/** Recorre les files d'una font de bytes UTF-8. */
+/** Iterates the rows of a UTF-8 byte source. */
 export async function* readCsvRows(source: AsyncIterable<Uint8Array | string>) {
   const decoder = new TextDecoder('utf-8');
   const parser = new CsvParser();
@@ -101,7 +101,7 @@ export async function* readCsvRows(source: AsyncIterable<Uint8Array | string>) {
   if (tail.length || rest.length) yield [...tail, ...rest];
 }
 
-/** Escriu un camp CSV, amb cometes només si cal. */
+/** Writes a CSV field, quoting only when needed. */
 export function csvField(value: string): string {
   return /[",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
 }

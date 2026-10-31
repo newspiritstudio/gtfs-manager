@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 
 /**
- * Contenidor tonal (`bg-tonal`): es distingeix pel fons, no per una vora ni una ombra. El to el
- * decideix on és (src/index.css): sobre la pàgina, surface-container; dins d'un altre, -highest.
+ * Tonal container (`bg-tonal`): told apart by its background, not by a border or shadow. Its tone
+ * depends on where it sits (src/index.css): on the page, surface-container; inside another, -highest.
  */
 export function Card({ className, children, ...props }: React.HTMLAttributes<HTMLElement>) {
   return (

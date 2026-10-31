@@ -1,6 +1,6 @@
 /**
- * Les xifres del resum d'un feed. Es calculen un cop després d'importar o editar (`stats_stale`) i
- * es desen a `feeds.stats`: la pàgina de resum no torna a recórrer 1,9 M de stop_times a cada visita.
+ * The summary figures of a feed. Computed once after import or edit (`stats_stale`) and
+ * stored in `feeds.stats`: the summary page does not scan 1.9 M stop_times on every visit.
  */
 import type { FeedStats } from '@shared/contracts';
 import { GTFS_TABLES, type GtfsTable } from '@shared/gtfs-spec';
@@ -11,7 +11,7 @@ import { validateFeed } from './validate';
 export async function computeStats(feedId: string): Promise<FeedStats> {
   const sql = getSql();
 
-  // Les consultes pesades (validació, franja horària) corren mentre es fan les altres.
+  // The heavy queries (validation, time distribution) run while the others do.
   const issuesJob = validateFeed(feedId);
   const spanJob = sql<{ first: number | null; last: number | null }[]>`
     SELECT min(coalesce(departure_time, arrival_time)) AS first,
@@ -117,8 +117,8 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
 }
 
 /**
- * El dia de referència per a les xifres «d'un dia»: el de més viatges a partir d'avui, o el de més
- * viatges de tot el període si el feed ja ha caducat.
+ * The reference day for the "one day" figures: the one with most trips from today on, or the one with most
+ * trips in the whole period if the feed has already expired.
  */
 export function referenceDateFrom(tripsByDate: { date: string; trips: number }[]): string | null {
   const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -133,8 +133,8 @@ export function referenceDateFrom(tripsByDate: { date: string; trips: number }[]
 const inFlight = new Map<string, Promise<FeedStats | null>>();
 
 /**
- * Les xifres del feed, recalculades si alguna cosa ha canviat des de l'últim cop. Si ja se'n
- * calculen per al feed, les peticions concurrents esperen aquell mateix càlcul.
+ * The feed figures, recomputed if something changed since the last time. If one is already
+ * being computed for the feed, concurrent requests wait for that same computation.
  */
 export function ensureStats(feedId: string): Promise<FeedStats | null> {
   const running = inFlight.get(feedId);
@@ -152,8 +152,8 @@ async function refreshStats(feedId: string): Promise<FeedStats | null> {
   if (!feed) return null;
   if (feed.stats && !feed.statsStale) return feed.stats;
   const stats = await computeStats(feedId);
-  // Si el feed s'ha editat mentre es calculava, les xifres es desen però el feed continua «brut»:
-  // el pròxim cop es tornen a calcular en lloc de donar per bones unes xifres velles.
+  // If the feed was edited while computing, the figures are stored but the feed stays "dirty":
+  // the next time they are recomputed instead of trusting stale figures.
   await sql`
     UPDATE feeds SET stats = ${sql.json(JSON.parse(JSON.stringify(stats)))},
       stats_stale = (updated_at::text <> ${feed.version})

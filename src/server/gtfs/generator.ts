@@ -1,7 +1,7 @@
 /**
- * Generador de viatges: a partir d'una línia, unes parades en ordre, els minuts entre parades i una
- * franja amb freqüència, crea els viatges i totes les seves hores de pas (i, si es vol, una shape
- * recta entre parades). És la manera ràpida de fer un feed des de zero.
+ * Trip generator: from a route, stops in order, the minutes between stops and a
+ * frequency window, creates the trips and all their stop times (and, if wanted, a straight
+ * shape between stops). The quick way to build a feed from scratch.
  */
 import type { TripGeneratorInput } from '@shared/contracts';
 import { haversineMeters } from '@shared/gtfs-values';
@@ -118,7 +118,7 @@ export async function generateTrips(
       stopTimeCount = rows.length;
     });
   } catch (error) {
-    // Un trip_id agafat per una altra petició entre la comprovació i la inserció.
+    // A trip_id taken by another request between the check and the insert.
     if ((error as { code?: string }).code === '23505') throw new GeneratorError('tripIdTaken');
     throw error;
   }

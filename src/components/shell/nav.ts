@@ -15,7 +15,7 @@ import {
 
 export interface FeedNavItem {
   key: string;
-  /** Camí relatiu dins del feed ('' és el resum). */
+  /** Relative path inside the feed ('' is the overview). */
   path: string;
   icon: LucideIcon;
   mobile?: boolean;
@@ -41,7 +41,7 @@ export function feedIdFromPath(pathname: string): string | null {
   return match ? match[1] : null;
 }
 
-/** La secció activa del feed: la de camí més llarg que encaixa. */
+/** The active feed section: the one with the longest matching path. */
 export function activeFeedNav(pathname: string, feedId: string): FeedNavItem | null {
   const rest = pathname.slice(`/feeds/${feedId}`.length) || '';
   let best: FeedNavItem | null = null;

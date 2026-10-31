@@ -1,7 +1,7 @@
 /**
- * Comprova els textos de la interfície: tots els idiomes de `LOCALES` han de tenir exactament les
- * mateixes claus que el català, i cada `t('clau')` literal del codi ha d'existir. Un objecte de plurals
- * (`one`/`other`) compta com una sola clau.
+ * Checks the interface texts: every locale in `LOCALES` must have exactly the
+ * same keys as Catalan, and every literal `t('key')` in the code must exist. A plural object
+ * (`one`/`other`) counts as a single key.
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -44,11 +44,11 @@ const keys = Object.fromEntries(
 
 const problems: string[] = [];
 for (const locale of LOCALES.slice(1)) {
-  for (const k of keys.ca) if (!keys[locale].has(k)) problems.push(`${locale}: falta «${k}»`);
-  for (const k of keys[locale]) if (!keys.ca.has(k)) problems.push(`${locale}: sobra «${k}»`);
+  for (const k of keys.ca) if (!keys[locale].has(k)) problems.push(`${locale}: missing "${k}"`);
+  for (const k of keys[locale]) if (!keys.ca.has(k)) problems.push(`${locale}: extra "${k}"`);
 }
 
-// Cada traducció ha de portar les mateixes variables ({count}, {name}...) que el català.
+// Each translation must carry the same variables ({count}, {name}...) as Catalan.
 function lookup(node: Messages, key: string): string | Messages | undefined {
   let value: string | Messages | undefined = node;
   for (const part of key.split('.')) value = typeof value === 'object' ? value[part] : undefined;
@@ -67,7 +67,7 @@ for (const locale of LOCALES.slice(1)) {
     const expected = placeholders(lookup(sources.ca, k));
     const actual = placeholders(lookup(sources[locale], k));
     if (expected !== actual)
-      problems.push(`${locale}: «${k}» té les variables [${actual}] i el català [${expected}]`);
+      problems.push(`${locale}: "${k}" has variables [${actual}] but Catalan has [${expected}]`);
   }
 }
 
@@ -76,13 +76,13 @@ for (const file of ['app', 'src', 'shared'].flatMap((d) => walk(join(root, d))))
   const source = readFileSync(file, 'utf8');
   for (const match of source.matchAll(pattern)) {
     if (!keys.ca.has(match[1]))
-      problems.push(`${file.slice(root.length + 1)}: clau inexistent «${match[1]}»`);
+      problems.push(`${file.slice(root.length + 1)}: unknown key "${match[1]}"`);
   }
 }
 
 if (problems.length) {
   console.error(problems.join('\n'));
-  console.error(`\n${problems.length} problemes als textos.`);
+  console.error(`\n${problems.length} text problems.`);
   process.exit(1);
 }
-console.log(`Textos correctes: ${keys.ca.size} claus en ${LOCALES.length} idiomes.`);
+console.log(`Texts OK: ${keys.ca.size} keys in ${LOCALES.length} locales.`);

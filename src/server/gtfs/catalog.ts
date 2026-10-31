@@ -1,6 +1,6 @@
 /**
- * Consulta i descàrrega dels feeds del catàleg. Només es descarrega allò que hi ha a `GTFS_CATALOG`
- * (mai una URL que arribi de fora), i l'estat es guarda una hora (cinc minuts si falla) a la memòria del procés.
+ * Lookup and download of catalog feeds. Only what is in `GTFS_CATALOG` is ever downloaded
+ * (never a URL that comes from outside), and the status is cached for an hour (five minutes on failure) in process memory.
  */
 import JSZip from 'jszip';
 import {
@@ -66,9 +66,9 @@ async function probe(entry: CatalogEntry): Promise<CatalogStatus> {
   }
 }
 
-/** Un error es recorda poc estona (no es torna a provar a cada visita) i una font caiguda no triga 10 s cada cop. */
+/** A failure is remembered briefly (no retry on every visit) so a dead source does not cost 10 s each time. */
 const FAILURE_TTL = 5 * 60 * 1000;
-/** Passat aquest temps, un estat vell que ja no es pot refrescar deixa de servir-se. */
+/** Past this age, a stale status that can no longer be refreshed stops being served. */
 const MAX_STALE = 24 * 60 * 60 * 1000;
 const refreshing = new Map<string, Promise<CatalogStatus>>();
 
@@ -78,7 +78,7 @@ function refresh(entry: CatalogEntry): Promise<CatalogStatus> {
   const job = probe(entry)
     .then((status) => {
       const previous = cache.get(entry.id);
-      // Una fallada puntual no esborra un estat bo de fa poc: se serveix el vell fins MAX_STALE.
+      // A one-off failure does not discard a recent good status: serve the old one until MAX_STALE.
       if (!status.available && previous?.status.available && Date.now() - previous.at < MAX_STALE) {
         cache.set(entry.id, { at: Date.now() - STATUS_TTL + FAILURE_TTL, status: previous.status });
         return previous.status;
@@ -92,8 +92,8 @@ function refresh(entry: CatalogEntry): Promise<CatalogStatus> {
 }
 
 /**
- * L'estat de les fonts. Stale-while-revalidate: un estat vell es serveix al moment i es refresca
- * en segon pla; només la primera consulta (memòria buida) espera les fonts, totes alhora.
+ * The status of the sources. Stale-while-revalidate: a stale status is served immediately and refreshed
+ * in the background; only the first lookup (empty memory) waits for the sources, all at once.
  */
 export async function catalogStatuses(): Promise<CatalogStatus[]> {
   const now = Date.now();
@@ -110,7 +110,7 @@ export async function catalogStatuses(): Promise<CatalogStatus[]> {
 
 export class CatalogDownloadError extends Error {}
 
-/** El ZIP del feed com a resposta en streaming (o muntat aquí, si la font publica fitxers solts). */
+/** The feed ZIP as a streamed response (or assembled here, if the source publishes loose files). */
 export async function downloadCatalogZip(
   entry: CatalogEntry
 ): Promise<{ body: ReadableStream<Uint8Array> | Uint8Array; size: number | null }> {
@@ -119,14 +119,14 @@ export async function downloadCatalogZip(
     const list = await fetchWithTimeout(
       `${source.portal}/api/explore/v2.1/catalog/datasets/${source.dataset}/records?limit=100`
     );
-    if (!list.ok) throw new CatalogDownloadError(`llista ${list.status}`);
+    if (!list.ok) throw new CatalogDownloadError(`listing ${list.status}`);
     const { results } = (await list.json()) as {
       results: { file?: { filename?: string; url?: string } }[];
     };
     const files = results
       .map((r) => r.file)
       .filter((f): f is { filename: string; url: string } => Boolean(f?.filename && f.url));
-    // Només fitxers del mateix portal: el ZIP no pot fer anar a buscar res més.
+    // Only files from the same portal: the ZIP must not fetch anything else.
     const allowed = new URL(source.portal).origin;
     const zip = new JSZip();
     await Promise.all(
@@ -148,7 +148,7 @@ export async function downloadCatalogZip(
   const url = catalogZipUrl(source)!;
   const response = await fetchWithTimeout(url, { redirect: 'follow' }, 300_000);
   if (!response.ok || !response.body) throw new CatalogDownloadError(`${response.status}`);
-  // Si la font comprimeix la resposta, la mida de la capçalera no és la del ZIP que arriba.
+  // If the source compresses the response, the header size is not the size of the ZIP that arrives.
   const size = response.headers.get('content-encoding')
     ? 0
     : Number(response.headers.get('content-length'));

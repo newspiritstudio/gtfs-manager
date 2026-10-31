@@ -4,7 +4,7 @@ export function formatNumber(locale: string, value: number, options?: Intl.Numbe
   return new Intl.NumberFormat(locale, options).format(value);
 }
 
-/** Una data GTFS (AAAAMMDD) en l'idioma de la interfície. */
+/** A GTFS date (YYYYMMDD) in the interface language. */
 export function formatGtfsDate(
   locale: string,
   date: string | null | undefined,
@@ -30,7 +30,7 @@ export function formatDuration(locale: string, seconds: number): string {
   return m ? `${h} h ${m} min` : `${h} h`;
 }
 
-/** «fa 3 hores», «ahir»... a partir d'una data ISO. */
+/** "3 hours ago", "yesterday"... from an ISO date. */
 export function formatRelative(locale: string, iso: string, now = Date.now()): string {
   const seconds = (new Date(iso).getTime() - now) / 1000;
   const units: [Intl.RelativeTimeFormatUnit, number][] = [

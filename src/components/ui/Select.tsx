@@ -10,7 +10,7 @@ interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>
   error?: string | null;
 }
 
-/** Desplegable amb l'activador idèntic a un camp de text (natiu: a mòbil, el full del sistema). */
+/** Dropdown whose trigger is identical to a text field (native: on mobile, the system sheet). */
 export default function Select({
   label,
   options,

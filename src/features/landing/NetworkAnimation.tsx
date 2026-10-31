@@ -10,11 +10,11 @@ import { useI18n } from '@/lib/i18n/client';
 import type { LandingNetwork } from './networks';
 
 /**
- * La portada: una xarxa real triada a l'atzar entre les de `networks.ts`, amb els trens d'un dia
- * feiner circulant accelerats (cada segon, tres minuts). Les dades surten del feed GTFS de cada
- * operador (`npm run landing:network`) i es carreguen quan ja s'ha triat la xarxa, al client, per
- * no desquadrar la hidratació. Els trens es mouen tocant atributs SVG, sense renderitzar React a
- * cada fotograma; l'animació s'atura fora de pantalla i amb «moviment reduït» queda quieta.
+ * The home page: a real network picked at random from those in `networks.ts`, with the trains of
+ * a weekday running sped up (three minutes per second). The data comes from each operator's GTFS
+ * feed (`npm run landing:network`) and is loaded on the client once the network is chosen, so
+ * hydration does not mismatch. Trains move by touching SVG attributes, without rendering React
+ * every frame; the animation stops off-screen and stays still with "reduced motion".
  */
 export interface LandingNetworkInfo {
   id: string;
@@ -25,18 +25,18 @@ export interface LandingNetworkInfo {
   href: string;
 }
 
-/** Segons de simulació per cada segon real. */
+/** Simulation seconds per real second. */
 const SPEED = 180;
-/** Temps que triga a dibuixar-se la xarxa abans que surtin els trens. */
+/** Time the network takes to draw before the trains leave. */
 const DRAW_MS = 1400;
 const PILL_W = 26;
 const PILL_H = 16;
-/** Proporció del dibuix: totes les xarxes s'encaixen en aquesta caixa, i no salta res en carregar. */
+/** Aspect ratio of the drawing: every network fits this box, so nothing jumps on load. */
 const BOX: [number, number] = [600, 486];
 
 /**
- * Els noms de les línies als extrems, apartats del centre de la ciutat. Només si són noms curts
- * (S1, A, 10): «Metro A Line» o «Blue-N» no caben en una pastilla i el color ja identifica la línia.
+ * Line names at the ends, pushed away from the city centre. Only short names (S1, A, 10):
+ * "Metro A Line" or "Blue-N" do not fit in a pill and the colour already identifies the line.
  */
 function placeLabels(network: LandingNetwork) {
   if (network.lines.some((line) => line.name.length > 3)) return [];
@@ -54,7 +54,7 @@ function placeLabels(network: LandingNetwork) {
   });
 }
 
-/** Amb «moviment reduït», el moment que es mostra quiet: un terç de la franja (les 8). */
+/** With "reduced motion", the moment shown still: a third of the window (08:00). */
 function stillAt(network: LandingNetwork) {
   return network.window[0] + (network.window[1] - network.window[0]) / 3;
 }
@@ -73,7 +73,7 @@ export default function NetworkAnimation({ networks }: { networks: LandingNetwor
   const clockRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    // A l'atzar només al client: el servidor no pot saber quina tocarà.
+    // Random only on the client: the server cannot know which one will be picked.
     setInfo(pick(networks));
   }, [networks]);
 
@@ -199,7 +199,7 @@ function NetworkMap({
     let ready = simRef.current !== start;
     const tick = (now: number) => {
       if (!ready) {
-        // Primer es dibuixa la xarxa; els trens surten quan s'ha acabat de dibuixar.
+        // The network is drawn first; trains leave once drawing has finished.
         if (!last) last = now;
         ready = now - last >= DRAW_MS;
         if (!ready) {
@@ -208,7 +208,7 @@ function NetworkMap({
         }
       }
       if (visible && !document.hidden) {
-        // Un salt llarg (pestanya en segon pla) no fa córrer els trens de cop.
+        // A long jump (background tab) does not make the trains run all at once.
         const step = Math.min(now - last, 100) / 1000;
         let next = simRef.current + step * SPEED;
         if (next > end) next = start;

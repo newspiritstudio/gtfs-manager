@@ -6,7 +6,7 @@ import { formatGtfsDate } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import IconButton from './IconButton';
 
-/** Tria un dia de servei (AAAAMMDD): fletxes per al dia anterior i el següent, i el calendari natiu. */
+/** Picks a service day (YYYYMMDD): arrows for the previous and next day, and the native calendar. */
 export default function DateStepper({
   value,
   onChange,
@@ -48,7 +48,7 @@ export default function DateStepper({
           max={max ? gtfsDateToIso(max) : undefined}
           onChange={(e) => e.target.value && onChange(e.target.value.replace(/-/g, ''))}
           onClick={(e) => {
-            // El camp és invisible: un clic ha d'obrir el calendari, no enfocar un segment amagat.
+            // The field is invisible: a click must open the calendar, not focus a hidden segment.
             try {
               e.currentTarget.showPicker();
             } catch {}
@@ -68,7 +68,7 @@ export default function DateStepper({
   );
 }
 
-/** Només la primera lletra: `capitalize` de CSS faria «D’oct.». */
+/** Only the first letter: CSS `capitalize` would give "D’oct.". */
 function capitalizeFirst(text: string): string {
   return text.charAt(0).toLocaleUpperCase() + text.slice(1);
 }

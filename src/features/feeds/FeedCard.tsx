@@ -12,7 +12,7 @@ import Badge from '@/components/ui/Badge';
 import type { Translate } from '@/lib/i18n/translate';
 import { formatGtfsDate } from '@/lib/i18n/format';
 
-/** Targeta d'un feed a la galeria: els colors de les línies i les xifres principals. */
+/** A feed card in the gallery: the line colours and the main figures. */
 export default function FeedCard({
   feed,
   t,

@@ -9,7 +9,7 @@ const tabs = [
 
 describe('Tabs', () => {
   it('apunta la pestanya triada al tauler i el tauler a la pestanya', () => {
-    render(<Tabs idBase="x" label="Vistes" tabs={tabs} value="b" onChange={() => {}} />);
+    render(<Tabs idBase="x" label="Views" tabs={tabs} value="b" onChange={() => {}} />);
     const active = screen.getByRole('tab', { name: 'Mapa' });
     expect(active.id).toBe('x-tab-b');
     expect(active.getAttribute('aria-controls')).toBe('x-panel');
@@ -21,9 +21,9 @@ describe('Tabs', () => {
     });
   });
 
-  it('les fletxes mouen el focus i trien la pestanya', () => {
+  it('arrow keys move focus and select the tab', () => {
     const onChange = vi.fn();
-    render(<Tabs label="Vistes" tabs={tabs} value="a" onChange={onChange} />);
+    render(<Tabs label="Views" tabs={tabs} value="a" onChange={onChange} />);
     const first = screen.getByRole('tab', { name: 'Esquema' });
     first.focus();
     fireEvent.keyDown(first.parentElement!, { key: 'ArrowRight' });

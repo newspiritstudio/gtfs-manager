@@ -1,4 +1,4 @@
-/** Llegeix un token de color del tema actual (els mapes pinten en canvas i no entenen var()). */
+/** Reads a colour token from the current theme (maps paint on canvas and do not understand var()). */
 function cssVar(name: string, fallback: string): string {
   if (typeof window === 'undefined') return fallback;
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -21,7 +21,7 @@ export function escapeHtml(value: string): string {
   );
 }
 
-/** Un color GTFS (sis xifres hexadecimals) o, si el feed el porta malformat, el de reserva. */
+/** A GTFS colour (six hex digits) or, if the feed ships it malformed, the fallback. */
 function hex(value: string, fallback: string): string {
   return /^[0-9a-f]{6}$/i.test(value) ? value : fallback;
 }

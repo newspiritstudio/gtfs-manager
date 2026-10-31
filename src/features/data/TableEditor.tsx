@@ -20,7 +20,7 @@ import RowForm, { enumLabel, type FieldErrors } from './RowForm';
 
 const PAGE_SIZE = 50;
 
-/** Es remunta en canviar de fitxer o de feed perquè les columnes i les files no es barregin. */
+/** Remounted when the file or feed changes so columns and rows do not get mixed up. */
 export default function TableEditor(props: { feedId: string; table: GtfsTable }) {
   return <TableEditorBody key={`${props.feedId}:${props.table}`} {...props} />;
 }
@@ -59,18 +59,18 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
       router.replace(`${pathname}${next.size ? `?${next}` : ''}`, { scroll: false });
     }, 250);
     return () => clearTimeout(handle);
-    // Només la cerca escrita mou la URL.
+    // Only the typed search moves the URL.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
-  // En demanar la confirmació, el botó que es clicava desapareix: el focus passa al nou.
+  // When confirmation is requested, the button that was clicked disappears: focus moves to the new one.
   useEffect(() => {
     if (confirmDelete) confirmRef.current?.focus();
   }, [confirmDelete]);
 
   const load = () => setReloadKey((n) => n + 1);
 
-  // Només compta l'última petició: una resposta vella (cerca o pàgina anterior) no trepitja la nova.
+  // Only the latest request counts: an old response (search or previous page) does not overwrite the new one.
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
@@ -80,7 +80,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
       { signal: controller.signal }
     )
       .then((result) => {
-        // Si s'ha esborrat l'última fila de l'última pàgina, tornem a la darrera que existeix.
+        // If the last row of the last page was deleted, go back to the last page that exists.
         if (!result.rows.length && result.total > 0 && page > 1) {
           setPage(Math.max(1, Math.ceil(result.total / PAGE_SIZE)));
           return;
@@ -149,7 +149,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
     } catch (error) {
       if (error instanceof ApiError && error.code === 'invalidRow') {
         setErrors(error.details as FieldErrors);
-        // El focus va al primer camp amb error, perquè el lector de pantalla en llegeixi el missatge.
+        // Focus goes to the first field with an error so the screen reader reads its message.
         requestAnimationFrame(() =>
           document.querySelector<HTMLElement>('[role="dialog"] [aria-invalid="true"]')?.focus()
         );
@@ -198,7 +198,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
     return value;
   }
 
-  // Què identifica la fila davant d'un lector de pantalla: el primer valor de la fila amb contingut.
+  // What identifies the row to a screen reader: the first non-empty value in the row.
   const rowName = (row: TableRow): string =>
     [...columns.specCols, ...columns.extra].map((c) => row.values[c]).find((v) => v) ??
     String(row.id);

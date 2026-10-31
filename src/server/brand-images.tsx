@@ -1,12 +1,12 @@
 /**
- * Imatges de marca generades (Open Graph i icona d'Apple): el logotip i l'esquema de xarxa de la
- * portada, amb colors fixos perquè no depenen del tema.
+ * Generated brand images (Open Graph and Apple icon): the logo and the network diagram of the
+ * home page, with fixed colors because they do not depend on the theme.
  */
 const NAVY = '#1f4f86';
 
 export const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="${NAVY}"/><g fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 26 14 17.5 18.5 13h8" stroke="#f5a524"/><path d="M5.5 17.5H19l7 7" stroke="#5ec8f2"/><path d="M14 5.5v21" stroke="#fff"/></g><circle cx="14" cy="17.5" r="4" fill="#fff"/><circle cx="14" cy="17.5" r="1.9" fill="${NAVY}"/></svg>`;
 
-/** El logotip a sang, sense cantonades: iOS ja n'arrodoneix la icona. */
+/** The full-bleed logo, no rounded corners: iOS rounds the icon itself. */
 export const APPLE_ICON_SVG = LOGO_SVG.replace('rx="9"', 'rx="0"');
 
 const NETWORK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360"><g fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M224 28v304" stroke="#ffffff"/><path d="M40 316 152 204l72-72h216" stroke="#f5a524"/><path d="M40 204h264l80 80h56" stroke="#5ec8f2"/><path d="M92 52l52 52h176l60-60" stroke="#3fb67a"/></g><g fill="${NAVY}" stroke="#ffffff" stroke-width="4">${[

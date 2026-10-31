@@ -19,7 +19,7 @@ export default async function FeedsPage() {
   try {
     feeds = await listFeeds();
   } catch (error) {
-    console.error('No es poden llegir els feeds', error);
+    console.error('Could not read the feeds', error);
   }
   return (
     <div className="mx-auto max-w-7xl">

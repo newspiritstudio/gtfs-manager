@@ -55,7 +55,7 @@ export async function getFeed(
   return row ? { ...toSummary(row), importReport: row.importReport } : null;
 }
 
-/** Només el que cal per comprovar que el feed existeix: la majoria de rutes no necessiten res més. */
+/** Only what is needed to check that the feed exists: most routes need nothing more. */
 export async function feedHeader(
   feedId: string
 ): Promise<{ id: string; name: string; origin: 'import' | 'blank' } | null> {
@@ -120,8 +120,8 @@ export function isUuid(value: string): boolean {
 }
 
 /**
- * Els feeds de la navegació, amb la marca de cadascun: l'isotip oficial si ve del catàleg i en té,
- * i si no el color més repetit de les seves línies (el que identifica la xarxa).
+ * The navigation feeds, with each one's brand: the official isotype if it comes from the catalog and has one,
+ * otherwise the most repeated color of its routes (the one that identifies the network).
  */
 export async function listFeedNames(): Promise<ShellFeed[]> {
   try {
@@ -139,17 +139,17 @@ export async function listFeedNames(): Promise<ShellFeed[]> {
         id,
         name,
         logo: logo ? CATALOG_LOGOS[logo].src : undefined,
-        // Un blanc o un gris molt clar no es veurien sobre el fons de la barra.
+        // White or a very light gray would not be visible on the bar background.
         color: color && contrastRatio(color, 'FFFFFF') >= 1.5 ? `#${color}` : undefined,
       };
     });
   } catch {
-    // Sense base de dades, la closca es pinta igualment i la pàgina en diu l'error.
+    // Without a database the shell still renders and the page shows the error.
     return [];
   }
 }
 
-/** El feed importat més recent de cada entrada del catàleg (és el que s'obre des del catàleg). */
+/** The most recently imported feed of each catalog entry (the one opened from the catalog). */
 export async function importedCatalogFeeds(): Promise<Record<string, string>> {
   const imported: Record<string, string> = {};
   try {
@@ -158,7 +158,7 @@ export async function importedCatalogFeeds(): Promise<Record<string, string>> {
       WHERE catalog_id IS NOT NULL ORDER BY updated_at DESC`;
     for (const row of rows) imported[row.catalogId] ??= row.id;
   } catch {
-    // Sense base de dades el catàleg es pot consultar igualment.
+    // Without a database the catalog can still be browsed.
   }
   return imported;
 }

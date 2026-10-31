@@ -1,15 +1,15 @@
 /**
- * Genera les dades de l'animació de la portada (`public/landing-networks/<id>.json`) per a cada
- * xarxa de `src/features/landing/networks.ts`: les línies dibuixades amb les shapes del feed (o,
- * si una línia no en té, amb les parades del seu viatge més llarg) i els trens reals d'un dia
- * feiner dins de la franja. Cal tenir cada feed importat des del catàleg:
+ * Generates the data for the home page animation (`public/landing-networks/<id>.json`) for each
+ * network in `src/features/landing/networks.ts`: routes drawn with the feed shapes (or, if a
+ * route has none, with the stops of its longest trip) and the real trains of a
+ * weekday within the window. Each feed must already be imported from the catalog:
  *
- *   npm run landing:network               # totes les xarxes
- *   npm run landing:network -- fgc bart   # només aquestes
+ *   npm run landing:network               # all networks
+ *   npm run landing:network -- fgc bart   # only these
  *
- * El dia és el dimarts, dimecres o dijous de les quatre setmanes vinents amb més viatges.
- * Cada tren és [línia, sortida, arribada, fracció inicial, fracció final]: la posició al llarg del
- * traçat, interpolada en el temps entre la primera i l'última parada del viatge.
+ * The day is the Tuesday, Wednesday or Thursday of the next four weeks with the most trips.
+ * Each train is [route, departure, arrival, start fraction, end fraction]: the position along the
+ * path, interpolated in time between the first and last stop of the trip.
  */
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -28,7 +28,7 @@ const DEFAULT_WINDOW: [number, number] = [7 * 3600, 10 * 3600];
 type Sql = ReturnType<typeof getSql>;
 type Pt = { lat: number; lon: number };
 
-/** Els serveis actius un dia (calendar + calendar_dates), com a subconsulta. */
+/** The services active on a day (calendar + calendar_dates), as a subquery. */
 function activeServices(sql: Sql, feedId: string, date: string) {
   return sql`
     SELECT service_id FROM calendar
@@ -57,18 +57,18 @@ async function busiestWeekday(sql: Sql, feedId: string): Promise<string> {
       WHERE feed_id = ${feedId} AND service_id IN (${activeServices(sql, feedId, date)})`;
     if (row.n > best.trips) best = { date, trips: row.n };
   }
-  if (best.trips <= 0) throw new Error('El feed no té servei les quatre setmanes vinents');
+  if (best.trips <= 0) throw new Error('The feed has no service in the next four weeks');
   return best.date;
 }
 
 async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNetwork> {
   const [feed] = await sql<{ id: string }[]>`
     SELECT id FROM feeds WHERE catalog_id = ${config.id} ORDER BY updated_at DESC LIMIT 1`;
-  if (!feed) throw new Error(`Importa primer «${config.id}» des del catàleg`);
+  if (!feed) throw new Error(`Import "${config.id}" from the catalog first`);
   const window = config.window ?? DEFAULT_WINDOW;
   const date = await busiestWeekday(sql, feed.id);
 
-  // Una línia per nom: les variants d'una mateixa línia (route_id diferents) van juntes.
+  // One route per name: variants of the same route (different route_id) go together.
   const routes = await sql<
     { routeId: string; name: string; color: string | null; text: string | null; type: number }[]
   >`
@@ -105,7 +105,7 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
         SELECT shape_pt_lat AS lat, shape_pt_lon AS lon FROM shapes
         WHERE feed_id = ${feed.id} AND shape_id = ${shape.shapeId} ORDER BY shape_pt_sequence`;
     } else {
-      // Sense shapes: el traçat és la seqüència de parades del viatge amb més parades.
+      // Without shapes: the path is the stop sequence of the trip with the most stops.
       const [trip] = await sql<{ tripId: string }[]>`
         SELECT st.trip_id AS "tripId" FROM stop_times st
         JOIN trips t ON t.feed_id = st.feed_id AND t.trip_id = st.trip_id
@@ -120,9 +120,9 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
     }
     if (pts.length > 1) lines.push({ name, color: group.color, text: group.text, pts });
   }
-  if (!lines.length) throw new Error(`«${config.id}» no té cap línia amb traçat`);
+  if (!lines.length) throw new Error(`"${config.id}" has no line with a path`);
 
-  // Projecció equirectangular centrada a la xarxa, encaixada a l'amplada del dibuix.
+  // Equirectangular projection centered on the network, fitted to the drawing width.
   const all = lines.flatMap((l) => l.pts);
   const lat0 = all.reduce((a, p) => a + p.lat, 0) / all.length;
   const k = Math.cos((lat0 * Math.PI) / 180);
@@ -147,7 +147,7 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
         cumulative[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])
       );
     }
-    // El traçat, sense els punts a menys d'un píxel i mig de l'anterior.
+    // The path, without points less than a pixel and a half from the previous one.
     let d = '';
     let last: [number, number] | null = null;
     pts.forEach((p, i) => {
@@ -155,7 +155,7 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
       d += `${d ? 'L' : 'M'}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
       last = p;
     });
-    /** Fracció del traçat (0-1) on cau el punt més proper a una parada. */
+    /** Fraction of the path (0-1) where the point nearest to a stop falls. */
     const fraction = (stop: Pt) => {
       const [x, y] = project(stop);
       let best = Infinity;
@@ -173,7 +173,7 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
       }
       return at / (cumulative[cumulative.length - 1] || 1);
     };
-    // L'extrem més allunyat del centre de la ciutat, on es posa el nom de la línia.
+    // The end farthest from the city center, where the route name goes.
     const ends = [pts[0], pts[pts.length - 1]];
     const far = ends.sort(
       (a, b) =>
@@ -184,8 +184,8 @@ async function build(sql: Sql, config: LandingNetworkConfig): Promise<LandingNet
     return { ...line, d, fraction, far, reach };
   });
 
-  // S'etiqueten els extrems que queden lluny del centre (al centre s'amuntegarien); els noms de
-  // les línies que acaben al mateix lloc van junts en una sola etiqueta.
+  // Ends far from the center are labeled (at the center they would pile up); the names of
+  // routes that end in the same place go together in a single label.
   const minReach = Math.hypot(width, height) * 0.2;
   const labels: LandingNetwork['labels'] = [];
   geometry.forEach((g, i) => {
@@ -271,7 +271,7 @@ async function main() {
     const target = path.join(dir, `${config.id}.json`);
     await writeFile(target, `${JSON.stringify(network)}\n`);
     console.log(
-      `${config.id}: ${network.date}, ${network.lines.length} línies, ${network.trains.length} trens`
+      `${config.id}: ${network.date}, ${network.lines.length} lines, ${network.trains.length} trains`
     );
   }
   await sql.end();

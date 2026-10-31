@@ -18,7 +18,7 @@ import CatalogEntryStatus from '@/features/catalog/CatalogEntryStatus';
 function LogoTile({ entry, size }: { entry: CatalogEntry; size: 'md' | 'lg' }) {
   const modes = [...new Set(entry.routeTypes.map(transitModeForRouteType))];
   const box = size === 'lg' ? 'size-16 p-2' : 'size-10 p-1';
-  // Els isotips es dibuixen sobre blanc, com els fan servir les marques, també en tema fosc.
+  // Logos are drawn on white, as brands use them, in the dark theme too.
   return entry.logo ? (
     <span
       className={`flex shrink-0 items-center justify-center rounded-md bg-white ring-1 ring-outline-variant/40 ${box}`}
@@ -42,7 +42,7 @@ export default async function CatalogEntryPage({ entry }: { entry: CatalogEntry 
   const country = countryName.of(entry.country) ?? entry.country;
   const zipUrl = catalogZipUrl(entry.source);
   const url = absoluteUrl(localizedPath(locale, `/catalog/${entry.id}`));
-  // Primer els del mateix país: és el que busca qui consulta aquest feed.
+  // Same-country entries first: that is what someone looking at this feed is after.
   const more = GTFS_CATALOG.filter((e) => e.id !== entry.id)
     .sort((a, b) => Number(b.country === entry.country) - Number(a.country === entry.country))
     .slice(0, 6);

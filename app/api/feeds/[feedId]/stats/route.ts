@@ -11,7 +11,7 @@ export async function GET(_request: Request, { params }: RouteContext<{ feedId: 
   return response ?? NextResponse.json(await ensureStats(feedId));
 }
 
-/** Tanca una importació i recalcula les xifres i la validació. */
+/** Finishes an import and recomputes the figures and validation. */
 export async function POST(_request: Request, { params }: RouteContext<{ feedId: string }>) {
   const { feedId } = await params;
   const { feed, response } = await requireFeed(feedId);

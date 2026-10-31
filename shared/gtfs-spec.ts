@@ -1,11 +1,10 @@
 /**
- * L'especificació GTFS Schedule que entén l'aplicació: els fitxers, els camps, el tipus de
- * cada camp i les claus. És la font única del contracte: la importació (COPY a Postgres),
- * l'exportació (ZIP), la validació, l'editor genèric i l'esquema de Drizzle en surten.
- * `src/server/db/__tests__/schema-spec.test.ts` comprova que l'esquema i aquesta llista diuen el
- * mateix.
+ * The GTFS Schedule specification the app understands: files, fields, the type of
+ * each field and keys. It is the single source of the contract: import (COPY into Postgres),
+ * export (ZIP), validation, the generic editor and the Drizzle schema all derive from it.
+ * `src/server/db/__tests__/schema-spec.test.ts` checks that the schema and this list agree.
  *
- * Referència: https://gtfs.org/documentation/schedule/reference/
+ * Reference: https://gtfs.org/documentation/schedule/reference/
  */
 
 export type GtfsFieldType =
@@ -30,9 +29,9 @@ export interface GtfsField {
   name: string;
   type: GtfsFieldType;
   required?: boolean;
-  /** Valors admesos d'un camp `enum` (els enters de l'especificació). */
+  /** Allowed values of an `enum` field (the integers of the specification). */
   enumValues?: readonly number[];
-  /** El fitxer al qual apunta, si és una referència (`route_id` d'un viatge → routes). */
+  /** The file it points to, if it is a reference (a trip's `route_id` → routes). */
   ref?: GtfsTable;
 }
 
@@ -55,11 +54,11 @@ export type GtfsTable = (typeof GTFS_TABLES)[number];
 export interface GtfsFileSpec {
   table: GtfsTable;
   file: `${GtfsTable}.txt`;
-  /** Obligatori dins d'un feed vàlid (calendar o calendar_dates: n'hi ha prou amb un). */
+  /** Required in a valid feed (calendar or calendar_dates: one is enough). */
   required: boolean;
-  /** La clau natural (sense `feed_id`); buida si el fitxer no en té. */
+  /** The natural key (without `feed_id`); empty if the file has none. */
   key: readonly string[];
-  /** El camp que identifica la fila a la interfície. */
+  /** The field that identifies the row in the interface. */
   labelField: string;
   fields: readonly GtfsField[];
 }
@@ -269,7 +268,7 @@ export const GTFS_SPEC: Record<GtfsTable, GtfsFileSpec> = {
   },
 };
 
-/** El fitxer GTFS que correspon a un nom (`stops.txt` → stops); `null` si no el coneixem. */
+/** The GTFS file matching a name (`stops.txt` → stops); `null` if we do not know it. */
 export function tableForFile(fileName: string): GtfsTable | null {
   const base = fileName.split('/').pop()?.toLowerCase() ?? '';
   const table = base.replace(/\.txt$/, '');
@@ -280,7 +279,7 @@ export function isGtfsTable(value: string): value is GtfsTable {
   return (GTFS_TABLES as readonly string[]).includes(value);
 }
 
-/** Els tipus de camp que es desen com a enter a la base de dades. */
+/** Field types stored as integers in the database. */
 export function isIntegerField(type: GtfsFieldType): boolean {
   return type === 'int' || type === 'enum' || type === 'time';
 }
@@ -290,8 +289,8 @@ export function isFloatField(type: GtfsFieldType): boolean {
 }
 
 /**
- * Les famílies de mode de transport (route_type), bàsiques i ampliades (HVT), amb la icona
- * que les representa a la interfície. L'etiqueta és una clau d'i18n (`routeType.<family>`).
+ * The transport mode families (route_type), basic and extended (HVT), with the icon
+ * that represents them in the interface. The label is an i18n key (`routeType.<family>`).
  */
 export type TransitMode =
   | 'tram'

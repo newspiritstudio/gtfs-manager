@@ -18,15 +18,15 @@ describe('adreces per idioma', () => {
     expect(localizedPath('ja', '/catalog/fgc')).toBe('/ja/catalog/fgc');
   });
 
-  it('només inici i catàleg són públics', () => {
+  it('only home and catalog are public', () => {
     expect(isPublicPath('/')).toBe(true);
     expect(isPublicPath('/catalog/fgc')).toBe(true);
     expect(isPublicPath('/feeds')).toBe(false);
     expect(isPublicPath('/new')).toBe(false);
   });
 
-  it('el proxy coneix tots els idiomes', () => {
-    // El `matcher` del proxy ha de ser literal: aquí es comprova que no s'ha quedat enrere.
+  it('the proxy knows every language', () => {
+    // The proxy `matcher` must be a literal: this checks it has not fallen behind.
     const source = readFileSync(join(process.cwd(), 'proxy.ts'), 'utf8');
     const group = /'\/\(([a-z|]+)\)'/.exec(source)?.[1].split('|').sort();
     expect(group).toEqual([...LOCALES].sort());

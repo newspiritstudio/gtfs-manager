@@ -47,7 +47,7 @@ function tripSpan(trip: DayTrip): [number, number] | null {
   return times.length ? [Math.min(...times), Math.max(...times)] : null;
 }
 
-/** Cert a partir de `lg` (1024 px): a l'escriptori el mapa va al costat de l'esquema, no a sota. */
+/** True from `lg` (1024 px): on desktop the map sits beside the diagram, not below it. */
 function useIsDesktop(): boolean {
   return useSyncExternalStore(
     (notify) => {
@@ -60,7 +60,7 @@ function useIsDesktop(): boolean {
   );
 }
 
-/** Es remunta en canviar de línia (p. ex. entre variants) perquè la data i el recorregut no s'arrosseguin. */
+/** Remounted when the line changes (e.g. between variants) so the date and path are not carried over. */
 export default function RouteDetailView(props: { feedId: string; detail: RouteDetail }) {
   return <RouteDetailBody key={props.detail.route.routeId} {...props} />;
 }
@@ -406,9 +406,9 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
 const VARIANTS_SHOWN = 6;
 
 /**
- * Les altres route_id amb el mateix nom curt (Renfe en publica una per cada origen i destinació,
- * i una altra per al servei per carretera). Es llegeixen pel recorregut, no per l'identificador:
- * primer les que tenen més viatges, i la que es mira sempre a la vista.
+ * The other route_ids with the same short name (Renfe publishes one per origin and destination,
+ * and another for the road service). They are read by path, not by identifier: those with the
+ * most trips first, and the one being viewed is always shown.
  */
 function RouteVariants({
   feedId,

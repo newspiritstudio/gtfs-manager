@@ -8,50 +8,50 @@ import {
   tidyRouteName,
 } from './gtfs-values';
 
-describe('hores GTFS', () => {
-  it('admet hores de més de 24 h i les torna igual', () => {
+describe('GTFS times', () => {
+  it('accepts times past 24 h and returns them unchanged', () => {
     expect(parseGtfsTime('25:07:30')).toBe(90450);
     expect(formatGtfsTime(90450)).toBe('25:07:30');
     expect(parseGtfsTime(' 7:05:00')).toBe(25500);
   });
 
-  it('marca el dia de servei de més a la interfície', () => {
+  it('flags the extra service day in the interface', () => {
     expect(formatClock(90450)).toContain('01:07');
     expect(formatClock(90450)).toContain('+1');
     expect(formatClock(null)).toBe('—');
   });
 
-  it('rebutja dates impossibles', () => {
+  it('rejects impossible dates', () => {
     expect(parseGtfsDate('20260230')).toBeNull();
     expect(parseGtfsDate('20261031')).toBe('20261031');
   });
 });
 
-describe('colors de línia', () => {
-  it('cau a un color estable sense route_color i hi posa text llegible', () => {
+describe('route colors', () => {
+  it('falls back to a stable color without route_color and picks readable text', () => {
     const a = routeColors('R3', null, null);
     expect(a).toEqual(routeColors('R3', undefined, ''));
     expect(['FFFFFF', '000000']).toContain(a.textColor);
   });
 
-  it('ignora un route_text_color sense contrast', () => {
+  it('ignores a route_text_color without contrast', () => {
     expect(routeColors('X', 'FFFF00', 'FFFFFF').textColor).toBe('000000');
   });
 
-  it('no accepta un text de contrast mitjà (blanc sobre un fons de 3,8:1)', () => {
+  it('does not accept medium-contrast text (white on a 3.8:1 background)', () => {
     expect(routeColors('L6', '797FBC', 'FFFFFF').textColor).toBe('000000');
     expect(routeColors('L1', '0A3E8A', 'FFFFFF').textColor).toBe('FFFFFF');
   });
 });
 
 describe('tidyRouteName', () => {
-  it("treu el farciment d'espais de Renfe i separa origen i destinació", () => {
+  it("strips Renfe's space padding and separates origin and destination", () => {
     expect(tidyRouteName('Vic                                     -Centelles')).toBe(
       'Vic – Centelles'
     );
   });
 
-  it('no toca els guions dels noms compostos', () => {
+  it('leaves hyphens in compound names alone', () => {
     expect(tidyRouteName('Granollers-Canovelles')).toBe('Granollers-Canovelles');
     expect(tidyRouteName('   ')).toBeNull();
     expect(tidyRouteName(null)).toBeNull();

@@ -1,16 +1,15 @@
 import { DEFAULT_LOCALE, isLocale, LOCALES, type Locale } from './config';
 
 /**
- * Les pàgines públiques (inici i catàleg) tenen una adreça per idioma perquè els cercadors en
- * puguin indexar cada versió: `/ca/catalog`, `/fr/catalog`. L'anglès (`DEFAULT_LOCALE`) no porta
- * prefix.
- * La resta de l'aplicació (els feeds) és espai de treball i segueix l'idioma de la galeta.
+ * Public pages (home and catalog) have one address per language so search engines can index each
+ * version: `/ca/catalog`, `/fr/catalog`. English (`DEFAULT_LOCALE`) has no prefix.
+ * The rest of the app (the feeds) is a workspace and follows the cookie language.
  */
 export function isPublicPath(path: string): boolean {
   return path === '/' || path === '/catalog' || path.startsWith('/catalog/');
 }
 
-/** Treu el prefix d'idioma: `/fr/catalog` → `{ locale: 'fr', path: '/catalog' }`. */
+/** Strips the language prefix: `/fr/catalog` → `{ locale: 'fr', path: '/catalog' }`. */
 export function splitLocalePath(pathname: string): { locale: Locale | null; path: string } {
   const [, first, ...rest] = pathname.split('/');
   if (isLocale(first) && first !== DEFAULT_LOCALE) {
@@ -19,7 +18,7 @@ export function splitLocalePath(pathname: string): { locale: Locale | null; path
   return { locale: null, path: pathname };
 }
 
-/** L'adreça pública d'una pàgina en un idioma. */
+/** The public address of a page in a language. */
 export function localizedPath(locale: Locale, path: string): string {
   if (locale === DEFAULT_LOCALE) return path;
   return path === '/' ? `/${locale}` : `/${locale}${path}`;

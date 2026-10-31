@@ -8,8 +8,8 @@ import { cn } from '@/lib/utils';
 import { ChartTooltip, SEQUENTIAL_STEPS, sequentialColor } from './Tooltip';
 
 /**
- * Mapa de calor del calendari: una columna per setmana i una fila per dia (de dilluns a diumenge).
- * Cada casella diu quants viatges circulen aquell dia; clicar-la la tria.
+ * Calendar heatmap: one column per week and one row per day (Monday to Sunday). Each cell says
+ * how many trips run that day; clicking it selects it.
  */
 export default function CalendarHeatmap({
   data,
@@ -65,8 +65,8 @@ export default function CalendarHeatmap({
     return { weeks: out, max: Math.max(...data.map((d) => d.trips)), months: monthLabels };
   }, [data, locale]);
 
-  // La casella que entra a l'ordre de Tab (la resta s'hi arriba amb les fletxes): la triada o la
-  // primera amb servei.
+  // The cell that is in the Tab order (the rest are reached with the arrow keys): the selected
+  // one, or the first with service.
   const stop =
     selected && data.some((d) => d.date === selected)
       ? selected
@@ -88,8 +88,8 @@ export default function CalendarHeatmap({
     )
   );
 
-  // Una etiqueta de mes que quedaria a tocar de la següent (un mes que només té una setmana a
-  // l'inici) es treu: si no, «oct.nov.» es llegeix enganxat.
+  // A month label that would sit right next to the following one (a month with a single week at
+  // the start) is dropped: otherwise "Oct.Nov." reads as one word.
   const monthLabels = months.filter(
     (m, i) => !(i === 0 && months[1] && months[1].index - m.index < 3)
   );
@@ -130,7 +130,7 @@ export default function CalendarHeatmap({
                     aria-pressed={onSelect ? selected === day.date : undefined}
                     tabIndex={day.date === stop ? 0 : -1}
                     onKeyDown={(e) => {
-                      // Fletxes: dalt i baix, un dia; esquerra i dreta, una setmana.
+                      // Arrows: up and down move one day; left and right move one week.
                       const step =
                         e.key === 'ArrowDown'
                           ? 1

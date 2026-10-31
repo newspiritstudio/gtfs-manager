@@ -1,36 +1,40 @@
 /**
- * Catàleg de GTFS públics. Cada entrada és un feed obert que s'ha comprovat que es descarrega i que
- * té servei vigent. L'estat d'actualització no es desa aquí: el servidor el consulta en directe
- * (capçalera Last-Modified, metadades d'ArcGIS o d'Opendatasoft) i el mostra al catàleg.
+ * Catalog of public GTFS feeds. Every entry is an open feed that has been checked to download and
+ * to have current service. Freshness is not stored here: the server queries it live (Last-Modified
+ * header, ArcGIS or Opendatasoft metadata) and shows it in the catalog.
+ *
+ * Names and regions use the operator's own (native) naming, so they read the same in every UI
+ * language; the country is localized from its ISO code.
  */
 
 export type CatalogSource =
-  /** Un ZIP en una URL fixa. */
+  /** A ZIP at a fixed URL. */
   | { kind: 'zip'; url: string }
-  /** Un element d'ArcGIS Online (ZIP a `/data`, metadades a `?f=json`). */
+  /** An ArcGIS Online item (ZIP at `/data`, metadata at `?f=json`). */
   | { kind: 'arcgis'; portal: string; item: string }
-  /** Un conjunt d'Opendatasoft que publica cada fitxer .txt per separat. */
+  /** An Opendatasoft dataset that publishes each .txt file separately. */
   | { kind: 'opendatasoft'; portal: string; dataset: string };
 
 export interface CatalogEntry {
   id: string;
   name: string;
   operator: string;
-  /** Codi de país ISO 3166-1 alfa-2. */
+  /** ISO 3166-1 alpha-2 country code. */
   country: string;
   region: string;
-  /** Tipus de ruta GTFS (route_type) que conté el feed. */
+  /** GTFS route types (route_type) present in the feed. */
   routeTypes: number[];
   homepage: string;
   source: CatalogSource;
-  /** Clau de `CATALOG_LOGOS`: l'isotip de la marca, si n'hi ha un de lliure. */
+  /** Key in `CATALOG_LOGOS`: the brand symbol, when a freely licensed one exists. */
   logo?: CatalogLogoId;
 }
 
 /**
- * Isotips de les marques, en vector, de Wikimedia Commons (`public/catalog-logos/`). Són logotips
- * en domini públic o CC0 segons la fitxa de cada fitxer; la pàgina del catàleg en cita l'origen.
- * L'AMB i l'STM s'han retallat per deixar només el símbol, sense el nom.
+ * Brand symbols as vector files from Wikimedia Commons (`public/catalog-logos/`). Each one is public
+ * domain or CC0 according to its file page; the catalog page credits the source. The AMB and STM
+ * files were cropped to keep only the symbol, without the name; the TFI one by cropping the viewBox
+ * to the green "TFI" badge (without the "Transport for Ireland" wordmark).
  */
 export const CATALOG_LOGOS = {
   fgc: {
@@ -207,6 +211,48 @@ export const CATALOG_LOGOS = {
     url: 'https://commons.wikimedia.org/wiki/File:Transperth_icon.svg',
     license: 'pd',
   },
+  fgv: {
+    src: '/catalog-logos/fgv.svg',
+    file: 'FGV icono.svg',
+    url: 'https://commons.wikimedia.org/wiki/File:FGV_icono.svg',
+    license: 'pd',
+  },
+  sncf: {
+    src: '/catalog-logos/sncf.svg',
+    file: 'Logo SNCF no text.svg',
+    url: 'https://commons.wikimedia.org/wiki/File:Logo_SNCF_no_text.svg',
+    license: 'pd',
+  },
+  trenord: {
+    src: '/catalog-logos/trenord.svg',
+    file: 'Trenord Logo RDT.svg',
+    url: 'https://commons.wikimedia.org/wiki/File:Trenord_Logo_RDT.svg',
+    license: 'pd',
+  },
+  fertagus: {
+    src: '/catalog-logos/fertagus.svg',
+    file: 'Logo Fertagus 2.svg',
+    url: 'https://commons.wikimedia.org/wiki/File:Logo_Fertagus_2.svg',
+    license: 'pd',
+  },
+  cp: {
+    src: '/catalog-logos/cp.svg',
+    file: 'Logo CP 2.svg',
+    url: 'https://commons.wikimedia.org/wiki/File:Logo_CP_2.svg',
+    license: 'pd',
+  },
+  zet: {
+    src: '/catalog-logos/zet.svg',
+    file: 'ZET logo blue.svg',
+    url: 'https://commons.wikimedia.org/wiki/File:ZET_logo_blue.svg',
+    license: 'pd',
+  },
+  tfi: {
+    src: '/catalog-logos/tfi.svg',
+    file: 'Transport for Ireland logo.svg',
+    url: 'https://commons.wikimedia.org/wiki/File:Transport_for_Ireland_logo.svg',
+    license: 'pd',
+  },
 } as const satisfies Record<
   string,
   { src: string; file: string; url: string; license: 'pd' | 'cc0' }
@@ -228,10 +274,10 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'renfe-cercanias',
-    name: 'Renfe Cercanías i Rodalies',
+    name: 'Renfe Cercanías / Rodalies',
     operator: 'Renfe Viajeros',
     country: 'ES',
-    region: 'Espanya',
+    region: 'España',
     routeTypes: [2, 3],
     homepage: 'https://data.renfe.com/dataset/horarios-cercanias',
     source: {
@@ -242,10 +288,10 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'renfe-ld',
-    name: 'Renfe Alta Velocitat, Llarga i Mitjana Distància',
+    name: 'Renfe Alta Velocidad, Larga y Media Distancia',
     operator: 'Renfe Viajeros',
     country: 'ES',
-    region: 'Espanya',
+    region: 'España',
     routeTypes: [2],
     homepage:
       'https://data.renfe.com/dataset/horarios-de-alta-velocidad-larga-distancia-y-media-distancia',
@@ -365,10 +411,10 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'gtfs-de-fv',
-    name: 'Llarga distància d’Alemanya',
+    name: 'gtfs.de Fernverkehr',
     operator: 'gtfs.de',
     country: 'DE',
-    region: 'Alemanya',
+    region: 'Deutschland',
     routeTypes: [2],
     homepage: 'https://gtfs.de/',
     source: { kind: 'zip', url: 'https://download.gtfs.de/germany/fv_free/latest.zip' },
@@ -428,7 +474,7 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'sncf-voyageurs',
-    name: 'SNCF Voyageurs: TGV, Intercités i TER',
+    name: 'SNCF Voyageurs: TGV, Intercités, TER',
     operator: 'SNCF Voyageurs',
     country: 'FR',
     region: 'France',
@@ -438,6 +484,7 @@ const ENTRIES: CatalogEntry[] = [
       kind: 'zip',
       url: 'https://eu.ftp.opendatasoft.com/sncf/plandata/Export_OpenData_SNCF_GTFS_NewTripId.zip',
     },
+    logo: 'sncf',
   },
   {
     id: 'breizhgo-ter',
@@ -464,7 +511,7 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'star-rennes',
-    name: 'STAR (bus i metro de Rennes)',
+    name: 'STAR Rennes',
     operator: 'Keolis Rennes (STAR)',
     country: 'FR',
     region: 'Rennes',
@@ -558,6 +605,7 @@ const ENTRIES: CatalogEntry[] = [
       kind: 'zip',
       url: 'https://www.dati.lombardia.it/download/3z4k-mxz9/application%2Fzip',
     },
+    logo: 'trenord',
   },
   {
     id: 'anm-napoli',
@@ -589,6 +637,7 @@ const ENTRIES: CatalogEntry[] = [
     routeTypes: [2, 109],
     homepage: 'https://www.cp.pt/passageiros/pt/consultar-horarios/dados-abertos',
     source: { kind: 'zip', url: 'https://publico.cp.pt/gtfs/gtfs.zip' },
+    logo: 'cp',
   },
   {
     id: 'fertagus',
@@ -599,6 +648,7 @@ const ENTRIES: CatalogEntry[] = [
     routeTypes: [2],
     homepage: 'https://www.fertagus.pt/en',
     source: { kind: 'zip', url: 'https://www.fertagus.pt/GTFSTMLzip/Fertagus_GTFS.zip' },
+    logo: 'fertagus',
   },
   {
     id: 'metrovalencia',
@@ -612,6 +662,7 @@ const ENTRIES: CatalogEntry[] = [
       kind: 'zip',
       url: 'https://www.metrovalencia.es/google_transit_feed/google_transit.zip',
     },
+    logo: 'fgv',
   },
   {
     id: 'metro-malaga',
@@ -660,7 +711,7 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'schweiz-fahrplan',
-    name: 'Fahrplan Schweiz (SBB i operadors)',
+    name: 'Fahrplan Schweiz',
     operator: 'Open Data Plattform Mobilität Schweiz (SBB)',
     country: 'CH',
     region: 'Schweiz',
@@ -676,7 +727,7 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'ovapi-nl',
-    name: 'Transport públic dels Països Baixos',
+    name: 'OVapi Nederland',
     operator: 'OVapi (NDOV)',
     country: 'NL',
     region: 'Nederland',
@@ -696,10 +747,11 @@ const ENTRIES: CatalogEntry[] = [
       kind: 'zip',
       url: 'https://www.transportforireland.ie/transitData/Data/GTFS_All.zip',
     },
+    logo: 'tfi',
   },
   {
     id: 'ruter',
-    name: 'Ruter Oslo i Akershus',
+    name: 'Ruter Oslo og Akershus',
     operator: 'Ruter AS',
     country: 'NO',
     region: 'Oslo og Akershus',
@@ -771,7 +823,7 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'mpk-krakow',
-    name: 'MPK Kraków (autobusos)',
+    name: 'MPK Kraków (autobusy)',
     operator: 'Zarząd Transportu Publicznego w Krakowie',
     country: 'PL',
     region: 'Kraków',
@@ -781,7 +833,7 @@ const ENTRIES: CatalogEntry[] = [
   },
   {
     id: 'mpk-krakow-tramvia',
-    name: 'MPK Kraków (tramvia)',
+    name: 'MPK Kraków (tramwaje)',
     operator: 'Zarząd Transportu Publicznego w Krakowie',
     country: 'PL',
     region: 'Kraków',
@@ -811,6 +863,7 @@ const ENTRIES: CatalogEntry[] = [
     routeTypes: [0, 3],
     homepage: 'https://www.zet.hr/odredbe/datoteke-u-gtfs-formatu/669',
     source: { kind: 'zip', url: 'https://www.zet.hr/gtfs-scheduled/latest' },
+    logo: 'zet',
   },
   {
     id: 'vilnius',
@@ -1024,24 +1077,24 @@ const ENTRIES: CatalogEntry[] = [
 
 const byName = new Intl.Collator('en', { sensitivity: 'base', numeric: true });
 
-/** El catàleg, ordenat alfabèticament pel nom (sense distingir majúscules ni accents). */
+/** The catalog, sorted alphabetically by name (case- and accent-insensitive). */
 export const GTFS_CATALOG: CatalogEntry[] = ENTRIES.sort((a, b) => byName.compare(a.name, b.name));
 
 export function catalogEntry(id: string): CatalogEntry | undefined {
   return GTFS_CATALOG.find((entry) => entry.id === id);
 }
 
-/** Estat en directe d'una entrada del catàleg. */
+/** Live status of a catalog entry. */
 export interface CatalogStatus {
   id: string;
   available: boolean;
-  /** Darrera publicació segons la font (ISO), si la dona. */
+  /** Last publication according to the source (ISO), when available. */
   updatedAt: string | null;
-  /** Mida del ZIP en bytes, si la font la dona. */
+  /** ZIP size in bytes, when the source reports it. */
   size: number | null;
 }
 
-/** L'adreça d'on es baixa el ZIP, si la font en té un de sencer (Opendatasoft publica fitxers solts). */
+/** The URL to download the ZIP from, when the source has a single one (Opendatasoft publishes loose files). */
 export function catalogZipUrl(source: CatalogSource): string | null {
   if (source.kind === 'zip') return source.url;
   if (source.kind === 'arcgis')

@@ -1,12 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { DEFAULT_LOCALE, isLocale, LOCALE_COOKIE } from '@/lib/i18n/config';
 
-/** Capçalera amb què el proxy diu a les pàgines en quin idioma s'han de pintar. */
+/** Header the proxy uses to tell pages which locale to render. */
 const LOCALE_HEADER = 'x-gtfs-locale';
 
 /**
- * Les adreces amb prefix d'idioma (`/ca`, `/de/catalog/fgc`) es pinten en aquell idioma i el
- * deixen triat per a la resta de l'aplicació. `/en/...` torna a l'adreça sense prefix.
+ * Locale-prefixed paths (`/ca`, `/de/catalog/fgc`) render in that locale and keep it selected
+ * for the rest of the app. `/en/...` redirects to the unprefixed path.
  */
 export function proxy(request: NextRequest) {
   const [, first, ...rest] = request.nextUrl.pathname.split('/');
@@ -29,7 +29,7 @@ export function proxy(request: NextRequest) {
   return response;
 }
 
-// Ha de ser literal: Next el llegeix en compilar. Els mateixos idiomes que `LOCALES`.
+// Must be a literal: Next reads it at compile time. Same locales as `LOCALES`.
 export const config = {
   matcher: [
     '/(ca|es|en|fr|de|it|pt|zh|ja)',

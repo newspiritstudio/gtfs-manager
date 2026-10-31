@@ -1,8 +1,8 @@
 import { formatClock } from '@shared/gtfs-values';
 
 /**
- * Una hora GTFS com a xifra: «01:09» i, si cau l'endemà del dia de servei, un «+1» petit. Així una
- * xifra gran no salta de línia per culpa del «(+1)».
+ * A GTFS time as a figure: "01:09" and, if it falls on the day after the service day, a small
+ * "+1". This way a large figure does not wrap because of the "(+1)".
  */
 export function ClockTime({ seconds }: { seconds: number | null | undefined }) {
   if (seconds === null || seconds === undefined) return <>—</>;

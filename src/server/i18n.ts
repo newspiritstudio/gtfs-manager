@@ -14,8 +14,8 @@ import { createTranslator, type Messages } from '@/lib/i18n/translate';
 export const MESSAGES: Record<Locale, Messages> = { ca, es, en, fr, de, it, pt, zh, ja };
 
 /**
- * L'idioma de la petició: el de l'adreça (`/fr/...`, que el proxy passa en una capçalera), la
- * galeta triada o el primer idioma del navegador que tinguem.
+ * The request locale: the one in the URL (`/fr/...`, which the proxy passes in a header), the
+ * chosen cookie or the first browser language we support.
  */
 export async function getLocale(): Promise<Locale> {
   const fromPath = (await headers()).get('x-gtfs-locale');
@@ -30,7 +30,7 @@ export async function getLocale(): Promise<Locale> {
   return DEFAULT_LOCALE;
 }
 
-/** Només les claus del català que falten a l'idioma: el que el client necessita com a recanvi. */
+/** Only the Catalan keys missing from a locale: what the client needs as a fallback. */
 function missingFrom(messages: Messages, locale: Messages): Messages {
   const out: Messages = {};
   for (const [key, value] of Object.entries(messages)) {
@@ -47,7 +47,7 @@ function missingFrom(messages: Messages, locale: Messages): Messages {
 
 const fallbacks = new Map<Locale, Messages>();
 
-/** El recanvi (català) que s'envia al navegador: buit si l'idioma ja ho porta tot. */
+/** The Catalan fallback sent to the browser: empty when the locale already has everything. */
 export function clientFallback(locale: Locale): Messages {
   if (locale === 'ca') return {};
   let fallback = fallbacks.get(locale);

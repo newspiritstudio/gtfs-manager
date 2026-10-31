@@ -7,7 +7,7 @@ import { useI18n } from '@/lib/i18n/client';
 import { useResolvedTheme } from '@/lib/useResolvedTheme';
 import { cn } from '@/lib/utils';
 
-// Rajoles grises d'Esri (sense clau): el mapa queda en segon pla i els colors de les línies hi manen.
+// Grey Esri tiles (no key): the map stays in the background and the line colours dominate.
 const TILES = {
   light:
     'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
@@ -17,10 +17,10 @@ const ATTRIBUTION =
   'Esri, HERE, Garmin, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
 /**
- * El mapa base: Leaflet amb renderitzador canvas (milers de parades i línies sense un node DOM
- * cadascuna) i les rajoles grises d'Esri del tema que es veu. A pantalla tàctil, un mapa dins
- * d'una pàgina (sense `scrollZoom`) no s'arrossega amb un dit, perquè no atrapi el desplaçament de
- * la pàgina: es mou amb dos dits. `onReady` rep el mapa per afegir-hi capes.
+ * The base map: Leaflet with a canvas renderer (thousands of stops and lines without one DOM
+ * node each) and the grey Esri tiles of the theme currently shown. On a touch screen, a map
+ * inside a page (without `scrollZoom`) is not dragged with one finger, so it does not trap the
+ * page scroll: it moves with two fingers. `onReady` receives the map to add layers to.
  */
 export default function BaseMap({
   onReady,
@@ -36,9 +36,9 @@ export default function BaseMap({
   label: string;
   bounds?: [number, number, number, number] | null;
   interactive?: boolean;
-  /** La roda del ratolí fa zoom. Només als mapes que ocupen la pantalla: dins d'una pàgina, la roda ha de desplaçar la pàgina. */
+  /** The mouse wheel zooms. Only on maps that fill the screen: inside a page, the wheel must scroll the page. */
   scrollZoom?: boolean;
-  /** Píxels de l'esquerra tapats per un plafó: l'encaix de la xarxa i el zoom els eviten. */
+  /** Pixels on the left covered by a panel: network fitting and zoom avoid them. */
   insetLeft?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,7 +68,7 @@ export default function BaseMap({
     const container = containerRef.current;
     const fit = () => {
       if (bounds && bounds[0] === bounds[2] && bounds[1] === bounds[3]) {
-        // Un sol punt: fitBounds aniria al zoom màxim, amb les rajoles ampliades i borroses.
+        // A single point: fitBounds would go to the maximum zoom, with enlarged, blurry tiles.
         map.setView([bounds[0], bounds[1]], 16, { animate: false });
       } else if (bounds) {
         map.fitBounds(
@@ -97,8 +97,8 @@ export default function BaseMap({
         .addTo(map);
     fit();
     const cleanup = readyRef.current(map);
-    // Si el contenidor canvia de mida abans que la persona toqui el mapa, es torna a encaixar la
-    // xarxa: el primer encaix es pot haver fet amb l'alçada provisional del contenidor.
+    // If the container resizes before the person touches the map, the network is fitted again:
+    // the first fit may have used the container's provisional height.
     let touched = false;
     const markTouched = () => {
       touched = true;
@@ -121,7 +121,7 @@ export default function BaseMap({
       mapRef.current = null;
       tileRef.current = null;
     };
-    // El mapa es crea un cop; els límits inicials només compten en muntar-lo.
+    // The map is created once; the initial bounds only matter on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

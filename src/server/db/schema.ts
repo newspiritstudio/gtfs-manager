@@ -1,15 +1,15 @@
 /**
- * L'esquema de la base de dades. Cada fitxer GTFS és una taula amb els camps de
- * l'especificació (`shared/gtfs-spec.ts`) amb el mateix nom, més:
+ * The database schema. Each GTFS file is a table with the fields of the specification
+ * (`shared/gtfs-spec.ts`) under the same name, plus:
  *
- * - `id`: clau subrogada, perquè l'editor pugui tocar una fila encara que el fitxer no tingui clau
- *   natural (transfers, feed_info) o que la clau natural canviï.
- * - `feed_id`: cada feed importat o creat és independent; esborrar-lo ho esborra tot en cascada.
- * - `extra`: les columnes que porta el fitxer i que l'especificació no coneix. No es perden: es
- *   tornen a escriure a l'exportació.
+ * - `id`: surrogate key, so the editor can touch a row even when the file has no natural key
+ *   (transfers, feed_info) or the natural key changes.
+ * - `feed_id`: every imported or created feed is independent; deleting it cascades to everything.
+ * - `extra`: the columns the file carries that the specification does not know. They are not
+ *   lost: they are written back on export.
  *
- * Les hores (`time`) es desen en segons des de la mitjanit del dia de servei (poden passar de
- * 24:00:00) i les dates en el format GTFS (AAAAMMDD), que s'ordena bé com a text.
+ * Times (`time`) are stored as seconds since midnight of the service day (they can go past
+ * 24:00:00) and dates in GTFS format (YYYYMMDD), which sorts correctly as text.
  */
 import { sql } from 'drizzle-orm';
 import {
@@ -31,9 +31,9 @@ export const feeds = pgTable('feeds', {
   id: uuid().primaryKey().defaultRandom(),
   name: text().notNull(),
   description: text(),
-  /** `import` (vingut d'una carpeta o ZIP) o `blank` (creat des de zero). */
+  /** `import` (from a folder or ZIP) or `blank` (created from scratch). */
   origin: text().notNull().default('blank'),
-  /** L'entrada del catàleg públic d'on ve (`shared/catalog.ts`), si n'és una. */
+  /** The public catalog entry it comes from (`shared/catalog.ts`), if any. */
   catalogId: text(),
   importReport: jsonb().$type<ImportReport>(),
   stats: jsonb().$type<FeedStats>(),
@@ -91,7 +91,7 @@ export const stops = pgTable(
   },
   (t) => [
     uniqueIndex('stops_key').on(t.feed_id, t.stop_id),
-    // Els andanes d'una estació (fitxa de parada, sortides, connexions de línia).
+    // Platforms of a station (stop page, departures, line connections).
     index('stops_parent').on(t.feed_id, t.parent_station),
   ]
 );
@@ -271,7 +271,7 @@ export const feedInfo = pgTable(
   (t) => [index('feed_info_feed').on(t.feed_id)]
 );
 
-/** Els fitxers del feed que l'especificació d'aquesta app no modela (fares, pathways...). */
+/** Feed files that this app's specification does not model (fares, pathways...). */
 export const extraFiles = pgTable(
   'extra_files',
   {

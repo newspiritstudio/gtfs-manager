@@ -1,7 +1,7 @@
 /**
- * Exportació d'un feed com a ZIP GTFS. Cada fitxer surt de Postgres amb `COPY ... TO STDOUT` en
- * format CSV i entra al ZIP en streaming. Només s'escriuen les columnes que tenen algun valor (o que
- * l'especificació fa obligatòries) i, al final, les columnes extra que portava el fitxer original.
+ * Export of a feed as a GTFS ZIP. Each file comes out of Postgres with `COPY ... TO STDOUT` in
+ * CSV format and goes into the ZIP as a stream. Only columns with some value (or that the
+ * specification makes mandatory) are written and, at the end, the extra columns the original file carried.
  */
 import { PassThrough, type Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
@@ -12,7 +12,7 @@ import { getDedicatedSql, getSql, ident } from '../db/client';
 function selectExpression(field: GtfsField): string {
   const col = ident(field.name);
   if (field.type === 'time') {
-    // L'hora no es talla mai: lpad escurçaria «100» a «10» en un dia de servei de més de 99 hores.
+    // The time is never truncated: lpad would shorten '100' to '10' on a service day past 99 hours.
     return `CASE WHEN ${col} IS NULL THEN NULL ELSE
       CASE WHEN ${col} < 36000 THEN '0' ELSE '' END || (${col} / 3600)::text || ':' ||
       lpad(((${col} % 3600) / 60)::text, 2, '0') || ':' || lpad((${col} % 60)::text, 2, '0') END`;
@@ -58,8 +58,8 @@ async function planTable(feedId: string, table: GtfsTable): Promise<ExportPlan |
     ...fields.map((f) => `${selectExpression(f)} AS ${ident(f.name)}`),
     ...extraKeys.map((k) => `extra->>'${k.replace(/'/g, "''")}' AS "${k.replace(/"/g, '""')}"`),
   ].join(', ');
-  // COPY no admet paràmetres: el feed_id és un UUID validat.
-  if (!/^[0-9a-f-]{36}$/i.test(feedId)) throw new Error('feedId no vàlid');
+  // COPY does not accept parameters: feed_id is a validated UUID.
+  if (!/^[0-9a-f-]{36}$/i.test(feedId)) throw new Error('Invalid feedId');
   return {
     file: spec.file,
     query: `COPY (SELECT ${select} FROM ${ident(table)} WHERE feed_id = '${feedId}' ORDER BY ${order})
@@ -68,12 +68,12 @@ async function planTable(feedId: string, table: GtfsTable): Promise<ExportPlan |
 }
 
 /**
- * El ZIP del feed, en streaming. JSZip llegeix els fitxers per ordre; cada COPY comença quan
- * l'anterior ha acabat, de manera que mai no hi ha més d'una connexió ocupada.
+ * The feed ZIP, streamed. JSZip reads files in order; each COPY starts when the previous one
+ * has finished, so at most one connection is ever busy.
  */
 export async function exportFeedZip(feedId: string, signal?: AbortSignal): Promise<Readable> {
   const sql = getSql();
-  // Els plans (recomptes i columnes amb dades) es calculen alhora: el pool els reparteix.
+  // The plans (counts and columns with data) are computed together: the pool spreads them out.
   const plans = (await Promise.all(GTFS_TABLES.map((table) => planTable(feedId, table)))).filter(
     (plan): plan is ExportPlan => plan !== null
   );
@@ -84,9 +84,9 @@ export async function exportFeedZip(feedId: string, signal?: AbortSignal): Promi
     SELECT file_name AS "fileName", content FROM extra_files WHERE feed_id = ${feedId}`;
   for (const f of extra) zip.file(f.fileName, f.content);
 
-  // Els COPY van per una connexió pròpia: si el client talla la descàrrega, un COPY bloquejat
-  // escrivint a ningú no es pot cancel·lar des del servidor (pg_cancel_backend no el desperta), i la
-  // manera de no deixar-lo penjat és tancar-ne el socket. Per això no passen pel pool compartit.
+  // COPYs run on their own connection: if the client drops the download, a COPY blocked
+  // writing to nobody cannot be cancelled from the server (pg_cancel_backend does not wake it), and
+  // the only way not to leave it hanging is to close its socket. Hence they bypass the shared pool.
   const copySql = plans.length ? getDedicatedSql() : null;
   void (async () => {
     for (let i = 0; i < plans.length; i++) {
@@ -105,8 +105,8 @@ export async function exportFeedZip(feedId: string, signal?: AbortSignal): Promi
     compression: 'DEFLATE',
     compressionOptions: { level: 6 },
   }) as unknown as Readable;
-  // Si el client talla la descàrrega, els COPY pendents s'aturen: sense això, el servidor espera
-  // per sempre un lector que ja no hi és i la connexió de la base de dades queda ocupada.
+  // If the client drops the download, pending COPYs stop: without this, the server waits
+  // forever for a reader that is gone and the database connection stays busy.
   const stop = () => {
     for (const pass of passes) pass.destroy();
     void copySql?.end({ timeout: 0 });

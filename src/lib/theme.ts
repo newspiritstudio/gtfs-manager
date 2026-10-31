@@ -1,7 +1,7 @@
 export type ThemePreference = 'system' | 'light' | 'dark';
 export const THEME_STORAGE_KEY = 'gtfs-theme';
 
-/** Pinta el tema abans del primer fotograma (s'injecta al <head>). */
+/** Paints the theme before the first frame (injected into <head>). */
 export function themeBootstrapScript(): string {
   return `(function(){try{var p=localStorage.getItem('${THEME_STORAGE_KEY}')||'system';var d=p==='dark'||(p==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();`;
 }

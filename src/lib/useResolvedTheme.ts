@@ -12,7 +12,7 @@ function subscribe(callback: () => void) {
   };
 }
 
-/** El tema que es veu ara mateix (per als mapes, que trien les rajoles segons el tema). */
+/** The theme currently shown (for maps, which pick tiles according to the theme). */
 export function useResolvedTheme(): 'light' | 'dark' {
   return useSyncExternalStore(
     subscribe,

@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { MapSkeleton } from '@/components/ui/Skeleton';
 
-/** Leaflet toca `window` en carregar-se: els mapes només es pinten al navegador. */
+/** Leaflet touches `window` on load: maps are only rendered in the browser. */
 export const NetworkMap = dynamic(() => import('./NetworkMap'), {
   ssr: false,
   loading: () => <MapSkeleton />,

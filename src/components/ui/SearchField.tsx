@@ -16,7 +16,7 @@ export default function SearchField({
   onChange: (value: string) => void;
   placeholder: string;
   label: string;
-  /** Nom del botó que buida el camp (per defecte, «Tanca»). */
+  /** Name of the button that clears the field (default: "Close"). */
   clearLabel?: string;
   className?: string;
 }) {

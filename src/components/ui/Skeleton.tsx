@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
 
 /**
- * Esquelets de càrrega amb la forma del que vindrà: una línia de text, una barra, un mapa... Els
- * blocs són `on-surface` translúcid, de manera que es veuen igual sobre qualsevol superfície (una
- * targeta tonal o el fons), i una franja de llum els recorre per dins.
+ * Loading skeletons shaped like what will come: a line of text, a bar, a map... The blocks are
+ * translucent `on-surface`, so they look the same on any surface (a tonal card or the
+ * background), and a band of light sweeps across them.
  */
 export default function Skeleton({
   className,
@@ -21,7 +21,7 @@ export default function Skeleton({
   );
 }
 
-/** Línies de text: l'última, més curta, com un paràgraf de debò. */
+/** Lines of text: the last one shorter, like a real paragraph. */
 export function SkeletonText({ lines = 2, className }: { lines?: number; className?: string }) {
   return (
     <div aria-hidden className={cn('space-y-2', className)}>
@@ -35,7 +35,7 @@ export function SkeletonText({ lines = 2, className }: { lines?: number; classNa
   );
 }
 
-/** Un mapa que es carrega: el fons quadriculat d'un mapa buit, sense cap caixa grisa plana. */
+/** A map loading: the grid background of an empty map, without a flat grey box. */
 export function MapSkeleton({ className }: { className?: string }) {
   return (
     <div
@@ -50,7 +50,7 @@ export function MapSkeleton({ className }: { className?: string }) {
   );
 }
 
-/** Perfil d'un dia de servei (poc a la nit, puntes al matí i al vespre), per a les barres per hora. */
+/** Profile of a service day (little at night, peaks in the morning and evening), for the per-hour bars. */
 const DAY_PROFILE = [
   4, 2, 2, 3, 10, 34, 70, 92, 84, 62, 55, 56, 60, 62, 64, 70, 82, 90, 78, 60, 46, 34, 22, 12,
 ];
@@ -69,7 +69,7 @@ export function BarsSkeleton({ height = 160, className }: { height?: number; cla
   );
 }
 
-/** El mapa de calor del calendari: set files de caselles. */
+/** The calendar heatmap: seven rows of cells. */
 export function HeatmapSkeleton({ weeks = 10, className }: { weeks?: number; className?: string }) {
   return (
     <div
@@ -89,7 +89,7 @@ export function HeatmapSkeleton({ weeks = 10, className }: { weeks?: number; cla
   );
 }
 
-/** Files d'una llista: distintiu, dues línies de text i una xifra a la dreta. */
+/** List rows: badge, two lines of text and a figure on the right. */
 export function ListSkeleton({
   rows = 6,
   badge = true,
@@ -118,7 +118,7 @@ export function ListSkeleton({
   );
 }
 
-/** Una taula: capçalera i files amb columnes d'amplada variable. */
+/** A table: header and rows with columns of varying width. */
 export function TableSkeleton({
   rows = 10,
   columns = 6,

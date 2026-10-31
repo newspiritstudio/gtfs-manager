@@ -1,9 +1,9 @@
 /**
- * Importació d'un fitxer GTFS a Postgres en streaming. El text es llegeix a trossos, cada fila es
- * converteix segons l'especificació (`shared/gtfs-spec.ts`) i va a una taula temporal amb COPY;
- * d'allà passa a la taula definitiva amb `ON CONFLICT DO NOTHING`, de manera que una clau repetida
- * al fitxer es compta com a duplicat en lloc d'aturar tota la importació. Un fitxer de 300 MB
- * (stop_times de Renfe Cercanías, 1,9 M de files) no passa mai sencer per la memòria.
+ * Streaming import of a GTFS file into Postgres. The text is read in chunks, each row is
+ * converted according to the specification (`shared/gtfs-spec.ts`) and goes into a temporary table with COPY;
+ * from there it moves to the final table with `ON CONFLICT DO NOTHING`, so a repeated key
+ * in the file is counted as a duplicate instead of aborting the whole import. A 300 MB file
+ * (Renfe Cercanias stop_times, 1.9 M rows) never goes through memory whole.
  */
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
@@ -15,7 +15,7 @@ import { getSql, ident } from '../db/client';
 import { GTFS_TABLE_SCHEMAS } from '../db/schema';
 import { readCsvRows } from './csv';
 
-/** Un fitxer que no és GTFS conegut es desa sencer com a text: més enllà d'això, no és un feed. */
+/** A file that is not a known GTFS file is stored whole as text: beyond that, it is not a feed. */
 const MAX_EXTRA_FILE_BYTES = 64 * 1024 * 1024;
 
 function pgTypeFor(field: GtfsField): string {
@@ -33,12 +33,12 @@ function pgTypeFor(field: GtfsField): string {
   }
 }
 
-/** La cel·la d'una fila, sense bytes 0 (Postgres no els admet ni a text ni a jsonb). */
+/** A row cell, without 0 bytes (Postgres does not accept them in text or jsonb). */
 function cell(row: string[], index: number): string {
   return (row[index] ?? '').replaceAll('\0', '');
 }
 
-/** Escapa un valor per al format de text de COPY. */
+/** Escapes a value for COPY's text format. */
 function copyValue(value: string | number | null): string {
   if (value === null) return '\\N';
   if (typeof value === 'number') return String(value);
@@ -49,7 +49,7 @@ function copyValue(value: string | number | null): string {
     .replace(/\r/g, '\\r');
 }
 
-/** Les columnes NOT NULL de la taula (sense id ni feed_id): una fila sense alguna no es pot desar. */
+/** The table's NOT NULL columns (excluding id and feed_id): a row missing any cannot be stored. */
 export function notNullColumns(table: GtfsTable): string[] {
   const config = getTableConfig(GTFS_TABLE_SCHEMAS[table]);
   return config.columns
@@ -84,7 +84,7 @@ export async function importGtfsFile(
 
   const iterator = readCsvRows(source)[Symbol.asyncIterator]();
   let pending: string[][] = [];
-  // La capçalera és la primera fila.
+  // The header is the first row.
   while (pending.length === 0) {
     const next = await iterator.next();
     if (next.done) break;
@@ -100,7 +100,7 @@ export async function importGtfsFile(
     .filter((f) => f.required && !header.includes(f.name))
     .map((f) => f.name);
 
-  // Una columna repetida a la capçalera: COPY no admet dues vegades la mateixa; es queda la primera.
+  // A column repeated in the header: COPY does not accept the same one twice; the first is kept.
   const seen = new Set<string>();
   const known = columns.filter((c) => {
     if (!c.field || seen.has(c.name)) return false;
@@ -170,7 +170,7 @@ export async function importGtfsFile(
   const missingNotNull = notNullColumns(table).filter((c) => !stageColumns.includes(c));
 
   await sql.begin(async (tx) => {
-    // Dues importacions del mateix fitxer al mateix feed es faran una darrere l'altra, no barrejades.
+    // Two imports of the same file into the same feed run one after the other, not interleaved.
     await tx`SELECT pg_advisory_xact_lock(hashtext(${`${feedId}/${table}`}))`;
     await tx.unsafe(`DELETE FROM ${ident(table)} WHERE feed_id = $1`, [feedId]);
     const columnDefs = [
@@ -185,7 +185,7 @@ export async function importGtfsFile(
     await pipeline(Readable.from(copyStream()), writable);
 
     if (missingNotNull.length > 0) {
-      // Sense una columna imprescindible (stop_id a stops.txt...) no es pot desar cap fila.
+      // Without an essential column (stop_id in stops.txt...) no row can be stored.
       return;
     }
     const where = required.length
@@ -203,8 +203,8 @@ export async function importGtfsFile(
     report.duplicates = valid - result.count;
   });
 
-  // Les estadístiques del planificador, al dia: sense això, la primera consulta sobre una taula
-  // acabada d'omplir tria un pla per a una taula buida (41 s en lloc de 0,3 a stop_times).
+  // Keep the planner statistics up to date: without this, the first query on a freshly
+  // filled table picks a plan for an empty table (41 s instead of 0.3 s on stop_times).
   await sql.unsafe(`ANALYZE ${ident(table)}`);
   await markStatsStale(feedId);
   report.durationMs = Date.now() - started;
@@ -222,7 +222,7 @@ async function importExtraFile(
   let size = 0;
   for await (const chunk of source) {
     size += typeof chunk === 'string' ? chunk.length : chunk.byteLength;
-    if (size > MAX_EXTRA_FILE_BYTES) throw new Error(`${fileName}: el fitxer és massa gran`);
+    if (size > MAX_EXTRA_FILE_BYTES) throw new Error(`${fileName}: file is too large`);
     content += typeof chunk === 'string' ? chunk : decoder.decode(chunk, { stream: true });
   }
   content += decoder.decode();

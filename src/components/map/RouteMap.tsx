@@ -11,11 +11,11 @@ export interface RouteMapStop {
   name: string | null;
   lat: number | null;
   lon: number | null;
-  /** Text curt abans del nom a l'etiqueta (una hora, l'ordre...). */
+  /** Short text before the name in the label (a time, the order...). */
   caption?: string;
 }
 
-/** Una línia o un viatge: el traçat del color de la línia i les parades en ordre. */
+/** A line or a trip: the path in the line colour and the stops in order. */
 export default function RouteMap({
   lines,
   stops,
@@ -31,7 +31,7 @@ export default function RouteMap({
   label: string;
   onStopClick?: (stopId: string) => void;
   activeStopId?: string | null;
-  /** Uneix les parades amb una línia de punts quan no hi ha traçat. */
+  /** Joins the stops with a dotted line when there is no path. */
   connect?: boolean;
 }) {
   const groupRef = useRef<L.LayerGroup | null>(null);
@@ -111,7 +111,7 @@ export default function RouteMap({
     const map = mapRef.current;
     if (!map || !activeStopId) return;
     const s = stops.find((x) => x.id === activeStopId);
-    // Només es mou el mapa si la parada en queda fora: si no, passar el ratolí per l'esquema el desquadra.
+    // Only pan the map if the stop falls outside it: otherwise hovering the diagram throws the view off.
     if (
       s &&
       s.lat !== null &&

@@ -1,6 +1,6 @@
 /**
- * El càlcul del generador de viatges, compartit: el servidor el fa servir per crear els viatges i la
- * interfície per previsualitzar-los abans.
+ * The trip generator calculation, shared: the server uses it to create the trips and the
+ * interface to preview them first.
  */
 export const MAX_GENERATED_TRIPS = 500;
 
@@ -9,7 +9,7 @@ function minutes(value: string): number {
   return h * 60 + m;
 }
 
-/** Les sortides (en minuts des de mitjanit) d'una franja amb freqüència; null si la franja és al revés. */
+/** The departures (in minutes since midnight) of a frequency window; null if the window is reversed. */
 export function planDepartures(first: string, last: string, headway: number): number[] | null {
   const start = minutes(first);
   const end = minutes(last);
@@ -19,7 +19,7 @@ export function planDepartures(first: string, last: string, headway: number): nu
   return out;
 }
 
-/** Les hores de pas (segons) d'un viatge que surt a `start` minuts: [arribada, sortida] per parada. */
+/** The stop times (seconds) of a trip leaving at `start` minutes: [arrival, departure] per stop. */
 export function planStopTimes(
   start: number,
   travelMinutes: number[],

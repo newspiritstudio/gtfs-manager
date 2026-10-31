@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 
-/** Barres per hora del dia de servei (0–29 h: GTFS compta les hores de matinada com a 24, 25...). */
+/** Bars per hour of the service day (0–29 h: GTFS counts the small hours as 24, 25...). */
 export default function HourBars({
   values,
   unit,

@@ -1,17 +1,17 @@
 /**
- * Conversió entre el text d'un fitxer GTFS i el valor que es desa: hores en segons, dates
- * AAAAMMDD, colors en hexadecimal sense `#`. La fan servir la importació, l'exportació i l'editor.
+ * Conversion between the text of a GTFS file and the stored value: times as seconds, dates as
+ * YYYYMMDD, colors as hexadecimal without `#`. Used by import, export and the editor.
  */
 import { isFloatField, isIntegerField, type GtfsField, type GtfsFieldType } from './gtfs-spec';
 
-/** «25:07:30» → 90450. Accepta H:MM:SS (una xifra a l'hora, com permet l'especificació). */
+/** '25:07:30' → 90450. Accepts H:MM:SS (one digit for the hour, as the specification allows). */
 export function parseGtfsTime(raw: string): number | null {
   const match = /^(\d{1,3}):([0-5]\d):([0-5]\d)$/.exec(raw.trim());
   if (!match) return null;
   return Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3]);
 }
 
-/** 90450 → «25:07:30». */
+/** 90450 → '25:07:30'. */
 export function formatGtfsTime(seconds: number | null | undefined): string {
   if (seconds === null || seconds === undefined || !Number.isFinite(seconds)) return '';
   const s = Math.max(0, Math.round(seconds));
@@ -21,7 +21,7 @@ export function formatGtfsTime(seconds: number | null | undefined): string {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 }
 
-/** 90450 → «01:07 (+1)», per a la interfície: l'hora del rellotge i el dia de servei de més. */
+/** 90450 → '01:07 (+1)', for the interface: the clock time and the extra service day. */
 export function formatClock(seconds: number | null | undefined): string {
   if (seconds === null || seconds === undefined || !Number.isFinite(seconds)) return '—';
   const total = Math.floor(seconds / 60);
@@ -31,7 +31,7 @@ export function formatClock(seconds: number | null | undefined): string {
   return days > 0 ? `${label} (+${days})` : label;
 }
 
-/** «2026-10-31» o «20261031» → «20261031»; null si no és una data real. */
+/** '2026-10-31' or '20261031' → '20261031'; null if it is not a real date. */
 export function parseGtfsDate(raw: string): string | null {
   const compact = raw.trim().replace(/-/g, '');
   if (!/^\d{8}$/.test(compact)) return null;
@@ -45,7 +45,7 @@ export function parseGtfsDate(raw: string): string | null {
   return compact;
 }
 
-/** «20261031» → Date UTC a mitjanit. */
+/** '20261031' → Date at UTC midnight. */
 export function gtfsDateToUtc(date: string): Date {
   return new Date(
     Date.UTC(Number(date.slice(0, 4)), Number(date.slice(4, 6)) - 1, Number(date.slice(6, 8)))
@@ -58,7 +58,7 @@ export function utcToGtfsDate(date: Date): string {
   ).padStart(2, '0')}`;
 }
 
-/** «20261031» → «2026-10-31» (per a <input type="date">). */
+/** '20261031' → '2026-10-31' (for <input type="date">). */
 export function gtfsDateToIso(date: string | null | undefined): string {
   if (!date || date.length !== 8) return '';
   return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
@@ -70,7 +70,7 @@ export function addDays(date: string, days: number): string {
   return utcToGtfsDate(d);
 }
 
-/** «#75b6e0», «75B6E0» → «75B6E0». */
+/** '#75b6e0', '75B6E0' → '75B6E0'. */
 export function parseGtfsColor(raw: string): string | null {
   const hex = raw.trim().replace(/^#/, '');
   return /^[0-9a-fA-F]{6}$/.test(hex) ? hex.toUpperCase() : null;
@@ -78,7 +78,7 @@ export function parseGtfsColor(raw: string): string | null {
 
 export type ParsedValue = { value: string | number | null; invalid: boolean };
 
-/** El text d'una cel·la → el valor que es desa, segons el tipus del camp. Buit és null. */
+/** A cell's text → the value to store, according to the field type. Empty is null. */
 export function parseFieldValue(type: GtfsFieldType, raw: string): ParsedValue {
   const text = raw.trim();
   if (text === '') return { value: null, invalid: false };
@@ -115,7 +115,7 @@ export function parseFieldValue(type: GtfsFieldType, raw: string): ParsedValue {
   return { value: text, invalid: false };
 }
 
-/** El valor desat → el text GTFS. */
+/** The stored value → the GTFS text. */
 export function formatFieldValue(field: GtfsField, value: unknown): string {
   if (value === null || value === undefined) return '';
   if (field.type === 'time') return formatGtfsTime(Number(value));
@@ -123,8 +123,8 @@ export function formatFieldValue(field: GtfsField, value: unknown): string {
 }
 
 /**
- * La lluminositat relativa (WCAG) d'un color hexadecimal, per decidir el text que hi va a sobre
- * quan el feed no en porta (`route_text_color`).
+ * The relative luminance (WCAG) of a hexadecimal color, to decide the text color on top of it
+ * when the feed has none (`route_text_color`).
  */
 export function relativeLuminance(hex: string): number {
   const channels = [0, 2, 4].map((i) => {
@@ -140,14 +140,14 @@ export function contrastRatio(a: string, b: string): number {
   return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
 }
 
-/** El text que es llegeix millor sobre un fons, si el feed no en diu cap. */
+/** The most readable text color on a background, if the feed specifies none. */
 export function readableTextColor(background: string): string {
   return contrastRatio(background, 'FFFFFF') >= contrastRatio(background, '000000')
     ? 'FFFFFF'
     : '000000';
 }
 
-/** Un color estable per a una línia sense `route_color`, a partir del seu identificador. */
+/** A stable color for a route without `route_color`, derived from its identifier. */
 export function fallbackRouteColor(routeId: string): string {
   const palette = ['2A78D6', 'C4501F', '0E8A73', 'A26B00', 'C2407A', '008300', '4A3AA7', 'C93636'];
   let hash = 0;
@@ -156,8 +156,8 @@ export function fallbackRouteColor(routeId: string): string {
 }
 
 /**
- * Color de fons i de text d'una línia. El text del feed només es respecta si arriba a 4,5:1
- * (WCAG 1.4.3: els distintius són text petit); si no, es tria blanc o negre.
+ * Background and text color of a route. The feed's text color is only honored if it reaches 4.5:1
+ * (WCAG 1.4.3: badges are small text); otherwise white or black is chosen.
  */
 export function routeColors(
   routeId: string,
@@ -173,7 +173,7 @@ export function routeColors(
   return { color: bg, textColor: fg };
 }
 
-/** La distància en metres entre dos punts (haversine). */
+/** The distance in meters between two points (haversine). */
 export function haversineMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const r = 6371008.8;
   const toRad = Math.PI / 180;
@@ -186,10 +186,10 @@ export function haversineMeters(lat1: number, lon1: number, lat2: number, lon2: 
 }
 
 /**
- * Un nom de línia tal com s'ha de llegir. Alguns feeds (Renfe) farceixen route_long_name amb
- * espais fins a una amplada fixa abans del guió que separa origen i destinació:
- * «Vic␣␣␣␣␣␣-Centelles» es llegeix «Vic – Centelles». Els guions sense farciment (noms com
- * «Granollers-Canovelles») no es toquen.
+ * A route name as it should be read. Some feeds (Renfe) pad route_long_name with
+ * spaces up to a fixed width before the hyphen that separates origin and destination:
+ * 'Vic␣␣␣␣␣␣-Centelles' reads as 'Vic – Centelles'. Hyphens without padding (names like
+ * 'Granollers-Canovelles') are left alone.
  */
 export function tidyRouteName(name: string | null): string | null {
   if (name === null) return null;

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getRouteDay } from '@/server/gtfs/details';
 import { dateParam, jsonError, requireFeed, type RouteContext } from '@/server/http';
 
-/** Els viatges d'una línia un dia (?date=AAAAMMDD), amb les hores de pas. */
+/** The trips of a route on a day (?date=YYYYMMDD), with their stop times. */
 export async function GET(
   request: Request,
   { params }: RouteContext<{ feedId: string; routeId: string }>

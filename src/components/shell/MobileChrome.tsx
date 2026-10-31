@@ -22,14 +22,14 @@ export function MobileHeader({ feeds }: { feeds: ShellFeed[] }) {
   const [open, setOpen] = useState(false);
   const { crumbs, feedId } = useBreadcrumbs(feeds);
   const panelRef = useRef<HTMLDivElement>(null);
-  // Escape tanca el calaix i el focus hi entra en obrir-lo i torna a l'activador en tancar-lo.
+  // Escape closes the drawer; focus enters it on open and returns to the opener on close.
   useEffect(() => {
     if (!open) return;
     const previous = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
       if (e.key !== 'Tab' || !panelRef.current) return;
-      // El calaix és modal: el Tab no en pot sortir cap a la pàgina de darrere.
+      // The drawer is modal: Tab cannot leave it for the page behind.
       const items = panelRef.current.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), select, [tabindex]:not([tabindex="-1"])'
       );
@@ -58,8 +58,8 @@ export function MobileHeader({ feeds }: { feeds: ShellFeed[] }) {
         <IconButton label={t('nav.openMenu')} onClick={() => setOpen(true)}>
           <Menu />
         </IconButton>
-        {/* La pàgina ja porta el títol a la capçalera: la barra dona el context (el feed on
-            s'és) i no el repeteix. */}
+        {/* The page already carries the title in its header: the bar gives context (the feed you
+            are in) and does not repeat it. */}
         {feedId && crumbs.length > 2 ? (
           <Link
             href={crumbs[1].href}

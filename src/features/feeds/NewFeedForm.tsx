@@ -67,7 +67,7 @@ export interface CatalogPick {
 type DownloadState =
   { status: 'loading'; loaded: number; total: number | null } | { status: 'failed' } | null;
 
-/** Baixa el ZIP d'una entrada del catàleg amb progrés (el servidor fa de pont amb la font). */
+/** Downloads the ZIP of a catalog entry with progress (the server bridges to the source). */
 async function downloadCatalog(
   id: string,
   signal: AbortSignal,
@@ -112,7 +112,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
   const [attempt, setAttempt] = useState(0);
   const [phase, setPhase] = useState<'idle' | 'uploading' | 'stats'>('idle');
   const [dragging, setDragging] = useState(false);
-  // El feed ja creat si una importació ha fallat a mig camí: es reprèn sense duplicar-lo.
+  // The already-created feed if an import failed midway: it is resumed without duplicating it.
   const createdFeed = useRef<string | null>(null);
   const folderRef = useRef<HTMLInputElement>(null);
   const zipRef = useRef<HTMLInputElement>(null);
@@ -124,7 +124,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
   });
 
   const busy = phase !== 'idle';
-  // Fins que no es prem el botó no es retreu res: llavors es marquen els camps obligatoris buits.
+  // Nothing is flagged until the button is pressed: then empty required fields are marked.
   const [showErrors, setShowErrors] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const missing = (value: string) => (showErrors && !value.trim() ? t('data.fieldRequired') : null);
@@ -142,7 +142,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
   function submit() {
     if (invalid) {
       setShowErrors(true);
-      // El focus va al primer camp amb error; sense camp (cap fitxer triat), al selector de fitxers.
+      // Focus goes to the first field with an error; with no field (no file chosen), to the file picker.
       requestAnimationFrame(() =>
         (
           rootRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]') ??
@@ -270,7 +270,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
       }
     }
     if (failures) {
-      // No entrem al feed amb fitxers sense importar: es mostren i es poden reintentar.
+      // Do not enter the feed with files left unimported: they are shown and can be retried.
       toast(t('newFeed.failed'), 'error');
       setPhase('idle');
       return;
@@ -279,7 +279,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
     try {
       await apiFetch(`/api/feeds/${feedId}/stats`, { method: 'POST' });
     } catch {
-      // Les xifres es tornaran a calcular quan s'obri el feed.
+      // The figures will be recomputed when the feed is opened.
     }
     toast(t('newFeed.imported'), 'success');
     router.push(`/feeds/${feedId}`);

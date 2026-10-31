@@ -5,7 +5,7 @@ import CrumbLabel from '@/components/shell/CrumbLabel';
 import StopDetailView from '@/features/stops/StopDetailView';
 import { getStopDetail } from '@/server/gtfs/details';
 
-/** La mateixa consulta serveix el títol i la pàgina. */
+/** The same query serves the title and the page. */
 const load = cache((feedId: string, id: string) => getStopDetail(feedId, decodeURIComponent(id)));
 
 function labelOf(detail: NonNullable<Awaited<ReturnType<typeof load>>>, id: string) {

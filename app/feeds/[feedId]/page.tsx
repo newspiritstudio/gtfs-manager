@@ -235,7 +235,7 @@ export default async function FeedOverviewPage({ params }: Props) {
               <BarList
                 items={stats.topStops.map((s) => ({
                   key: s.stopId,
-                  // Dues andanes amb el mateix nom (Provença i Provença) es distingeixen pel codi.
+                  // Two platforms with the same name (Provença and Provença) are told apart by their code.
                   label:
                     stats.topStops.filter((o) => o.stopName === s.stopName).length > 1 ? (
                       <>

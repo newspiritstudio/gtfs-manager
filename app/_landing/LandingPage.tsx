@@ -48,7 +48,7 @@ export default async function LandingPage() {
       },
     ];
   });
-  // Una mostra del catàleg (els que tenen isotip); la resta, a la pàgina del catàleg.
+  // A sample of the catalog (entries with a logo); the rest live on the catalog page.
   const withLogo = GTFS_CATALOG.filter((e) => e.logo).slice(0, 15);
 
   return (

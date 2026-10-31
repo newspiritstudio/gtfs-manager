@@ -9,8 +9,8 @@ import Skeleton, {
 import { cn } from '@/lib/utils';
 
 /**
- * Esquelets de pàgina sencera per als `loading.tsx`: reprodueixen la graella de cada pàgina, de
- * manera que, quan arriben les dades, res no salta de lloc.
+ * Full-page skeletons for the `loading.tsx` files: they reproduce each page's grid so nothing
+ * jumps when the data arrives.
  */
 
 function Status({ children }: { children: React.ReactNode }) {
@@ -91,7 +91,7 @@ function KpiRow({ count }: { count: number }) {
   );
 }
 
-/** Targeta de la galeria (feeds, línies, catàleg): icona, títol i xifres. */
+/** Gallery card (feeds, lines, catalog): icon, title and figures. */
 function TileSkeleton({ stats = 3 }: { stats?: number }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-lg bg-tonal">
@@ -430,7 +430,7 @@ export function GeneratorSkeleton() {
   );
 }
 
-/** El cos del generador, també mentre es carrega la xarxa al client. */
+/** The generator body, also while the network loads on the client. */
 export function GeneratorBodySkeleton() {
   return (
     <div aria-hidden className="grid gap-4 xl:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
@@ -486,7 +486,7 @@ export function NewFeedSkeleton() {
   );
 }
 
-/** La fitxa d'un feed del catàleg: capçalera amb isotip, fitxa i la columna d'altres feeds. */
+/** A catalog feed page: header with logo, details and the column of other feeds. */
 export function CatalogEntrySkeleton() {
   return (
     <Status>

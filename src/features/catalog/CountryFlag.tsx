@@ -1,6 +1,6 @@
 /**
- * Bandera rodona d'un país (codi ISO 3166-1 alfa-2). Són de circle-flags v2.8.0 (MIT), a
- * `public/flags/`; el test del catàleg comprova que n'hi ha una per a cada país.
+ * Round flag of a country (ISO 3166-1 alpha-2 code). They come from circle-flags v2.8.0 (MIT), in
+ * `public/flags/`; the catalog test checks there is one for every country.
  */
 export default function CountryFlag({
   code,

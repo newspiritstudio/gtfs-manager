@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import type { TransitMode } from '@shared/gtfs-spec';
 
-/** La icona de cada mode de transport (route_type), la mateixa a tota l'aplicació. */
+/** The icon of each transport mode (route_type), the same across the app. */
 const MODE_ICONS: Record<TransitMode, LucideIcon> = {
   tram: TramFront,
   subway: TrainFrontTunnel,

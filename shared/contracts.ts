@@ -1,23 +1,23 @@
 /**
- * Contractes entre el servidor i el client: el que retornen les rutes /api i el que desa la
- * base de dades a `feeds.stats` i `feeds.import_report`.
+ * Contracts between server and client: what the /api routes return and what the
+ * database stores in `feeds.stats` and `feeds.import_report`.
  */
 import { z } from 'zod';
 import type { GtfsTable } from './gtfs-spec';
 
 export type ValidationSeverity = 'error' | 'warning' | 'info';
 
-/** Un problema de validació. El text el posa la interfície a partir del codi (`validation.<code>`). */
+/** A validation problem. The text comes from the interface based on the code (`validation.<code>`). */
 export interface ValidationIssue {
   code: string;
   severity: ValidationSeverity;
   table: GtfsTable | null;
   count: number;
-  /** Fins a cinc identificadors d'exemple. */
+  /** Up to five example identifiers. */
   samples: string[];
   /**
-   * El nom de cada exemple (línia, parada o viatge), alineat amb `samples`; null si no en té o si
-   * l'exemple no és un identificador. Les xifres desades abans d'afegir-lo no el porten.
+   * The name of each example (route, stop or trip), aligned with `samples`; null if it has none or if
+   * the example is not an identifier. Figures stored before this was added do not carry it.
    */
   sampleNames?: (string | null)[];
 }
@@ -28,9 +28,9 @@ export interface FileImportReport {
   rows: number;
   inserted: number;
   duplicates: number;
-  /** Valors que no complien el tipus (una data mal escrita, un enter amb lletres...) i s'han buidat. */
+  /** Values that did not match the type (a badly written date, an integer with letters...) and were emptied. */
   invalidValues: number;
-  /** Valors amb espais al principi o al final, que s'han retallat. */
+  /** Values with leading or trailing spaces, which were trimmed. */
   trimmedValues: number;
   unknownColumns: string[];
   missingRequiredColumns: string[];
@@ -60,17 +60,17 @@ export interface FeedStats {
   computedAt: string;
   counts: Record<GtfsTable, number>;
   extraFiles: string[];
-  /** [sud, oest, nord, est] de totes les parades amb coordenades. */
+  /** [south, west, north, east] of all stops with coordinates. */
   bbox: [number, number, number, number] | null;
-  /** Primer i darrer dia amb servei (AAAAMMDD). */
+  /** First and last day with service (YYYYMMDD). */
   dateRange: { start: string; end: string } | null;
   routeTypes: RouteTypeCount[];
-  /** Sortides de viatge (primera parada) per hora del dia de servei, de 0 a 29. */
+  /** Trip departures (first stop) by hour of the service day, 0 to 29. */
   departuresByHour: number[];
-  /** Viatges que circulen cada dia del període del feed. */
+  /** Trips running on each day of the feed period. */
   tripsByDate: { date: string; trips: number }[];
   topStops: TopStop[];
-  /** Primera sortida i darrera arribada del feed, en segons. */
+  /** First departure and last arrival of the feed, in seconds. */
   serviceSpan: { first: number; last: number } | null;
   validation: { errors: number; warnings: number; infos: number; issues: ValidationIssue[] };
 }
@@ -100,7 +100,7 @@ export const updateFeedSchema = z.object({
   description: z.string().trim().max(500).optional().nullable(),
 });
 
-/** Una fila de l'editor genèric: els camps de l'especificació com a text (el format GTFS). */
+/** A row of the generic editor: the specification fields as text (GTFS format). */
 export const rowValuesSchema = z.record(z.string(), z.string().nullable());
 export type RowValues = z.infer<typeof rowValuesSchema>;
 
@@ -116,7 +116,7 @@ export interface TablePage {
   pageSize: number;
 }
 
-/** El generador de viatges: una línia, unes parades en ordre i una franja amb freqüència. */
+/** The trip generator: a route, stops in order and a frequency window. */
 export const tripGeneratorSchema = z.object({
   routeId: z.string().min(1),
   serviceId: z.string().min(1),
@@ -126,7 +126,7 @@ export const tripGeneratorSchema = z.object({
     .default(null),
   headsign: z.string().trim().max(120).optional().nullable(),
   stopIds: z.array(z.string().min(1)).min(2).max(200),
-  /** Minuts des de la parada anterior; el primer és sempre 0. */
+  /** Minutes since the previous stop; the first is always 0. */
   travelMinutes: z.array(z.number().int().min(0).max(600)).min(2).max(200),
   dwellMinutes: z.number().int().min(0).max(30).default(0),
   firstDeparture: z.string().regex(/^\d{1,2}:\d{2}$/),
@@ -154,7 +154,7 @@ export interface NetworkRoute {
 }
 
 export interface NetworkLine {
-  /** shape_id, o `pattern:<route_id>` quan la línia es dibuixa per les parades. */
+  /** shape_id, or `pattern:<route_id>` when the route is drawn from its stops. */
   key: string;
   routeIds: string[];
   color: string;
@@ -183,9 +183,9 @@ export interface PatternStop {
   name: string | null;
   lat: number | null;
   lon: number | null;
-  /** Distància acumulada des de la primera parada, en metres. */
+  /** Cumulative distance from the first stop, in meters. */
   distance: number;
-  /** Altres línies que paren aquí (o a l'estació mare). */
+  /** Other routes that stop here (or at the parent station). */
   connections: { routeId: string; shortName: string | null; color: string; textColor: string }[];
 }
 
@@ -202,7 +202,7 @@ export interface DayTrip {
   headsign: string | null;
   directionId: number | null;
   patternKey: string;
-  /** [stop_id, arribada, sortida] en segons; null si la parada no té hora. */
+  /** [stop_id, arrival, departure] in seconds; null if the stop has no time. */
   times: [string, number | null, number | null][];
 }
 
@@ -218,12 +218,12 @@ export interface StopDeparture {
   isLast: boolean;
 }
 
-/** Un feed a la navegació de l'app. */
+/** A feed in the app navigation. */
 export interface ShellFeed {
   id: string;
   name: string;
-  /** Isotip oficial (`public/catalog-logos/`), si el feed ve del catàleg i en té. */
+  /** Official isotype (`public/catalog-logos/`), if the feed comes from the catalog and has one. */
   logo?: string;
-  /** Color principal de la xarxa (#RRGGBB), si no hi ha isotip. */
+  /** Main color of the network (#RRGGBB), if there is no isotype. */
   color?: string;
 }

@@ -20,7 +20,7 @@ export function ThemeToggle() {
   const { t } = useI18n();
   const [pref, setPref] = useState<ThemePreference>('system');
   useEffect(() => {
-    // Sincronitza amb la preferència desada (només existeix al navegador).
+    // Sync with the stored preference (it only exists in the browser).
     setPref(readThemePreference());
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const onChange = () => {
@@ -60,9 +60,9 @@ export function LanguageSelect() {
         onChange={(e) => {
           const next = e.target.value as Locale;
           document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
-          // Les pàgines públiques tenen una adreça per idioma. Hi va amb una càrrega sencera: la
-          // closca (i amb ella `<html lang>` i els textos) no es torna a pintar en una navegació
-          // del client. La resta de pàgines es tornen a pintar amb la galeta nova.
+          // Public pages have one address per language. It goes there with a full load: the shell (and
+          // with it `<html lang>` and the texts) is not re-rendered on a client navigation. Other pages
+          // re-render with the new cookie.
           const { path } = splitLocalePath(pathname);
           if (isPublicPath(path)) window.location.assign(localizedPath(next, path));
           else router.refresh();

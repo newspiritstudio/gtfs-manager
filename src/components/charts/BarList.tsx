@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
-/** Llista de barres horitzontals: l'etiqueta a l'esquerra, la barra i el valor a la dreta. */
+/** Horizontal bar list: label on the left, bar and value on the right. */
 export default function BarList({
   items,
   className,

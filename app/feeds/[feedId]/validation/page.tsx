@@ -25,7 +25,7 @@ const SEVERITY: Record<
   info: { icon: <Info />, tone: 'info', well: 'bg-info-container text-info' },
 };
 
-/** On porta cada exemple: la fitxa si n'hi ha, si no l'editor del fitxer filtrat. */
+/** Where each sample links to: the detail page if there is one, otherwise the filtered file editor. */
 function sampleHref(feedId: string, issue: ValidationIssue, sample: string): string {
   const base = `/feeds/${feedId}`;
   if (issue.table === 'routes') return `${base}/routes/${encodeURIComponent(sample)}`;

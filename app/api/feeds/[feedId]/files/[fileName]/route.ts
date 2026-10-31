@@ -6,8 +6,8 @@ import { jsonError, requireFeed, type RouteContext } from '@/server/http';
 export const maxDuration = 600;
 
 /**
- * Importa un fitxer del feed: el cos de la petició és el text del fitxer i es llegeix en streaming,
- * de manera que un stop_times de centenars de MB no passa sencer per la memòria del servidor.
+ * Imports a feed file: the request body is the file text and is read as a stream, so a
+ * stop_times of hundreds of MB never goes through server memory whole.
  */
 export async function PUT(
   request: Request,
@@ -27,7 +27,7 @@ export async function PUT(
     await appendImportReport(feedId, report);
     return NextResponse.json(report);
   } catch (error) {
-    console.error(`Importació de ${name}`, error);
+    console.error(`Import of ${name}`, error);
     return jsonError(422, 'importFailed', error instanceof Error ? error.message : undefined);
   }
 }

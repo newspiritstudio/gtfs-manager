@@ -1,5 +1,5 @@
 /**
- * Les consultes de les fitxes de detall: línia, parada i viatge.
+ * Queries for the detail pages: route, stop and trip.
  */
 import type {
   DayTrip,
@@ -24,7 +24,7 @@ export interface RouteDetail {
   patterns: RoutePattern[];
   lines: NetworkLine[];
   serviceDates: { date: string; trips: number }[];
-  /** Les altres línies amb el mateix nom curt (moltes agències en fan una per sentit). */
+  /** Other routes with the same short name (many agencies run one per direction). */
   siblings: NetworkRoute[];
 }
 
@@ -57,8 +57,8 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
     WITH seq AS (
       SELECT t.direction_id, t.trip_headsign, p.pattern
       FROM trips t
-      -- Un viatge cada cop pel seu índex: l'agregat sobre tot stop_times el planificador el feia
-      -- recórrer sencer (1,9 M de files a Renfe Rodalies).
+      -- One trip at a time by its index: the planner used to scan the whole stop_times for the aggregate
+      -- (1.9 M rows on Renfe Rodalies).
       CROSS JOIN LATERAL (
         SELECT string_agg(st.stop_id, '>' ORDER BY st.stop_sequence) AS pattern
         FROM stop_times st
@@ -91,7 +91,7 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
     : [];
   const stopById = new Map(stopRows.map((s) => [s.stopId, s]));
 
-  // Connexions: les línies que paren a la mateixa parada o a una germana de la mateixa estació.
+  // Connections: routes that stop at the same stop or at a sibling stop of the same station.
   const routesByStop = new Map(network.stops.map((s) => [s.stopId, s.routeIds]));
   const parentOf = new Map(stopRows.map((s) => [s.stopId, s.parent]));
   const siblingsByParent = new Map<string, string[]>();
@@ -188,7 +188,7 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
   };
 }
 
-/** Els viatges d'una línia un dia concret, amb totes les hores de pas. */
+/** The trips of a route on a given day, with all their stop times. */
 export async function getRouteDay(
   feedId: string,
   routeId: string,
@@ -302,7 +302,7 @@ export async function getStopDetail(feedId: string, stopId: string): Promise<Sto
   return { stop, parent: parent ?? null, children, routes, nearby, serviceDates };
 }
 
-/** Les sortides d'una parada (i dels seus andanes) un dia, per ordre d'hora. */
+/** The departures of a stop (and its platforms) on a day, ordered by time. */
 export async function getStopDepartures(
   feedId: string,
   stopId: string,

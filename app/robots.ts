@@ -3,8 +3,8 @@ import { SITE_URL } from '@/server/seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    // Els feeds es poden rastrejar però porten `noindex`: si es bloquegessin aquí, els cercadors
-    // no veurien l'etiqueta i en podrien indexar l'adreça igualment.
+    // Feeds may be crawled but carry `noindex`: if they were blocked here, search engines would
+    // not see the tag and could still index the address.
     rules: [{ userAgent: '*', allow: '/', disallow: ['/api/'] }],
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,

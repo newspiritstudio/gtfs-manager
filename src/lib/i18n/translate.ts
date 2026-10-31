@@ -1,10 +1,11 @@
 /**
- * Traducció per clau amb punts («nav.routes») i variables entre claus («{count} línies»). Un valor
- * pot ser un objecte de plurals (`one`, `other`, i opcionalment `zero`) quan hi ha `count`. Si la
- * clau no existeix a l'idioma triat, es fa servir el català; si tampoc, la clau mateixa.
+ * Translation by dotted key ("nav.routes") and variables in braces ("{count} lines"). A value
+ * can be a plurals object (`one`, `other`, and optionally `zero`) when `count` is present. If
+ * the key does not exist in the chosen language, Catalan is used; if not there either, the key
+ * itself.
  *
- * Les paraules d'una lletra («i», «o», «a», «y», «e»...) s'enganxen a la següent amb un espai
- * no separable: una línia no pot acabar amb una conjunció o una preposició soltes.
+ * One-letter words ("i", "o", "a", "y", "e"...) are glued to the next one with a non-breaking
+ * space: a line must not end with a stray conjunction or preposition.
  */
 export type Messages = { [key: string]: string | Messages };
 export type TranslateVars = Record<string, string | number>;

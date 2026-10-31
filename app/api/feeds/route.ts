@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     try {
       await createRow(id, 'agency', { agency_id: '1', ...data.agency });
     } catch (error) {
-      // Un feed sense l'agència que s'ha demanat no és el que l'usuari ha creat: no es deixa a mitges.
+      // A feed without the requested agency is not what the user asked for: do not leave it half-created.
       await deleteFeed(id);
       throw error;
     }

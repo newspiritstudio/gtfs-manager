@@ -28,7 +28,7 @@ export default function CatalogGallery({
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  // El filtre viu a l'adreça: es pot compartir i el botó enrere el desfà.
+  // The filter lives in the URL: it can be shared and the back button undoes it.
   const country = params.get('country') ?? 'all';
   const [query, setQuery] = useState(params.get('q') ?? '');
   const setParam = (key: string, value: string) => {
@@ -109,7 +109,7 @@ export default function CatalogGallery({
             <li key={entry.id} className="flex min-w-0 flex-col gap-3 rounded-lg bg-tonal p-4">
               <div className="flex items-start gap-3">
                 {entry.logo ? (
-                  // Els isotips es dibuixen sobre blanc, com els fan servir les marques, també en tema fosc.
+                  // Logos are drawn on white, as brands use them, in the dark theme too.
                   <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-white p-1.5 ring-1 ring-outline-variant/40">
                     <img
                       src={CATALOG_LOGOS[entry.logo].src}
@@ -197,7 +197,7 @@ export default function CatalogGallery({
   );
 }
 
-/** D'on surt cada isotip: el nom del fitxer a Wikimedia Commons i la llicència que hi consta. */
+/** Where each logo comes from: the file name on Wikimedia Commons and the licence listed there. */
 function LogoCredits({ entries }: { entries: CatalogEntry[] }) {
   const { t } = useI18n();
   const ids = [...new Set(entries.flatMap((e) => (e.logo ? [e.logo] : [])))];

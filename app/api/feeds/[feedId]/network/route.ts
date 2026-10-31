@@ -3,9 +3,9 @@ import { feedVersion, getNetworkBody, pickEncoding } from '@/server/gtfs/network
 import { jsonError, requireFeed, type RouteContext } from '@/server/http';
 
 /**
- * La xarxa del feed (uns 1 MB a Renfe). La versió del feed (`updated_at`, que tota edició i
- * importació mouen) fa d'ETag: el navegador sempre pregunta, però si res no ha canviat rep un 304
- * sense cos, i després d'una edició mai no veu dades velles.
+ * The feed network (about 1 MB for Renfe). The feed version (`updated_at`, which every edit and
+ * import bumps) acts as the ETag: the browser always asks, but if nothing changed it gets a 304
+ * with no body, and after an edit it never sees stale data.
  */
 export async function GET(request: Request, { params }: RouteContext<{ feedId: string }>) {
   const { feedId } = await params;
@@ -14,7 +14,7 @@ export async function GET(request: Request, { params }: RouteContext<{ feedId: s
   const version = await feedVersion(feedId);
   if (!version) return jsonError(404, 'feedNotFound');
   const headers = { ETag: `"${version}"`, 'Cache-Control': 'private, no-cache' };
-  // Un proxy o la compressió poden fer l'ETag feble (W/"..."): es compara igualment.
+  // A proxy or compression may make the ETag weak (W/"..."): compare it anyway.
   const sent = (request.headers.get('if-none-match') ?? '')
     .split(',')
     .map((v) => v.trim().replace(/^W\//, ''));

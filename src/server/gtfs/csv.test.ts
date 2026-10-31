@@ -7,21 +7,21 @@ function parse(chunks: string[]) {
 }
 
 describe('CsvParser', () => {
-  it('llegeix cometes, comes, salts de línia i CRLF, i treu el BOM', () => {
+  it('reads quotes, commas, line breaks and CRLF, and strips the BOM', () => {
     expect(parse(['﻿a,b\r\n"x, y","di ""hola""\nadeu"\r\n'])).toEqual([
       ['a', 'b'],
       ['x, y', 'di "hola"\nadeu'],
     ]);
   });
 
-  it('dona el mateix resultat partit a trossos qualssevol', () => {
+  it('gives the same result when split into arbitrary chunks', () => {
     const text = 'stop_id,stop_name\n1,"Plaça ""Major"""\n2,Sants\n';
     const whole = parse([text]);
     expect(parse(text.split(''))).toEqual(whole);
     expect(whole).toHaveLength(3);
   });
 
-  it('salta les línies buides i escapa els camps en escriure', () => {
+  it('skips empty lines and escapes fields when writing', () => {
     expect(parse(['a\n\n\nb'])).toEqual([['a'], ['b']]);
     expect(csvField('a,"b"')).toBe('"a,""b"""');
     expect(csvField('simple')).toBe('simple');

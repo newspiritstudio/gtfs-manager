@@ -9,14 +9,14 @@ import IconButton from '@/components/ui/IconButton';
 import RouteBadge from '@/components/ui/RouteBadge';
 import SearchField from '@/components/ui/SearchField';
 import { ListSkeleton, MapSkeleton } from '@/components/ui/Skeleton';
-import { groupRoutes } from '@/features/routes/groupRoutes';
+import { dedupeRouteBadges, groupRoutes } from '@/features/routes/groupRoutes';
 import { formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
 import NetworkError from './NetworkError';
 import { useNetwork } from './useNetwork';
 
-/** El mapa a pantalla completa: filtre de línies, parades a escala del volum i fitxa de parada. */
+/** The full-screen map: line filter, stops scaled by volume and the stop panel. */
 export default function NetworkExplorer({ feedId }: { feedId: string }) {
   const { t, locale } = useI18n();
   const { data, error, retry } = useNetwork(feedId);
@@ -56,7 +56,7 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
   }
 
   const stopRoutes = stop
-    ? groupRoutes(stop.routeIds.map((id) => routeById.get(id)!).filter(Boolean))
+    ? dedupeRouteBadges(groupRoutes(stop.routeIds.map((id) => routeById.get(id)!).filter(Boolean)))
     : [];
 
   return (

@@ -22,7 +22,7 @@ import { apiFetch, ApiError } from '@/lib/api';
 import { formatDuration } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 
-/** Minuts estimats entre dues parades a 40 km/h, com a punt de partida editable. */
+/** Estimated minutes between two stops at 40 km/h, as an editable starting point. */
 function estimateMinutes(a: NetworkStop, b: NetworkStop): number {
   return Math.max(1, Math.round((haversineMeters(a.lat, a.lon, b.lat, b.lon) / 1000 / 40) * 60));
 }
@@ -200,7 +200,7 @@ export default function TripGenerator({
               options={routes.map((r) => {
                 const name = r.shortName || r.routeId;
                 const label = r.longName ? `${name} · ${r.longName}` : name;
-                // Renfe en té moltes amb el mateix nom curt: l'identificador les distingeix.
+                // Renfe has many with the same short name: the identifier tells them apart.
                 return {
                   value: r.routeId,
                   label: duplicatedNames.has(name) ? `${label} (${r.routeId})` : label,

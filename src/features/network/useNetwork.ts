@@ -5,8 +5,8 @@ import type { NetworkData } from '@shared/contracts';
 import { apiFetch } from '@/lib/api';
 
 /**
- * La xarxa del feed (línies, traçats i parades), carregada al navegador per als mapes.
- * `enabled` evita descarregar-la quan la vista no la fa servir; `retry` la torna a demanar.
+ * The feed's network (lines, paths and stops), loaded in the browser for the maps.
+ * `enabled` avoids downloading it when the view does not use it; `retry` requests it again.
  */
 export function useNetwork(feedId: string, enabled = true) {
   const [data, setData] = useState<NetworkData | null>(null);

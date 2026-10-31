@@ -19,7 +19,7 @@ interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
   selected?: boolean;
 }
 
-/** Botó d'icona: cercle de 40 px amb etiqueta accessible obligatòria (també com a tooltip). */
+/** Icon button: 40 px circle with a mandatory accessible label (also as a tooltip). */
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
   { label, variant = 'standard', selected, className, children, type = 'button', ...props },
   ref

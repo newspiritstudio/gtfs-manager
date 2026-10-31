@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
 
-/** Error en carregar la xarxa: missatge i botó per tornar-ho a provar. */
+/** Error loading the network: message and a retry button. */
 export default function NetworkError({
   onRetry,
   className,

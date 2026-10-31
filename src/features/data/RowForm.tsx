@@ -31,7 +31,7 @@ function hintFor(t: Translate, field: GtfsField): string | undefined {
   return undefined;
 }
 
-/** Un camp que apunta a un altre fitxer: text lliure amb suggeriments del fitxer de destinació. */
+/** A field that points to another file: free text with suggestions from the target file. */
 function ReferenceField({
   feedId,
   field,

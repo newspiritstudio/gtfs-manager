@@ -8,7 +8,7 @@ import { useI18n } from '@/lib/i18n/client';
 import { formatNumber, formatRelative } from '@/lib/i18n/format';
 import { cn } from '@/lib/utils';
 
-/** L'estat de les fonts del catàleg, consultat en directe (pot trigar uns segons). */
+/** The status of the catalog sources, checked live (it may take a few seconds). */
 export function useCatalogStatuses() {
   const [statuses, setStatuses] = useState<Record<string, CatalogStatus> | null>(null);
   const [failed, setFailed] = useState(false);
@@ -16,7 +16,7 @@ export function useCatalogStatuses() {
     let alive = true;
     apiFetch<CatalogStatus[]>('/api/catalog')
       .then((list) => alive && setStatuses(Object.fromEntries(list.map((s) => [s.id, s]))))
-      // Si la comprovació falla no sabem res de les fonts: no les marquem com a caigudes.
+      // If the check fails we know nothing about the sources: do not mark them as down.
       .catch(() => alive && setFailed(true));
     return () => {
       alive = false;

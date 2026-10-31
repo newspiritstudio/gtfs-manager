@@ -1,7 +1,7 @@
 /**
- * La xarxa sencera per al mapa: línies (shapes simplificades, o el recorregut de parades si el
- * feed no porta shapes), parades amb les línies que hi paren i el volum de pas. Es calcula un cop
- * per versió del feed i es guarda a la memòria del procés.
+ * The whole network for the map: routes (simplified shapes, or the stop path if the
+ * feed has no shapes), stops with the routes that serve them, and the traffic volume. Computed once
+ * per feed version and kept in process memory.
  */
 import { brotliCompress, constants as zlibConstants, gzip } from 'node:zlib';
 import { promisify } from 'node:util';
@@ -11,14 +11,14 @@ import { getSql } from '../db/client';
 
 const cache = new Map<string, { version: string; data: Promise<NetworkData> }>();
 
-/** La versió del feed: canvia amb qualsevol edició o importació (`updated_at`). */
+/** The feed version: changes with any edit or import (`updated_at`). */
 export async function feedVersion(feedId: string): Promise<string | null> {
   const [row] = await getSql()<{ v: string }[]>`
     SELECT updated_at::text AS v FROM feeds WHERE id = ${feedId}`;
   return row?.v ?? null;
 }
 
-/** Oblida la xarxa d'un feed (en esborrar-lo): la memòria no ha de guardar feeds que ja no hi són. */
+/** Forgets a feed's network (on delete): memory must not hold feeds that no longer exist. */
 export function clearNetworkCache(feedId: string) {
   cache.delete(feedId);
   bodies.delete(feedId);
@@ -30,7 +30,7 @@ const brotliAsync = promisify(brotliCompress);
 const gzipAsync = promisify(gzip);
 const bodies = new Map<string, { version: string; parts: Map<NetworkEncoding, Promise<Buffer>> }>();
 
-/** L'encoding que el navegador accepta (el millor de brotli, gzip o cap). */
+/** The encoding the browser accepts (the best of brotli, gzip or none). */
 export function pickEncoding(acceptEncoding: string | null): NetworkEncoding {
   const accepted = (acceptEncoding ?? '').toLowerCase();
   if (/\bbr\b/.test(accepted)) return 'br';
@@ -39,8 +39,8 @@ export function pickEncoding(acceptEncoding: string | null): NetworkEncoding {
 }
 
 /**
- * El JSON de la xarxa ja serialitzat i comprimit, guardat per versió: la xarxa de Renfe pesa
- * ~1 MB (180 KB amb brotli) i no s'ha de tornar a serialitzar ni a comprimir a cada petició.
+ * The network JSON already serialized and compressed, cached by version: the Renfe network weighs
+ * ~1 MB (180 KB with brotli) and must not be serialized or compressed again on every request.
  */
 export async function getNetworkBody(
   feedId: string,
@@ -63,7 +63,7 @@ export async function getNetworkBody(
       const raw = await getNetworkBody(feedId, version, 'identity');
       if (!raw) throw new Error('feed-not-found');
       return encoding === 'br'
-        ? // Qualitat 5: el 11 per defecte trigaria ~1 s per a ~5 % menys.
+        ? // Quality 5: the default 11 would take ~1 s for ~5 % less.
           brotliAsync(raw, { params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 5 } })
         : gzipAsync(raw);
     })();
@@ -91,7 +91,7 @@ export async function getNetwork(feedId: string): Promise<NetworkData | null> {
   return data;
 }
 
-/** Douglas-Peucker sobre [lat, lon]: treu els punts que no canvien la forma a escala de mapa. */
+/** Douglas-Peucker on [lat, lon]: drops points that do not change the shape at map scale. */
 export function simplify(points: [number, number][], tolerance: number): [number, number][] {
   if (points.length <= 2) return points;
   const keep = new Uint8Array(points.length);
@@ -139,9 +139,9 @@ interface StopRow {
 }
 
 /**
- * Les parades amb el volum de pas i les línies que hi paren. Es comprimeix primer per
- * (línia, parada) sobre stop_times i només després s'agrupa per parada: evita un
- * `array_agg(DISTINCT)` (que ordena) sobre 1,9 M de files.
+ * Stops with their traffic volume and the routes that serve them. It is collapsed first by
+ * (route, stop) over stop_times and only then grouped by stop: this avoids an
+ * `array_agg(DISTINCT)` (which sorts) over 1.9 M rows.
  */
 async function queryStops(feedId: string): Promise<StopRow[]> {
   return getSql()<StopRow[]>`
@@ -167,8 +167,8 @@ async function queryStops(feedId: string): Promise<StopRow[]> {
 async function buildNetwork(feedId: string): Promise<NetworkData> {
   const sql = getSql();
 
-  // Les quatre consultes grans no depenen una de l'altra: corren alhora (el cost és el de la més
-  // lenta, no la suma).
+  // The four big queries do not depend on each other: they run together (the cost is that of the
+  // slowest, not the sum).
   const shapePointsJob = sql<{ shapeId: string; lat: number; lon: number }[]>`
     SELECT shape_id AS "shapeId", shape_pt_lat AS lat, shape_pt_lon AS lon
     FROM shapes WHERE feed_id = ${feedId}
@@ -178,7 +178,7 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
     SELECT route_id AS "routeId", shape_id AS "shapeId", count(*)::int AS trips
     FROM trips WHERE feed_id = ${feedId} AND shape_id IS NOT NULL
     GROUP BY route_id, shape_id`;
-  // Si una d'elles falla abans que l'esperem, que no quedi un rebuig sense gestionar.
+  // If one of them fails before we await it, avoid leaving an unhandled rejection.
   for (const job of [shapePointsJob, stopRowsJob, routeShapesJob]) job.catch(() => {});
 
   const routeRows = await sql<
@@ -211,7 +211,7 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
   }));
   const colorOf = new Map(routes.map((r) => [r.routeId, r.color]));
 
-  // Línies a partir de les shapes que fan servir els viatges.
+  // Routes from the shapes the trips use.
   const routeShapes = await routeShapesJob;
   const routesByShape = new Map<string, string[]>();
   for (const rs of routeShapes) {
@@ -247,7 +247,7 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
     flush();
   }
 
-  // Línies sense shape: el recorregut més habitual, parada a parada.
+  // Routes without a shape: the most common path, stop by stop.
   const routesWithShape = new Set(routeShapes.map((r) => r.routeId));
   const missing = routes
     .filter((r) => r.trips > 0 && !routesWithShape.has(r.routeId))

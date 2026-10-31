@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 /**
- * El distintiu d'una línia amb el seu color GTFS (route_color / route_text_color). És l'única peça
- * de la interfície amb colors que no són tokens: són dades del feed, no decisions de disseny.
+ * A line's badge with its GTFS colour (route_color / route_text_color). The only piece of the
+ * interface with colours that are not tokens: they are feed data, not design decisions.
  */
 export default function RouteBadge({
   name,

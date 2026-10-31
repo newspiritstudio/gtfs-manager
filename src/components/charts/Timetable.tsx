@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { DayTrip, PatternStop } from '@shared/contracts';
 import { formatClock } from '@shared/gtfs-values';
 
-/** Quadre horari: una fila per parada i una columna per viatge, amb la primera columna fixa. */
+/** Timetable: one row per stop and one column per trip, with a fixed first column. */
 export default function Timetable({
   stops,
   trips,
@@ -49,7 +49,7 @@ export default function Timetable({
                   className="block max-w-20 truncate rounded-xs hover:text-primary focus-ring"
                   title={trip.tripId}
                 >
-                  {/* Un identificador llarg (un hash) no diu res a la capçalera: llavors, el número d'ordre. */}
+                  {/* A long identifier (a hash) says nothing in the header: use the ordinal instead. */}
                   {trip.tripId.length <= 8 ? trip.tripId : `#${index + 1}`}
                 </Link>
               </th>

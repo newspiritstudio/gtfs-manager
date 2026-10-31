@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
 import RouteBadge from '@/components/ui/RouteBadge';
 import SearchField from '@/components/ui/SearchField';
-import { groupRoutes } from '@/features/routes/groupRoutes';
+import { dedupeRouteBadges, groupRoutes } from '@/features/routes/groupRoutes';
 import { formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 
@@ -70,7 +70,9 @@ export default function StopsList({
       </div>
       <ul className="divide-y divide-outline-variant/60 overflow-hidden rounded-lg bg-tonal">
         {shown.slice(0, limit).map((stop) => {
-          const groups = groupRoutes(stop.routeIds.map((id) => routeById.get(id)!).filter(Boolean));
+          const groups = dedupeRouteBadges(
+            groupRoutes(stop.routeIds.map((id) => routeById.get(id)!).filter(Boolean))
+          );
           return (
             <li key={stop.stopId}>
               <Link

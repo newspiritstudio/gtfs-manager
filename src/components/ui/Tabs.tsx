@@ -6,8 +6,8 @@ import { SPRING } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 /**
- * Teclat dels grups d'una sola parada de Tab (APG: Tabs i Radio Group): les fletxes mouen el focus
- * i trien l'opció, Inici i Fi van als extrems. Només l'opció triada és a l'ordre de Tab.
+ * Keyboard handling for single-Tab-stop groups (APG: Tabs and Radio Group): arrows move focus
+ * and select the option, Home and End go to the ends. Only the selected option is in the Tab order.
  */
 function rovingKeyDown(role: 'tab' | 'radio') {
   return (e: React.KeyboardEvent<HTMLElement>) => {
@@ -34,8 +34,8 @@ function rovingKeyDown(role: 'tab' | 'radio') {
 }
 
 /**
- * Les props del tauler que mostra la pestanya triada (APG: Tabs). Només n'hi ha un de pintat, per
- * això el id és un de sol: `Tabs` apunta cada pestanya a aquest tauler amb `aria-controls`.
+ * Props of the panel that shows the selected tab (APG: Tabs). Only one is rendered, so the id is
+ * a single one: `Tabs` points every tab at this panel with `aria-controls`.
  */
 export function tabPanelProps(idBase: string, value: string) {
   return {
@@ -45,7 +45,7 @@ export function tabPanelProps(idBase: string, value: string) {
   };
 }
 
-/** Pestanyes primàries: l'indicador de 3 px es desplaça, no apareix. */
+/** Primary tabs: the 3 px indicator slides, it does not appear. */
 export default function Tabs<T extends string>({
   tabs,
   value,
@@ -59,7 +59,7 @@ export default function Tabs<T extends string>({
   onChange: (value: T) => void;
   label: string;
   className?: string;
-  /** Si hi és, cada pestanya té `id` i apunta al tauler de `tabPanelProps(idBase, value)`. */
+  /** If present, each tab has an `id` and points to the panel from `tabPanelProps(idBase, value)`. */
   idBase?: string;
 }) {
   const layoutId = useId();
@@ -109,7 +109,7 @@ export default function Tabs<T extends string>({
   );
 }
 
-/** Pestanyes segmentades: una píndola dins d'un grup, per triar una vista. */
+/** Segmented tabs: a pill inside a group, for choosing a view. */
 export function SegmentedControl<T extends string>({
   options,
   value,

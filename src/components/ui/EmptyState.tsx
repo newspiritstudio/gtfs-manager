@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-/** Estat buit: pou d'icona tenyit + títol + descripció + acció. */
+/** Empty state: tinted icon well + title + description + action. */
 export default function EmptyState({
   icon,
   title,
@@ -13,7 +13,7 @@ export default function EmptyState({
   title: string;
   description?: React.ReactNode;
   action?: React.ReactNode;
-  /** Nivell del títol: `h1` quan l'estat buit és tota la pàgina. */
+  /** Heading level: `h1` when the empty state is the whole page. */
   as?: 'h1' | 'h2';
   className?: string;
 }) {

@@ -3,7 +3,7 @@ import { catalogStatuses } from '@/server/gtfs/catalog';
 
 export async function GET() {
   return NextResponse.json(await catalogStatuses(), {
-    // L'estat canvia en hores: el navegador i qualsevol CDN el reaprofiten.
+    // The status changes over hours: the browser and any CDN can reuse it.
     headers: { 'Cache-Control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' },
   });
 }

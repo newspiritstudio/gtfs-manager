@@ -11,7 +11,7 @@ const tones: Record<BadgeTone, string> = {
   primary: 'bg-primary-tint text-primary',
 };
 
-/** Insígnia: càpsula amb fons `…-container` i el text de l'estat. El color és redundància. */
+/** Badge: pill with a `…-container` background and the status text. Colour is redundancy. */
 export default function Badge({
   tone = 'neutral',
   icon,

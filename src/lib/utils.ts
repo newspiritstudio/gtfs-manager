@@ -2,11 +2,11 @@ import { type ClassValue, clsx } from 'clsx';
 import { extendTailwindMerge } from 'tailwind-merge';
 
 /**
- * tailwind-merge amb les escales pròpies del tema (tailwind.config.js i src/index.css).
+ * tailwind-merge with the theme's own scales (tailwind.config.js and src/index.css).
  *
- * Sense aquesta configuració, `text-body-medium` es llegiria com un color i trauria
- * `text-on-surface`; amb ella, l'escala tipogràfica MD3 és mida de lletra, `rounded-lg-inc` és un
- * radi i `z-popover` és un z-index.
+ * Without this configuration, `text-body-medium` would be read as a colour and would drop
+ * `text-on-surface`; with it, the MD3 type scale is font size, `rounded-lg-inc` is a radius and
+ * `z-popover` is a z-index.
  */
 const MD3_TYPE_SCALE = [
   'display-large',
@@ -35,10 +35,10 @@ const twMerge = extendTailwindMerge<'md3-type'>({
       radius: ['xs', 'lg-inc'],
     },
     classGroups: {
-      // Les classes tipogràfiques MD3 són CSS propi (src/index.css) que ja porta l'interlineat: es
-      // substitueixen entre elles i amb les mides de Tailwind, però no treuen cap `leading-*`.
+      // MD3 typographic classes are custom CSS (src/index.css) that already carries the line height:
+      // they replace each other and Tailwind's sizes, but do not remove any `leading-*`.
       'md3-type': [{ text: MD3_TYPE_SCALE }],
-      // L'alçada de l'app (src/index.css): `h-app`, `max-h-app-70`...
+      // The app height (src/index.css): `h-app`, `max-h-app-70`...
       h: [{ h: [isAppHeight] }],
       'min-h': [{ 'min-h': [isAppHeight] }],
       'max-h': [{ 'max-h': [isAppHeight] }],
@@ -71,10 +71,10 @@ const twMerge = extendTailwindMerge<'md3-type'>({
 });
 
 /**
- * Uneix classes i resol els conflictes de Tailwind: la classe que ve després guanya. Abans era
- * clsx pelat, i el `className` que una pantalla passava a una primitiva per substituir-ne el
- * farciment, l'alçada o el radi arribava al DOM al costat del de la base i manava l'ordre del full
- * compilat, no la intenció (UI-SIS-001, UI-USO-001).
+ * Joins classes and resolves Tailwind conflicts: the later class wins. It used to be bare clsx,
+ * and the `className` a screen passed to a primitive to override its padding, height or radius
+ * reached the DOM next to the base one, and the order of the compiled stylesheet decided, not
+ * the intent (UI-SIS-001, UI-USO-001).
  */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

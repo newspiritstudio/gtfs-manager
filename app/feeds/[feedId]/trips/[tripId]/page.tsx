@@ -6,10 +6,10 @@ import TripView from '@/features/trips/TripView';
 import { getTripDetail } from '@/server/gtfs/details';
 import { formatClock } from '@shared/gtfs-values';
 
-/** La mateixa consulta serveix el títol i la pàgina. */
+/** The same query serves the title and the page. */
 const load = cache((feedId: string, id: string) => getTripDetail(feedId, decodeURIComponent(id)));
 
-/** El número del tren si en té; si no, l'hora de sortida (l'id sol ser un hash il·legible). */
+/** The train number if it has one; otherwise the departure time (the id is often an unreadable hash). */
 function labelOf(detail: NonNullable<Awaited<ReturnType<typeof load>>>, id: string) {
   const first = detail.stopTimes[0];
   const start = first?.departure ?? first?.arrival ?? null;

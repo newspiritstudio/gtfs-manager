@@ -1,4 +1,4 @@
-/** Error d'una crida a /api amb el codi que retorna el servidor (`error`) i els detalls. */
+/** Error from an /api call with the code the server returns (`error`) and the details. */
 export class ApiError extends Error {
   constructor(
     public readonly status: number,
@@ -28,7 +28,7 @@ export async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-/** Puja un fitxer amb progrés (fetch no en dona de la pujada). */
+/** Uploads a file with progress (fetch gives none for uploads). */
 export function uploadWithProgress(
   url: string,
   body: Blob,

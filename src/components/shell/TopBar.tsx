@@ -41,7 +41,7 @@ export function useBreadcrumbs(feeds: ShellFeed[]) {
         if (rest.length)
           crumbs.push({ label: detail?.label ?? decodeURIComponent(rest[0]), href: pathname });
       } else if (pathname.startsWith(`/feeds/${feedId}/trips/`)) {
-        // Els viatges no són a la navegació: pengen de la línia que els fa.
+        // Trips are not in the navigation: they hang off the line that runs them.
         crumbs.push({ label: t('nav.routes'), href: `/feeds/${feedId}/routes` });
         if (detail?.parent) crumbs.push(detail.parent);
         crumbs.push({
@@ -75,8 +75,8 @@ export default function TopBar({ feeds }: { feeds: ShellFeed[] }) {
                     {c.label}
                   </span>
                 ) : (
-                  // Els enllaços tenen l'alçada mínima de tota diana (36 px): centrar-ne el text
-                  // els manté a la mateixa línia que el fil i el text de la pàgina actual.
+                  // Links have the minimum height of any target (36 px): centring their text keeps them on the
+                  // same line as the rule and the text of the current page.
                   <Link
                     href={c.href}
                     className="flex h-9 min-w-0 items-center rounded-xs px-1 text-on-surface-variant transition-colors hover:text-on-surface focus-ring"

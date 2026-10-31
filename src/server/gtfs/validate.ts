@@ -1,6 +1,6 @@
 /**
- * Validació del feed amb consultes SQL sobre les dades importades. Cada regla retorna quantes files
- * la incompleixen i fins a cinc exemples; el text el posa la interfície (`validation.<code>`).
+ * Feed validation with SQL queries over the imported data. Each rule returns how many rows
+ * violate it and up to five examples; the text comes from the interface (`validation.<code>`).
  */
 import type { ValidationIssue, ValidationSeverity } from '@shared/contracts';
 import type { GtfsTable } from '@shared/gtfs-spec';
@@ -11,7 +11,7 @@ interface Rule {
   code: string;
   severity: ValidationSeverity;
   table: GtfsTable | null;
-  /** Una consulta que retorna una fila per incompliment amb la columna `sample`. */
+  /** A query returning one row per violation with the `sample` column. */
   query: string;
 }
 
@@ -284,7 +284,7 @@ const RULES: Rule[] = [
   },
 ];
 
-/** El nom llegible dels exemples que són identificadors d'una línia, una parada o un viatge. */
+/** The readable name of the examples that are route, stop or trip identifiers. */
 async function sampleNames(
   feedId: string,
   table: GtfsTable | null,
@@ -319,7 +319,7 @@ async function sampleNames(
 
 export const VALIDATION_CODES = RULES.map((r) => r.code);
 
-/** Quantes regles corren alhora: les pesades (stop_times) s'aprofiten de més d'un nucli sense saturar el pool. */
+/** How many rules run at once: the heavy ones (stop_times) use more than one core without saturating the pool. */
 const CONCURRENCY = 4;
 
 async function runRule(feedId: string, rule: Rule): Promise<ValidationIssue | null> {

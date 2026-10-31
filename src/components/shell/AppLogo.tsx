@@ -1,7 +1,7 @@
 /**
- * El logotip: un tros de plànol esquemàtic: tres línies, a 0° i 45°, que es troben en un
- * intercanvi. Els colors són fixos (no tokens): és la marca, la mateixa en tema
- * clar i fosc, i la mateixa que `app/icon.svg`.
+ * The logo: a piece of schematic map: three lines, at 0° and 45°, meeting at an interchange.
+ * The colours are fixed (not tokens): it is the brand, the same in light and dark themes, and
+ * the same as `app/icon.svg`.
  */
 export default function AppLogo({ className }: { className?: string }) {
   return (

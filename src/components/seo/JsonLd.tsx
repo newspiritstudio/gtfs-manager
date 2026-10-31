@@ -1,4 +1,4 @@
-/** Dades estructurades (schema.org) per als cercadors. `<` s'escapa perquè no tanqui l'script. */
+/** Structured data (schema.org) for search engines. `<` is escaped so it cannot close the script. */
 export default function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script

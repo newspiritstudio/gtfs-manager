@@ -9,7 +9,7 @@ export function jsonError(status: number, code: string, details?: unknown) {
   return NextResponse.json({ error: code, details }, { status });
 }
 
-/** El feed del camí (id, nom i origen), o una resposta 404 si no existeix. */
+/** The feed from the path (id, name and origin), or a 404 response if it does not exist. */
 export async function requireFeed(feedId: string) {
   if (!isUuid(feedId)) return { feed: null, response: jsonError(404, 'feedNotFound') } as const;
   const feed = await feedHeader(feedId);
@@ -31,14 +31,14 @@ export async function parseBody<T>(request: Request, schema: ZodType<T>) {
   return { data: result.data, response: null } as const;
 }
 
-/** Una data GTFS de la query (?date=AAAAMMDD), o null. */
+/** A GTFS date from the query (?date=YYYYMMDD), or null. */
 export function dateParam(request: Request): string | null {
   const value = new URL(request.url).searchParams.get('date') ?? '';
-  // Una data real: 20261345 no ho és i Postgres tombaria la consulta amb un 500.
+  // A real date: 20261345 is not one, and Postgres would fail the query with a 500.
   return /^\d{8}$/.test(value) ? parseGtfsDate(value) : null;
 }
 
-/** Un enter positiu de la query (?page=), dins de [min, max]; si no ho és, el valor per defecte. */
+/** A positive integer from the query (?page=), within [min, max]; the default if it is not one. */
 export function intParam(
   request: Request,
   name: string,

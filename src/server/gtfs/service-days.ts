@@ -1,8 +1,8 @@
 import type postgres from 'postgres';
 
 /**
- * Els service_id que circulen un dia (AAAAMMDD): els de calendar que hi cauen pel dia de la
- * setmana i el període, menys les excepcions que els treuen, més les que els afegeixen.
+ * The service_ids running on a day (YYYYMMDD): those in calendar that match by weekday
+ * and period, minus the exceptions that remove them, plus those that add them.
  */
 export function activeServicesFragment(sql: postgres.Sql, feedId: string, date: string) {
   return sql`
@@ -24,8 +24,8 @@ export function activeServicesFragment(sql: postgres.Sql, feedId: string, date: 
 }
 
 /**
- * Els dies del període del feed (com a molt tres anys) amb els serveis que hi circulen.
- * Retorna una CTE `active(date, service_id)` i `days(date)` per encadenar-hi consultes.
+ * The days of the feed period (three years at most) with the services running on them.
+ * Returns a CTE `active(date, service_id)` and `days(date)` to chain queries onto.
  */
 export function serviceDaysCte(sql: postgres.Sql, feedId: string) {
   return sql`
@@ -36,8 +36,8 @@ export function serviceDaysCte(sql: postgres.Sql, feedId: string) {
         UNION ALL SELECT date FROM calendar_dates WHERE feed_id = ${feedId} AND exception_type = 1
       ) x
     ),
-    -- Tres anys com a molt, centrats en avui quan el feed en cobreix més (un end_date 20991231
-    -- o un start_date de fa anys no han de deixar fora els dies d'ara).
+    -- Three years at most, centered on today when the feed covers more (an end_date 20991231
+    -- or a start_date from years ago must not push out today's days).
     win AS (
       SELECT GREATEST(s, LEAST(CURRENT_DATE - 548, e - 1096)) AS s, e
       FROM (SELECT to_date(bounds.s, 'YYYYMMDD') AS s, to_date(bounds.e, 'YYYYMMDD') AS e

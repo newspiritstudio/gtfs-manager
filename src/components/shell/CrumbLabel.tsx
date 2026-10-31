@@ -4,8 +4,8 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useSyncExternalStore } from 'react';
 
 /**
- * El nom llegible de l'última molla. Les pàgines de detall (una parada, una línia, un viatge) el
- * coneixen i la barra superior només veu l'identificador de la URL: aquesta peça els uneix.
+ * The readable name of the last breadcrumb. Detail pages (a stop, a line, a trip) know it, while
+ * the top bar only sees the identifier in the URL: this component connects them.
  */
 type Parent = { label: string; href: string };
 type Entry = { path: string; label: string; parent?: Parent } | null;
@@ -22,7 +22,7 @@ function subscribe(listener: () => void) {
   return () => listeners.delete(listener);
 }
 
-/** `parent` afegeix una molla entre la secció i el detall (un viatge penja de la seva línia). */
+/** `parent` adds a crumb between the section and the detail (a trip hangs off its line). */
 export default function CrumbLabel({ label, parent }: { label: string; parent?: Parent }) {
   const pathname = usePathname();
   const parentLabel = parent?.label;

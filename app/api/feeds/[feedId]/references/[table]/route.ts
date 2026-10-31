@@ -3,7 +3,7 @@ import { isGtfsTable } from '@shared/gtfs-spec';
 import { referenceOptions } from '@/server/gtfs/tables';
 import { jsonError, requireFeed, type RouteContext } from '@/server/http';
 
-/** Opcions per a un camp que apunta a un altre fitxer (?q= filtra per identificador o nom). */
+/** Options for a field that points to another file (?q= filters by identifier or name). */
 export async function GET(
   request: Request,
   { params }: RouteContext<{ feedId: string; table: string }>

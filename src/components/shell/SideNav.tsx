@@ -34,7 +34,7 @@ function NavLink({
   icon: React.ComponentType<{ className?: string; size?: number }>;
   children: React.ReactNode;
   onNavigate?: () => void;
-  /** Cada instància de la navegació (barra i calaix mòbil) anima el seu propi indicador. */
+  /** Each navigation instance (bar and mobile drawer) animates its own indicator. */
   indicatorId: string;
 }) {
   return (
@@ -64,7 +64,7 @@ function NavLink({
   );
 }
 
-/** L'isotip oficial de la xarxa o, si no en té, un punt del seu color. */
+/** The network's official logo or, if it has none, a dot in its colour. */
 function FeedMark({ feed }: { feed: ShellFeed }) {
   if (feed.logo) {
     return <img src={feed.logo} alt="" className="size-5 shrink-0 object-contain" loading="lazy" />;

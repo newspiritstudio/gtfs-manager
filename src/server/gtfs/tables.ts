@@ -1,7 +1,7 @@
 /**
- * L'editor genèric: llegir, crear, modificar i esborrar files de qualsevol fitxer GTFS. Els valors
- * entren i surten com el text del fitxer (hores «25:10:00», dates AAAAMMDD) i es validen amb
- * l'especificació abans de tocar la base de dades.
+ * The generic editor: read, create, update and delete rows of any GTFS file. Values
+ * come in and out as the file text (times '25:10:00', dates YYYYMMDD) and are validated against
+ * the specification before touching the database.
  */
 import type { RowValues, TablePage } from '@shared/contracts';
 import { GTFS_SPEC, type GtfsTable } from '@shared/gtfs-spec';
@@ -10,20 +10,20 @@ import { getSql, ident } from '../db/client';
 import { markStatsStale, notNullColumns } from './import';
 import { feedVersion } from './network';
 
-/** Postgres no admet el byte 0 en un text: una cerca amb ell tombaria la consulta. */
+/** Postgres does not accept byte 0 in text: a search containing it would fail the query. */
 const stripNul = (value: string) => value.replaceAll('\0', '');
 
 export class RowValidationError extends Error {
   constructor(public readonly fields: Record<string, 'required' | 'invalid'>) {
-    super('Els valors de la fila no són vàlids');
+    super('Row values are not valid');
   }
 }
 
 const totals = new Map<string, { version: string; total: number }>();
 
 /**
- * El total de files d'una taula sense filtres, guardat per versió del feed (`updated_at`, que
- * qualsevol edició mou): un recompte exacte de stop_times (1,9 M) costa ~200 ms a cada pàgina.
+ * The total row count of an unfiltered table, cached by feed version (`updated_at`, which
+ * any edit bumps): an exact count of stop_times (1.9 M) costs ~200 ms on every page.
  */
 async function cachedTotal(feedId: string, table: GtfsTable): Promise<number> {
   const version = await feedVersion(feedId);
@@ -102,7 +102,7 @@ function formatRow(table: GtfsTable, row: Record<string, unknown>): Record<strin
   return values;
 }
 
-/** Valida i converteix els valors d'una fila; llança RowValidationError amb els camps dolents. */
+/** Validates and converts a row's values; throws RowValidationError with the bad fields. */
 export function parseRowValues(table: GtfsTable, input: RowValues) {
   const spec = GTFS_SPEC[table];
   const errors: Record<string, 'required' | 'invalid'> = {};
@@ -177,7 +177,7 @@ export async function deleteRow(feedId: string, table: GtfsTable, rowId: number)
   await markStatsStale(feedId);
 }
 
-/** Opcions per a un camp que apunta a un altre fitxer (route_id, stop_id...). */
+/** Options for a field that points to another file (route_id, stop_id...). */
 export async function referenceOptions(
   feedId: string,
   table: GtfsTable,

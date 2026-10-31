@@ -9,8 +9,8 @@ import { ChartTooltip } from './Tooltip';
 const MARGIN = { top: 12, right: 16, bottom: 28, left: 160 };
 
 /**
- * Diagrama de Marey: el temps a l'eix horitzontal i les parades (a escala de distància) al
- * vertical. Cada viatge és una línia; com més inclinada, més ràpid. Els dos sentits es creuen.
+ * Marey diagram: time on the horizontal axis and stops (distance-scaled) on the vertical one.
+ * Each trip is a line; the steeper it is, the faster the trip. Both directions cross.
  */
 export default function MareyDiagram({
   stops,
@@ -25,7 +25,7 @@ export default function MareyDiagram({
   color: string;
   onTripClick?: (tripId: string) => void;
   height?: number;
-  /** Descripció del gràfic per a qui no el veu; sense ella, el diagrama s'amaga (el quadre horari el substitueix). */
+  /** Description of the chart for people who cannot see it; without it the diagram is hidden (the timetable replaces it). */
   label?: string;
 }) {
   const [hover, setHover] = useState<{
@@ -61,7 +61,7 @@ export default function MareyDiagram({
   const times = series.flatMap((s) => s.points.map((p) => p[0]));
   const t0 = times.length ? Math.floor(Math.min(...times) / 3600) * 3600 : 5 * 3600;
   const t1 = times.length ? Math.ceil(Math.max(...times) / 3600) * 3600 : 24 * 3600;
-  // Uns 90 px per hora: un dia sencer fa scroll horitzontal i les línies es llegeixen.
+  // About 90 px per hour: a whole day scrolls horizontally and the lines stay readable.
   const width = Math.max(720, ((t1 - t0) / 3600) * 90) + MARGIN.left + MARGIN.right;
   const plotW = width - MARGIN.left - MARGIN.right;
   const plotH = height - MARGIN.top - MARGIN.bottom;
@@ -70,7 +70,7 @@ export default function MareyDiagram({
   const hours: number[] = [];
   for (let t = t0; t <= t1; t += 3600) hours.push(t);
 
-  // Etiquetes de parada sense trepitjar-se: com a mínim 13 px entre l'una i l'altra.
+  // Stop labels that do not overlap: at least 13 px between one and the next.
   const labeled: PatternStop[] = [];
   let lastY = -Infinity;
   stops.forEach((s, i) => {

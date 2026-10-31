@@ -6,8 +6,8 @@ import BaseMap from './BaseMap';
 import { mapPalette } from './colors';
 
 /**
- * Tria un punt clicant el mapa. Les parades existents (`context`, llegides en muntar-lo) es veuen
- * de fons. Si el punt canvia des de fora (els camps de coordenades), el mapa el segueix.
+ * Picks a point by clicking the map. Existing stops (`context`, read on mount) are shown in the
+ * background. If the point changes from outside (the coordinate fields), the map follows it.
  */
 export default function PointPickerMap({
   value,

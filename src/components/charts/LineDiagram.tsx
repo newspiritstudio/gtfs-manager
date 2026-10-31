@@ -5,11 +5,12 @@ import type { PatternStop } from '@shared/contracts';
 import { formatDistance } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import RouteBadge from '@/components/ui/RouteBadge';
+import { uniqueConnections } from '@/features/routes/groupRoutes';
 import { cn } from '@/lib/utils';
 
 /**
- * Esquema de línia a l'estil d'un plànol de metro: la línia vertical del color de la ruta, les
- * parades en ordre, la distància acumulada i les correspondències amb altres línies.
+ * Line diagram in the style of a metro map: a vertical line in the route colour, the stops in
+ * order, the cumulative distance and the connections to other lines.
  */
 export default function LineDiagram({
   stops,
@@ -22,7 +23,7 @@ export default function LineDiagram({
   stops: PatternStop[];
   color: string;
   feedId: string;
-  /** Hora de pas per parada (opcional: el diagrama d'un viatge concret). */
+  /** Pass time per stop (optional: the diagram of a specific trip). */
   times?: Map<string, string>;
   activeStopId?: string | null;
   onStopHover?: (stopId: string | null) => void;
@@ -80,16 +81,18 @@ export default function LineDiagram({
               </Link>
               {stop.connections.length ? (
                 <span className="flex flex-wrap gap-1">
-                  {stop.connections.slice(0, 10).map((c) => (
-                    <RouteBadge
-                      key={c.routeId}
-                      size="sm"
-                      name={c.shortName ?? c.routeId}
-                      color={c.color}
-                      textColor={c.textColor}
-                      href={`/feeds/${feedId}/routes/${encodeURIComponent(c.routeId)}`}
-                    />
-                  ))}
+                  {uniqueConnections(stop.connections)
+                    .slice(0, 10)
+                    .map((c) => (
+                      <RouteBadge
+                        key={c.routeId}
+                        size="sm"
+                        name={c.shortName ?? c.routeId}
+                        color={c.color}
+                        textColor={c.textColor}
+                        href={`/feeds/${feedId}/routes/${encodeURIComponent(c.routeId)}`}
+                      />
+                    ))}
                 </span>
               ) : null}
             </span>

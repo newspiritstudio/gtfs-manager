@@ -6,7 +6,7 @@ import Button from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
 import { useI18n } from '@/lib/i18n/client';
 
-/** Qualsevol error inesperat d'una pàgina: es queda dins de la closca i deixa tornar-ho a provar. */
+/** Any unexpected page error: stays inside the shell and lets the user retry. */
 export default function ErrorPage({
   error,
   reset,

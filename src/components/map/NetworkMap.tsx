@@ -10,10 +10,10 @@ import { badgeHtml, escapeHtml, mapPalette } from './colors';
 export interface NetworkMapProps {
   data: NetworkData;
   label: string;
-  /** Les línies visibles; null és totes. */
+  /** The visible lines; null means all. */
   visibleRouteIds?: Set<string> | null;
   showStops?: boolean;
-  /** Línies destacades (les altres s'esvaeixen). */
+  /** Highlighted lines (the others fade out). */
   highlightRouteIds?: string[] | null;
   selectedStopId?: string | null;
   onStopClick?: (stop: NetworkStop) => void;
@@ -22,7 +22,7 @@ export interface NetworkMapProps {
   interactive?: boolean;
   scrollZoom?: boolean;
   insetLeft?: number;
-  /** Mostra el nom de les parades al passar-hi per sobre. */
+  /** Shows the stop name on hover. */
   stopTooltip?: (stop: NetworkStop) => string;
 }
 
@@ -44,7 +44,7 @@ export default function NetworkMap({
   const mapRef = useRef<L.Map | null>(null);
   const linesRef = useRef<L.LayerGroup | null>(null);
   const stopsRef = useRef<L.LayerGroup | null>(null);
-  // Un renderitzador per capa i per mapa: un de nou a cada efecte deixaria un canvas a cada zoom.
+  // One renderer per layer and per map: a new one on every effect would leave a canvas at each zoom.
   const lineRendererRef = useRef<L.Canvas | null>(null);
   const stopRendererRef = useRef<L.Canvas | null>(null);
   const theme = useResolvedTheme();
@@ -65,7 +65,7 @@ export default function NetworkMap({
     mapRef.current = map;
     linesRef.current = L.layerGroup().addTo(map);
     stopsRef.current = L.layerGroup().addTo(map);
-    // Afegits d'entrada perquè les parades quedin sempre per sobre de les línies.
+    // Added up front so stops always sit above the lines.
     lineRendererRef.current = L.canvas({ padding: 0.5, tolerance: 6 }).addTo(map);
     stopRendererRef.current = L.canvas({ padding: 0.5, tolerance: 4 }).addTo(map);
     map.on('click', (e: L.LeafletMouseEvent) =>
@@ -82,7 +82,7 @@ export default function NetworkMap({
     };
   };
 
-  // Línies: un filet del color de la superfície a sota fa que es llegeixin sobre qualsevol mapa.
+  // Lines: an outline in the surface colour underneath keeps them readable on any map.
   useEffect(() => {
     const group = linesRef.current;
     const renderer = lineRendererRef.current;
@@ -139,7 +139,7 @@ export default function NetworkMap({
     }
   }, [data.lines, visibleRouteIds, highlight, routeById, theme, interactive]);
 
-  // Parades: la mida diu el volum de pas.
+  // Stops: size reflects traffic volume.
   useEffect(() => {
     const group = stopsRef.current;
     const renderer = stopRendererRef.current;
@@ -147,7 +147,7 @@ export default function NetworkMap({
     group.clearLayers();
     if (!showStops) return;
     const palette = mapPalette();
-    // De lluny, les parades són punts petits i les línies es veuen; de prop, creixen amb el volum de pas.
+    // From afar, stops are small dots and the lines show; up close, they grow with traffic volume.
     const scale = Math.min(1.2, Math.max(0.3, (zoom - 7) / 5));
     const minorHidden = zoom < 9 && data.stops.length > 300;
     for (const stop of data.stops) {

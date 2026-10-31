@@ -1,14 +1,14 @@
 export const LOCALES = ['ca', 'es', 'en', 'fr', 'de', 'it', 'pt', 'zh', 'ja'] as const;
 export type Locale = (typeof LOCALES)[number];
 /**
- * L'idioma sense prefix a les adreces públiques (`/`, `/catalog`) i el que es fa servir quan no se
- * sap res del visitant: l'anglès, perquè és el que veuen els cercadors. Els textos que falten en un
- * idioma surten en català, la font de les traduccions (`MESSAGES.ca`).
+ * The language without a prefix in public addresses (`/`, `/catalog`) and the one used when
+ * nothing is known about the visitor: English, because that is what search engines see. Texts
+ * missing in a language appear in Catalan, the source of the translations (`MESSAGES.ca`).
  */
 export const DEFAULT_LOCALE: Locale = 'en';
 export const LOCALE_COOKIE = 'gtfs-locale';
 
-/** El nom de cada idioma en ell mateix: és com el busca qui no entén l'idioma actual. */
+/** Each language's name in itself: that is how someone who does not understand the current language looks for it. */
 export const LOCALE_NAMES: Record<Locale, string> = {
   ca: 'Català',
   es: 'Español',
@@ -21,7 +21,7 @@ export const LOCALE_NAMES: Record<Locale, string> = {
   ja: '日本語',
 };
 
-/** Etiqueta BCP 47 per a `<html lang>`, `hreflang` i `Intl` (el xinès és el simplificat). */
+/** BCP 47 tag for `<html lang>`, `hreflang` and `Intl` (Chinese is Simplified). */
 export const LOCALE_TAGS: Record<Locale, string> = {
   ca: 'ca',
   es: 'es',

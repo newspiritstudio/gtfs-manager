@@ -14,8 +14,8 @@ const FOCUSABLE =
 const widths = { sm: 'max-w-md', md: 'max-w-2xl', lg: 'max-w-4xl', xl: 'max-w-6xl' };
 
 /**
- * Diàleg: vel al 50 %, surface-container-high, radi 28 px, només el cos fa scroll. Escape tanca i
- * el focus torna a l'activador.
+ * Dialog: 50 % scrim, surface-container-high, 28 px radius, only the body scrolls. Escape closes
+ * and focus returns to the opener.
  */
 export default function Modal({
   open,
@@ -37,14 +37,14 @@ export default function Modal({
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
-  // Només en obrir: si depengués d'onClose, cada render tornaria a posar el focus al primer camp.
+  // Only on open: if it depended on onClose, every render would put focus back on the first field.
   useEffect(() => {
     if (!open) return;
     const previous = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeRef.current();
       if (e.key !== 'Tab' || !panelRef.current) return;
-      // El focus no surt del diàleg: Tab des de l'últim control torna al primer, i a l'inrevés.
+      // Focus does not leave the dialog: Tab from the last control goes back to the first, and vice versa.
       const items = [...panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
         (el) => el.offsetParent !== null
       );

@@ -4,7 +4,7 @@ import { jsonError } from '@/server/http';
 
 export const maxDuration = 300;
 
-/** Fa de pont amb la font: el navegador no hi pot anar directament per CORS. */
+/** Proxies the source: the browser cannot fetch it directly because of CORS. */
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ catalogId: string }> }
@@ -22,7 +22,7 @@ export async function GET(
     if (size) headers['Content-Length'] = String(size);
     return new Response(body as BodyInit, { headers });
   } catch (error) {
-    console.error(`No es pot descarregar ${entry.id}`, error);
+    console.error(`Cannot download ${entry.id}`, error);
     return jsonError(502, 'sourceUnavailable');
   }
 }

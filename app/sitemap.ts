@@ -4,7 +4,7 @@ import { LOCALES } from '@/lib/i18n/config';
 import { localizedPath } from '@/lib/i18n/paths';
 import { absoluteUrl, languageAlternates } from '@/server/seo';
 
-/** Les pàgines públiques en tots els idiomes, cadascuna amb les seves alternatives (hreflang). */
+/** The public pages in every language, each with its alternates (hreflang). */
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages: { path: string; priority: number }[] = [
     { path: '/', priority: 1 },

@@ -1,6 +1,6 @@
 /**
- * La signatura de l'estudi sota el nom de l'app: l'isotip de New Spirit Studio (traçat de
- * `Isotip_NWSPRT_dark_blue.svg`, en `currentColor` perquè es vegi en tema clar i fosc) i el nom.
+ * The studio signature under the app name: the New Spirit Studio logo (path from
+ * `Isotip_NWSPRT_dark_blue.svg`, in `currentColor` so it shows in light and dark themes) and the name.
  */
 export default function StudioByline({ className = '' }: { className?: string }) {
   return (
