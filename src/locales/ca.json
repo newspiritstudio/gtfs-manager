@@ -773,7 +773,7 @@
       },
       "data": {
         "q": "On es desen les dades?",
-        "a": "A la base de dades PostgreSQL del servidor on funciona GTFS Manager. Els feeds no s'envien a cap servei extern."
+        "a": "Al servidor de GTFS Manager, amb una còpia de seguretat xifrada cada nit. Els feeds que hi ha són públics: tothom els pot consultar i descarregar, però només les persones amb accés d'edició els poden importar, modificar o esborrar."
       },
       "export": {
         "q": "Puc tornar a exportar el feed?",

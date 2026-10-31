@@ -72,7 +72,9 @@ export default function LineDiagram({
                 style={{ borderColor: `#${color}` }}
               />
             </span>
-            <span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 py-2">
+            {/* Baseline, not centre: the name is a link, which takes the 36 px target height with
+                its text at the top, and centred badges would sit lower than the name. */}
+            <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-3 gap-y-1 py-2">
               <Link
                 href={`/feeds/${feedId}/stops/${encodeURIComponent(stop.stopId)}`}
                 className={cn(

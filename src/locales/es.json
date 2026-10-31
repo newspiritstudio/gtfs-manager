@@ -773,7 +773,7 @@
       },
       "data": {
         "q": "¿Dónde se guardan los datos?",
-        "a": "En la base de datos PostgreSQL del servidor donde funciona GTFS Manager. Los feeds no se envían a ningún servicio externo."
+        "a": "En el servidor de GTFS Manager, con una copia de seguridad cifrada cada noche. Los feeds que contiene son públicos: cualquiera puede consultarlos y descargarlos, pero solo las personas con acceso de edición pueden importarlos, modificarlos o borrarlos."
       },
       "export": {
         "q": "¿Puedo volver a exportar el feed?",

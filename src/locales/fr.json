@@ -773,7 +773,7 @@
       },
       "data": {
         "q": "Où sont stockées les données ?",
-        "a": "Dans la base de données PostgreSQL du serveur qui fait tourner GTFS Manager. Les flux ne sont envoyés à aucun service externe."
+        "a": "Sur le serveur de GTFS Manager, avec une sauvegarde chiffrée chaque nuit. Les feeds qu'il contient sont publics : tout le monde peut les consulter et les télécharger, mais seules les personnes ayant un accès en édition peuvent les importer, les modifier ou les supprimer."
       },
       "export": {
         "q": "Puis-je exporter à nouveau le flux ?",
