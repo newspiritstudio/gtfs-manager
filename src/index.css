@@ -296,43 +296,27 @@
   scroll-padding-bottom: 8px;
 }
 
-/* On mobile (or a landscape phone) only #main-content scrolls, between the header and the bottom
-   navigation bar. Its padding makes room for both bars. */
+/* On mobile (or a landscape phone) only #main-content scrolls. The header and the navigation bar
+   sit in the shell's flex column, outside it, so its padding is only its own breathing room. */
 @media (max-width: 767px),
   (max-width: 1024px) and (max-height: 600px) and (orientation: landscape) {
-  :root {
-    --mobile-header-height: calc(56px + var(--safe-top));
-    /* ~80px of navigation bar content + the bottom safe area */
-    --mobile-footer-height: calc(80px + var(--safe-bottom));
-  }
-
   #main-content {
-    /* Variables because the min-height rule below has to subtract them. */
-    --main-pad-top: 16px;
-    --main-pad-bottom: 16px;
     flex: 1;
     min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
-    padding-top: calc(var(--mobile-header-height) + var(--main-pad-top));
-    padding-bottom: calc(var(--mobile-footer-height) + var(--main-pad-bottom));
-    /* The bars cover the container edges: without scroll-padding, a focused element would be
-       left under them (WCAG 2.4.11). */
-    scroll-padding-top: calc(var(--mobile-header-height) + 8px);
-    scroll-padding-bottom: calc(var(--mobile-footer-height) + 8px);
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
 
-  /* Page content fills at least the visible area between the bars (the container padding is
-     subtracted so a page that fits exactly cannot be dragged). The side margins keep clear of a
-     notch in landscape: a margin on the wrapper, not padding on #main-content, because that
-     padding is a Tailwind utility and this rule would replace it. */
+  /* Page content fills at least the visible area (the container padding is subtracted so a page
+     that fits exactly cannot be dragged). The side margins keep clear of a notch in landscape: a
+     margin on the wrapper, not padding on #main-content, because that padding is a Tailwind
+     utility and this rule would replace it. */
   #main-content > div {
-    min-height: calc(
-      var(--app-height) - var(--mobile-header-height) - var(--mobile-footer-height) -
-        var(--main-pad-top) - var(--main-pad-bottom)
-    );
+    min-height: 100%;
     margin-inline: var(--safe-left) var(--safe-right);
   }
 

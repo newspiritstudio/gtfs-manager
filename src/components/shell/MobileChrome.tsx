@@ -54,7 +54,7 @@ export function MobileHeader({ feeds }: { feeds: ShellFeed[] }) {
   }, [open]);
   return (
     <>
-      <header className="flex h-14 shrink-0 items-center gap-2 bg-surface px-2 pt-[var(--safe-top,0px)] md:hidden">
+      <header className="box-content flex h-14 shrink-0 items-center gap-2 bg-surface px-2 pt-[var(--safe-top,0px)] md:hidden">
         <IconButton label={t('nav.openMenu')} onClick={() => setOpen(true)}>
           <Menu />
         </IconButton>
