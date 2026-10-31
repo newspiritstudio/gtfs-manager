@@ -1,0 +1,33 @@
+# GTFS Manager — separate compose stack in /opt/gtfs-manager on the server. Caddy reaches it
+# through the `gtfs-net` network, which it shares only with the app container; Postgres stays on
+# `gtfs-db`, internal. Literal host, like the other blocks: the generic `https://` asks an
+# `ask` endpoint that does not know this domain for permission to issue.
+# This block is pasted into agora-app/deployments/agora-newspiritstudio/Caddyfile.
+gtfs.newspirit.studio {
+	encode zstd gzip
+
+	# The app has no sign-in yet: reading is public, and every change (import, edit, delete)
+	# goes through the API with a method other than GET/HEAD, so those ask for the editor's
+	# password (1Password › «Àgora producció» › gtfs-manager/editor).
+	@write {
+		path /api/*
+		not method GET HEAD OPTIONS
+	}
+	basic_auth @write {
+		editor <bcrypt hash: caddy hash-password>
+	}
+
+	reverse_proxy gtfs-manager:3000 {
+		header_up X-Forwarded-For {remote_host}
+	}
+
+	handle_errors 502 503 504 {
+		header Retry-After 60
+		respond "GTFS Manager will be back shortly." 503
+	}
+}
+
+# The longer name redirects to the canonical one (a single address for search engines).
+gtfsmanager.newspirit.studio {
+	redir https://gtfs.newspirit.studio{uri} permanent
+}
