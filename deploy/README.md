@@ -8,15 +8,15 @@ uploaded ready to run.
 
 ## Pieces
 
-| File | What it does |
-| --- | --- |
-| `build.sh` | Exports `HEAD`, installs the locked dependencies, runs `next build` (standalone) and assembles `deploy/.build`. |
-| `Dockerfile.runtime` | Runtime image: copies `.build` onto `node:24-slim`; runs the migrations, then the server. |
-| `migrate.mjs` | Applies the Drizzle migrations at start-up. |
-| `docker-compose.vps.yml` | The stack: `gtfs-manager` and `gtfs-postgres`, networks `gtfs-net` (shared with Caddy) and `gtfs-db` (internal). |
-| `deploy.sh` | Uploads `.build`, the compose file and `backup.sh`, keeps the previous build as `build.prev` and recreates the app. |
-| `backup.sh` | Nightly `pg_dump`, encrypted with age, kept 7 days in `/opt/gtfs-manager/backups`. |
-| `Caddyfile.gtfs` | The proxy block. The live copy, with the real password hash, is in the server's Caddyfile. |
+| File                     | What it does                                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `build.sh`               | Exports `HEAD`, installs the locked dependencies, runs `next build` (standalone) and assembles `deploy/.build`.     |
+| `Dockerfile.runtime`     | Runtime image: copies `.build` onto `node:24-slim`; runs the migrations, then the server.                           |
+| `migrate.mjs`            | Applies the Drizzle migrations at start-up.                                                                         |
+| `docker-compose.vps.yml` | The stack: `gtfs-manager` and `gtfs-postgres`, networks `gtfs-net` (shared with Caddy) and `gtfs-db` (internal).    |
+| `deploy.sh`              | Uploads `.build`, the compose file and `backup.sh`, keeps the previous build as `build.prev` and recreates the app. |
+| `backup.sh`              | Nightly `pg_dump`, encrypted with age, kept 7 days in `/opt/gtfs-manager/backups`.                                  |
+| `Caddyfile.gtfs`         | The proxy block. The live copy, with the real password hash, is in the server's Caddyfile.                          |
 
 ## Deploy
 
