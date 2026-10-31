@@ -1,0 +1,82 @@
+# GTFS Manager on the Hetzner server, as its own compose stack in /opt/gtfs-manager (like Iris,
+# CeleApp or Pharos). No published ports: it is reached only through agora-caddy, which provides
+# TLS for gtfs.newspirit.studio (block in deploy/Caddyfile.gtfs, pasted into
+# agora-app/deployments/agora-newspiritstudio/Caddyfile).
+#
+# Networks:
+#   · gtfs-net: the stack's own, shared only with Caddy. It is also the app's way out to the
+#     Internet (catalog downloads, GTFS Realtime). MTU 1400 like the others: Hetzner's path MTU
+#     is ~1450 and PMTUD gets lost, so large TLS handshakes fail at 1500.
+#   · gtfs-db: internal, no way out. Only the app and Postgres; Caddy does not see it.
+name: gtfs-manager
+
+services:
+  gtfs-manager:
+    image: gtfs-manager:local
+    build: ./build
+    container_name: gtfs-manager
+    restart: unless-stopped
+    depends_on:
+      gtfs-postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://gtfs:${DB_PASSWORD:?DB_PASSWORD in /opt/gtfs-manager/.env}@gtfs-postgres:5432/gtfs_manager
+      SITE_URL: https://gtfs.newspirit.studio
+      NODE_OPTIONS: --max-old-space-size=1024
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /app/.next/cache:uid=1000,gid=1000
+    mem_limit: 1536m
+    pids_limit: 512
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    networks:
+      - gtfs-net
+      - gtfs-db
+
+  gtfs-postgres:
+    image: postgres:16.15-alpine
+    container_name: gtfs-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gtfs
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD in /opt/gtfs-manager/.env}
+      POSTGRES_DB: gtfs_manager
+    command: ['postgres', '-c', 'shared_buffers=192MB', '-c', 'work_mem=16MB']
+    volumes:
+      - gtfs-postgres:/var/lib/postgresql/data
+    mem_limit: 768m
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    networks:
+      - gtfs-db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U gtfs -d gtfs_manager']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  gtfs-net:
+    name: gtfs-net
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: '1400'
+  gtfs-db:
+    name: gtfs-db
+    internal: true
+    driver: bridge
+
+volumes:
+  gtfs-postgres:

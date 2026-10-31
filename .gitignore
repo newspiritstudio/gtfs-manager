@@ -9,3 +9,7 @@ next-env.d.ts
 .env.*.local
 .DS_Store
 tmp/
+
+# Deploy build output
+deploy/.work/
+deploy/.build/
