@@ -1,0 +1,639 @@
+{
+  "app": {
+    "description": "Create, edit and visualise public transport GTFS feeds."
+  },
+  "nav": {
+    "feeds": "Feeds",
+    "allFeeds": "All feeds",
+    "overview": "Overview",
+    "map": "Map",
+    "routes": "Routes",
+    "stops": "Stops",
+    "calendar": "Calendar",
+    "validation": "Validation",
+    "data": "Data",
+    "generator": "Generator",
+    "more": "More",
+    "breadcrumbs": "Breadcrumbs",
+    "main": "Main navigation",
+    "sections": "Feed sections",
+    "openMenu": "Open menu",
+    "skipToContent": "Skip to content",
+    "catalog": "Catalogue"
+  },
+  "theme": {
+    "switch": "Theme: {theme}",
+    "system": "system",
+    "light": "light",
+    "dark": "dark"
+  },
+  "language": {
+    "label": "Language",
+    "ca": "Catalan",
+    "es": "Spanish",
+    "en": "English"
+  },
+  "common": {
+    "all": "All",
+    "close": "Close",
+    "date": "Date",
+    "nextDay": "Next day",
+    "previousDay": "Previous day",
+    "noResults": "No results.",
+    "seeAll": "See all",
+    "showMore": "Show more",
+    "save": "Save",
+    "cancel": "Cancel",
+    "clearSearch": "Clear search",
+    "retry": "Try again",
+    "delete": "Delete",
+    "edit": "Edit",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "charts": {
+    "less": "Less",
+    "more": "More",
+    "max": "Max: {value}"
+  },
+  "errors": {
+    "database": "Cannot connect to the database",
+    "databaseHint": "Check DATABASE_URL in .env.local and that PostgreSQL is running.",
+    "generic": "Something went wrong. Please try again.",
+    "invalidForm": "Check the highlighted fields.",
+    "notFound": "Page not found",
+    "notFoundHint": "The feed, route or stop may no longer exist."
+  },
+  "feed": {
+    "name": "Name",
+    "description": "Description",
+    "export": "Export GTFS",
+    "trips": "Trips"
+  },
+  "feeds": {
+    "title": "GTFS feeds",
+    "subtitle": "The transit schedules you manage, in one place.",
+    "new": "New feed",
+    "noAgency": "No agency",
+    "valid": "Valid",
+    "statsPending": "Figures will be computed when you open it.",
+    "emptyTitle": "No feeds yet",
+    "emptyDescription": "Import a GTFS folder or ZIP, or start one from scratch."
+  },
+  "newFeed": {
+    "subtitle": "Import an existing GTFS or create a new one.",
+    "mode": "How to start",
+    "modeImport": "Import",
+    "modeBlank": "From scratch",
+    "importTitle": "Import a GTFS folder",
+    "importSubtitle": "The .txt files of a folder or a ZIP.",
+    "blankTitle": "A new feed",
+    "blankSubtitle": "Start with the agency; then add stops, routes and trips.",
+    "dropTitle": "Drop the folder or ZIP here",
+    "dropHint": "Files upload one by one with progress; a stop_times of hundreds of MB fits too.",
+    "pickFolder": "Choose a folder",
+    "pickZip": "Choose a ZIP",
+    "zipError": "The ZIP could not be read.",
+    "noTxt": "No .txt files found.",
+    "rows": {
+      "one": "{count} row",
+      "other": "{count} rows"
+    },
+    "columns": {
+      "one": "{count} column",
+      "other": "{count} columns"
+    },
+    "duplicates": {
+      "one": "{count} duplicate",
+      "other": "{count} duplicates"
+    },
+    "extraFile": "Extra file",
+    "processing": "Processing…",
+    "done": "Done",
+    "failed": "Failed",
+    "agency": "Agency",
+    "summary": "Summary",
+    "files": "Files",
+    "size": "Size",
+    "blankNext": "Once created, you'll go to the data editor to add stops, routes and calendars.",
+    "computing": "Computing figures and validation…",
+    "import": "Import feed",
+    "create": "Create feed",
+    "imported": "Feed imported",
+    "created": "Feed created",
+    "downloading": "Downloading from {source}…",
+    "downloadFailed": "The feed could not be downloaded from its source.",
+    "retry": "Try again"
+  },
+  "overview": {
+    "openMap": "Open map",
+    "startBuilding": "Start building",
+    "busiestDay": "Trips on busiest day",
+    "serviceSpan": "Service span",
+    "emptyTitle": "This feed is still empty",
+    "emptyDescription": "Add stops and a route, and the generator will create the trips.",
+    "addStops": "Add stops",
+    "network": "The network",
+    "networkHint": "Each route in its colour; stops scaled by departures.",
+    "modes": "Transit modes",
+    "calendar": "Trips per day",
+    "calendarHint": "Click a day to open it in the calendar.",
+    "hours": "Departures per hour",
+    "hoursHint": "Trips starting each hour on {date}.",
+    "topStops": "Busiest stops",
+    "topStopsHint": "Departures on the busiest day.",
+    "files": "Feed files",
+    "filesHint": "Click one to open it in the editor.",
+    "missingFile": "Missing"
+  },
+  "map": {
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "lines": "Routes",
+    "hideStops": "Hide stops",
+    "showStops": "Show stops",
+    "searchLines": "Search routes",
+    "showAll": "Show all",
+    "hideAll": "Hide all",
+    "only": "Only this",
+    "openStop": "Open stop",
+    "dailyDepartures": {
+      "one": "{count} departure on the busiest day",
+      "other": "{count} departures on the busiest day"
+    },
+    "legend": "{stops} stops · {lines} routes · circle size shows departures"
+  },
+  "routes": {
+    "subtitle": "Every route in the feed, grouped as riders see them.",
+    "search": "Search routes",
+    "view": "View",
+    "grid": "Cards",
+    "list": "List",
+    "variants": {
+      "one": "{count} variant",
+      "other": "{count} variants"
+    },
+    "emptyTitle": "No routes yet",
+    "emptyDescription": "Add one from the data editor.",
+    "website": "Website",
+    "variantsOf": "{name} variants",
+    "allVariants": "Show all ({count})",
+    "fewerVariants": "Show fewer",
+    "tripsOnDay": "Trips this day",
+    "firstLast": "First and last",
+    "length": "Length",
+    "avgDuration": "Average duration",
+    "pattern": "Pattern",
+    "views": "Route views",
+    "diagram": "Diagram",
+    "timetable": "Timetable",
+    "marey": "Marey",
+    "noTrips": "This route has no trips.",
+    "noTripsOnDay": "No trips on this pattern on {date}.",
+    "stopTrip": "Stop / trip",
+    "mareyHint": "Time runs across and stops are spaced by distance: the steeper the line, the faster the trip. Click one to open the trip.",
+    "serviceDays": "Service days",
+    "departuresByHour": "Departures per hour on {date}"
+  },
+  "stops": {
+    "subtitle": "Sorted by departures on the busiest day.",
+    "search": "Search stops",
+    "emptyTitle": "No stops yet",
+    "emptyDescription": "Add them from the data editor by clicking on the map.",
+    "accessible": "Accessible",
+    "partOf": "Part of",
+    "departures": "Departures",
+    "terminates": "Terminates",
+    "noDepartures": "No departures on {date}.",
+    "platforms": "Platforms",
+    "nearby": "Nearby stops"
+  },
+  "trips": {
+    "departure": "Departure",
+    "arrival": "Arrival",
+    "duration": "Duration",
+    "stopTimes": "Stop times",
+    "noShape": "No shape: stops are joined",
+    "serviceDays": "Days it runs",
+    "runs": "Runs",
+    "doesNotRun": "Does not run",
+    "noService": "It does not run on any day.",
+    "block": "Block {block}",
+    "blockHint": "Trips run by the same vehicle."
+  },
+  "calendar": {
+    "subtitle": "How many trips run each day, and under which services.",
+    "tripsPerDay": "Trips per day",
+    "pickDay": "Click a day for details.",
+    "selected": {
+      "one": "{date}: {count} trip",
+      "other": "{date}: {count} trips"
+    },
+    "services": "Services",
+    "servicesHint": {
+      "one": "{count} service (calendar and calendar_dates)",
+      "other": "{count} services (calendar and calendar_dates)"
+    },
+    "search": "Search services",
+    "weekdays": "Days",
+    "period": "Period",
+    "exceptions": "Exceptions",
+    "activeDays": "Active days",
+    "onlyDates": "Specific dates only",
+    "truncated": {
+      "one": "And {count} more service: search by name.",
+      "other": "And {count} more services: search by name."
+    }
+  },
+  "severity": {
+    "error": "Errors",
+    "warning": "Warnings",
+    "info": "Notes",
+    "errorPlural": "Errors",
+    "warningPlural": "Warnings",
+    "infoPlural": "Notes"
+  },
+  "units": {
+    "trips": {
+      "one": "{count} trip",
+      "other": "{count} trips"
+    },
+    "departures": {
+      "one": "{count} departure",
+      "other": "{count} departures"
+    },
+    "routes": {
+      "one": "{count} route",
+      "other": "{count} routes"
+    },
+    "lines": {
+      "one": "{count} route",
+      "other": "{count} routes"
+    },
+    "stops": {
+      "one": "{count} stop",
+      "other": "{count} stops"
+    },
+    "rows": {
+      "one": "{count} row",
+      "other": "{count} rows"
+    },
+    "columns": {
+      "one": "{count} column",
+      "other": "{count} columns"
+    },
+    "days": {
+      "one": "{count} day",
+      "other": "{count} days"
+    },
+    "cases": {
+      "one": "{count} case",
+      "other": "{count} cases"
+    },
+    "errors": {
+      "one": "{count} error",
+      "other": "{count} errors"
+    }
+  },
+  "modes": {
+    "tram": "Tram",
+    "subway": "Subway",
+    "rail": "Rail",
+    "bus": "Bus",
+    "ferry": "Ferry",
+    "cableTram": "Cable tram",
+    "aerial": "Aerial lift",
+    "funicular": "Funicular",
+    "trolleybus": "Trolleybus",
+    "monorail": "Monorail",
+    "other": "Other"
+  },
+  "tables": {
+    "agency": "Agencies",
+    "stops": "Stops",
+    "routes": "Routes",
+    "trips": "Trips",
+    "stop_times": "Stop times",
+    "calendar": "Calendar",
+    "calendar_dates": "Calendar dates",
+    "shapes": "Shapes",
+    "frequencies": "Frequencies",
+    "transfers": "Transfers",
+    "feed_info": "Feed info"
+  },
+  "validation": {
+    "subtitle": "GTFS specification checks across the whole feed.",
+    "allGood": "No errors or warnings",
+    "allGoodHint": "The feed passes every check.",
+    "wholeFeed": "Whole feed",
+    "missingAgency": "agency.txt is missing or empty",
+    "missingStops": "stops.txt is missing or empty",
+    "missingRoutes": "routes.txt is missing or empty",
+    "missingTrips": "trips.txt is missing or empty",
+    "missingStopTimes": "stop_times.txt is missing or empty",
+    "missingCalendar": "Neither calendar.txt nor calendar_dates.txt",
+    "agencyMissingFields": "Agencies without name, URL or timezone",
+    "agencyIdRequired": "agency_id is required with several agencies",
+    "routeUnknownAgency": "Routes with an unknown agency",
+    "routeWithoutName": "Routes without short or long name",
+    "routeWithoutType": "Routes without route_type",
+    "routeColorContrast": "Routes with low colour/text contrast",
+    "routeWithoutTrips": "Routes without trips",
+    "stopWithoutCoordinates": "Stops without coordinates",
+    "stopAtNullIsland": "Stops at 0,0",
+    "stopWithoutName": "Stops without name",
+    "stopUnknownParent": "Stops with an unknown parent station",
+    "stopUnused": "Stops no trip serves",
+    "tripUnknownRoute": "Trips with an unknown route",
+    "tripUnknownService": "Trips with an unknown service",
+    "tripUnknownShape": "Trips with an unknown shape",
+    "tripTooFewStops": "Trips with fewer than two stops",
+    "stopTimeUnknownTrip": "Stop times for an unknown trip",
+    "stopTimeUnknownStop": "Stop times at an unknown stop",
+    "stopTimeArrivalAfterDeparture": "Arrival after departure",
+    "stopTimeGoesBackwards": "Times going backwards within a trip",
+    "stopTimeEndpointWithoutTime": "First or last stop without a time",
+    "stopTimeTooFast": "Segments faster than 350 km/h",
+    "serviceWithoutDays": "Services with no active days",
+    "serviceEndBeforeStart": "Services ending before they start",
+    "feedExpired": "The feed has expired",
+    "shapeTooFewPoints": "Shapes with fewer than two points",
+    "transferUnknownStop": "Transfers with an unknown stop"
+  },
+  "data": {
+    "subtitle": "Edit any feed file, row by row.",
+    "required": "Required",
+    "optional": "Optional",
+    "add": "Add row",
+    "editRow": "Edit row",
+    "newRow": "New row",
+    "search": "Search this file",
+    "empty": "This file is empty",
+    "emptyHint": "Add the first row.",
+    "page": "{from}–{to} of {total}",
+    "saved": "Row saved",
+    "created": "Row added",
+    "deleted": "Row deleted",
+    "deleteConfirm": "Delete this row? This cannot be undone.",
+    "fieldRequired": "This field is required",
+    "fieldInvalid": "This value is not valid",
+    "pickOnMap": "Click the map to place the stop",
+    "extraColumns": "Extra columns",
+    "columns": "Columns",
+    "timeHint": "HH:MM:SS (may exceed 24 h)",
+    "dateHint": "YYYYMMDD",
+    "colorHint": "Hex without #",
+    "noValue": "(empty)",
+    "conflict": "A row with this identifier already exists."
+  },
+  "generator": {
+    "subtitle": "Create all the trips of a route at once: ordered stops, running times and headway.",
+    "line": "Route and service",
+    "route": "Route",
+    "service": "Service",
+    "headsign": "Headsign",
+    "direction": "Direction",
+    "noDirection": "No direction",
+    "stops": "Stops along the trip",
+    "searchStop": "Search a stop to add it",
+    "mapHint": "You can also click stops on the map to add them in order.",
+    "travel": "Minutes from previous",
+    "remove": "Remove stop",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "schedule": "Schedule",
+    "first": "First departure",
+    "last": "Last departure",
+    "headway": "Every (minutes)",
+    "dwell": "Dwell at each stop (minutes)",
+    "prefix": "Trip ID prefix",
+    "createShape": "Create a straight shape between stops",
+    "preview": "Preview",
+    "previewSummary": "{trips} trips · {duration} running time · last arrival {arrival}",
+    "generate": "Generate trips",
+    "generated": "Created {trips} trips and {stopTimes} stop times",
+    "needData": "You need a route, a service and stops first",
+    "needDataHint": "Create them in the data editor (routes, calendar and stops) and come back.",
+    "errors": {
+      "unknownRoute": "The route does not exist.",
+      "unknownService": "The service does not exist.",
+      "unknownStop": "A stop does not exist.",
+      "tripIdTaken": "Trips with this prefix and time already exist: change the prefix.",
+      "badWindow": "The last departure is before the first.",
+      "lengthMismatch": "Running times are missing."
+    }
+  },
+  "catalog": {
+    "title": "Public GTFS catalogue",
+    "subtitle": "Open feeds from real operators, checked and with current service. Import one to explore it.",
+    "count": {
+      "one": "{count} feed",
+      "other": "{count} feeds"
+    },
+    "import": "Import",
+    "open": "Open",
+    "reimport": "Import again",
+    "imported": "Imported",
+    "source": "Source",
+    "updated": "Published {when}",
+    "available": "Available",
+    "unavailable": "Not responding right now",
+    "checking": "Checking the source…",
+    "browse": "Browse the catalogue",
+    "all": "All",
+    "logosCredit": "Brand symbols as vectors, from Wikimedia Commons:",
+    "license": {
+      "pd": "public domain",
+      "cc0": "CC0"
+    }
+  },
+  "fields": {
+    "agency_id": "Agency ID",
+    "agency_name": "Agency name",
+    "agency_url": "Agency URL",
+    "agency_timezone": "Timezone",
+    "agency_lang": "Language",
+    "agency_phone": "Phone",
+    "agency_fare_url": "Fare URL",
+    "agency_email": "Email",
+    "stop_id": "Stop ID",
+    "stop_code": "Code",
+    "stop_name": "Stop name",
+    "tts_stop_name": "Text-to-speech name",
+    "stop_desc": "Description",
+    "stop_lat": "Latitude",
+    "stop_lon": "Longitude",
+    "zone_id": "Zone",
+    "stop_url": "URL",
+    "location_type": "Location type",
+    "parent_station": "Parent station",
+    "stop_timezone": "Timezone",
+    "wheelchair_boarding": "Wheelchair boarding",
+    "level_id": "Level",
+    "platform_code": "Platform",
+    "route_id": "Route ID",
+    "route_short_name": "Short name",
+    "route_long_name": "Long name",
+    "route_desc": "Description",
+    "route_type": "Type",
+    "route_url": "URL",
+    "route_color": "Colour",
+    "route_text_color": "Text colour",
+    "route_sort_order": "Sort order",
+    "continuous_pickup": "Continuous pickup",
+    "continuous_drop_off": "Continuous drop-off",
+    "network_id": "Network",
+    "service_id": "Service",
+    "trip_id": "Trip ID",
+    "trip_headsign": "Headsign",
+    "trip_short_name": "Short name",
+    "direction_id": "Direction",
+    "block_id": "Block",
+    "shape_id": "Shape",
+    "wheelchair_accessible": "Wheelchair accessible",
+    "bikes_allowed": "Bikes allowed",
+    "arrival_time": "Arrival",
+    "departure_time": "Departure",
+    "stop_sequence": "Sequence",
+    "stop_headsign": "Stop headsign",
+    "pickup_type": "Pickup",
+    "drop_off_type": "Drop-off",
+    "shape_dist_traveled": "Distance travelled",
+    "timepoint": "Timepoint",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "date": "Date",
+    "exception_type": "Exception",
+    "shape_pt_lat": "Latitude",
+    "shape_pt_lon": "Longitude",
+    "shape_pt_sequence": "Sequence",
+    "start_time": "Start time",
+    "end_time": "End time",
+    "headway_secs": "Headway (s)",
+    "exact_times": "Exact times",
+    "from_stop_id": "From stop",
+    "to_stop_id": "To stop",
+    "from_route_id": "From route",
+    "to_route_id": "To route",
+    "from_trip_id": "From trip",
+    "to_trip_id": "To trip",
+    "transfer_type": "Transfer type",
+    "min_transfer_time": "Min transfer time (s)",
+    "feed_publisher_name": "Publisher",
+    "feed_publisher_url": "Publisher URL",
+    "feed_lang": "Language",
+    "default_lang": "Default language",
+    "feed_start_date": "Valid from",
+    "feed_end_date": "Valid until",
+    "feed_version": "Version",
+    "feed_contact_email": "Contact email",
+    "feed_contact_url": "Contact URL"
+  },
+  "enums": {
+    "location_type": {
+      "0": "Stop or platform",
+      "1": "Station",
+      "2": "Entrance/exit",
+      "3": "Generic node",
+      "4": "Boarding area"
+    },
+    "wheelchair_boarding": {
+      "0": "0 · No information",
+      "1": "1 · Yes",
+      "2": "2 · No"
+    },
+    "wheelchair_accessible": {
+      "0": "0 · No information",
+      "1": "1 · Yes",
+      "2": "2 · No"
+    },
+    "bikes_allowed": {
+      "0": "0 · No information",
+      "1": "1 · Yes",
+      "2": "2 · No"
+    },
+    "continuous_pickup": {
+      "0": "0 · Continuous",
+      "1": "1 · None",
+      "2": "2 · Phone agency",
+      "3": "3 · Ask the driver"
+    },
+    "continuous_drop_off": {
+      "0": "0 · Continuous",
+      "1": "1 · None",
+      "2": "2 · Phone agency",
+      "3": "3 · Ask the driver"
+    },
+    "pickup_type": {
+      "0": "0 · Regular",
+      "1": "1 · None",
+      "2": "2 · Phone agency",
+      "3": "3 · Ask the driver"
+    },
+    "drop_off_type": {
+      "0": "0 · Regular",
+      "1": "1 · None",
+      "2": "2 · Phone agency",
+      "3": "3 · Ask the driver"
+    },
+    "direction_id": {
+      "0": "Outbound",
+      "1": "Inbound"
+    },
+    "timepoint": {
+      "0": "0 · Approximate",
+      "1": "1 · Exact"
+    },
+    "exact_times": {
+      "0": "0 · Frequency-based",
+      "1": "1 · Exact schedule"
+    },
+    "exception_type": {
+      "1": "1 · Service added",
+      "2": "2 · Service removed"
+    },
+    "transfer_type": {
+      "0": "0 · Recommended",
+      "1": "1 · Timed",
+      "2": "2 · Minimum time",
+      "3": "3 · Not possible",
+      "4": "4 · In-seat",
+      "5": "5 · Must alight"
+    },
+    "monday": {
+      "0": "0 · No service",
+      "1": "1 · Service"
+    },
+    "tuesday": {
+      "0": "0 · No service",
+      "1": "1 · Service"
+    },
+    "wednesday": {
+      "0": "0 · No service",
+      "1": "1 · Service"
+    },
+    "thursday": {
+      "0": "0 · No service",
+      "1": "1 · Service"
+    },
+    "friday": {
+      "0": "0 · No service",
+      "1": "1 · Service"
+    },
+    "saturday": {
+      "0": "0 · No service",
+      "1": "1 · Service"
+    },
+    "sunday": {
+      "0": "0 · No service",
+      "1": "1 · Service"
+    }
+  }
+}

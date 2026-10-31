@@ -1,0 +1,1925 @@
+@import 'tailwindcss';
+
+@config '../tailwind.config.js';
+@source "../src/**/*.{js,ts,jsx,tsx}";
+@source "../app/**/*.{js,ts,jsx,tsx}";
+
+/* El mateix criteri que `.hover-reveal`: un apuntador que de debò pot passar per
+   sobre. Per a maquetes que només tenen sentit quan les accions s'amaguen. */
+@custom-variant can-hover (@media (hover: hover) and (pointer: fine));
+
+/* `dark:` segueix el tema triat (atribut `data-theme` de <html>), no només el del
+   sistema: la persona pot triar clar o fosc al Compte. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* Alçades a partir de l'alçada visible de l'app (--app-height), mai de la finestra (vh): a mòbil
+   100vh inclou la barra del navegador i no s'encongeix amb el teclat (UI-USO-005).
+   `h-app` = tota l'alçada; `max-h-app-70` = el 70 %. */
+@utility h-app {
+  height: var(--app-height);
+}
+@utility min-h-app {
+  min-height: var(--app-height);
+}
+@utility max-h-app {
+  max-height: var(--app-height);
+}
+@utility h-app-* {
+  height: calc(var(--app-height) * --value(integer) / 100);
+}
+@utility min-h-app-* {
+  min-height: calc(var(--app-height) * --value(integer) / 100);
+}
+@utility max-h-app-* {
+  max-height: calc(var(--app-height) * --value(integer) / 100);
+}
+
+/* CONTENIDOR TONAL (`bg-tonal`, docs/ui-containers-and-shape.md)
+   Un contenidor es distingeix del que té al voltant pel to, no per una vora. El to
+   depèn d'on és: sobre la pàgina (surface), surface-container; dins d'un altre
+   contenidor, un pas més (-highest); dins d'un diàleg o d'un menú, que ja són
+   -high/-highest, el més clar/fosc (-lowest). Així la mateixa targeta es veu a
+   qualsevol nivell sense que la pantalla hagi de saber on la pinten. */
+.bg-tonal {
+  /* El to d'aquest contenidor, resolt aquí, per als fills que l'han de copiar
+     (`bg-tonal-self`): els fills ja veuen el to del nivell següent. */
+  --tonal-self: var(--surface-tonal, var(--md-sys-color-surface-container));
+}
+.bg-tonal > * {
+  --surface-tonal: var(--md-sys-color-surface-container-highest);
+}
+[role='dialog'],
+[role='alertdialog'] {
+  --surface-tonal: var(--md-sys-color-surface-container-lowest);
+}
+/* Els menús flotants porten el fons de la pàgina (`bg-floating`, GsapMenuSurface):
+   una caixa a dins torna al to de contenidor de la pàgina. Després de la regla
+   dels diàlegs perquè guanyi en un full mòbil que també és `role="dialog"`. */
+.z-popover {
+  --surface-tonal: var(--md-sys-color-surface-container);
+}
+
+/* External email markup must never override the active application theme. */
+[data-email-html] {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+[data-email-html] [data-email-image-broken='true'] {
+  display: none !important;
+}
+
+/* Una capçalera de pàgina sense res visible (a mòbil, quan totes les accions són
+   d'escriptori) no ocupa lloc ni deixa marge: vegeu useCollapseWhenBlank. */
+[data-collapse-blank][data-blank] {
+  display: none !important;
+}
+
+/* El mateix amb les pestanyes d'una pàgina que a mòbil porta la barra (`hidden md:flex`):
+   el panell en deixava el marge de sobre i Projectes o Tiquets començaven 12 px més avall
+   que la resta de mòduls. Si darrere hi ha una altra llista visible (el Calendari en té
+   una de pròpia per a mòbil), el marge sí que cal. */
+@media (max-width: 767px) {
+  [role='tablist'].hidden:not(:has(~ [role='tablist']:not(.hidden))) ~ [role='tabpanel'] {
+    margin-top: 0;
+  }
+}
+
+/* Google Sans - self-hosted fonts */
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/google-sans-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/google-sans-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+:root {
+  color-scheme: light;
+  /* Paleta MD3 neutra per defecte (llavors #2f5e93, #5a6170 i #6d5a7d; superfícies del to del
+     primari): la que veu una instància sense colors propis, no la de cap empresa. Amb una marca
+     pròpia, src/lib/theme/color-utils.ts la recalcula sencera (rols, fixed i superfícies). */
+  --md-sys-color-primary: #225488;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d6e3fe;
+  --md-sys-color-on-primary-container: #001d3a;
+  --md-sys-color-secondary: #4c5361;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #dbe3f4;
+  --md-sys-color-on-secondary-container: #151c28;
+  --md-sys-color-tertiary: #5d4b6d;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #eedcfc;
+  --md-sys-color-on-tertiary-container: #241532;
+  /* L'error d'MD3 (#b3261e) a to 35 (7:1). Si el primari d'una marca és de la mateixa família de
+     vermell, color-utils el desplaça cap al carmí perquè no es confonguin (UI-SIS-002). */
+  --md-sys-color-error: #a41414;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdbd3;
+  --md-sys-color-on-error-container: #3b0900;
+  --md-sys-color-surface: #f7f9ff;
+  --md-sys-color-on-surface: #191c21;
+  --md-sys-color-surface-variant: #dce3f1;
+  --md-sys-color-on-surface-variant: #414753;
+  --md-sys-color-outline: #717784;
+  --md-sys-color-outline-variant: #c0c7d5;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #2e3036;
+  --md-sys-color-inverse-on-surface: #edf1f8;
+  --md-sys-color-inverse-primary: #a7c8ff;
+  --md-sys-color-surface-dim: #d7dae1;
+  --md-sys-color-surface-bright: #f7f9ff;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f0f4fb;
+  --md-sys-color-surface-container: #eaeef5;
+  --md-sys-color-surface-container-high: #e5e8f0;
+  --md-sys-color-surface-container-highest: #dfe2ea;
+  /* Fons de tots els camps d'escriptura (inputs, selects, cerques, compositors): el més
+     blanc possible sense arribar al blanc pur, i del mateix to que la superfície, de
+     manera que també segueix una marca pròpia. Un sol color a tot arreu. */
+  --md-sys-color-field: color-mix(in srgb, #ffffff 70%, var(--md-sys-color-surface));
+  /* Text terciari (dates, comptadors, dreceres, placeholders). Substitueix
+     `text-on-surface-variant/NN`: l'opacitat barrejava el color amb el fons i
+     el deixava per sota de 4,5:1. Aquest fa ≥4,5:1 sobre totes les superfícies. */
+  --md-sys-color-on-surface-muted: #585f6b;
+  /* Separador suau (més fluix que outline-variant), sòlid i igual en tots els
+     fons: substitueix els deu nivells de `border-outline-variant/NN`. */
+  --md-sys-color-outline-subtle: #dce3f1;
+
+  /* M3 Fixed Color Roles — same in light AND dark themes */
+  --md-sys-color-primary-fixed: #d6e3fe;
+  --md-sys-color-primary-fixed-dim: #a7c8ff;
+  --md-sys-color-on-primary-fixed: #001d3a;
+  --md-sys-color-on-primary-fixed-variant: #0c497b;
+  --md-sys-color-secondary-fixed: #dbe3f4;
+  --md-sys-color-secondary-fixed-dim: #bfc7d8;
+  --md-sys-color-on-secondary-fixed: #151c28;
+  --md-sys-color-on-secondary-fixed-variant: #404755;
+  --md-sys-color-tertiary-fixed: #eedcfc;
+  --md-sys-color-tertiary-fixed-dim: #d4bee6;
+  --md-sys-color-on-tertiary-fixed: #241532;
+  --md-sys-color-on-tertiary-fixed-variant: #514061;
+
+  /* Typography — M3 type scale */
+  /* Brand font: Display & Headline (high impact, large sizes) */
+  --md-sys-typescale-brand-font: 'Google Sans', system-ui, sans-serif;
+  /* Plain font: Title, Body, Label (readability at smaller sizes) */
+  --md-sys-typescale-plain-font: 'Google Sans', system-ui, sans-serif;
+
+  --md-sys-typescale-display-large-font: var(--md-sys-typescale-brand-font);
+  --md-sys-typescale-display-large-size: 57px;
+  --md-sys-typescale-display-large-weight: 400;
+  --md-sys-typescale-display-large-weight-emphasized: 500;
+  --md-sys-typescale-display-large-line-height: 64px;
+
+  --md-sys-typescale-display-medium-font: var(--md-sys-typescale-brand-font);
+  --md-sys-typescale-display-medium-size: 45px;
+  --md-sys-typescale-display-medium-weight: 400;
+  --md-sys-typescale-display-medium-weight-emphasized: 500;
+  --md-sys-typescale-display-medium-line-height: 52px;
+
+  --md-sys-typescale-display-small-font: var(--md-sys-typescale-brand-font);
+  --md-sys-typescale-display-small-size: 36px;
+  --md-sys-typescale-display-small-weight: 400;
+  --md-sys-typescale-display-small-weight-emphasized: 500;
+  --md-sys-typescale-display-small-line-height: 44px;
+
+  --md-sys-typescale-headline-large-font: var(--md-sys-typescale-brand-font);
+  --md-sys-typescale-headline-large-size: 32px;
+  --md-sys-typescale-headline-large-weight: 500;
+  --md-sys-typescale-headline-large-weight-emphasized: 600;
+  --md-sys-typescale-headline-large-line-height: 40px;
+
+  --md-sys-typescale-headline-medium-font: var(--md-sys-typescale-brand-font);
+  --md-sys-typescale-headline-medium-size: 28px;
+  --md-sys-typescale-headline-medium-weight: 500;
+  --md-sys-typescale-headline-medium-weight-emphasized: 600;
+  --md-sys-typescale-headline-medium-line-height: 36px;
+
+  --md-sys-typescale-headline-small-font: var(--md-sys-typescale-brand-font);
+  --md-sys-typescale-headline-small-size: 24px;
+  --md-sys-typescale-headline-small-weight: 500;
+  --md-sys-typescale-headline-small-weight-emphasized: 600;
+  --md-sys-typescale-headline-small-line-height: 32px;
+
+  --md-sys-typescale-title-large-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-title-large-size: 22px;
+  --md-sys-typescale-title-large-weight: 500;
+  --md-sys-typescale-title-large-weight-emphasized: 600;
+  --md-sys-typescale-title-large-line-height: 28px;
+
+  --md-sys-typescale-title-medium-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-title-medium-size: 16px;
+  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-medium-weight-emphasized: 600;
+  --md-sys-typescale-title-medium-line-height: 24px;
+
+  --md-sys-typescale-title-small-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-title-small-size: 14px;
+  --md-sys-typescale-title-small-weight: 500;
+  --md-sys-typescale-title-small-weight-emphasized: 600;
+  --md-sys-typescale-title-small-line-height: 20px;
+
+  --md-sys-typescale-body-large-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-body-large-size: 16px;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-large-weight-emphasized: 500;
+  --md-sys-typescale-body-large-line-height: 24px;
+
+  --md-sys-typescale-body-medium-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-body-medium-size: 14px;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-medium-weight-emphasized: 500;
+  --md-sys-typescale-body-medium-line-height: 20px;
+
+  --md-sys-typescale-body-small-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-body-small-size: 12px;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-body-small-weight-emphasized: 500;
+  --md-sys-typescale-body-small-line-height: 16px;
+
+  --md-sys-typescale-label-large-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-label-large-size: 14px;
+  --md-sys-typescale-label-large-weight: 500;
+  --md-sys-typescale-label-large-weight-emphasized: 600;
+  --md-sys-typescale-label-large-line-height: 20px;
+
+  --md-sys-typescale-label-medium-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-label-medium-size: 12px;
+  --md-sys-typescale-label-medium-weight: 500;
+  --md-sys-typescale-label-medium-weight-emphasized: 600;
+  --md-sys-typescale-label-medium-line-height: 16px;
+
+  --md-sys-typescale-label-small-font: var(--md-sys-typescale-plain-font);
+  --md-sys-typescale-label-small-size: 11px;
+  --md-sys-typescale-label-small-weight: 500;
+  --md-sys-typescale-label-small-weight-emphasized: 600;
+  --md-sys-typescale-label-small-line-height: 16px;
+
+  /* No hi ha tokens d'elevació. La profunditat és tonal: es tria el to de
+     `surface-container-*` que toca i, si cal, un filet d'`outline-variant`. Hi
+     havia sis variables que valien `none` i una utilitat `shadow-elevation-N`
+     que en sortia; vint-i-un elements la portaven i cap no en rebia res. */
+
+  /* State layers */
+  --md-sys-state-hover: 0.08;
+  --md-sys-state-focus: 0.12;
+  --md-sys-state-pressed: 0.12;
+  /* Tints de repòs (no són estats d'interacció): el fons d'un element triat o destacat. Els fan
+     servir els colors `primary-tint` (12 %, seleccionat) i `primary-tint-subtle` (6 %, destacat)
+     de tailwind.config.js. El destacat queda per sota del hover (8 %) perquè passar per sobre
+     d'una fila no es confongui amb tenir-la triada. */
+  --md-sys-state-selected: 0.12;
+  --md-sys-state-highlight: 0.06;
+
+  /* Shape System — aligned to the canonical M3 Expressive shape scale (user
+     directive 2026-06-13: "100% Expressive"). Tuned to the spec values
+     (8/12/16/20/28/32), NOT the inflated 16/20/24/32/48 series that previously
+     felt oversized on desktop — so surfaces read more expressive yet stay clean. */
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-large-increased: 20px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-extra-extra-large: 32px;
+  --md-sys-shape-corner-full: 9999px;
+
+  /* Primer pla de cada accent de mòdul (clar): el text i les icones que van a
+     sobre d'un fons ple de l'accent. Calculat per contrast (≥4,5:1), no
+     heretat de on-primary: aquell és per anar sobre primary. Ho comprova
+     src/lib/accessibility/__tests__/theme-accessibility.test.ts. */
+
+  /* Support status tokens (light theme) */
+  --support-positive-container: #cce5d6;
+  --support-positive-on: #0b3a2a;
+  --support-caution-container: #fde8c8;
+  --support-caution-on: #4a2900;
+  --support-critical-container: var(--md-sys-color-error-container);
+  --support-critical-on: var(--md-sys-color-on-error-container);
+  --support-info-container: #cbdcf7;
+  --support-info-on: #102a52;
+  /* Paleta de dades dels gràfics (tema clar). Única font de color per a sèries:
+     src/components/ui/charts/palette.ts la consumeix i theme-accessibility.test.ts
+     comprova que cada color fa ≥3:1 sobre totes les superfícies. Les vuit
+     categòriques van en ordre fix (validat per a daltonisme entre veïnes); les
+     semàntiques diuen bo/atenció/greu/dolent/crític/informació/neutre. */
+  --chart-1: #2a78d6;
+  --chart-2: #c4501f;
+  --chart-3: #0e8a73;
+  --chart-4: #a26b00;
+  --chart-5: #c2407a;
+  --chart-6: #008300;
+  --chart-7: #4a3aa7;
+  --chart-8: #c93636;
+  --chart-positive: #1b7f3b;
+  --chart-caution: #a15c00;
+  --chart-serious: #c2410c;
+  --chart-negative: #c62828;
+  --chart-critical: #8c1d18;
+  --chart-info: #2a78d6;
+  --chart-neutral: #6b5c59;
+
+  /* Project/client status colors (soft tones for indicators) */
+  --status-project-lead: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-variant) 60%,
+    var(--md-sys-color-on-surface-variant) 40%
+  );
+  --status-project-proposed: color-mix(
+    in srgb,
+    var(--support-info-container) 60%,
+    var(--support-info-on) 40%
+  );
+  --status-project-accepted: color-mix(
+    in srgb,
+    var(--md-sys-color-tertiary-container) 60%,
+    var(--md-sys-color-on-tertiary-container) 40%
+  );
+  /* En curs és informatiu (info), com al mapa central de tons (ui-status.ts). */
+  --status-project-in-progress: color-mix(
+    in srgb,
+    var(--support-info-container) 60%,
+    var(--support-info-on) 40%
+  );
+  --status-project-in-review: color-mix(
+    in srgb,
+    var(--support-info-container) 60%,
+    var(--support-info-on) 40%
+  );
+  --status-project-completed: color-mix(
+    in srgb,
+    var(--support-positive-container) 75%,
+    var(--support-positive-on) 25%
+  );
+  --status-project-archived: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-variant) 70%,
+    var(--md-sys-color-on-surface-variant) 30%
+  );
+
+  --status-client-active: color-mix(
+    in srgb,
+    var(--support-positive-container) 60%,
+    var(--support-positive-on) 40%
+  );
+  --status-client-potential: color-mix(
+    in srgb,
+    var(--support-info-container) 60%,
+    var(--support-info-on) 40%
+  );
+  --status-client-inactive: color-mix(
+    in srgb,
+    var(--support-caution-container) 60%,
+    var(--support-caution-on) 40%
+  );
+  --status-client-archived: color-mix(
+    in srgb,
+    var(--md-sys-color-surface-variant) 70%,
+    var(--md-sys-color-on-surface-variant) 30%
+  );
+
+  /* Resolved at runtime by ModuleProvider */
+  --module-accent: var(--md-sys-color-primary);
+
+  /* Mobile chrome defaults */
+  /*
+   * Safe areas, from whichever source actually has them.
+   *
+   * `env(safe-area-inset-*)` is the standard and is the only one that works on
+   * iOS. On Android it is not reliable: Capacitor only lets the native insets
+   * reach the WebView when the WebView is version 140+ *and* it has already
+   * confirmed the viewport-fit=cover meta, and that confirmation is an async
+   * round trip that can lose the race with the first inset pass. Measured on a
+   * Pixel (API 36, WebView 141) after a normal launch:
+   *
+   *     innerHeight              923   (the WebView has the whole screen)
+   *     env(safe-area-inset-top)   0px
+   *     --safe-area-inset-top     54px  (Capacitor's own, injected)
+   *
+   * i.e. edge to edge, with real insets, and `env()` reporting nothing. An app
+   * that reads only `env()` then puts its header under the status bar and its
+   * navigation bar under the gesture pill — which is exactly what happened.
+   *
+   * Capacitor injects `--safe-area-inset-*` on <html> precisely so there is a
+   * second source; taking the larger of the two is correct on both platforms,
+   * because the one that does not apply is simply absent (iOS never sets the
+   * custom properties, so the fallback 0px loses to env()).
+   */
+  --safe-top: max(env(safe-area-inset-top, 0px), var(--safe-area-inset-top, 0px));
+  --safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px));
+  --safe-left: max(env(safe-area-inset-left, 0px), var(--safe-area-inset-left, 0px));
+  --safe-right: max(env(safe-area-inset-right, 0px), var(--safe-area-inset-right, 0px));
+
+  --mobile-header-height: 0px;
+  --mobile-footer-height: 0px;
+  /* Set by AppLayout on mobile; fallback for others. 100dvh where it exists:
+     on a phone 100vh is taller than the visible area (the URL bar eats into it),
+     which is what the public pages sized from this variable would otherwise get. */
+  --app-height: 100vh;
+  /* Set by AppLayout when keyboard is visible */
+  --keyboard-inset-bottom: 0px;
+  /* Quant del *layout* tapa el teclat i encara no ha descomptat ningú.
+     El publica src/hooks/useKeyboardOpen.ts; a diferència de l'anterior, aquest
+     terme sí que es pot sumar a un contenidor en flux (vegeu #main-content). */
+  --keyboard-overlay-bottom: 0px;
+
+  /* Escala de z-index: l'única font. Les utilitats de Tailwind (`z-modal`, `z-popover`…) la
+     llegeixen d'aquí (tailwind.config.js); la variable sola, només per a un `style.zIndex`
+     inevitable (arrossegar, portals de tercers). */
+  --z-base: 0;
+  --z-above: 1;
+  --z-raised: 10;
+  --z-sticky-inner: 20;
+  --z-sticky: 30;
+  --z-fab: 50;
+  --z-banner: 70;
+  --z-modal: 100;
+  --z-modal-loading: 110;
+  --z-popover: 120;
+  --z-system-dialog: 200;
+  --z-toast: 1000;
+  --z-mobile-overlay: 9998;
+  --z-mobile-overlay-top: 9999;
+}
+
+/* A mòbil, 100vh és més alt que l'àrea visible (la barra d'adreces la hi retalla): la closca
+   i la barra de navegació inferior quedarien per sota del plec. */
+@supports (height: 100dvh) {
+  :root {
+    --app-height: 100dvh;
+  }
+}
+
+/* Mobile bottom-sheet menus: clear the navigation bar and the virtual keyboard.
+   `--mobile-footer-height` was missing here, so every sheet in the app — context
+   menus, filters, the header menu — opened underneath the floating nav pill and
+   lost its bottom rows to it. It is 0px outside mobile, so the term is harmless
+   on other breakpoints. */
+/* El teclat: `--keyboard-inset-bottom` és el que tapa al navegador (el viewport visual s'encongeix)
+   i `--keyboard-overlay-bottom` el que tapa a l'app d'iOS (no s'encongeix res). A cada plataforma
+   un dels dos val 0, així que la suma aixeca el full just per sobre del teclat sense comptar-lo
+   dues vegades. Abans només hi havia el primer: a l'app d'iOS els fulls (selectors, menús)
+   quedaven sota el teclat en escriure a la cerca.
+   L'alçada disponible no resta `--keyboard-inset-bottom`: `--app-height` ja l'ha perdut (restar-lo
+   deixava a Safari un full de 200 px amb 536 de lliures). Es publica com a
+   `--mobile-sheet-height` perquè la llista de dins (Dropdown, MultiSelect, FilterButton, el panell
+   d'entitats) es mesuri amb el mateix espai i no quedi tallada. */
+
+/* A l'escriptori no hi ha barres fixes pròpies, però el bàner de galetes sí
+   que tapa la part de baix mentre es veu (A11Y-G6G7-030). Al mòbil, la regla de
+   sota hi suma la capçalera i la barra inferior. */
+#main-content {
+  scroll-padding-bottom: calc(var(--fixed-bar-inset-bottom, 0px) + 8px);
+}
+
+@media (max-width: 767px),
+  (max-width: 1024px) and (max-height: 600px) and (orientation: landscape) {
+  body[data-mobile-header-menu-open='true'] [data-mobile-header] {
+    z-index: var(--z-mobile-overlay-top) !important;
+  }
+
+  :root {
+    /* Fallback fins que MobileHeader mesura l'alçada real (BAR_HEIGHT_PX). */
+    --mobile-header-height: calc(56px + var(--safe-top));
+    /* Bottom nav: ~80px content + safe area (set dynamically by MobileNavigationBar) */
+    --mobile-footer-height: calc(80px + var(--safe-bottom));
+  }
+
+  /* ============================================
+     MOBILE SCROLL CONFIGURATION
+     Single scroll container model: only #main-content scrolls.
+     Body is locked with overflow:hidden globally.
+     ============================================ */
+  #main-content {
+    /* El respir propi del contenidor, com a variables: la regla de min-height
+       de sota les ha de restar, i amb els números escrits dues vegades no
+       poden fer altra cosa que separar-se. */
+    /* 16 dp, el mateix marge que als costats: a 8 px, una pàgina que començava per un
+       botó o per les pestanyes quedava enganxada a la barra. */
+    --main-pad-top: 16px;
+    --main-pad-bottom: 16px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding-top: calc(var(--mobile-header-height, 0px) + var(--main-pad-top));
+    /* No keyboard term here. The shell above is sized from `--app-height`,
+       i.e. the *visual* viewport, which on iOS has already lost the keyboard's
+       height; adding `--keyboard-inset-bottom` on top of that counted it twice.
+       With a 336pt keyboard on an iPhone 14 the padding alone (113 + 425) came
+       to more than the 328pt that were left, so the content box collapsed to
+       zero and the field being typed into was pushed off screen. The inset is
+       still right for *fixed* overlays (FAB, sheets, banner), which stay
+       anchored to the unshrunk viewport — they keep using it.
+
+       `--keyboard-overlay-bottom` sí que hi va, i no es compta dues vegades per
+       construcció: és el teclat *menys* el que el viewport ja hagi encongit. A
+       la closca d'iOS el viewport no es mou gens (Capacitor redimensiona el
+       `body`, que aquesta app no llegeix), així que sense aquest terme la
+       pàgina segueix dibuixant sota el teclat — a Missatges hi quedava tot el
+       compositor. A Android val 0 i la regla no fa res. */
+    /* `--fixed-bar-inset-bottom` és el que tapen el botó flotant i el bàner de
+       galetes des de la vora de baix (vegeu useFixedBarInset); com que tots dos
+       s'assenten sobre la barra inferior, el més gran dels dos ja la inclou.
+       Així el final de la pàgina es pot portar per sobre del botó. */
+    padding-bottom: calc(
+      max(var(--mobile-footer-height, 0px), var(--fixed-bar-inset-bottom, 0px)) +
+        var(--keyboard-overlay-bottom, 0px) + var(--main-pad-bottom)
+    );
+    /* Les barres fixes tapen les vores del contenidor: sense scroll-padding, en
+       tabular el navegador deixava l'element enfocat just a la vora, sota la
+       capçalera o sota la barra inferior / el botó flotant (A11Y-MAN-005,
+       A11Y-G6G7-030; WCAG 2.4.11). */
+    scroll-padding-top: calc(
+      max(var(--mobile-header-height, 0px), var(--fixed-bar-inset-top, 0px)) + 8px
+    );
+    scroll-padding-bottom: calc(
+      max(var(--mobile-footer-height, 0px), var(--fixed-bar-inset-bottom, 0px)) +
+        var(--keyboard-overlay-bottom, 0px) + 8px
+    );
+  }
+
+  /* Amb el teclat obert, l'espai és per al que s'escriu i el que s'hi respon.
+     El títol de la capçalera torna a una línia, i les eines de lectura del xat
+     (filtre de canal, cerca, missatges fixats) s'amaguen fins que el teclat
+     baixa. A l'iPhone, amb tot això, del fil només se'n veia una línia i mitja.
+     El selector de canal del compositor no s'amaga mai: és el que evita escriure
+     al client per error. */
+  html[data-keyboard-open] [data-mobile-header] h1 {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
+  /* Llevat que el teclat sigui per a elles mateixes (escriure a la cerca) o que hi
+     hagi una cerca feta: en tocar-ne un resultat, el camp perdia el focus i els
+     resultats desapareixien a mig salt. */
+  html[data-keyboard-open]
+    [data-chat-reading-tools]:not(:focus-within):not(:has(input:not(:placeholder-shown))) {
+    display: none;
+  }
+
+  /* Amb un xat a la pantalla, a baix hi ha el compositor: un avís hi tapava
+     «Publica», els emojis i la barra de programats. Allà surten a dalt, sota la
+     capçalera i, amb el teclat, a dalt de la part visible. */
+  html:has([data-activity-composer]) [data-toast-region] {
+    top: calc(var(--mobile-header-height, 0px) + var(--visual-viewport-top, 0px) + 0.75rem);
+    bottom: auto !important;
+    flex-direction: column;
+  }
+
+  /* Telèfon apaïsat dins d'una conversa: 390 px d'alçada no hi caben la
+     capçalera, la barra inferior, el filtre, el compositor i a més els
+     missatges (en quedaven 17 px). Com a qualsevol app de missatgeria, la
+     conversa oberta no porta la barra de pestanyes (la fletxa enrere de la
+     capçalera hi torna) i el filtre i la cerca esperen al vertical. En
+     amagar-se, la barra mesura 0 i --mobile-footer-height la segueix. */
+  @media (max-height: 500px) and (orientation: landscape) {
+    html:has([data-conversation-shell]) [data-mobile-nav] {
+      display: none;
+    }
+
+    /* Amb el teclat obert en apaïsat en queden uns 190 px: la capçalera
+       (81 px) tapava el camp on s'escriu. Se'n va fins que el teclat baixa. */
+    html[data-keyboard-open] {
+      /* `!important`: la capçalera escriu la seva mesura en línia a <html>. */
+      --mobile-header-height: 0px !important;
+    }
+
+    html[data-keyboard-open] [data-mobile-header] {
+      display: none;
+    }
+
+    [data-conversation-shell]
+      [data-chat-reading-tools]:not(:focus-within):not(:has(input:not(:placeholder-shown))) {
+      display: none;
+    }
+  }
+
+  /* Ensure page content has min-height for proper scrolling.
+     Use --app-height (set by AppLayout via visualViewport) instead of 100vh
+     so the height matches the real visible area on mobile browsers where
+     the URL bar / toolbar eat into the viewport.
+
+     El padding del contenidor també s'ha de restar. Sense fer-ho, l'alçada
+     mínima era la de tota l'àrea visible mentre el padding hi sumava 24 px
+     més, i això deixava 24 px d'scroll residual a TOTES les pàgines mòbils:
+     una pàgina que hi cap exactament es podia arrossegar igualment. */
+  #main-content > div {
+    min-height: calc(
+      var(--app-height, 100vh) - var(--mobile-header-height, 0px) -
+        max(var(--mobile-footer-height, 0px), var(--fixed-bar-inset-bottom, 0px)) -
+        var(--keyboard-overlay-bottom, 0px) - var(--main-pad-top) - var(--main-pad-bottom)
+    );
+    /* Landscape on a notched phone puts the cutout on a long edge, and with
+       viewport-fit=cover the content runs straight underneath it. This goes on
+       the inner wrapper as a margin rather than on #main-content as padding
+       because the horizontal padding there is a Tailwind utility, and a rule
+       outside the utility layers would replace it instead of adding to it. */
+    margin-inline: var(--safe-left) var(--safe-right);
+  }
+
+  /* A landscape phone can cross Tailwind's md width while remaining too short
+     for the desktop shell. Keep shared page headers and mirrored tab bars in
+     the same mobile mode selected by useIsMobile. */
+  [data-mobile-layout='true'] [data-desktop-page-title],
+  [data-mobile-layout='true'] [data-desktop-page-subtitle],
+  [data-mobile-layout='true'] [data-desktop-page-title-group],
+  [data-mobile-layout='true'] [data-tabs-list].hidden {
+    display: none !important;
+  }
+
+  /* Accions de capçalera marcades com a «només escriptori». Els mòduls ja ho
+     escrivien amb `hidden md:inline-flex`, però la classe no feia res: `cn()`
+     no fusiona utilitats de Tailwind, i com que `.inline-flex` de la base del
+     botó s'emet després de `.hidden`, hi guanyava per ordre de full d'estils.
+     El resultat era un «Crea …» duplicat a cada mòdul, al costat de la mateixa
+     acció que ja ofereix el botó flotant. */
+  [data-mobile-layout='true'] [data-page-header-actions] .hidden {
+    display: none !important;
+  }
+
+  [data-mobile-layout='true'] [data-page-header-actions] {
+    margin-inline: -0.25rem;
+    width: calc(100% + 0.5rem);
+    min-width: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-inline: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  /* Improve touch response on mobile - remove 300ms delay */
+  button,
+  a,
+  [role='button'],
+  [role='link'],
+  [role='tab'],
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+}
+
+/* Brillantor dels esquelets de càrrega. Amb keyframes CSS l'anima el
+   compositor; amb motion eren milers d'escriptures d'estil per segon al fil
+   principal mentre una pantalla esperava dades. */
+/* Una sola onada per a tota la pantalla: el degradat és fix respecte de la finestra
+   (`background-attachment: fixed`) i cada bloc només en deixa veure el tros que li toca, de
+   manera que la llum recorre tots els esquelets alhora, com un sol full. */
+@keyframes skeleton-wave {
+  from {
+    background-position: 100vw 0;
+  }
+  to {
+    background-position: -100vw 0;
+  }
+}
+
+.skeleton-wave {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.skeleton-wave::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    100deg,
+    transparent 35%,
+    var(--skeleton-shine) 50%,
+    transparent 65%
+  );
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  animation: skeleton-wave 2s linear infinite;
+  pointer-events: none;
+}
+
+:root {
+  --skeleton-shine: rgb(255 255 255 / 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --skeleton-shine: rgb(255 255 255 / 0.05);
+  }
+}
+
+:root[data-theme='dark'],
+.dark {
+  --skeleton-shine: rgb(255 255 255 / 0.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-wave::after {
+    animation: none;
+    display: none;
+  }
+}
+
+/* Tema fosc. El decideix `data-theme` a <html>, que posa l'script d'arrencada
+   (app/layout.tsx) i manté src/lib/theme/appearance.ts a partir de la
+   preferència de la persona: el sistema, clar o fosc. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  /* M3 dark mode: primary at tone 80, on-primary at tone 20 */
+  --md-sys-color-primary: #a7c8ff;
+  --md-sys-color-on-primary: #013258;
+  --md-sys-color-primary-container: #0c497b;
+  --md-sys-color-on-primary-container: #d6e3fe;
+  --md-sys-color-secondary: #bfc7d8;
+  --md-sys-color-on-secondary: #2a313e;
+  --md-sys-color-secondary-container: #404755;
+  --md-sys-color-on-secondary-container: #dbe3f4;
+  --md-sys-color-tertiary: #d4bee6;
+  --md-sys-color-on-tertiary: #3a2949;
+  --md-sys-color-tertiary-container: #514061;
+  --md-sys-color-on-tertiary-container: #eedcfc;
+  --md-sys-color-error: #fcb5a7;
+  --md-sys-color-on-error: #670502;
+  --md-sys-color-error-container: #8f1110;
+  --md-sys-color-on-error-container: #ffdbd3;
+  --md-sys-color-surface: #111319;
+  --md-sys-color-on-surface: #dfe2ea;
+  --md-sys-color-surface-variant: #414753;
+  --md-sys-color-on-surface-variant: #c0c7d5;
+  --md-sys-color-outline: #8a919e;
+  --md-sys-color-outline-variant: #414753;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #dfe2ea;
+  --md-sys-color-inverse-on-surface: #2e3036;
+  --md-sys-color-inverse-primary: #225488;
+  --md-sys-color-surface-dim: #111319;
+  --md-sys-color-surface-bright: #36393f;
+  --md-sys-color-surface-container-lowest: #0b0e15;
+  --md-sys-color-surface-container-low: #191c21;
+  --md-sys-color-surface-container: #1d2025;
+  --md-sys-color-surface-container-high: #272a30;
+  --md-sys-color-surface-container-highest: #32353b;
+  /* El to més clar de l'escala, com el gairebé blanc del tema clar: amb `container-high`, el fons
+     dels diàlegs, els camps d'un diàleg no se'n distingien. */
+  --md-sys-color-field: var(--md-sys-color-surface-bright);
+  --md-sys-color-on-surface-muted: #9fa6b4;
+  --md-sys-color-outline-subtle: #262c37;
+
+  /* Primer pla de cada accent de mòdul (fosc): el text i les icones que van a
+     sobre d'un fons ple de l'accent. Calculat per contrast (≥4,5:1), no
+     heretat de on-primary: aquell és per anar sobre primary. Ho comprova
+     src/lib/accessibility/__tests__/theme-accessibility.test.ts. */
+
+  /* Support status tokens (dark theme) */
+  --support-positive-container: #064e3b;
+  --support-positive-on: #bbf7d0;
+  --support-caution-container: #78350f;
+  --support-caution-on: #fde68a;
+  --support-critical-container: var(--md-sys-color-error-container);
+  --support-critical-on: var(--md-sys-color-on-error-container);
+  --support-info-container: #1e3a8a;
+  --support-info-on: #bfdbfe;
+  /* Paleta de dades dels gràfics (tema fosc). Única font de color per a sèries:
+     src/components/ui/charts/palette.ts la consumeix i theme-accessibility.test.ts
+     comprova que cada color fa ≥3:1 sobre totes les superfícies. Les vuit
+     categòriques van en ordre fix (validat per a daltonisme entre veïnes); les
+     semàntiques diuen bo/atenció/greu/dolent/crític/informació/neutre. */
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
+  --chart-6: #33a033;
+  --chart-7: #9085e9;
+  --chart-8: #e66767;
+  --chart-positive: #4cae5c;
+  --chart-caution: #d99a00;
+  --chart-serious: #f0803c;
+  --chart-negative: #f26b6b;
+  --chart-critical: #ffb4ab;
+  --chart-info: #3987e5;
+  --chart-neutral: #b3a09c;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--md-sys-color-outline-variant);
+    /* Disable default iOS tap highlight - custom focus states handle visual feedback */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: var(--md-sys-typescale-body-large-font);
+    font-size: var(--md-sys-typescale-body-large-size);
+    font-weight: var(--md-sys-typescale-body-large-weight);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+    color: var(--md-sys-color-on-surface);
+    background-color: var(--md-sys-color-surface);
+  }
+
+  #root {
+    height: 100%;
+    min-height: 100vh;
+  }
+
+}
+
+/* ============================================
+   M3 TYPOGRAPHY UTILITY CLASSES
+   Use these instead of raw Tailwind text sizes
+   ============================================ */
+
+/* Headline Scale */
+.text-headline-large {
+  font-family: var(--md-sys-typescale-headline-large-font);
+  font-size: var(--md-sys-typescale-headline-large-size);
+  font-weight: var(--md-sys-typescale-headline-large-weight);
+  line-height: var(--md-sys-typescale-headline-large-line-height);
+}
+
+.text-headline-medium {
+  font-family: var(--md-sys-typescale-headline-medium-font);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+}
+
+.text-headline-small {
+  font-family: var(--md-sys-typescale-headline-small-font);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+}
+
+/* Title Scale */
+.text-title-large {
+  font-family: var(--md-sys-typescale-title-large-font);
+  font-size: var(--md-sys-typescale-title-large-size);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+}
+
+.text-title-medium {
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+}
+
+.text-title-small {
+  font-family: var(--md-sys-typescale-title-small-font);
+  font-size: var(--md-sys-typescale-title-small-size);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+}
+
+/* Body Scale */
+.text-body-large {
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-size: var(--md-sys-typescale-body-large-size);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+}
+
+.text-body-medium {
+  font-family: var(--md-sys-typescale-body-medium-font);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+}
+
+.text-body-small {
+  font-family: var(--md-sys-typescale-body-small-font);
+  font-size: var(--md-sys-typescale-body-small-size);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+}
+
+/* Label Scale */
+.text-label-large {
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+}
+
+.text-label-medium {
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+}
+
+.text-label-small {
+  font-family: var(--md-sys-typescale-label-small-font);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+}
+
+/* ============================================
+   M3 SHAPE SCALE
+
+   Hi havia dues ortografies per al mateix radi: aquestes utilitats
+   (`shape-large`) i les claus de Tailwind (`rounded-lg`), totes dues llegint
+   la mateixa variable. Dins d'un mateix fitxer et podies trobar les dues, i
+   ningú no sabia quina era la bona. Guanya `rounded-*`, que era la que ja
+   feien servir dos de cada tres usos i la que qualsevol persona espera.
+
+   L'escala viu a `--md-sys-shape-corner-*` (:root) i s'exposa a
+   tailwind.config.js. No escriguis mai un radi en píxels.
+   ============================================ */
+
+/* ============================================
+   MD3 OUTLINED TEXT FIELD
+   Floating-label text fields per Material Design 3 spec.
+   Uses :placeholder-shown + :focus sibling selectors for
+   input/textarea, and .md3-field-label--floating for
+   button-based triggers (Dropdown, MultiSelect).
+
+   Border 2dp on focus: achieved via outline (2px, offset -2px)
+   layered on the 1px border. outline follows border-radius
+   in all modern browsers, unlike box-shadow inset.
+   ============================================ */
+
+.md3-field {
+  --_label-bg: var(--md-sys-color-field);
+}
+
+/* ============================================
+   UN SOL CAMP
+   Tota manera d'escriure de l'app porta aquest fons, contorn, radi i focus:
+   - `.md3-field-input`: input o textarea amb etiqueta flotant (TextField, NumberInput, Textarea).
+   - `.md3-field-trigger`: el botó que obre una llista (Dropdown, MultiSelect).
+   - `.md3-input-bare`: input o textarea sense etiqueta (barres, cel·les, diàlegs, editors en línia).
+   - `.md3-field-box`: un contenidor que porta el camp a dins (cerca amb lupa, compositors).
+   MD3 outlined: contorn d'1 dp `outline`, `on-surface` en passar-hi, 2 dp `primary` en focus
+   (un `outline` de 2 px amb offset -2 damunt la vora d'1 px: segueix el radi, cosa que un
+   box-shadow inset no fa), `error` amb error. Desactivat, perd el fons i el contorn s'afluixa:
+   amb el fons ple, un camp desactivat dins d'un diàleg es veia com una franja de color.
+   El fons és un sol token (`--md-sys-color-field`), també per a l'etiqueta flotant.
+   ============================================ */
+.md3-field-input,
+.md3-field-trigger,
+.md3-input-bare,
+.md3-field-box {
+  background-color: var(--md-sys-color-field);
+  border: 1px solid var(--md-sys-color-outline);
+  color: var(--md-sys-color-on-surface);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition:
+    border-color 150ms cubic-bezier(0.34, 0.8, 0.34, 1),
+    outline-color 150ms cubic-bezier(0.34, 0.8, 0.34, 1);
+}
+.md3-field-input:hover:not(:focus):not(:disabled),
+.md3-field-trigger:hover:not(:focus-visible):not(:disabled),
+.md3-input-bare:hover:not(:focus):not(:disabled),
+.md3-field-box:hover:not(
+    :has(:is(input, textarea, [contenteditable='true']):focus, :focus-visible)
+  ):not([data-disabled]) {
+  border-color: var(--md-sys-color-on-surface);
+}
+.md3-field-input:focus,
+.md3-field-trigger:focus-visible,
+.md3-input-bare:focus,
+.md3-field-box:has(:is(input, textarea, [contenteditable='true']):focus, :focus-visible),
+.md3-field-box[data-active] {
+  border-color: var(--md-sys-color-primary);
+  outline-color: var(--md-sys-color-primary);
+}
+.md3-field-input:disabled,
+.md3-field-trigger:disabled,
+.md3-input-bare:disabled,
+.md3-field-box[data-disabled] {
+  background-color: transparent;
+  border-color: color-mix(in srgb, var(--md-sys-color-on-surface) 24%, transparent);
+}
+.md3-input-bare:disabled {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  cursor: not-allowed;
+}
+.md3-input-bare::placeholder {
+  color: var(--md-sys-color-on-surface-muted);
+}
+
+/* Vores d'estat. Modificadors i no utilitats de Tailwind: les regles de dalt no són dins de
+   cap `@layer` i guanyarien un `border-error`. `aria-invalid` ja n'és un. */
+.md3-field-input--error,
+.md3-field-trigger--error,
+.md3-input-bare--error,
+.md3-input-bare[aria-invalid='true'],
+.md3-field-box--error {
+  border-color: var(--md-sys-color-error);
+}
+.md3-field-input--error:hover:not(:focus):not(:disabled),
+.md3-field-trigger--error:hover:not(:focus-visible):not(:disabled),
+.md3-input-bare--error:hover:not(:focus):not(:disabled),
+.md3-input-bare[aria-invalid='true']:hover:not(:focus):not(:disabled) {
+  border-color: var(--md-sys-color-on-error-container);
+}
+.md3-field-input--error:focus,
+.md3-field-trigger--error:focus-visible,
+.md3-input-bare--error:focus,
+.md3-input-bare[aria-invalid='true']:focus,
+.md3-field-box--error:has(:is(input, textarea, [contenteditable='true']):focus, :focus-visible) {
+  border-color: var(--md-sys-color-error);
+  outline-color: var(--md-sys-color-error);
+}
+/* Geometria. Dins de `@layer components` perquè una utilitat la pugui ajustar on cal (el
+   `pl-9` que deixa lloc a una icona, un grup de camps units amb `rounded-none`), però cap
+   pantalla no n'ha de triar cap: el radi de control, i dues mides.
+   - Per defecte, la del camp de formulari (TextField): 48 px al mòbil i 40 a l'escriptori,
+     16 dp als costats i `body-large` (amb menys de 16 px, iOS amplia la pàgina en enfocar-lo).
+   - `--dense`: cel·les de taula, editors en línia i barres d'eines; 32 px (44 amb el dit),
+     8 dp als costats i `body-medium`. */
+@layer components {
+  .md3-field-input,
+  .md3-field-trigger,
+  .md3-input-bare,
+  .md3-field-box {
+    border-radius: var(--md-sys-shape-corner-small);
+  }
+  .md3-input-bare {
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    font-family: var(--md-sys-typescale-body-large-font);
+    font-size: var(--md-sys-typescale-body-large-size);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+  }
+  @media (min-width: 768px) {
+    .md3-input-bare {
+      min-height: 2.5rem;
+      padding-block: 0.5rem;
+    }
+  }
+}
+
+/* El camp de contrasenya porta el seu propi botó per mostrar-la (TextField):
+   l'ull natiu d'Edge en faria dos. */
+.md3-field-input::-ms-reveal {
+  display: none;
+}
+
+/* ── Placeholder visibility ── */
+.md3-field-input::placeholder {
+  color: transparent;
+}
+.md3-field-input:focus::placeholder {
+  color: var(--md-sys-color-on-surface-muted);
+}
+
+/* ── Floating label — base ── */
+.md3-field-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: calc(100% - 32px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  color: var(--md-sys-color-on-surface-variant);
+  pointer-events: none;
+  /* M3 Expressive label float:
+     - Spatial properties (transform, font-size, line-height) use EASING.spatial
+       with overshoot, matching defaultSpatial spring approximation in CSS.
+     - Color properties (color, background-color) use EASING.effects @ DURATION.ultraFast for
+       a snappier focus tint response that doesn't lag behind the border. */
+  transition:
+    transform 250ms cubic-bezier(0.38, 1.21, 0.22, 1),
+    font-size 250ms cubic-bezier(0.38, 1.21, 0.22, 1),
+    line-height 250ms cubic-bezier(0.38, 1.21, 0.22, 1),
+    color 150ms cubic-bezier(0.34, 0.8, 0.34, 1),
+    background-color 150ms cubic-bezier(0.34, 0.8, 0.34, 1);
+}
+
+/* ── Textarea label: anchor to first line, not 50% of total height ── */
+textarea.md3-field-input ~ .md3-field-label {
+  top: 32px;
+}
+
+/* ── Floating label — floating state: with text or focus (CSS), or set by Dropdown/MultiSelect ── */
+.md3-field-input:not(:placeholder-shown) ~ .md3-field-label,
+.md3-field-input:focus ~ .md3-field-label,
+.md3-field-label--floating {
+  top: 0;
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  padding-inline: 4px;
+  left: 12px;
+  background-color: var(--_label-bg);
+}
+
+/* ── Autocompletat (1Password, el navegador, el teclat d'iOS) ──
+   Omplert, el camp perdia el fons del sistema (blau o groc del navegador, il·legible en fosc) i,
+   amb la proposta en previsualització, el valor encara no compta per a `:placeholder-shown`:
+   l'etiqueta quedava a sobre del text. Regles separades: un pseudo que el navegador no coneix
+   anul·laria tota la llista. */
+.md3-field-input:-webkit-autofill ~ .md3-field-label {
+  top: 0;
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  padding-inline: 4px;
+  left: 12px;
+  background-color: var(--_label-bg);
+}
+.md3-field-input:-webkit-autofill,
+.md3-input-bare:-webkit-autofill {
+  -webkit-text-fill-color: var(--md-sys-color-on-surface);
+  caret-color: var(--md-sys-color-on-surface);
+  box-shadow: inset 0 0 0 100vmax var(--md-sys-color-field);
+}
+.md3-field-input:autofill,
+.md3-input-bare:autofill {
+  box-shadow: inset 0 0 0 100vmax var(--md-sys-color-field);
+}
+
+/* ── Label focus color ── */
+.md3-field-input:focus ~ .md3-field-label {
+  color: var(--md-sys-color-primary);
+}
+
+/* ── Label error color ── */
+.md3-field-label--error,
+.md3-field-input--error ~ .md3-field-label {
+  color: var(--md-sys-color-error) !important;
+}
+
+/* ── Label disabled state ── */
+.md3-field-input:disabled ~ .md3-field-label {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+/* ── Label floating when trigger is focused ── */
+.md3-field-trigger:focus-visible ~ .md3-field-label {
+  color: var(--md-sys-color-primary);
+}
+.md3-field-trigger--error:focus-visible ~ .md3-field-label {
+  color: var(--md-sys-color-error) !important;
+}
+
+/* Les mides d'icona es posen amb les utilitats de mida de Tailwind (`size-4` per
+   defecte, `size-5` a barres, `size-6` a la navegació inferior). Aquí hi havia
+   `.icon-sm/-md/-lg` amb una escala diferent (20/24/40) que no feia servir ningú:
+   una segona escala d'icones que només servia per contradir la primera. Dins de
+   Button i IconButton la mida la posa el control (`icon-slot-*`, més avall). */
+
+/* ============================================
+   M3 STATE LAYER (la manera única de pintar hover, focus i premut)
+   `state-layer` posa sobre l'element una capa del color del seu contingut (`currentColor`, com
+   diu MD3) al 8 % en passar-hi, al 12 % amb el focus de teclat i en prémer-lo. Funciona sobre
+   qualsevol fons (transparent, tonal o ple), així que no cal triar un `hover:bg-*` per a cada
+   superfície. Desactivat (`:disabled`, `aria-disabled`), no es pinta.
+   - `state-layer-primary`, `-on-surface`, `-error`: un altre color per a la capa (una fila de
+     text neutre que en passar-hi es tenyeix de primary).
+   Va a `@layer components`: qualsevol utilitat de posició (`absolute`, `sticky`) guanya al
+   `relative` d'aquí i continua contenint la capa. No talla el contingut (`overflow` intacte) i
+   la capa és `::after`, amb la seva pròpia transició: la `transition-*` de l'element no la toca.
+   ============================================ */
+
+@layer components {
+  :where([class~='state-layer'], [class*='state-layer-']) {
+    position: relative;
+  }
+
+  :where([class~='state-layer'], [class*='state-layer-'])::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-color: var(--state-layer-color, currentColor);
+    opacity: 0;
+    transition: opacity 0.2s cubic-bezier(0.34, 0.8, 0.34, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    :where([class~='state-layer'], [class*='state-layer-']):hover::after {
+      opacity: var(--md-sys-state-hover);
+    }
+  }
+
+  :where([class~='state-layer'], [class*='state-layer-']):focus-visible::after {
+    opacity: var(--md-sys-state-focus);
+  }
+
+  :where([class~='state-layer'], [class*='state-layer-']):active::after {
+    opacity: var(--md-sys-state-pressed);
+  }
+
+  :where([class~='state-layer'], [class*='state-layer-']):is(
+      :disabled,
+      [aria-disabled='true']
+    )::after {
+    opacity: 0;
+  }
+  .state-layer-on-surface {
+    --state-layer-color: var(--md-sys-color-on-surface);
+  }
+}
+
+/* ============================================
+   MIDA DE LES ICONES D'UN CONTROL
+   `icon-slot-4|5|6`: les icones de Lucide de dins (també les de la prop `icon`) fan 16, 20 o 24
+   px. Ho posen Button i IconButton segons la seva mida, perquè cap pantalla no hagi d'escriure
+   `size-4` a cada icona. Només toca les icones a la mida per defecte de Lucide (24, sense
+   `size`): una classe de mida a la icona (`size-3`) o una `size={18}` manen, i és la manera de
+   fer una excepció deliberada.
+   ============================================ */
+
+@layer components {
+  .icon-slot-4 :where(svg.lucide[width='24']) {
+    width: 1rem;
+    height: 1rem;
+  }
+  .icon-slot-5 :where(svg.lucide[width='24']) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .icon-slot-6 :where(svg.lucide[width='24']) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+/* ============================================
+   BARRES DE DESPLAÇAMENT
+   Invisibles fins que es desplaça: només l'element que porta `data-scrolling`
+   (src/lib/scrollbar-visibility.ts, mentre dura el desplaçament i un moment
+   després) les pinta. Les propietats estàndard (Chrome, Firefox) van a
+   `@layer base` perquè qualsevol utilitat o `.scrollbar-none` les pugui treure;
+   explícites a cada element, i no heretades, perquè un fill no agafi el color
+   del contenidor que s'està desplaçant. Els pseudoelements són per a Safari.
+   ============================================ */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  [data-scrolling] {
+    scrollbar-color: var(--md-sys-color-outline) transparent;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+[data-scrolling]::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline);
+}
+
+[data-scrolling]::-webkit-scrollbar-thumb:hover {
+  background: var(--md-sys-color-on-surface-variant);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* M3 Focus Ring — 3dp width, -1dp offset (inward), matches component shape */
+*:focus-visible {
+  outline: 3px solid var(--md-sys-color-secondary, var(--md-sys-color-primary));
+  outline-offset: -1px;
+}
+
+/* Override for elements where inward focus ring would clip content */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline-offset: 2px;
+}
+
+/* Focus programàtic: en canviar de pantalla (RouteAnnouncer) o en obrir un
+   editor, el títol o el <main> reben el focus perquè el lector de pantalla
+   comenci per allà. No són controls i no s'hi arriba amb el tabulador, així
+   que no dibuixen l'anell; el navegador sí que el pintaria en carregar la
+   pàgina, perquè encara no hi ha hagut cap clic. Va fora de @layer, com
+   l'anell global de dalt: dins de @layer base hi perdia sempre i el títol del
+   tauler sortia emmarcat. */
+:is(h1, h2, h3, h4, h5, h6, main)[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* Sobre un fons ple (botons primaris, d'error, xips d'accent, accions del botó
+   flotant) l'anell cap endins queda dins del color del control: secondary sobre
+   primary fa 1,18:1 en clar i 1,00:1 en fosc. Fora del control es dibuixa sobre
+   la superfície, on fa ≥7:1. */
+:is(
+  .bg-primary,
+  .bg-secondary,
+  .bg-tertiary,
+  .bg-error,
+  .bg-inverse-surface,
+  [class*='bg-[color:var(--module-'],
+  [class*='bg-[var(--module-'],
+  [style*='background-color']
+):focus-visible {
+  outline-offset: 2px;
+}
+
+/*
+ * L'anell de focus de l'aplicació, per als controls que en volen un de propi
+ * (en comptes del global de dalt): opac, del color secondary (≥3:1 sobre totes
+ * les superfícies en clar i fosc, comprovat a theme-accessibility.test.ts) i
+ * amb l'offset cap enfora, de manera que també es veu sobre un fons ple.
+ *
+ * Substitueix les parelles `focus-visible:outline-none focus-visible:ring-primary/40`:
+ * una utilitat de Tailwind viu dins de `@layer utilities` i no podia treure
+ * l'anell global (que no és dins de cap capa), així que se'n veien dos, i el
+ * translúcid feia entre 1,8 i 2,8:1. Sense capa a posta, pel mateix motiu.
+ */
+.focus-ring:focus-visible,
+.focus-ring-within:has(:is(input, textarea, [contenteditable='true']):focus-visible) {
+  outline: 3px solid var(--md-sys-color-secondary, var(--md-sys-color-primary));
+  outline-offset: 2px;
+}
+
+/* Amb `.focus-ring-within` l'anell el porta el contenidor d'un camp de text (un
+   compositor amb botons, una zona de pujada): el camp no en dibuixa un segon. Els
+   botons de dins conserven el seu, perquè se sàpiga quin té el focus. */
+.focus-ring-within :is(input, textarea, [contenteditable='true']):focus-visible {
+  outline: none;
+}
+
+/* Els camps (`md3-field-*`, `md3-input-*`) dibuixen el seu focus: el contorn de 2 dp primary cap
+   endins. L'anell global de dalt va després i en guanyava l'amplada (3 px) i, als inputs, l'offset
+   cap enfora: se'n veia un segon al voltant del camp. Dins d'un `md3-field-box` (la cerca amb lupa,
+   els compositors) el camp no en dibuixa cap, perquè el porta la caixa. */
+.md3-field-input:focus-visible,
+.md3-field-trigger:focus-visible,
+.md3-input-bare:focus-visible,
+.md3-input-inline:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+}
+.md3-field-input--error:focus-visible,
+.md3-field-trigger--error:focus-visible,
+.md3-input-bare--error:focus-visible,
+.md3-input-bare[aria-invalid='true']:focus-visible,
+.md3-input-inline[aria-invalid='true']:focus-visible {
+  outline-color: var(--md-sys-color-error);
+}
+.md3-field-box :is(input, textarea, [contenteditable='true']):focus-visible {
+  outline: none;
+}
+
+/* Un contenidor desplaçable (ScrollableRegion) sol omplir el seu pare, i el pare
+   sovint retalla (el cos d'un diàleg dins d'un marc amb `overflow-clip`): l'anell
+   cap enfora no es veuria. Aquí va cap endins. */
+[data-scrollable-region].focus-ring:focus-visible {
+  outline-offset: -3px;
+}
+
+/* Entrada d'imatges ja carregades (`animate-[fadeIn_350ms_ease-out]`). La resta de keyframes
+   heretats ja no tenien cap consumidor: el moviment el porten motion i GSAP, i `pulse` i `spin`
+   són els de Tailwind. */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   BOARD CARD DROP ANIMATION
+   Subtle scale pulse when a card lands after drag.
+   GPU-friendly (transform + opacity only).
+   ============================================ */
+
+@keyframes boardCardLand {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   LIST ROW SELECTION PULSE
+   Fires once when a row toggles from unselected → selected.
+   Removing the class (deselection) yields no animation —
+   the bg-color transition handles the visual ease-out.
+   ============================================ */
+
+@keyframes listRowSelected {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Smooth transitions for interactive elements only (NOT on *) */
+/* Global transitions on * cause scroll lag on mobile */
+/* prefers-reduced-motion: consolidated into single block at end of file */
+
+/* ============================================
+   SCROLL BEHAVIOR
+   Single scroll container model: body is locked,
+   scrolling happens only in #main-content.
+   ============================================ */
+html {
+  scroll-behavior: smooth;
+  overflow: hidden;
+}
+
+/* ============================================
+   PÀGINES QUE OMPLEN LA CLOSCA (data-fill-shell)
+
+   Per defecte una pàgina flueix: creix tant com calgui i #main-content la fa
+   scrollejar. Una conversa no pot fer això — el camp d'escriure ha de quedar
+   sempre a la vista, i si la pàgina flueix acaba per sota de la barra de
+   navegació —, així que ha de poder demanar exactament l'alçada visible.
+
+   `height: 100%` només resol contra un pare amb alçada definida, i entre
+   #main-content (que sí que en té) i la pàgina hi ha dos embolcalls de la
+   closca que no en tenen: el `div` que crea AppLayout i el de PageTransition.
+   Aquestes dues regles els donen alçada quan (i només quan) la pàgina de dins
+   ho demana, de manera que el 100% de la pàgina és el *content box* real de
+   #main-content: sense el seu padding, sense les barres, i encongint-se sol
+   quan el teclat redueix --app-height o quan la barra inferior es desmunta.
+
+   Deliberadament fora de cap media query: el mateix problema el té la vista
+   dividida d'escriptori. Cap número màgic i cap mesura per JS.
+   ============================================ */
+#main-content > div:has([data-fill-shell]) {
+  height: 100%;
+}
+
+#main-content > div:has([data-fill-shell]) > [data-gsap-page-shell] {
+  min-height: 0;
+  height: 100%;
+}
+
+/* Arbre de pàgines (DocSplitView): el treeitem conté també els fills, així que
+   l'anell de focus es dibuixa a la seva fila, no al voltant de tot el subarbre. */
+
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* ============================================
+   PÀGINES PÚBLIQUES (PublicPageShell)
+
+   Amb html i body bloquejats, una pàgina pública ha de ser el seu propi
+   contenidor de desplaçament: si només fa `min-h-screen`, el que no hi cap no
+   s'arriba a veure mai. Fa l'alçada visible real (--app-height) i reserva el
+   lloc de les barres fixes (vegeu useFixedBarInset) perquè l'element enfocat
+   no quedi a sota (WCAG 2.4.11). Qualsevol altre contenidor de desplaçament
+   públic amb barres fixes ho declara amb [data-public-scroll].
+   ============================================ */
+
+.public-page-shell,
+[data-public-scroll] {
+  scroll-padding-top: calc(var(--fixed-bar-inset-top, 0px) + 8px);
+  scroll-padding-bottom: calc(var(--fixed-bar-inset-bottom, 0px) + 8px);
+}
+
+/* Vegeu la definició de --app-height: AppLayout la sobreescriu en línia. */
+@supports (height: 100dvh) {
+  :root {
+    --app-height: 100dvh;
+  }
+}
+
+#root {
+  overflow: hidden;
+}
+
+/* Pàgines sense closca (públiques i d'entrada): no tenen #main-content, així que
+   es desplacen amb el document. La marca la posa DocumentScroll
+   (src/components/app/DocumentScroll.tsx), que embolcalla totes les pàgines de
+   StandaloneLegacyPage, /verifica i la documentació pública. */
+html:has([data-document-scroll]),
+html:has([data-document-scroll]) body,
+html:has([data-document-scroll]) #root {
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+}
+
+html:has([data-document-scroll]) body {
+  overscroll-behavior-y: auto;
+}
+
+/* Selection styles */
+::selection {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* List component mobile optimizations */
+@media (max-width: 767px),
+  (max-width: 1024px) and (max-height: 600px) and (orientation: landscape) {
+  /* Remove min-width on list rows for mobile to allow natural wrapping */
+  [role='row'][data-entity-id] {
+    min-width: 0 !important;
+  }
+}
+
+/* ============================================
+   M3 EXPRESSIVE APPLICATION COMPOSITION
+   These primitives reach every authenticated route while keeping content
+   density under the control of each module.
+   ============================================ */
+.md3-expressive-canvas {
+  background-color: var(--md-sys-color-surface);
+  background-image:
+    radial-gradient(
+      72rem 44rem at 112% -18%,
+      color-mix(in srgb, var(--module-accent) 9%, transparent),
+      transparent 68%
+    ),
+    radial-gradient(
+      52rem 34rem at -18% 112%,
+      color-mix(in srgb, var(--md-sys-color-tertiary-container) 42%, transparent),
+      transparent 72%
+    );
+  background-attachment: local;
+}
+
+/* Zona tàctil mínima (WCAG 2.5.5): 44 px amb punter gruixut (dit). Sense capa a
+   posta: guanya qualsevol utilitat, de manera que un `min-h-8` pensat per a
+   l'escriptori no deixa mai un objectiu de 32 px en una pantalla tàctil. Qui la
+   vulgui saltar ho ha de dir amb `!` (i assumir-ho). */
+@media (hover: none), (pointer: coarse) {
+  :where(
+    button,
+    a[href],
+    input[type='button'],
+    input[type='submit'],
+    input[type='reset'],
+    summary,
+    [role='button'],
+    [role='link']
+  ) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Amb ratolí, un terra de 36 px per als controls que no diuen la seva mida. Va
+   dins de `@layer base`: fora de cap capa guanyava totes les utilitats de
+   Tailwind (que viuen a `@layer utilities`), i un `min-h-0` o un `min-h-[28px]`
+   no feien res. Al Calendari, una reunió de 30 minuts té 22 px d'alçada i el
+   botó en feia 36, i tapava la reunió següent. */
+@layer base {
+  @media (hover: hover) and (pointer: fine) {
+    :where(
+      button,
+      a[href],
+      input[type='button'],
+      input[type='submit'],
+      input[type='reset'],
+      summary,
+      [role='button'],
+      [role='link']
+    ) {
+      min-height: 36px;
+      min-width: 36px;
+    }
+  }
+}
+
+/* ── Minimum type size for anything you can type into ──
+   iOS zooms the viewport when a focused field's text is under 16px, and it does
+   not zoom back out — so a 14px input costs the reader their whole layout. The
+   floor is applied at EVERY breakpoint on purpose: one type size per field is
+   easier to reason about than a mobile-only exception, and nothing in this app
+   wants a field smaller than its body text.
+
+   Deliberately unlayered so it also wins over the `text-*` utilities that set
+   14px on a handful of fields; there is no input in the app that intends to be
+   larger, so a flat value is safe. Non-text controls are excluded — their size
+   comes from the UA widget, not from the type scale. */
+input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* Every search box in the app renders its own clear button, so Chrome's native
+   one shows up as a second ✕ right beside ours. Suppress the built-in control
+   rather than dropping `type="search"`, which browsers and assistive tech both
+   use to announce the field and to offer search-history behaviour. */
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Opt-out from the 36px desktop floor for dense icon clusters — chat action
+   pills, attachment chips, formatting toolbars — where the control already sits
+   inside a larger hit area and the floor would blow the container apart (a 14px
+   icon in a 36px circle inside a 30px pill). Declared unlayered and after the
+   floor so it wins without `!important`. Deliberately scoped to fine pointers:
+   on touch the WCAG 2.5.5 target size still applies. */
+@media (hover: hover) and (pointer: fine) {
+  .target-compact {
+    min-height: 0;
+    min-width: 0;
+  }
+}
+
+/* Sense terre, la mida d'un objectiu compacte és la que diu la seva classe
+   (h-8 w-8...), i un fill flex encongible la perd: a 320 px la barra de format
+   del compositor deixava «Negreta» o «Cursiva» a 18 px d'ample, per sota dels
+   24 px de WCAG 2.5.8. Un objectiu compacte no s'encongeix; qui en posa massa en
+   una fila la fa desplaçable (overflow-x-auto) o els parteix (flex-wrap). */
+.target-compact {
+  flex-shrink: 0;
+}
+
+/* Xarxa de seguretat per als camps que no porten cap classe pròpia.
+   Va dins de `@layer base` a posta: fora de cap capa, guanyava qualsevol
+   utilitat de Tailwind, i un camp declarat `bg-transparent` —el de la barra
+   de filtres, per exemple— es pintava igualment amb `surface-container` i
+   apareixia com una capsa dins de la seva pastilla. */
+@layer base {
+  select,
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='number'],
+  input[type='tel'],
+  input[type='url'],
+  input[type='search'],
+  input[type='date'],
+  input[type='time'],
+  input[type='datetime-local'],
+  input[type='month'],
+  input[type='week'],
+  textarea {
+    background-color: var(--md-sys-color-field);
+    color: var(--md-sys-color-on-surface);
+    border-color: var(--md-sys-color-outline);
+  }
+}
+
+/* Native date/time input normalization for WebKit browsers */
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='week'] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Style the date picker icon */
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator:hover,
+input[type='time']::-webkit-calendar-picker-indicator:hover,
+input[type='datetime-local']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+select option {
+  background-color: var(--md-sys-color-field);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* The selected pill is white on both themes, so its ink is a fixed dark neutral:
+   `on-surface` would flip to near-white in dark mode and vanish. */
+
+@keyframes loginGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  35% {
+    background-position: 50% 100%;
+  }
+  70% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes loginBlobOne {
+  0% {
+    transform: translate3d(-4%, -6%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8%, 4%, 0) scale(1.2);
+  }
+  100% {
+    transform: translate3d(-4%, -6%, 0) scale(1);
+  }
+}
+
+@keyframes loginBlobTwo {
+  0% {
+    transform: translate3d(6%, 8%, 0) scale(0.95);
+  }
+  50% {
+    transform: translate3d(-6%, -4%, 0) scale(1.18) rotate(8deg);
+  }
+  100% {
+    transform: translate3d(6%, 8%, 0) scale(0.95);
+  }
+}
+
+@keyframes loginShellReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.985);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes loginLogoFrameReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes loginCardReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+:root[data-theme='dark'] {
+}
+
+/* ============================================
+   MOVIMENT GLOBAL
+   Cada component porta la seva animació (Button canvia de forma en prémer, les llistes i les
+   targetes fan servir la capa d'estat, motion i GSAP fan la resta). Aquí només queda el que no té
+   component propi. Abans hi havia un sistema global per subcadena de classe (`[class*='card']`,
+   `[class*='tag']`, que també agafava `stage`; `[class*='loading']`, que pintava un degradat a
+   qualsevol cosa amb aquest nom), elevacions en passar per sobre de tots els botons i enllaços i
+   escalats d'icones i avatars: fora de cap capa, guanyaven les transicions de les utilitats.
+   ============================================ */
+
+/* FAB: de rodó a cantonada gran en prémer. */
+[data-quick-actions-fab] {
+  transition:
+    border-radius 0.2s cubic-bezier(0.34, 0.8, 0.34, 1),
+    transform 0.15s cubic-bezier(0.42, 1.85, 0.21, 0.9);
+}
+[data-quick-actions-fab]:active {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+/* Les caselles i els botons de ràdio nadius prenen el color primari. */
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--md-sys-color-primary);
+}
+
+/* El desplaçament lateral de les llistes: una barra prima. La del sistema
+   ocupava una franja gruixuda sota taules que desbordaven per pocs píxels. */
+[data-list-scroll] {
+  scrollbar-width: thin;
+}
+[data-list-scroll][data-scrolling] {
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+/* Disable animations for reduced motion — consolidated block
+   (also covers the base reset from the detail panel section above) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* Amb el teclat obert i poca alçada visible (un iPad apaïsat en deixa 368 px), el
+   títol i les accions de Missatges deixaven 8 px per a la conversa. Val per a
+   qualsevol amplada: la tauleta apaïsada té la disposició d'escriptori. */
+html[data-keyboard-open][data-viewport-short] [data-messages-intro] {
+  display: none;
+}
+
+/* I el camp del xat creix fins a tres línies, no fins a sis: amb sis, el botó
+   d'enviar quedava sota el teclat. A partir d'aquí fa scroll per dins. */
+html[data-keyboard-open][data-viewport-short] [data-activity-composer] textarea {
+  max-height: 4.75rem;
+}
+
+/* Amb el teclat obert, el botó flotant pujava amb ell i s'asseia a la cantonada
+   on hi ha el botó d'enviar o desar del que s'està escrivint. Mentre s'escriu
+   no serveix de res: torna quan el teclat baixa. */
+html[data-keyboard-open] [data-quick-actions-fab] {
+  display: none;
+}
+
+/* A l'escriptori l'avís també surt a baix al mig, i allà hi ha el compositor
+   del xat: el tapava mentre durava. Amb un xat a la pantalla, a dalt, sota la
+   capçalera (al mòbil ho resol la regla de la closca mòbil). */
+html:has([data-mobile-layout='false'] [data-activity-composer]) [data-toast-region] {
+  top: 4.25rem;
+  bottom: auto !important;
+  flex-direction: column;
+}
+
+/* Al tàctil, dins d'un xat l'avís surt a dalt, sobre els missatges: el seu cos
+   deixa passar el toc al missatge de sota (obrir-ne les accions just després de
+   fixar-lo o editar-lo) i només els botons de l'avís el reben. */
+@media (hover: none) {
+  html:has([data-activity-composer]) [data-toast-region] > * {
+    pointer-events: none;
+  }
+  html:has([data-activity-composer]) [data-toast-region] :is(button, a) {
+    pointer-events: auto;
+  }
+}
+
+/* Amb el teclat i poca alçada, les eines de lectura del xat (filtre de canal,
+   cerca) també es pleguen fora del mòbil: a l'iPad apaïsat la conversa es
+   quedava en 17 px. */
+html[data-keyboard-open][data-viewport-short]
+  [data-chat-reading-tools]:not(:focus-within):not(:has(input:not(:placeholder-shown))) {
+  display: none;
+}

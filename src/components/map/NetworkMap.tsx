@@ -1,0 +1,204 @@
+'use client';
+
+import L from 'leaflet';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { NetworkData, NetworkStop } from '@shared/contracts';
+import { useResolvedTheme } from '@/lib/useResolvedTheme';
+import BaseMap from './BaseMap';
+import { badgeHtml, escapeHtml, mapPalette } from './colors';
+
+export interface NetworkMapProps {
+  data: NetworkData;
+  label: string;
+  /** Les línies visibles; null és totes. */
+  visibleRouteIds?: Set<string> | null;
+  showStops?: boolean;
+  /** Línies destacades (les altres s'esvaeixen). */
+  highlightRouteIds?: string[] | null;
+  selectedStopId?: string | null;
+  onStopClick?: (stop: NetworkStop) => void;
+  onRouteClick?: (routeId: string) => void;
+  onMapClick?: (lat: number, lon: number) => void;
+  interactive?: boolean;
+  scrollZoom?: boolean;
+  insetLeft?: number;
+  /** Mostra el nom de les parades al passar-hi per sobre. */
+  stopTooltip?: (stop: NetworkStop) => string;
+}
+
+export default function NetworkMap({
+  data,
+  label,
+  visibleRouteIds = null,
+  showStops = true,
+  highlightRouteIds = null,
+  selectedStopId = null,
+  onStopClick,
+  onRouteClick,
+  onMapClick,
+  interactive = true,
+  scrollZoom = false,
+  insetLeft = 0,
+  stopTooltip,
+}: NetworkMapProps) {
+  const mapRef = useRef<L.Map | null>(null);
+  const linesRef = useRef<L.LayerGroup | null>(null);
+  const stopsRef = useRef<L.LayerGroup | null>(null);
+  // Un renderitzador per capa i per mapa: un de nou a cada efecte deixaria un canvas a cada zoom.
+  const lineRendererRef = useRef<L.Canvas | null>(null);
+  const stopRendererRef = useRef<L.Canvas | null>(null);
+  const theme = useResolvedTheme();
+  const [zoom, setZoom] = useState(0);
+  const handlers = useRef({ onStopClick, onRouteClick, onMapClick, stopTooltip });
+  handlers.current = { onStopClick, onRouteClick, onMapClick, stopTooltip };
+  const routeById = useMemo(() => new Map(data.routes.map((r) => [r.routeId, r])), [data.routes]);
+  const highlight = useMemo(
+    () => (highlightRouteIds?.length ? new Set(highlightRouteIds) : null),
+    [highlightRouteIds]
+  );
+  const maxDepartures = useMemo(
+    () => Math.max(1, ...data.stops.map((s) => s.departures)),
+    [data.stops]
+  );
+
+  const onReady = (map: L.Map) => {
+    mapRef.current = map;
+    linesRef.current = L.layerGroup().addTo(map);
+    stopsRef.current = L.layerGroup().addTo(map);
+    // Afegits d'entrada perquè les parades quedin sempre per sobre de les línies.
+    lineRendererRef.current = L.canvas({ padding: 0.5, tolerance: 6 }).addTo(map);
+    stopRendererRef.current = L.canvas({ padding: 0.5, tolerance: 4 }).addTo(map);
+    map.on('click', (e: L.LeafletMouseEvent) =>
+      handlers.current.onMapClick?.(e.latlng.lat, e.latlng.lng)
+    );
+    map.on('zoomend', () => setZoom(map.getZoom()));
+    setZoom(map.getZoom());
+    return () => {
+      mapRef.current = null;
+      linesRef.current = null;
+      stopsRef.current = null;
+      lineRendererRef.current = null;
+      stopRendererRef.current = null;
+    };
+  };
+
+  // Línies: un filet del color de la superfície a sota fa que es llegeixin sobre qualsevol mapa.
+  useEffect(() => {
+    const group = linesRef.current;
+    const renderer = lineRendererRef.current;
+    if (!group || !renderer) return;
+    group.clearLayers();
+    const palette = mapPalette();
+    const visible = data.lines.filter(
+      (l) => !visibleRouteIds || l.routeIds.some((id) => visibleRouteIds.has(id))
+    );
+    const dimmed = Boolean(highlight);
+    for (const line of visible) {
+      const highlighted = highlight ? line.routeIds.some((id) => highlight.has(id)) : false;
+      L.polyline(line.coords, {
+        renderer,
+        color: palette.surface,
+        weight: highlighted ? 9 : 6,
+        opacity: dimmed && !highlighted ? 0.3 : 0.9,
+        interactive: false,
+      }).addTo(group);
+    }
+    for (const line of visible) {
+      const highlighted = highlight ? line.routeIds.some((id) => highlight.has(id)) : false;
+      const routes = [...new Set(line.routeIds)].map((id) => routeById.get(id)).filter(Boolean);
+      const seen = new Set<string>();
+      const badges = routes
+        .filter((r) => {
+          const k = `${r!.shortName ?? r!.routeId}${r!.color}`;
+          if (seen.has(k)) return false;
+          seen.add(k);
+          return true;
+        })
+        .map((r) => badgeHtml(r!.shortName || r!.routeId, r!.color, r!.textColor))
+        .join(' ');
+      const poly = L.polyline(line.coords, {
+        renderer,
+        color: `#${line.color}`,
+        weight: highlighted ? 6 : 3.5,
+        opacity: dimmed && !highlighted ? 0.25 : 1,
+        lineCap: 'round',
+        lineJoin: 'round',
+      }).addTo(group);
+      if (interactive) {
+        poly.bindTooltip(`<div class="gtfs-map-tooltip-badges">${badges}</div>`, {
+          sticky: true,
+          direction: 'top',
+          className: 'gtfs-map-tooltip',
+        });
+        poly.on('click', (e) => {
+          L.DomEvent.stopPropagation(e);
+          handlers.current.onRouteClick?.(line.routeIds[0]);
+        });
+      }
+      if (highlighted) poly.bringToFront();
+    }
+  }, [data.lines, visibleRouteIds, highlight, routeById, theme, interactive]);
+
+  // Parades: la mida diu el volum de pas.
+  useEffect(() => {
+    const group = stopsRef.current;
+    const renderer = stopRendererRef.current;
+    if (!group || !renderer) return;
+    group.clearLayers();
+    if (!showStops) return;
+    const palette = mapPalette();
+    // De lluny, les parades són punts petits i les línies es veuen; de prop, creixen amb el volum de pas.
+    const scale = Math.min(1.2, Math.max(0.3, (zoom - 7) / 5));
+    const minorHidden = zoom < 9 && data.stops.length > 300;
+    for (const stop of data.stops) {
+      if (visibleRouteIds && !stop.routeIds.some((id) => visibleRouteIds.has(id))) continue;
+      if (highlight && !stop.routeIds.some((id) => highlight.has(id))) continue;
+      if (stop.locationType === 1 && stop.departures === 0 && data.stops.length > 2000) continue;
+      const selected = stop.stopId === selectedStopId;
+      const weight = Math.sqrt(stop.departures / maxDepartures);
+      if (minorHidden && weight < 0.25 && stop.stopId !== selectedStopId) continue;
+      const radius = (2.5 + 7 * weight) * scale;
+      const marker = L.circleMarker([stop.lat, stop.lon], {
+        renderer,
+        radius: selected ? radius + 3 : radius,
+        color: selected ? palette.primary : palette.onSurface,
+        weight: selected ? 3 : scale < 0.6 ? 1 : 1.5,
+        fillColor: palette.surface,
+        fillOpacity: 1,
+      }).addTo(group);
+      if (interactive) {
+        const tip = handlers.current.stopTooltip?.(stop) ?? escapeHtml(stop.name ?? stop.stopId);
+        marker.bindTooltip(tip, {
+          direction: 'top',
+          offset: [0, -radius],
+          className: 'gtfs-map-tooltip',
+        });
+        marker.on('click', (e) => {
+          L.DomEvent.stopPropagation(e);
+          handlers.current.onStopClick?.(stop);
+        });
+      }
+    }
+  }, [
+    data.stops,
+    showStops,
+    visibleRouteIds,
+    highlight,
+    selectedStopId,
+    maxDepartures,
+    theme,
+    interactive,
+    zoom,
+  ]);
+
+  return (
+    <BaseMap
+      onReady={onReady}
+      label={label}
+      bounds={data.bbox}
+      interactive={interactive}
+      scrollZoom={scrollZoom}
+      insetLeft={insetLeft}
+    />
+  );
+}

@@ -1,0 +1,639 @@
+{
+  "app": {
+    "description": "Crea, edita y visualiza feeds GTFS de transporte público."
+  },
+  "nav": {
+    "feeds": "Feeds",
+    "allFeeds": "Todos los feeds",
+    "overview": "Resumen",
+    "map": "Mapa",
+    "routes": "Líneas",
+    "stops": "Paradas",
+    "calendar": "Calendario",
+    "validation": "Validación",
+    "data": "Datos",
+    "generator": "Generador",
+    "more": "Más",
+    "breadcrumbs": "Ruta de navegación",
+    "main": "Navegación principal",
+    "sections": "Secciones del feed",
+    "openMenu": "Abre el menú",
+    "skipToContent": "Salta al contenido",
+    "catalog": "Catálogo"
+  },
+  "theme": {
+    "switch": "Tema: {theme}",
+    "system": "el del sistema",
+    "light": "claro",
+    "dark": "oscuro"
+  },
+  "language": {
+    "label": "Idioma",
+    "ca": "Catalán",
+    "es": "Castellano",
+    "en": "Inglés"
+  },
+  "common": {
+    "all": "Todas",
+    "close": "Cierra",
+    "date": "Fecha",
+    "nextDay": "Día siguiente",
+    "previousDay": "Día anterior",
+    "noResults": "No hay ningún resultado.",
+    "seeAll": "Muéstralo todo",
+    "showMore": "Muestra más",
+    "save": "Guarda",
+    "cancel": "Cancela",
+    "clearSearch": "Borra la búsqueda",
+    "retry": "Vuelve a intentarlo",
+    "delete": "Borra",
+    "edit": "Edita",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "charts": {
+    "less": "Menos",
+    "more": "Más",
+    "max": "Máximo: {value}"
+  },
+  "errors": {
+    "database": "No se puede conectar con la base de datos",
+    "databaseHint": "Revisa DATABASE_URL en .env.local y que PostgreSQL esté en marcha.",
+    "generic": "No se ha podido hacer. Vuelve a intentarlo.",
+    "invalidForm": "Revisa los campos marcados.",
+    "notFound": "No hemos encontrado esta página",
+    "notFoundHint": "Quizá el feed, la línea o la parada ya no existe."
+  },
+  "feed": {
+    "name": "Nombre",
+    "description": "Descripción",
+    "export": "Exporta el GTFS",
+    "trips": "Viajes"
+  },
+  "feeds": {
+    "title": "Feeds GTFS",
+    "subtitle": "Los horarios de transporte que gestionas, en un solo lugar.",
+    "new": "Crea un feed",
+    "noAgency": "Sin operador",
+    "valid": "Válido",
+    "statsPending": "Las cifras se calcularán al abrirlo.",
+    "emptyTitle": "Todavía no hay ningún feed",
+    "emptyDescription": "Importa una carpeta o un ZIP GTFS, o empieza uno desde cero."
+  },
+  "newFeed": {
+    "subtitle": "Importa un GTFS existente o crea uno nuevo.",
+    "mode": "Cómo quieres empezar",
+    "modeImport": "Importa",
+    "modeBlank": "Desde cero",
+    "importTitle": "Importa una carpeta GTFS",
+    "importSubtitle": "Los ficheros .txt de una carpeta o de un ZIP.",
+    "blankTitle": "Un feed nuevo",
+    "blankSubtitle": "Empieza por el operador; después añadirás paradas, líneas y viajes.",
+    "dropTitle": "Suelta aquí la carpeta o el ZIP",
+    "dropHint": "Se suben fichero a fichero con progreso; un stop_times de cientos de MB también cabe.",
+    "pickFolder": "Elige una carpeta",
+    "pickZip": "Elige un ZIP",
+    "zipError": "No se ha podido leer el ZIP.",
+    "noTxt": "No hay ningún fichero .txt.",
+    "rows": {
+      "one": "{count} fila",
+      "other": "{count} filas"
+    },
+    "columns": {
+      "one": "{count} columna",
+      "other": "{count} columnas"
+    },
+    "duplicates": {
+      "one": "{count} duplicada",
+      "other": "{count} duplicadas"
+    },
+    "extraFile": "Fichero extra",
+    "processing": "Procesando…",
+    "done": "Hecho",
+    "failed": "Ha fallado",
+    "agency": "Operador",
+    "summary": "Resumen",
+    "files": "Ficheros",
+    "size": "Tamaño",
+    "blankNext": "Después de crearlo, te llevaremos al editor de datos para añadir paradas, líneas y calendarios.",
+    "computing": "Calculando las cifras y la validación…",
+    "import": "Importa el feed",
+    "create": "Crea el feed",
+    "imported": "Feed importado",
+    "created": "Feed creado",
+    "downloading": "Descargando de {source}…",
+    "downloadFailed": "No se ha podido descargar el feed de la fuente.",
+    "retry": "Vuelve a intentarlo"
+  },
+  "overview": {
+    "openMap": "Abre el mapa",
+    "startBuilding": "Empieza a construirlo",
+    "busiestDay": "Viajes el día más lleno",
+    "serviceSpan": "Franja de servicio",
+    "emptyTitle": "Este feed todavía está vacío",
+    "emptyDescription": "Añade paradas y una línea, y el generador creará los viajes.",
+    "addStops": "Añade paradas",
+    "network": "La red",
+    "networkHint": "Cada línea con su color; las paradas, a escala de las salidas.",
+    "modes": "Modos de transporte",
+    "calendar": "Viajes por día",
+    "calendarHint": "Haz clic en un día para verlo en el calendario.",
+    "hours": "Salidas por hora",
+    "hoursHint": "Viajes que salen cada hora el {date}.",
+    "topStops": "Paradas con más paso",
+    "topStopsHint": "Salidas el día más lleno.",
+    "files": "Ficheros del feed",
+    "filesHint": "Haz clic en uno para abrirlo en el editor.",
+    "missingFile": "No está"
+  },
+  "map": {
+    "zoomIn": "Acerca",
+    "zoomOut": "Aleja",
+    "lines": "Líneas",
+    "hideStops": "Oculta las paradas",
+    "showStops": "Muestra las paradas",
+    "searchLines": "Busca una línea",
+    "showAll": "Muéstralas todas",
+    "hideAll": "Ocúltalas todas",
+    "only": "Solo esta",
+    "openStop": "Abre la parada",
+    "dailyDepartures": {
+      "one": "{count} salida el día más lleno",
+      "other": "{count} salidas el día más lleno"
+    },
+    "legend": "{stops} paradas · {lines} líneas · el tamaño del círculo es el volumen de paso"
+  },
+  "routes": {
+    "subtitle": "Todas las líneas del feed, agrupadas como las ve el viajero.",
+    "search": "Busca una línea",
+    "view": "Vista",
+    "grid": "Tarjetas",
+    "list": "Lista",
+    "variants": {
+      "one": "{count} variante",
+      "other": "{count} variantes"
+    },
+    "emptyTitle": "Todavía no hay ninguna línea",
+    "emptyDescription": "Añade una desde el editor de datos.",
+    "website": "Web",
+    "variantsOf": "Variantes de la {name}",
+    "allVariants": "Muéstralas todas ({count})",
+    "fewerVariants": "Mostrar menos",
+    "tripsOnDay": "Viajes este día",
+    "firstLast": "Primero y último",
+    "length": "Recorrido",
+    "avgDuration": "Duración media",
+    "pattern": "Recorrido",
+    "views": "Vistas de la línea",
+    "diagram": "Esquema",
+    "timetable": "Horario",
+    "marey": "Marey",
+    "noTrips": "Esta línea no tiene viajes.",
+    "noTripsOnDay": "Ningún viaje de este recorrido el {date}.",
+    "stopTrip": "Parada / viaje",
+    "mareyHint": "Tiempo en horizontal y paradas a escala de distancia en vertical: cuanto más inclinada la línea, más rápido va el tren. Haz clic en una para abrir el viaje.",
+    "serviceDays": "Días de servicio",
+    "departuresByHour": "Salidas por hora el {date}"
+  },
+  "stops": {
+    "subtitle": "Ordenadas por el volumen de paso del día más lleno.",
+    "search": "Busca una parada",
+    "emptyTitle": "Todavía no hay ninguna parada",
+    "emptyDescription": "Añádelas desde el editor de datos, haciendo clic en el mapa.",
+    "accessible": "Accesible",
+    "partOf": "Forma parte de",
+    "departures": "Salidas",
+    "terminates": "Final",
+    "noDepartures": "Ninguna salida el {date}.",
+    "platforms": "Andenes",
+    "nearby": "Paradas cercanas"
+  },
+  "trips": {
+    "departure": "Salida",
+    "arrival": "Llegada",
+    "duration": "Duración",
+    "stopTimes": "Horas de paso",
+    "noShape": "Sin trazado: unimos las paradas",
+    "serviceDays": "Días que circula",
+    "runs": "Circula",
+    "doesNotRun": "No circula",
+    "noService": "No circula ningún día del periodo.",
+    "block": "Bloque {block}",
+    "blockHint": "Viajes que hace el mismo vehículo."
+  },
+  "calendar": {
+    "subtitle": "Cuántos viajes circulan cada día y con qué servicios.",
+    "tripsPerDay": "Viajes por día",
+    "pickDay": "Haz clic en un día para ver el detalle.",
+    "selected": {
+      "one": "{date}: {count} viaje",
+      "other": "{date}: {count} viajes"
+    },
+    "services": "Servicios",
+    "servicesHint": {
+      "one": "{count} servicio (calendar y calendar_dates)",
+      "other": "{count} servicios (calendar y calendar_dates)"
+    },
+    "search": "Busca un servicio",
+    "weekdays": "Días",
+    "period": "Periodo",
+    "exceptions": "Excepciones",
+    "activeDays": "Días activos",
+    "onlyDates": "Solo fechas sueltas",
+    "truncated": {
+      "one": "Y {count} servicio más: búscalo por nombre.",
+      "other": "Y {count} servicios más: búscalos por nombre."
+    }
+  },
+  "severity": {
+    "error": "Errores",
+    "warning": "Avisos",
+    "info": "Notas",
+    "errorPlural": "Errores",
+    "warningPlural": "Avisos",
+    "infoPlural": "Notas"
+  },
+  "units": {
+    "trips": {
+      "one": "{count} viaje",
+      "other": "{count} viajes"
+    },
+    "departures": {
+      "one": "{count} salida",
+      "other": "{count} salidas"
+    },
+    "routes": {
+      "one": "{count} línea",
+      "other": "{count} líneas"
+    },
+    "lines": {
+      "one": "{count} línea",
+      "other": "{count} líneas"
+    },
+    "stops": {
+      "one": "{count} parada",
+      "other": "{count} paradas"
+    },
+    "rows": {
+      "one": "{count} fila",
+      "other": "{count} filas"
+    },
+    "columns": {
+      "one": "{count} columna",
+      "other": "{count} columnas"
+    },
+    "days": {
+      "one": "{count} día",
+      "other": "{count} días"
+    },
+    "cases": {
+      "one": "{count} caso",
+      "other": "{count} casos"
+    },
+    "errors": {
+      "one": "{count} error",
+      "other": "{count} errores"
+    }
+  },
+  "modes": {
+    "tram": "Tranvía",
+    "subway": "Metro",
+    "rail": "Tren",
+    "bus": "Autobús",
+    "ferry": "Barco",
+    "cableTram": "Tranvía de cable",
+    "aerial": "Teleférico",
+    "funicular": "Funicular",
+    "trolleybus": "Trolebús",
+    "monorail": "Monorraíl",
+    "other": "Otros"
+  },
+  "tables": {
+    "agency": "Operadores",
+    "stops": "Paradas",
+    "routes": "Líneas",
+    "trips": "Viajes",
+    "stop_times": "Horas de paso",
+    "calendar": "Calendario",
+    "calendar_dates": "Excepciones de calendario",
+    "shapes": "Trazados",
+    "frequencies": "Frecuencias",
+    "transfers": "Transbordos",
+    "feed_info": "Información del feed"
+  },
+  "validation": {
+    "subtitle": "Comprobaciones de la especificación GTFS sobre todo el feed.",
+    "allGood": "Ningún error ni aviso",
+    "allGoodHint": "El feed cumple todas las comprobaciones.",
+    "wholeFeed": "Todo el feed",
+    "missingAgency": "Falta agency.txt o está vacío",
+    "missingStops": "Falta stops.txt o está vacío",
+    "missingRoutes": "Falta routes.txt o está vacío",
+    "missingTrips": "Falta trips.txt o está vacío",
+    "missingStopTimes": "Falta stop_times.txt o está vacío",
+    "missingCalendar": "No hay ni calendar.txt ni calendar_dates.txt",
+    "agencyMissingFields": "Operadores sin nombre, web o zona horaria",
+    "agencyIdRequired": "Con más de un operador, agency_id es obligatorio",
+    "routeUnknownAgency": "Líneas con un operador que no existe",
+    "routeWithoutName": "Líneas sin nombre corto ni largo",
+    "routeWithoutType": "Líneas sin tipo",
+    "routeColorContrast": "Líneas con poco contraste entre el color y el texto",
+    "routeWithoutTrips": "Líneas sin ningún viaje",
+    "stopWithoutCoordinates": "Paradas sin coordenadas",
+    "stopAtNullIsland": "Paradas en 0,0",
+    "stopWithoutName": "Paradas sin nombre",
+    "stopUnknownParent": "Paradas con una estación madre que no existe",
+    "stopUnused": "Paradas por las que no pasa ningún viaje",
+    "tripUnknownRoute": "Viajes de una línea que no existe",
+    "tripUnknownService": "Viajes de un servicio que no existe",
+    "tripUnknownShape": "Viajes con un trazado que no existe",
+    "tripTooFewStops": "Viajes con menos de dos paradas",
+    "stopTimeUnknownTrip": "Horas de paso de un viaje que no existe",
+    "stopTimeUnknownStop": "Horas de paso en una parada que no existe",
+    "stopTimeArrivalAfterDeparture": "Llegada posterior a la salida",
+    "stopTimeGoesBackwards": "Horas que retroceden dentro de un viaje",
+    "stopTimeEndpointWithoutTime": "Primera o última parada sin hora",
+    "stopTimeTooFast": "Tramos a más de 350 km/h",
+    "serviceWithoutDays": "Servicios que no circulan ningún día",
+    "serviceEndBeforeStart": "Servicios que terminan antes de empezar",
+    "feedExpired": "El feed ya ha caducado",
+    "shapeTooFewPoints": "Trazados con menos de dos puntos",
+    "transferUnknownStop": "Transbordos con una parada que no existe"
+  },
+  "data": {
+    "subtitle": "Edita cualquier fichero del feed, fila a fila.",
+    "required": "Obligatorio",
+    "optional": "Opcional",
+    "add": "Añade una fila",
+    "editRow": "Edita la fila",
+    "newRow": "Fila nueva",
+    "search": "Busca en el fichero",
+    "empty": "Este fichero está vacío",
+    "emptyHint": "Añade la primera fila.",
+    "page": "{from}–{to} de {total}",
+    "saved": "Fila guardada",
+    "created": "Fila añadida",
+    "deleted": "Fila borrada",
+    "deleteConfirm": "¿Seguro que quieres borrar esta fila? No se puede deshacer.",
+    "fieldRequired": "Este campo es obligatorio",
+    "fieldInvalid": "Este valor no es válido",
+    "pickOnMap": "Haz clic en el mapa para situar la parada",
+    "extraColumns": "Columnas extra",
+    "columns": "Columnas",
+    "timeHint": "HH:MM:SS (puede pasar de 24 h)",
+    "dateHint": "AAAAMMDD",
+    "colorHint": "Hexadecimal sin #",
+    "noValue": "(vacío)",
+    "conflict": "Ya hay una fila con este identificador."
+  },
+  "generator": {
+    "subtitle": "Crea de golpe todos los viajes de una línea: paradas en orden, tiempos entre paradas y frecuencia.",
+    "line": "Línea y servicio",
+    "route": "Línea",
+    "service": "Servicio",
+    "headsign": "Destino",
+    "direction": "Sentido",
+    "noDirection": "Sin sentido",
+    "stops": "Paradas del recorrido",
+    "searchStop": "Busca una parada para añadirla",
+    "mapHint": "También puedes hacer clic en las paradas del mapa para añadirlas en orden.",
+    "travel": "Minutos desde la anterior",
+    "remove": "Quita la parada",
+    "moveUp": "Sube",
+    "moveDown": "Baja",
+    "schedule": "Horario",
+    "first": "Primera salida",
+    "last": "Última salida",
+    "headway": "Cada (minutos)",
+    "dwell": "Parada en cada estación (minutos)",
+    "prefix": "Prefijo de los viajes",
+    "createShape": "Crea un trazado recto entre paradas",
+    "preview": "Previsualización",
+    "previewSummary": "{trips} viajes · {duration} de recorrido · última llegada {arrival}",
+    "generate": "Genera los viajes",
+    "generated": "Se han creado {trips} viajes y {stopTimes} horas de paso",
+    "needData": "Primero hace falta una línea, un servicio y paradas",
+    "needDataHint": "Créalos en el editor de datos (routes, calendar y stops) y vuelve aquí.",
+    "errors": {
+      "unknownRoute": "La línea no existe.",
+      "unknownService": "El servicio no existe.",
+      "unknownStop": "Alguna parada no existe.",
+      "tripIdTaken": "Ya hay viajes con este prefijo y hora: cambia el prefijo.",
+      "badWindow": "La última salida es anterior a la primera.",
+      "lengthMismatch": "Faltan tiempos entre paradas."
+    }
+  },
+  "catalog": {
+    "title": "Catálogo de GTFS públicos",
+    "subtitle": "Feeds abiertos de operadores reales, comprobados y con servicio vigente. Importa uno para explorarlo.",
+    "count": {
+      "one": "{count} feed",
+      "other": "{count} feeds"
+    },
+    "import": "Importa",
+    "open": "Abre",
+    "reimport": "Impórtalo de nuevo",
+    "imported": "Importado",
+    "source": "Fuente",
+    "updated": "Publicado {when}",
+    "available": "Disponible",
+    "unavailable": "No responde ahora mismo",
+    "checking": "Comprobando la fuente…",
+    "browse": "Explora el catálogo",
+    "all": "Todos",
+    "logosCredit": "Isotipos de las marcas en vectorial, de Wikimedia Commons:",
+    "license": {
+      "pd": "dominio público",
+      "cc0": "CC0"
+    }
+  },
+  "fields": {
+    "agency_id": "Identificador del operador",
+    "agency_name": "Nombre del operador",
+    "agency_url": "Web del operador",
+    "agency_timezone": "Zona horaria",
+    "agency_lang": "Idioma",
+    "agency_phone": "Teléfono",
+    "agency_fare_url": "Web de tarifas",
+    "agency_email": "Correo",
+    "stop_id": "Identificador de la parada",
+    "stop_code": "Código",
+    "stop_name": "Nombre de la parada",
+    "tts_stop_name": "Nombre para voz",
+    "stop_desc": "Descripción",
+    "stop_lat": "Latitud",
+    "stop_lon": "Longitud",
+    "zone_id": "Zona",
+    "stop_url": "Web",
+    "location_type": "Tipo de ubicación",
+    "parent_station": "Estación madre",
+    "stop_timezone": "Zona horaria",
+    "wheelchair_boarding": "Acceso con silla de ruedas",
+    "level_id": "Nivel",
+    "platform_code": "Andén",
+    "route_id": "Identificador de la línea",
+    "route_short_name": "Nombre corto",
+    "route_long_name": "Nombre largo",
+    "route_desc": "Descripción",
+    "route_type": "Tipo",
+    "route_url": "Web",
+    "route_color": "Color",
+    "route_text_color": "Color del texto",
+    "route_sort_order": "Orden",
+    "continuous_pickup": "Recogida continua",
+    "continuous_drop_off": "Bajada continua",
+    "network_id": "Red",
+    "service_id": "Servicio",
+    "trip_id": "Identificador del viaje",
+    "trip_headsign": "Destino",
+    "trip_short_name": "Nombre corto",
+    "direction_id": "Sentido",
+    "block_id": "Bloque",
+    "shape_id": "Trazado",
+    "wheelchair_accessible": "Accesible",
+    "bikes_allowed": "Bicicletas",
+    "arrival_time": "Llegada",
+    "departure_time": "Salida",
+    "stop_sequence": "Orden",
+    "stop_headsign": "Destino en la parada",
+    "pickup_type": "Recogida",
+    "drop_off_type": "Bajada",
+    "shape_dist_traveled": "Distancia recorrida",
+    "timepoint": "Hora exacta",
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado",
+    "sunday": "Domingo",
+    "start_date": "Fecha de inicio",
+    "end_date": "Fecha de fin",
+    "date": "Fecha",
+    "exception_type": "Excepción",
+    "shape_pt_lat": "Latitud",
+    "shape_pt_lon": "Longitud",
+    "shape_pt_sequence": "Orden",
+    "start_time": "Inicio",
+    "end_time": "Fin",
+    "headway_secs": "Intervalo (s)",
+    "exact_times": "Horas exactas",
+    "from_stop_id": "Desde la parada",
+    "to_stop_id": "Hasta la parada",
+    "from_route_id": "Desde la línea",
+    "to_route_id": "Hasta la línea",
+    "from_trip_id": "Desde el viaje",
+    "to_trip_id": "Hasta el viaje",
+    "transfer_type": "Tipo de transbordo",
+    "min_transfer_time": "Tiempo mínimo (s)",
+    "feed_publisher_name": "Editor",
+    "feed_publisher_url": "Web del editor",
+    "feed_lang": "Idioma",
+    "default_lang": "Idioma por defecto",
+    "feed_start_date": "Inicio de validez",
+    "feed_end_date": "Fin de validez",
+    "feed_version": "Versión",
+    "feed_contact_email": "Correo de contacto",
+    "feed_contact_url": "Web de contacto"
+  },
+  "enums": {
+    "location_type": {
+      "0": "Parada o andén",
+      "1": "Estación",
+      "2": "Acceso",
+      "3": "Nodo genérico",
+      "4": "Zona de embarque"
+    },
+    "wheelchair_boarding": {
+      "0": "0 · Sin información",
+      "1": "1 · Sí",
+      "2": "2 · No"
+    },
+    "wheelchair_accessible": {
+      "0": "0 · Sin información",
+      "1": "1 · Sí",
+      "2": "2 · No"
+    },
+    "bikes_allowed": {
+      "0": "0 · Sin información",
+      "1": "1 · Sí",
+      "2": "2 · No"
+    },
+    "continuous_pickup": {
+      "0": "0 · Continua",
+      "1": "1 · No",
+      "2": "2 · Hay que llamar",
+      "3": "3 · Hay que avisar al conductor"
+    },
+    "continuous_drop_off": {
+      "0": "0 · Continua",
+      "1": "1 · No",
+      "2": "2 · Hay que llamar",
+      "3": "3 · Hay que avisar al conductor"
+    },
+    "pickup_type": {
+      "0": "0 · Normal",
+      "1": "1 · No",
+      "2": "2 · Hay que llamar",
+      "3": "3 · Hay que avisar al conductor"
+    },
+    "drop_off_type": {
+      "0": "0 · Normal",
+      "1": "1 · No",
+      "2": "2 · Hay que llamar",
+      "3": "3 · Hay que avisar al conductor"
+    },
+    "direction_id": {
+      "0": "Ida",
+      "1": "Vuelta"
+    },
+    "timepoint": {
+      "0": "0 · Aproximada",
+      "1": "1 · Exacta"
+    },
+    "exact_times": {
+      "0": "0 · Frecuencia",
+      "1": "1 · Horario exacto"
+    },
+    "exception_type": {
+      "1": "1 · Se añade el servicio",
+      "2": "2 · Se quita el servicio"
+    },
+    "transfer_type": {
+      "0": "0 · Recomendado",
+      "1": "1 · Garantizado",
+      "2": "2 · Tiempo mínimo",
+      "3": "3 · No es posible",
+      "4": "4 · Seguir en el vehículo",
+      "5": "5 · Hay que bajar"
+    },
+    "monday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "tuesday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "wednesday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "thursday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "friday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "saturday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "sunday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    }
+  }
+}

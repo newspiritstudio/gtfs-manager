@@ -1,0 +1,60 @@
+/* Mapes (Leaflet) amb els tokens de l'Àgora: controls, atribució i etiquetes. */
+.gtfs-map {
+  font-family: inherit;
+  z-index: 0;
+}
+.gtfs-map .leaflet-control-zoom {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  overflow: hidden;
+}
+.gtfs-map .leaflet-control-zoom a {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  border-bottom-color: var(--md-sys-color-outline-variant);
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+}
+.gtfs-map .leaflet-control-zoom a:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+.gtfs-map .leaflet-control-attribution {
+  background: color-mix(in oklab, var(--md-sys-color-surface) 85%, transparent);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 10px;
+  border-top-left-radius: var(--md-sys-shape-corner-small);
+}
+.gtfs-map .leaflet-control-attribution a {
+  color: var(--md-sys-color-primary);
+}
+.leaflet-tooltip.gtfs-map-tooltip {
+  background: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  border: 0;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  padding: 4px 8px;
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: 500;
+  line-height: 16px;
+  box-shadow: none;
+}
+.leaflet-tooltip.gtfs-map-tooltip::before {
+  display: none;
+}
+.gtfs-map-tooltip-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 260px;
+}
+.gtfs-map-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  font-weight: 700;
+  font-size: 11px;
+}

@@ -1,0 +1,1 @@
+CREATE INDEX "stops_parent" ON "stops" USING btree ("feed_id","parent_station");

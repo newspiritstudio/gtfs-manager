@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">
+<title>TriMet icon</title>
+<circle cx="250" cy="250" r="250" fill="#E0651F" />
+<path d="M 250,186 A 112,112 0 1 1 138,190 M 310,287 A 112,112 0 1 1 362,190 M 190,287 A 112,112 0 1 1 250,384" stroke="white" stroke-width="30" fill="none" />
+</svg>

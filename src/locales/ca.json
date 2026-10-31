@@ -1,0 +1,639 @@
+{
+  "app": {
+    "description": "Crea, edita i visualitza feeds GTFS de transport públic."
+  },
+  "nav": {
+    "feeds": "Feeds",
+    "allFeeds": "Tots els feeds",
+    "overview": "Resum",
+    "map": "Mapa",
+    "routes": "Línies",
+    "stops": "Parades",
+    "calendar": "Calendari",
+    "validation": "Validació",
+    "data": "Dades",
+    "generator": "Generador",
+    "more": "Més",
+    "breadcrumbs": "Ruta de navegació",
+    "main": "Navegació principal",
+    "sections": "Seccions del feed",
+    "openMenu": "Obre el menú",
+    "skipToContent": "Salta al contingut",
+    "catalog": "Catàleg"
+  },
+  "theme": {
+    "switch": "Tema: {theme}",
+    "system": "el del sistema",
+    "light": "clar",
+    "dark": "fosc"
+  },
+  "language": {
+    "label": "Idioma",
+    "ca": "Català",
+    "es": "Castellà",
+    "en": "Anglès"
+  },
+  "common": {
+    "all": "Totes",
+    "close": "Tanca",
+    "date": "Data",
+    "nextDay": "Dia següent",
+    "previousDay": "Dia anterior",
+    "noResults": "No hi ha cap resultat.",
+    "seeAll": "Mostra-ho tot",
+    "showMore": "Mostra'n més",
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "clearSearch": "Esborra la cerca",
+    "retry": "Torna-ho a provar",
+    "delete": "Esborra",
+    "edit": "Edita",
+    "previous": "Anterior",
+    "next": "Següent"
+  },
+  "charts": {
+    "less": "Menys",
+    "more": "Més",
+    "max": "Màxim: {value}"
+  },
+  "errors": {
+    "database": "No es pot connectar amb la base de dades",
+    "databaseHint": "Revisa DATABASE_URL a .env.local i que PostgreSQL estigui en marxa.",
+    "generic": "No s'ha pogut fer. Torna-ho a provar.",
+    "invalidForm": "Revisa els camps marcats.",
+    "notFound": "No hem trobat aquesta pàgina",
+    "notFoundHint": "Potser el feed, la línia o la parada ja no existeix."
+  },
+  "feed": {
+    "name": "Nom",
+    "description": "Descripció",
+    "export": "Exporta el GTFS",
+    "trips": "Viatges"
+  },
+  "feeds": {
+    "title": "Feeds GTFS",
+    "subtitle": "Els horaris de transport que gestiones, en un sol lloc.",
+    "new": "Crea un feed",
+    "noAgency": "Sense operador",
+    "valid": "Vàlid",
+    "statsPending": "Les xifres es calcularan en obrir-lo.",
+    "emptyTitle": "Encara no hi ha cap feed",
+    "emptyDescription": "Importa una carpeta o un ZIP GTFS, o comença'n un de zero."
+  },
+  "newFeed": {
+    "subtitle": "Importa un GTFS existent o crea'n un de nou.",
+    "mode": "Com vols començar",
+    "modeImport": "Importa",
+    "modeBlank": "De zero",
+    "importTitle": "Importa una carpeta GTFS",
+    "importSubtitle": "Els fitxers .txt d'una carpeta o d'un ZIP.",
+    "blankTitle": "Un feed nou",
+    "blankSubtitle": "Comença per l'operador; després hi afegiràs parades, línies i viatges.",
+    "dropTitle": "Deixa anar aquí la carpeta o el ZIP",
+    "dropHint": "Es pugen fitxer a fitxer amb progrés; un stop_times de centenars de MB també hi cap.",
+    "pickFolder": "Tria una carpeta",
+    "pickZip": "Tria un ZIP",
+    "zipError": "No s'ha pogut llegir el ZIP.",
+    "noTxt": "No hi ha cap fitxer .txt.",
+    "rows": {
+      "one": "{count} fila",
+      "other": "{count} files"
+    },
+    "columns": {
+      "one": "{count} columna",
+      "other": "{count} columnes"
+    },
+    "duplicates": {
+      "one": "{count} duplicada",
+      "other": "{count} duplicades"
+    },
+    "extraFile": "Fitxer extra",
+    "processing": "Processant…",
+    "done": "Fet",
+    "failed": "Ha fallat",
+    "agency": "Operador",
+    "summary": "Resum",
+    "files": "Fitxers",
+    "size": "Mida",
+    "blankNext": "Després de crear-lo, et portarem a l'editor de dades per afegir-hi parades, línies i calendaris.",
+    "computing": "Calculant les xifres i la validació…",
+    "import": "Importa el feed",
+    "create": "Crea el feed",
+    "imported": "Feed importat",
+    "created": "Feed creat",
+    "downloading": "Descarregant de {source}…",
+    "downloadFailed": "No s'ha pogut descarregar el feed de la font.",
+    "retry": "Torna-ho a provar"
+  },
+  "overview": {
+    "openMap": "Obre el mapa",
+    "startBuilding": "Comença a construir-lo",
+    "busiestDay": "Viatges el dia més ple",
+    "serviceSpan": "Franja de servei",
+    "emptyTitle": "Aquest feed encara és buit",
+    "emptyDescription": "Afegeix-hi parades i una línia, i el generador en crearà els viatges.",
+    "addStops": "Afegeix parades",
+    "network": "La xarxa",
+    "networkHint": "Cada línia amb el seu color; les parades, a escala de les sortides.",
+    "modes": "Modes de transport",
+    "calendar": "Viatges per dia",
+    "calendarHint": "Clica un dia per veure'l al calendari.",
+    "hours": "Sortides per hora",
+    "hoursHint": "Viatges que surten cada hora el {date}.",
+    "topStops": "Parades amb més pas",
+    "topStopsHint": "Sortides el dia més ple.",
+    "files": "Fitxers del feed",
+    "filesHint": "Clica'n un per obrir-lo a l'editor.",
+    "missingFile": "No hi és"
+  },
+  "map": {
+    "zoomIn": "Apropa",
+    "zoomOut": "Allunya",
+    "lines": "Línies",
+    "hideStops": "Amaga les parades",
+    "showStops": "Mostra les parades",
+    "searchLines": "Cerca una línia",
+    "showAll": "Mostra-les totes",
+    "hideAll": "Amaga-les totes",
+    "only": "Només aquesta",
+    "openStop": "Obre la parada",
+    "dailyDepartures": {
+      "one": "{count} sortida el dia més ple",
+      "other": "{count} sortides el dia més ple"
+    },
+    "legend": "{stops} parades · {lines} línies · la mida del cercle és el volum de pas"
+  },
+  "routes": {
+    "subtitle": "Totes les línies del feed, agrupades com les veu el viatger.",
+    "search": "Cerca una línia",
+    "view": "Vista",
+    "grid": "Targetes",
+    "list": "Llista",
+    "variants": {
+      "one": "{count} variant",
+      "other": "{count} variants"
+    },
+    "emptyTitle": "Encara no hi ha cap línia",
+    "emptyDescription": "Afegeix-ne una des de l'editor de dades.",
+    "website": "Web",
+    "variantsOf": "Variants de la {name}",
+    "allVariants": "Mostra-les totes ({count})",
+    "fewerVariants": "Mostra'n menys",
+    "tripsOnDay": "Viatges aquest dia",
+    "firstLast": "Primer i darrer",
+    "length": "Recorregut",
+    "avgDuration": "Durada mitjana",
+    "pattern": "Recorregut",
+    "views": "Vistes de la línia",
+    "diagram": "Esquema",
+    "timetable": "Horari",
+    "marey": "Marey",
+    "noTrips": "Aquesta línia no té viatges.",
+    "noTripsOnDay": "Cap viatge d'aquest recorregut el {date}.",
+    "stopTrip": "Parada / viatge",
+    "mareyHint": "Temps en horitzontal i parades a escala de distància en vertical: com més inclinada la línia, més ràpid va el tren. Clica'n una per obrir el viatge.",
+    "serviceDays": "Dies de servei",
+    "departuresByHour": "Sortides per hora el {date}"
+  },
+  "stops": {
+    "subtitle": "Ordenades pel volum de pas del dia més ple.",
+    "search": "Cerca una parada",
+    "emptyTitle": "Encara no hi ha cap parada",
+    "emptyDescription": "Afegeix-ne des de l'editor de dades, clicant al mapa.",
+    "accessible": "Accessible",
+    "partOf": "Forma part de",
+    "departures": "Sortides",
+    "terminates": "Final",
+    "noDepartures": "Cap sortida el {date}.",
+    "platforms": "Andanes",
+    "nearby": "Parades properes"
+  },
+  "trips": {
+    "departure": "Sortida",
+    "arrival": "Arribada",
+    "duration": "Durada",
+    "stopTimes": "Hores de pas",
+    "noShape": "Sense traçat: unim les parades",
+    "serviceDays": "Dies que circula",
+    "runs": "Circula",
+    "doesNotRun": "No circula",
+    "noService": "No circula cap dia del període.",
+    "block": "Bloc {block}",
+    "blockHint": "Viatges que fa el mateix vehicle."
+  },
+  "calendar": {
+    "subtitle": "Quants viatges circulen cada dia i amb quins serveis.",
+    "tripsPerDay": "Viatges per dia",
+    "pickDay": "Clica un dia per veure'n el detall.",
+    "selected": {
+      "one": "{date}: {count} viatge",
+      "other": "{date}: {count} viatges"
+    },
+    "services": "Serveis",
+    "servicesHint": {
+      "one": "{count} servei (calendar i calendar_dates)",
+      "other": "{count} serveis (calendar i calendar_dates)"
+    },
+    "search": "Cerca un servei",
+    "weekdays": "Dies",
+    "period": "Període",
+    "exceptions": "Excepcions",
+    "activeDays": "Dies actius",
+    "onlyDates": "Només dates soltes",
+    "truncated": {
+      "one": "I {count} servei més: cerca'l pel nom.",
+      "other": "I {count} serveis més: cerca'ls pel nom."
+    }
+  },
+  "severity": {
+    "error": "Errors",
+    "warning": "Avisos",
+    "info": "Notes",
+    "errorPlural": "Errors",
+    "warningPlural": "Avisos",
+    "infoPlural": "Notes"
+  },
+  "units": {
+    "trips": {
+      "one": "{count} viatge",
+      "other": "{count} viatges"
+    },
+    "departures": {
+      "one": "{count} sortida",
+      "other": "{count} sortides"
+    },
+    "routes": {
+      "one": "{count} línia",
+      "other": "{count} línies"
+    },
+    "lines": {
+      "one": "{count} línia",
+      "other": "{count} línies"
+    },
+    "stops": {
+      "one": "{count} parada",
+      "other": "{count} parades"
+    },
+    "rows": {
+      "one": "{count} fila",
+      "other": "{count} files"
+    },
+    "columns": {
+      "one": "{count} columna",
+      "other": "{count} columnes"
+    },
+    "days": {
+      "one": "{count} dia",
+      "other": "{count} dies"
+    },
+    "cases": {
+      "one": "{count} cas",
+      "other": "{count} casos"
+    },
+    "errors": {
+      "one": "{count} error",
+      "other": "{count} errors"
+    }
+  },
+  "modes": {
+    "tram": "Tramvia",
+    "subway": "Metro",
+    "rail": "Tren",
+    "bus": "Autobús",
+    "ferry": "Vaixell",
+    "cableTram": "Tramvia de cable",
+    "aerial": "Telefèric",
+    "funicular": "Funicular",
+    "trolleybus": "Troleibús",
+    "monorail": "Monorail",
+    "other": "Altres"
+  },
+  "tables": {
+    "agency": "Operadors",
+    "stops": "Parades",
+    "routes": "Línies",
+    "trips": "Viatges",
+    "stop_times": "Hores de pas",
+    "calendar": "Calendari",
+    "calendar_dates": "Excepcions de calendari",
+    "shapes": "Traçats",
+    "frequencies": "Freqüències",
+    "transfers": "Transbordaments",
+    "feed_info": "Informació del feed"
+  },
+  "validation": {
+    "subtitle": "Comprovacions de l'especificació GTFS sobre tot el feed.",
+    "allGood": "Cap error ni avís",
+    "allGoodHint": "El feed compleix totes les comprovacions.",
+    "wholeFeed": "Tot el feed",
+    "missingAgency": "Falta agency.txt o és buit",
+    "missingStops": "Falta stops.txt o és buit",
+    "missingRoutes": "Falta routes.txt o és buit",
+    "missingTrips": "Falta trips.txt o és buit",
+    "missingStopTimes": "Falta stop_times.txt o és buit",
+    "missingCalendar": "No hi ha ni calendar.txt ni calendar_dates.txt",
+    "agencyMissingFields": "Operadors sense nom, web o zona horària",
+    "agencyIdRequired": "Amb més d'un operador, agency_id és obligatori",
+    "routeUnknownAgency": "Línies amb un operador que no existeix",
+    "routeWithoutName": "Línies sense nom curt ni llarg",
+    "routeWithoutType": "Línies sense tipus",
+    "routeColorContrast": "Línies amb poc contrast entre el color i el text",
+    "routeWithoutTrips": "Línies sense cap viatge",
+    "stopWithoutCoordinates": "Parades sense coordenades",
+    "stopAtNullIsland": "Parades a 0,0",
+    "stopWithoutName": "Parades sense nom",
+    "stopUnknownParent": "Parades amb una estació mare que no existeix",
+    "stopUnused": "Parades per on no passa cap viatge",
+    "tripUnknownRoute": "Viatges d'una línia que no existeix",
+    "tripUnknownService": "Viatges d'un servei que no existeix",
+    "tripUnknownShape": "Viatges amb un traçat que no existeix",
+    "tripTooFewStops": "Viatges amb menys de dues parades",
+    "stopTimeUnknownTrip": "Hores de pas d'un viatge que no existeix",
+    "stopTimeUnknownStop": "Hores de pas en una parada que no existeix",
+    "stopTimeArrivalAfterDeparture": "Arribada posterior a la sortida",
+    "stopTimeGoesBackwards": "Hores que tornen enrere dins d'un viatge",
+    "stopTimeEndpointWithoutTime": "Primera o darrera parada sense hora",
+    "stopTimeTooFast": "Trams a més de 350 km/h",
+    "serviceWithoutDays": "Serveis que no circulen cap dia",
+    "serviceEndBeforeStart": "Serveis que acaben abans de començar",
+    "feedExpired": "El feed ja ha caducat",
+    "shapeTooFewPoints": "Traçats amb menys de dos punts",
+    "transferUnknownStop": "Transbordaments amb una parada que no existeix"
+  },
+  "data": {
+    "subtitle": "Edita qualsevol fitxer del feed, fila a fila.",
+    "required": "Obligatori",
+    "optional": "Opcional",
+    "add": "Afegeix una fila",
+    "editRow": "Edita la fila",
+    "newRow": "Fila nova",
+    "search": "Cerca al fitxer",
+    "empty": "Aquest fitxer és buit",
+    "emptyHint": "Afegeix-hi la primera fila.",
+    "page": "{from}–{to} de {total}",
+    "saved": "Fila desada",
+    "created": "Fila afegida",
+    "deleted": "Fila esborrada",
+    "deleteConfirm": "Segur que vols esborrar aquesta fila? No es pot desfer.",
+    "fieldRequired": "Aquest camp és obligatori",
+    "fieldInvalid": "Aquest valor no és vàlid",
+    "pickOnMap": "Clica al mapa per situar la parada",
+    "extraColumns": "Columnes extra",
+    "columns": "Columnes",
+    "timeHint": "HH:MM:SS (pot passar de 24 h)",
+    "dateHint": "AAAAMMDD",
+    "colorHint": "Hexadecimal sense #",
+    "noValue": "(buit)",
+    "conflict": "Ja hi ha una fila amb aquest identificador."
+  },
+  "generator": {
+    "subtitle": "Crea de cop tots els viatges d'una línia: parades en ordre, temps entre parades i freqüència.",
+    "line": "Línia i servei",
+    "route": "Línia",
+    "service": "Servei",
+    "headsign": "Destinació",
+    "direction": "Sentit",
+    "noDirection": "Sense sentit",
+    "stops": "Parades del recorregut",
+    "searchStop": "Cerca una parada per afegir-la",
+    "mapHint": "També pots clicar les parades del mapa per afegir-les en ordre.",
+    "travel": "Minuts des de l'anterior",
+    "remove": "Treu la parada",
+    "moveUp": "Puja",
+    "moveDown": "Baixa",
+    "schedule": "Horari",
+    "first": "Primera sortida",
+    "last": "Darrera sortida",
+    "headway": "Cada (minuts)",
+    "dwell": "Parada a cada estació (minuts)",
+    "prefix": "Prefix dels viatges",
+    "createShape": "Crea un traçat recte entre parades",
+    "preview": "Previsualització",
+    "previewSummary": "{trips} viatges · {duration} de recorregut · darrera arribada {arrival}",
+    "generate": "Genera els viatges",
+    "generated": "S'han creat {trips} viatges i {stopTimes} hores de pas",
+    "needData": "Primer cal una línia, un servei i parades",
+    "needDataHint": "Crea'ls a l'editor de dades (routes, calendar i stops) i torna aquí.",
+    "errors": {
+      "unknownRoute": "La línia no existeix.",
+      "unknownService": "El servei no existeix.",
+      "unknownStop": "Alguna parada no existeix.",
+      "tripIdTaken": "Ja hi ha viatges amb aquest prefix i hora: canvia el prefix.",
+      "badWindow": "La darrera sortida és abans de la primera.",
+      "lengthMismatch": "Falten temps entre parades."
+    }
+  },
+  "catalog": {
+    "title": "Catàleg de GTFS públics",
+    "subtitle": "Feeds oberts d'operadors reals, comprovats i amb servei vigent. Importa'n un per explorar-lo.",
+    "count": {
+      "one": "{count} feed",
+      "other": "{count} feeds"
+    },
+    "import": "Importa",
+    "open": "Obre",
+    "reimport": "Importa'l de nou",
+    "imported": "Importat",
+    "source": "Font",
+    "updated": "Publicat {when}",
+    "available": "Disponible",
+    "unavailable": "No respon ara mateix",
+    "checking": "Comprovant la font…",
+    "browse": "Explora el catàleg",
+    "all": "Tots",
+    "logosCredit": "Isotips de les marques en vector, de Wikimedia Commons:",
+    "license": {
+      "pd": "domini públic",
+      "cc0": "CC0"
+    }
+  },
+  "fields": {
+    "agency_id": "Identificador de l'operador",
+    "agency_name": "Nom de l'operador",
+    "agency_url": "Web de l'operador",
+    "agency_timezone": "Zona horària",
+    "agency_lang": "Idioma",
+    "agency_phone": "Telèfon",
+    "agency_fare_url": "Web de tarifes",
+    "agency_email": "Correu",
+    "stop_id": "Identificador de la parada",
+    "stop_code": "Codi",
+    "stop_name": "Nom de la parada",
+    "tts_stop_name": "Nom per a veu",
+    "stop_desc": "Descripció",
+    "stop_lat": "Latitud",
+    "stop_lon": "Longitud",
+    "zone_id": "Zona",
+    "stop_url": "Web",
+    "location_type": "Tipus d'ubicació",
+    "parent_station": "Estació mare",
+    "stop_timezone": "Zona horària",
+    "wheelchair_boarding": "Accés amb cadira de rodes",
+    "level_id": "Nivell",
+    "platform_code": "Andana",
+    "route_id": "Identificador de la línia",
+    "route_short_name": "Nom curt",
+    "route_long_name": "Nom llarg",
+    "route_desc": "Descripció",
+    "route_type": "Tipus",
+    "route_url": "Web",
+    "route_color": "Color",
+    "route_text_color": "Color del text",
+    "route_sort_order": "Ordre",
+    "continuous_pickup": "Recollida contínua",
+    "continuous_drop_off": "Baixada contínua",
+    "network_id": "Xarxa",
+    "service_id": "Servei",
+    "trip_id": "Identificador del viatge",
+    "trip_headsign": "Destinació",
+    "trip_short_name": "Nom curt",
+    "direction_id": "Sentit",
+    "block_id": "Bloc",
+    "shape_id": "Traçat",
+    "wheelchair_accessible": "Accessible",
+    "bikes_allowed": "Bicicletes",
+    "arrival_time": "Arribada",
+    "departure_time": "Sortida",
+    "stop_sequence": "Ordre",
+    "stop_headsign": "Destinació a la parada",
+    "pickup_type": "Recollida",
+    "drop_off_type": "Baixada",
+    "shape_dist_traveled": "Distància recorreguda",
+    "timepoint": "Hora exacta",
+    "monday": "Dilluns",
+    "tuesday": "Dimarts",
+    "wednesday": "Dimecres",
+    "thursday": "Dijous",
+    "friday": "Divendres",
+    "saturday": "Dissabte",
+    "sunday": "Diumenge",
+    "start_date": "Data d'inici",
+    "end_date": "Data de fi",
+    "date": "Data",
+    "exception_type": "Excepció",
+    "shape_pt_lat": "Latitud",
+    "shape_pt_lon": "Longitud",
+    "shape_pt_sequence": "Ordre",
+    "start_time": "Inici",
+    "end_time": "Fi",
+    "headway_secs": "Interval (s)",
+    "exact_times": "Hores exactes",
+    "from_stop_id": "Des de la parada",
+    "to_stop_id": "Fins a la parada",
+    "from_route_id": "Des de la línia",
+    "to_route_id": "Fins a la línia",
+    "from_trip_id": "Des del viatge",
+    "to_trip_id": "Fins al viatge",
+    "transfer_type": "Tipus de transbord",
+    "min_transfer_time": "Temps mínim (s)",
+    "feed_publisher_name": "Editor",
+    "feed_publisher_url": "Web de l'editor",
+    "feed_lang": "Idioma",
+    "default_lang": "Idioma per defecte",
+    "feed_start_date": "Inici de validesa",
+    "feed_end_date": "Fi de validesa",
+    "feed_version": "Versió",
+    "feed_contact_email": "Correu de contacte",
+    "feed_contact_url": "Web de contacte"
+  },
+  "enums": {
+    "location_type": {
+      "0": "Parada o andana",
+      "1": "Estació",
+      "2": "Accés",
+      "3": "Node genèric",
+      "4": "Zona d'embarcament"
+    },
+    "wheelchair_boarding": {
+      "0": "0 · Sense informació",
+      "1": "1 · Sí",
+      "2": "2 · No"
+    },
+    "wheelchair_accessible": {
+      "0": "0 · Sense informació",
+      "1": "1 · Sí",
+      "2": "2 · No"
+    },
+    "bikes_allowed": {
+      "0": "0 · Sense informació",
+      "1": "1 · Sí",
+      "2": "2 · No"
+    },
+    "continuous_pickup": {
+      "0": "0 · Contínua",
+      "1": "1 · No",
+      "2": "2 · Cal trucar",
+      "3": "3 · Cal avisar el conductor"
+    },
+    "continuous_drop_off": {
+      "0": "0 · Contínua",
+      "1": "1 · No",
+      "2": "2 · Cal trucar",
+      "3": "3 · Cal avisar el conductor"
+    },
+    "pickup_type": {
+      "0": "0 · Normal",
+      "1": "1 · No",
+      "2": "2 · Cal trucar",
+      "3": "3 · Cal avisar el conductor"
+    },
+    "drop_off_type": {
+      "0": "0 · Normal",
+      "1": "1 · No",
+      "2": "2 · Cal trucar",
+      "3": "3 · Cal avisar el conductor"
+    },
+    "direction_id": {
+      "0": "Anada",
+      "1": "Tornada"
+    },
+    "timepoint": {
+      "0": "0 · Aproximada",
+      "1": "1 · Exacta"
+    },
+    "exact_times": {
+      "0": "0 · Freqüència",
+      "1": "1 · Horari exacte"
+    },
+    "exception_type": {
+      "1": "1 · S'afegeix el servei",
+      "2": "2 · Es treu el servei"
+    },
+    "transfer_type": {
+      "0": "0 · Recomanat",
+      "1": "1 · Garantit",
+      "2": "2 · Temps mínim",
+      "3": "3 · No es pot",
+      "4": "4 · Seguir al vehicle",
+      "5": "5 · Cal baixar"
+    },
+    "monday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "tuesday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "wednesday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "thursday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "friday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "saturday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    },
+    "sunday": {
+      "0": "0 · No circula",
+      "1": "1 · Circula"
+    }
+  }
+}
