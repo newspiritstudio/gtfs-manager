@@ -16,6 +16,7 @@ import PublicFooter from '../_public/PublicFooter';
 import { ButtonLink } from '@/components/ui/Button';
 import { LOCALE_TAGS, LOCALES } from '@/lib/i18n/config';
 import { localizedPath } from '@/lib/i18n/paths';
+import { isEditor } from '@/server/editor';
 import { getI18n } from '@/server/i18n';
 import { absoluteUrl, SITE_NAME, SITE_URL } from '@/server/seo';
 import NetworkAnimation from '@/features/landing/NetworkAnimation';
@@ -33,6 +34,7 @@ const FAQ = ['what', 'create', 'validate', 'large', 'data', 'export'] as const;
 
 export default async function LandingPage() {
   const { t, locale } = await getI18n();
+  const editor = await isEditor();
   const catalogHref = localizedPath(locale, '/catalog');
   const networks = LANDING_NETWORKS.flatMap(({ id }) => {
     const entry = GTFS_CATALOG.find((e) => e.id === id);
@@ -99,10 +101,12 @@ export default async function LandingPage() {
               {t('landing.openEditor')}
               <ArrowRight />
             </ButtonLink>
-            <ButtonLink href="/new" size="lg" variant="tonal">
-              <FileUp />
-              {t('landing.importFeed')}
-            </ButtonLink>
+            {editor ? (
+              <ButtonLink href="/new" size="lg" variant="tonal">
+                <FileUp />
+                {t('landing.importFeed')}
+              </ButtonLink>
+            ) : null}
             <ButtonLink href={catalogHref} size="lg" variant="ghost">
               {t('catalog.browse')}
             </ButtonLink>

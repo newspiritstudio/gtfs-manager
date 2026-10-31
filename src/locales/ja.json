@@ -799,6 +799,7 @@
     "subtitle": "事業者の GTFS Realtime データを時刻表と照合",
     "editSources": "ソースを編集",
     "showOnMap": "地図で見る",
+    "noSources": "このフィードには GTFS Realtime のソースがありません。",
     "noSourcesHint": "事業者の GTFS Realtime の URL を追加すると、車両の現在位置、遅延、運行情報を表示できます。",
     "sources": "リアルタイムのソース",
     "sourcesHint": "公開されている GTFS Realtime の protobuf ファイル（https）。1 つ、2 つ、または 3 つすべてを設定できます。",

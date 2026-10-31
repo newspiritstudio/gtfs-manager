@@ -38,6 +38,13 @@ the proxy asks for HTTP Basic credentials there (user `editor`). To change the p
 `docker exec agora-caddy caddy hash-password` and put the hash in the server's Caddyfile. Then
 reload Caddy.
 
+The public site hides every editing control. With `EDITOR_GATE=proxy` (set in
+`docker-compose.vps.yml`), the app only shows them to a browser that carries the `gtfs-editor`
+cookie. `GET /editor` sets it and the proxy asks for the same password first, so the browser
+already has the credentials for the changes that follow. `/editor?exit` removes it. The cookie only
+changes what the page shows: the password at the proxy is what protects the data. Without
+`EDITOR_GATE`, as in development or a self-hosted copy, every control is shown.
+
 The server's Caddyfile is a bind mount of a single file. If a release replaces that file instead
 of editing it in place, the container keeps the old copy, and `caddy reload` reports "config is
 unchanged". Recreate the Caddy container to fix it.

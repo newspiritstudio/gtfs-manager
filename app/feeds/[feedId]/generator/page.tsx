@@ -7,6 +7,8 @@ import PageHeader from '@/components/ui/PageHeader';
 import TripGenerator from '@/features/generator/TripGenerator';
 import { getServices } from '@/server/gtfs/details';
 import { ensureStats } from '@/server/gtfs/stats';
+import { notFound } from 'next/navigation';
+import { isEditor } from '@/server/editor';
 import { getI18n } from '@/server/i18n';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -15,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function GeneratorPage({ params }: { params: Promise<{ feedId: string }> }) {
+  if (!(await isEditor())) notFound();
   const { feedId } = await params;
   const { t } = await getI18n();
   const [stats, services] = await Promise.all([ensureStats(feedId), getServices(feedId)]);

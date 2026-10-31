@@ -818,6 +818,7 @@
     "subtitle": "GTFS-Realtime-Daten des Betreibers, mit dem Fahrplan abgeglichen",
     "editSources": "Quellen bearbeiten",
     "showOnMap": "Auf der Karte zeigen",
+    "noSources": "Dieser Feed hat keine GTFS-Realtime-Quelle.",
     "noSourcesHint": "Füge die GTFS-Realtime-URLs des Betreibers hinzu, um Fahrzeuge live, Verspätungen und Meldungen zu sehen.",
     "sources": "Echtzeitquellen",
     "sourcesHint": "Öffentliche GTFS-Realtime-Protobuf-Dateien (https). Eine, zwei oder alle drei.",

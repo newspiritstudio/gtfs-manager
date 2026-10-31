@@ -11,6 +11,7 @@ import ModeIcon from '@/components/ui/ModeIcon';
 import { ButtonLink } from '@/components/ui/Button';
 import SearchField from '@/components/ui/SearchField';
 import MenuSelect from '@/components/ui/MenuSelect';
+import { useEditor } from '@/lib/editor';
 import { useI18n } from '@/lib/i18n/client';
 import { localizedPath } from '@/lib/i18n/paths';
 import CountryFlag from './CountryFlag';
@@ -24,6 +25,7 @@ export default function CatalogGallery({
   imported: Record<string, string>;
 }) {
   const { t, locale } = useI18n();
+  const editor = useEditor();
   const { statuses, failed: statusFailed } = useCatalogStatuses();
   const router = useRouter();
   const pathname = usePathname();
@@ -164,18 +166,20 @@ export default function CatalogGallery({
                       {t('catalog.open')}
                       <span className="sr-only"> · {entry.name}</span>
                     </ButtonLink>
-                    <ButtonLink href={`/new?catalog=${entry.id}`} variant="ghost">
-                      {t('catalog.reimport')}
-                      <span className="sr-only"> · {entry.name}</span>
-                    </ButtonLink>
+                    {editor ? (
+                      <ButtonLink href={`/new?catalog=${entry.id}`} variant="ghost">
+                        {t('catalog.reimport')}
+                        <span className="sr-only"> · {entry.name}</span>
+                      </ButtonLink>
+                    ) : null}
                   </>
-                ) : (
+                ) : editor ? (
                   <ButtonLink href={`/new?catalog=${entry.id}`} variant="tonal">
                     <Download />
                     {t('catalog.import')}
                     <span className="sr-only"> · {entry.name}</span>
                   </ButtonLink>
-                )}
+                ) : null}
                 <ButtonLink
                   href={entry.homepage}
                   variant="ghost"

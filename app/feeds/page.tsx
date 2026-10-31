@@ -5,6 +5,7 @@ import { ButtonLink } from '@/components/ui/Button';
 import EmptyState from '@/components/ui/EmptyState';
 import PageHeader from '@/components/ui/PageHeader';
 import FeedCard from '@/features/feeds/FeedCard';
+import { isEditor } from '@/server/editor';
 import { listFeeds } from '@/server/gtfs/feeds';
 import { getI18n } from '@/server/i18n';
 
@@ -15,6 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function FeedsPage() {
   const { t, locale } = await getI18n();
+  const editor = await isEditor();
   let feeds: FeedSummary[] | null = null;
   try {
     feeds = await listFeeds();
@@ -33,10 +35,12 @@ export default async function FeedsPage() {
                 <Library />
                 {t('catalog.browse')}
               </ButtonLink>
-              <ButtonLink href="/new">
-                <Plus />
-                {t('feeds.new')}
-              </ButtonLink>
+              {editor ? (
+                <ButtonLink href="/new">
+                  <Plus />
+                  {t('feeds.new')}
+                </ButtonLink>
+              ) : null}
             </>
           ) : null
         }
@@ -51,13 +55,15 @@ export default async function FeedsPage() {
         <EmptyState
           icon={<FolderInput />}
           title={t('feeds.emptyTitle')}
-          description={t('feeds.emptyDescription')}
+          description={editor ? t('feeds.emptyDescription') : undefined}
           action={
             <div className="flex flex-wrap justify-center gap-2">
-              <ButtonLink href="/new">
-                <Plus />
-                {t('feeds.new')}
-              </ButtonLink>
+              {editor ? (
+                <ButtonLink href="/new">
+                  <Plus />
+                  {t('feeds.new')}
+                </ButtonLink>
+              ) : null}
               <ButtonLink href="/catalog" variant="tonal">
                 <Library />
                 {t('catalog.browse')}

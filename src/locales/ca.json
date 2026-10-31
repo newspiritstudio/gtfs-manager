@@ -818,6 +818,7 @@
     "subtitle": "Dades GTFS Realtime de l'operador, comprovades amb l'horari",
     "editSources": "Edita les fonts",
     "showOnMap": "Mostra-ho al mapa",
+    "noSources": "Aquest feed no té cap font de GTFS Realtime.",
     "noSourcesHint": "Afegeix les URL de GTFS Realtime de l'operador per veure els vehicles en directe, els retards i els avisos.",
     "sources": "Fonts de temps real",
     "sourcesHint": "Fitxers protobuf GTFS Realtime públics (https). Pots posar-ne un, dos o tots tres.",

@@ -4,20 +4,14 @@ import { motion as m } from 'motion/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useId } from 'react';
+import { useEditor } from '@/lib/editor';
 import { useI18n } from '@/lib/i18n/client';
 import { splitLocalePath } from '@/lib/i18n/paths';
 import { SPRING } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 import type { ShellFeed } from '@shared/contracts';
 import BrandMark from './BrandMark';
-import {
-  activeFeedNav,
-  CATALOG_ICON,
-  FEED_NAV,
-  FEEDS_ICON,
-  feedIdFromPath,
-  HOME_ICON,
-} from './nav';
+import { activeFeedNav, CATALOG_ICON, feedNav, FEEDS_ICON, feedIdFromPath, HOME_ICON } from './nav';
 
 export type { ShellFeed };
 
@@ -83,6 +77,7 @@ export function NavContent({ feeds, onNavigate }: { feeds: ShellFeed[]; onNaviga
   const pathname = usePathname();
   const { t } = useI18n();
   const indicatorId = `sidenav-active-${useId()}`;
+  const editor = useEditor();
   const feedId = feedIdFromPath(pathname);
   const currentFeed = feedId ? feeds.find((f) => f.id === feedId) : null;
   const activeItem = feedId ? activeFeedNav(pathname, feedId) : null;
@@ -99,7 +94,7 @@ export function NavContent({ feeds, onNavigate }: { feeds: ShellFeed[]; onNaviga
             {currentFeed.name}
           </p>
           <ul className="space-y-1">
-            {FEED_NAV.map((item) => (
+            {feedNav(editor).map((item) => (
               <li key={item.key}>
                 <NavLink
                   href={`/feeds/${currentFeed.id}${item.path}`}

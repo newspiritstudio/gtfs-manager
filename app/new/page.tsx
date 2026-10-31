@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { catalogEntry } from '@shared/catalog';
 import PageHeader from '@/components/ui/PageHeader';
 import NewFeedForm from '@/features/feeds/NewFeedForm';
+import { notFound } from 'next/navigation';
+import { isEditor } from '@/server/editor';
 import { getI18n } from '@/server/i18n';
 import { PRIVATE_ROBOTS } from '@/server/seo';
 
@@ -15,6 +17,7 @@ export default async function NewFeedPage({
 }: {
   searchParams: Promise<{ catalog?: string }>;
 }) {
+  if (!(await isEditor())) notFound();
   const { t } = await getI18n();
   const { catalog } = await searchParams;
   const entry = catalog ? catalogEntry(catalog) : undefined;

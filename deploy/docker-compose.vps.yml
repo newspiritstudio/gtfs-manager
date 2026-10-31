@@ -22,6 +22,8 @@ services:
     environment:
       DATABASE_URL: postgres://gtfs:${DB_PASSWORD:?DB_PASSWORD in /opt/gtfs-manager/.env}@gtfs-postgres:5432/gtfs_manager
       SITE_URL: https://gtfs.newspirit.studio
+      # Editing controls only after /editor (the proxy asks for the password): src/server/editor.ts.
+      EDITOR_GATE: proxy
       NODE_OPTIONS: --max-old-space-size=1024
     read_only: true
     tmpfs:

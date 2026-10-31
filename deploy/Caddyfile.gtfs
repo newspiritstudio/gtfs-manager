@@ -17,6 +17,13 @@ gtfs.newspirit.studio {
 		editor <bcrypt hash: caddy hash-password>
 	}
 
+	# Editing mode: the same password, asked for before `/editor` sets the cookie that shows the
+	# editing controls. The browser then sends it with every change, with no second prompt.
+	@editor path /editor
+	basic_auth @editor {
+		editor <bcrypt hash: caddy hash-password>
+	}
+
 	reverse_proxy gtfs-manager:3000 {
 		header_up X-Forwarded-For {remote_host}
 	}

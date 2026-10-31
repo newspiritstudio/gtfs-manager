@@ -799,6 +799,7 @@
     "subtitle": "运营方的 GTFS Realtime 数据，与时刻表对照检查",
     "editSources": "编辑数据源",
     "showOnMap": "在地图上查看",
+    "noSources": "此数据源没有任何 GTFS Realtime 来源。",
     "noSourcesHint": "添加运营方的 GTFS Realtime URL，即可查看实时车辆、延误和通告。",
     "sources": "实时数据源",
     "sourcesHint": "公开的 GTFS Realtime protobuf 文件（https）。可以填写一个、两个或全部三个。",

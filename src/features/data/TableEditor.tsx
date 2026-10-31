@@ -14,6 +14,7 @@ import { TableSkeleton } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
 import { apiFetch, ApiError } from '@/lib/api';
 import { formatNumber } from '@/lib/i18n/format';
+import { useEditor } from '@/lib/editor';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
 import RowForm, { enumLabel, type FieldErrors } from './RowForm';
@@ -27,6 +28,7 @@ export default function TableEditor(props: { feedId: string; table: GtfsTable })
 
 function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }) {
   const { t, locale } = useI18n();
+  const editor = useEditor();
   const toast = useToast();
   const router = useRouter();
   const pathname = usePathname();
@@ -221,10 +223,12 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
             {t('units.rows', { count: data.total })}
           </span>
         ) : null}
-        <Button className="ml-auto" onClick={() => open(null)}>
-          <Plus />
-          {t('data.add')}
-        </Button>
+        {editor ? (
+          <Button className="ml-auto" onClick={() => open(null)}>
+            <Plus />
+            {t('data.add')}
+          </Button>
+        ) : null}
       </div>
 
       {failed ? (
@@ -238,7 +242,11 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
         <TableSkeleton rows={12} columns={6} />
       ) : data.total === 0 && !debounced ? (
         <div className="rounded-lg bg-tonal">
-          <EmptyState icon={<Table2 />} title={t('data.empty')} description={t('data.emptyHint')} />
+          <EmptyState
+            icon={<Table2 />}
+            title={t('data.empty')}
+            description={editor ? t('data.emptyHint') : undefined}
+          />
         </div>
       ) : (
         <div className="overflow-hidden rounded-lg bg-tonal">
@@ -255,12 +263,14 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
             >
               <thead>
                 <tr>
-                  <th
-                    scope="col"
-                    className="sticky left-0 top-0 z-20 w-12 bg-surface-container-high"
-                  >
-                    <span className="sr-only">{t('common.edit')}</span>
-                  </th>
+                  {editor ? (
+                    <th
+                      scope="col"
+                      className="sticky left-0 top-0 z-20 w-12 bg-surface-container-high"
+                    >
+                      <span className="sr-only">{t('common.edit')}</span>
+                    </th>
+                  ) : null}
                   {[...columns.specCols, ...columns.extra].map((c) => (
                     <th
                       key={c}
@@ -280,19 +290,25 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
               </thead>
               <tbody>
                 {data.rows.map((row) => (
-                  <tr key={row.id} className="group cursor-pointer" onClick={() => open(row)}>
-                    <td className="sticky left-0 border-b border-outline-variant/40 bg-surface-container px-1 group-hover:bg-surface-container-highest">
-                      <IconButton
-                        label={`${t('common.edit')} · ${rowName(row)}`}
-                        className="size-8"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          open(row);
-                        }}
-                      >
-                        <Pencil />
-                      </IconButton>
-                    </td>
+                  <tr
+                    key={row.id}
+                    className={cn('group', editor && 'cursor-pointer')}
+                    onClick={editor ? () => open(row) : undefined}
+                  >
+                    {editor ? (
+                      <td className="sticky left-0 border-b border-outline-variant/40 bg-surface-container px-1 group-hover:bg-surface-container-highest">
+                        <IconButton
+                          label={`${t('common.edit')} · ${rowName(row)}`}
+                          className="size-8"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            open(row);
+                          }}
+                        >
+                          <Pencil />
+                        </IconButton>
+                      </td>
+                    ) : null}
                     {[...columns.specCols, ...columns.extra].map((c) => (
                       <td
                         key={c}

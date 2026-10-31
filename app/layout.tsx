@@ -4,8 +4,10 @@ import '../src/gtfs.css';
 import AppShell from '@/components/shell/AppShell';
 import MotionProvider from '@/components/shell/MotionProvider';
 import { ToastProvider } from '@/components/ui/Toast';
+import { EditorProvider } from '@/lib/editor';
 import { I18nProvider } from '@/lib/i18n/client';
 import { themeBootstrapScript } from '@/lib/theme';
+import { isEditor } from '@/server/editor';
 import { listFeedNames } from '@/server/gtfs/feeds';
 import { clientFallback, getI18n } from '@/server/i18n';
 import { SITE_NAME, SITE_URL } from '@/server/seo';
@@ -39,7 +41,7 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { locale, messages } = await getI18n();
-  const feeds = await listFeedNames();
+  const [feeds, editor] = await Promise.all([listFeedNames(), isEditor()]);
   return (
     <html lang={LOCALE_TAGS[locale]} suppressHydrationWarning>
       <head>
@@ -54,11 +56,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body suppressHydrationWarning>
         <I18nProvider locale={locale} messages={messages} fallback={clientFallback(locale)}>
-          <MotionProvider>
-            <ToastProvider>
-              <AppShell feeds={feeds}>{children}</AppShell>
-            </ToastProvider>
-          </MotionProvider>
+          <EditorProvider editor={editor}>
+            <MotionProvider>
+              <ToastProvider>
+                <AppShell feeds={feeds}>{children}</AppShell>
+              </ToastProvider>
+            </MotionProvider>
+          </EditorProvider>
         </I18nProvider>
       </body>
     </html>

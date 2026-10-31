@@ -11,6 +11,7 @@ import PageHeader from '@/components/ui/PageHeader';
 import { LOCALE_TAGS } from '@/lib/i18n/config';
 import { localizedPath } from '@/lib/i18n/paths';
 import { importedCatalogFeeds } from '@/server/gtfs/feeds';
+import { isEditor } from '@/server/editor';
 import { getI18n } from '@/server/i18n';
 import { absoluteUrl } from '@/server/seo';
 import CatalogEntryStatus from '@/features/catalog/CatalogEntryStatus';
@@ -36,6 +37,7 @@ function LogoTile({ entry, size }: { entry: CatalogEntry; size: 'md' | 'lg' }) {
 
 export default async function CatalogEntryPage({ entry }: { entry: CatalogEntry }) {
   const { t, locale } = await getI18n();
+  const editor = await isEditor();
   const feedId = (await importedCatalogFeeds())[entry.id];
   const modes = [...new Set(entry.routeTypes.map(transitModeForRouteType))];
   const countryName = new Intl.DisplayNames([LOCALE_TAGS[locale]], { type: 'region' });
@@ -104,16 +106,18 @@ export default async function CatalogEntryPage({ entry }: { entry: CatalogEntry 
           feedId ? (
             <>
               <ButtonLink href={`/feeds/${feedId}`}>{t('catalog.open')}</ButtonLink>
-              <ButtonLink href={`/new?catalog=${entry.id}`} variant="tonal">
-                {t('catalog.reimport')}
-              </ButtonLink>
+              {editor ? (
+                <ButtonLink href={`/new?catalog=${entry.id}`} variant="tonal">
+                  {t('catalog.reimport')}
+                </ButtonLink>
+              ) : null}
             </>
-          ) : (
+          ) : editor ? (
             <ButtonLink href={`/new?catalog=${entry.id}`}>
               <Download />
               {t('catalog.import')}
             </ButtonLink>
-          )
+          ) : null
         }
       />
 

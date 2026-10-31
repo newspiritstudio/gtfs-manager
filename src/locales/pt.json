@@ -818,6 +818,7 @@
     "subtitle": "Dados GTFS Realtime do operador, comparados com o horário",
     "editSources": "Editar as fontes",
     "showOnMap": "Ver no mapa",
+    "noSources": "Este feed não tem nenhuma fonte GTFS Realtime.",
     "noSourcesHint": "Adicione os URL GTFS Realtime do operador para ver os veículos em direto, os atrasos e os avisos.",
     "sources": "Fontes em tempo real",
     "sourcesHint": "Ficheiros protobuf GTFS Realtime públicos (https). Pode indicar um, dois ou os três.",

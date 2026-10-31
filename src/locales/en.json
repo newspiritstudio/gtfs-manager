@@ -818,6 +818,7 @@
     "subtitle": "The operator's GTFS Realtime data, checked against the schedule",
     "editSources": "Edit sources",
     "showOnMap": "Show on map",
+    "noSources": "This feed has no GTFS Realtime source.",
     "noSourcesHint": "Add the operator's GTFS Realtime URLs to see live vehicles, delays and alerts.",
     "sources": "Realtime sources",
     "sourcesHint": "Public GTFS Realtime protobuf files (https). You can set one, two or all three.",

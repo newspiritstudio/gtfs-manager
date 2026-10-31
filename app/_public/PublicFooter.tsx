@@ -2,6 +2,7 @@ import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { LOCALE_NAMES, LOCALE_TAGS, LOCALES } from '@/lib/i18n/config';
 import { localizedPath } from '@/lib/i18n/paths';
+import { isEditor } from '@/server/editor';
 import { getI18n } from '@/server/i18n';
 
 const GTFS_REFERENCE_URL = 'https://gtfs.org/documentation/schedule/reference/';
@@ -20,6 +21,7 @@ const linkClass =
  */
 export default async function PublicFooter({ path, credits }: { path: string; credits: Credit[] }) {
   const { t, locale } = await getI18n();
+  const editor = await isEditor();
   return (
     <footer className="mt-16 space-y-4 border-t border-outline-variant pt-6 text-body-medium text-on-surface-variant">
       <div className="flex flex-wrap items-start justify-between gap-x-10 gap-y-4">
@@ -30,11 +32,13 @@ export default async function PublicFooter({ path, credits }: { path: string; cr
                 {t('landing.openEditor')}
               </Link>
             </li>
-            <li>
-              <Link href="/new" className={linkClass}>
-                {t('landing.importFeed')}
-              </Link>
-            </li>
+            {editor ? (
+              <li>
+                <Link href="/new" className={linkClass}>
+                  {t('landing.importFeed')}
+                </Link>
+              </li>
+            ) : null}
             <li>
               <Link href={localizedPath(locale, '/catalog')} className={linkClass}>
                 {t('nav.catalog')}

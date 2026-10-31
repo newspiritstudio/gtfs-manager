@@ -27,6 +27,7 @@ import { DeparturesByHour, NetworkPreview, TripsHeatmap } from '@/features/overv
 import { formatGtfsDate, formatNumber } from '@/lib/i18n/format';
 import { getFeed } from '@/server/gtfs/feeds';
 import { ensureStats, referenceDateFrom } from '@/server/gtfs/stats';
+import { isEditor } from '@/server/editor';
 import { getI18n } from '@/server/i18n';
 
 type Props = { params: Promise<{ feedId: string }> };
@@ -41,6 +42,7 @@ export default async function FeedOverviewPage({ params }: Props) {
   const feed = await getFeed(feedId);
   if (!feed) notFound();
   const { t, locale } = await getI18n();
+  const editor = await isEditor();
   const stats = await ensureStats(feedId);
   if (!stats) notFound();
   const n = (v: number) => formatNumber(locale, v);
@@ -67,7 +69,9 @@ export default async function FeedOverviewPage({ params }: Props) {
         }
         actions={
           empty ? (
-            <ButtonLink href={`${base}/generator`}>{t('overview.startBuilding')}</ButtonLink>
+            editor ? (
+              <ButtonLink href={`${base}/generator`}>{t('overview.startBuilding')}</ButtonLink>
+            ) : null
           ) : (
             <ButtonLink href={`${base}/map`}>
               <MapIcon />
@@ -142,16 +146,18 @@ export default async function FeedOverviewPage({ params }: Props) {
           <EmptyState
             icon={<TrainFront />}
             title={t('overview.emptyTitle')}
-            description={t('overview.emptyDescription')}
+            description={editor ? t('overview.emptyDescription') : undefined}
             action={
-              <div className="flex flex-wrap justify-center gap-2">
-                <ButtonLink href={`${base}/data/stops`} variant="tonal">
-                  {t('overview.addStops')}
-                </ButtonLink>
-                <ButtonLink href={`${base}/generator`} variant="outline">
-                  {t('nav.generator')}
-                </ButtonLink>
-              </div>
+              editor ? (
+                <div className="flex flex-wrap justify-center gap-2">
+                  <ButtonLink href={`${base}/data/stops`} variant="tonal">
+                    {t('overview.addStops')}
+                  </ButtonLink>
+                  <ButtonLink href={`${base}/generator`} variant="outline">
+                    {t('nav.generator')}
+                  </ButtonLink>
+                </div>
+              ) : undefined
             }
           />
         </Card>
