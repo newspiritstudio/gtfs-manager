@@ -52,7 +52,10 @@ export default async function PublicFooter({ path, credits }: { path: string; cr
           <ul className="flex flex-wrap gap-x-4">
             {LOCALES.map((l) => (
               <li key={l}>
-                <Link
+                {/* A full page load, not a Link: the root layout (shell strings, <html lang>) only
+                    renders again on one, and a prefetch of every language would go through the
+                    proxy and leave the locale cookie on whichever came back last. */}
+                <a
                   href={localizedPath(l, path)}
                   hrefLang={LOCALE_TAGS[l]}
                   lang={LOCALE_TAGS[l]}
@@ -60,7 +63,7 @@ export default async function PublicFooter({ path, credits }: { path: string; cr
                   className={`${linkClass} ${l === locale ? 'font-medium text-on-surface' : ''}`}
                 >
                   {LOCALE_NAMES[l]}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

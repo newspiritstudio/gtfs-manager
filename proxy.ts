@@ -19,7 +19,11 @@ export function proxy(request: NextRequest) {
   const headers = new Headers(request.headers);
   headers.set(LOCALE_HEADER, first);
   const response = NextResponse.next({ request: { headers } });
-  if (request.cookies.get(LOCALE_COOKIE)?.value !== first) {
+  // A prefetch is not a choice: only a page the visitor actually opens keeps its language.
+  const prefetch =
+    request.headers.has('next-router-prefetch') ||
+    /prefetch/i.test(request.headers.get('sec-purpose') ?? request.headers.get('purpose') ?? '');
+  if (!prefetch && request.cookies.get(LOCALE_COOKIE)?.value !== first) {
     response.cookies.set(LOCALE_COOKIE, first, {
       path: '/',
       maxAge: 31536000,
