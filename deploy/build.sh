@@ -5,11 +5,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT="$PWD"
-WORK="$ROOT/deploy/.work"
+# Outside the repository: inside it, Next would take the repository as the tracing root.
+WORK="${TMPDIR:-/tmp}/gtfs-manager-build"
 OUT="$ROOT/deploy/.build"
 SITE_URL="${SITE_URL:-https://gtfs.newspirit.studio}"
 
-[ -z "$(git status --porcelain -- . ':!deploy/.work' ':!deploy/.build')" ] ||
+[ -z "$(git status --porcelain -- . ':!deploy/.build')" ] ||
   echo "Note: uncommitted changes are not included; the build uses HEAD." >&2
 REVISION="$(git rev-parse --short HEAD)"
 

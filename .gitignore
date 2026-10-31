@@ -11,5 +11,4 @@ next-env.d.ts
 tmp/
 
 # Deploy build output
-deploy/.work/
 deploy/.build/

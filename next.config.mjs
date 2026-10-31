@@ -14,6 +14,9 @@ const nextConfig = {
   output: 'standalone',
   poweredByHeader: false,
   images: { unoptimized: true },
+  // Images are not optimised, so sharp (a native addon) is never loaded: keep it out of the
+  // standalone output, which is built on a Mac and runs on Linux.
+  outputFileTracingExcludes: { '*': ['node_modules/sharp/**', 'node_modules/@img/**'] },
   transpilePackages: ['motion'],
   // postgres.js opens sockets: keep it out of the server bundle.
   serverExternalPackages: ['postgres'],
