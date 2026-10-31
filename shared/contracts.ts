@@ -12,6 +12,8 @@ export interface ValidationIssue {
   code: string;
   severity: ValidationSeverity;
   table: GtfsTable | null;
+  /** The title of the same check in Google's static validation, if it has one. */
+  google?: string;
   count: number;
   /** Up to five example identifiers. */
   samples: string[];
@@ -57,6 +59,8 @@ export interface TopStop {
 }
 
 export interface FeedStats {
+  /** The version of the computation (`STATS_VERSION`); figures from an older one are recomputed. */
+  version?: number;
   computedAt: string;
   counts: Record<GtfsTable, number>;
   extraFiles: string[];

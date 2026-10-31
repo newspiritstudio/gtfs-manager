@@ -63,10 +63,25 @@ export interface GtfsFileSpec {
   fields: readonly GtfsField[];
 }
 
-const ROUTE_TYPES = [
-  0, 1, 2, 3, 4, 5, 6, 7, 11, 12, 100, 101, 102, 103, 105, 106, 107, 108, 109, 200, 400, 401, 402,
-  403, 700, 702, 704, 715, 717, 900, 1000, 1100, 1300, 1400, 1500, 1700,
-] as const;
+/**
+ * route_type values Google Maps shows: the basic ones and the extended (HVT) ones listed as
+ * supported on https://developers.google.com/transit/gtfs/reference/extended-route-types.
+ */
+export const GOOGLE_SUPPORTED_ROUTE_TYPES: readonly number[] = [
+  0, 1, 2, 3, 4, 5, 6, 7, 11, 12, 100, 101, 102, 103, 105, 106, 107, 108, 109, 200, 201, 202, 204,
+  400, 401, 402, 403, 405, 700, 701, 702, 704, 715, 800, 900, 1000, 1200, 1300, 1301, 1400, 1501,
+  1700, 1702,
+];
+
+/** Extended codes a feed may use but Google Maps does not show (they raise a warning). */
+const OTHER_ROUTE_TYPES: readonly number[] = [
+  104, 110, 111, 112, 113, 114, 115, 116, 117, 203, 205, 206, 207, 208, 209, 404, 703, 705, 706,
+  707, 708, 709, 710, 711, 712, 713, 714, 716, 717, 901, 902, 903, 904, 905, 906, 1100, 1302, 1303,
+  1304, 1305, 1306, 1307, 1500, 1502, 1503, 1504, 1505, 1506, 1507,
+];
+
+/** Every valid route_type; 717 (share taxi) comes from the original HVT list. */
+const ROUTE_TYPES = [...GOOGLE_SUPPORTED_ROUTE_TYPES, ...OTHER_ROUTE_TYPES].sort((x, y) => x - y);
 
 export const GTFS_SPEC: Record<GtfsTable, GtfsFileSpec> = {
   agency: {
@@ -308,52 +323,48 @@ export type TransitMode =
 export function transitModeForRouteType(routeType: number | null | undefined): TransitMode {
   switch (routeType) {
     case 0:
-    case 900:
       return 'tram';
     case 1:
-    case 400:
-    case 401:
-    case 402:
-    case 403:
       return 'subway';
     case 2:
-    case 100:
-    case 101:
-    case 102:
-    case 103:
-    case 105:
-    case 106:
-    case 107:
-    case 108:
-    case 109:
       return 'rail';
     case 3:
-    case 200:
-    case 700:
-    case 702:
-    case 704:
-    case 715:
-    case 717:
       return 'bus';
     case 4:
-    case 1000:
-    case 1200:
       return 'ferry';
     case 5:
       return 'cableTram';
     case 6:
-    case 1300:
       return 'aerial';
     case 7:
-    case 1400:
       return 'funicular';
     case 11:
-    case 800:
       return 'trolleybus';
     case 12:
     case 405:
       return 'monorail';
-    default:
+  }
+  // Extended (HVT) codes go by family: the hundreds give the mode.
+  switch (Math.floor((routeType ?? -1) / 100)) {
+    case 1:
+      return 'rail';
+    case 2: // coach
+    case 7:
+      return 'bus';
+    case 4:
+      return 'subway';
+    case 8:
+      return 'trolleybus';
+    case 9:
+      return 'tram';
+    case 10: // water transport
+    case 12: // ferry
+      return 'ferry';
+    case 13:
+      return 'aerial';
+    case 14:
+      return 'funicular';
+    default: // 11xx air, 15xx taxi, 16xx self drive, 17xx miscellaneous
       return 'other';
   }
 }

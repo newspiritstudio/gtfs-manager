@@ -30,8 +30,9 @@ function sampleHref(feedId: string, issue: ValidationIssue, sample: string): str
   const base = `/feeds/${feedId}`;
   if (issue.table === 'routes') return `${base}/routes/${encodeURIComponent(sample)}`;
   if (issue.table === 'stops') return `${base}/stops/${encodeURIComponent(sample)}`;
+  // Stop time examples are `trip_id #stop_sequence`: they open the trip.
   if (issue.table === 'trips' || issue.table === 'stop_times')
-    return `${base}/trips/${encodeURIComponent(sample)}`;
+    return `${base}/trips/${encodeURIComponent(sample.split(' #')[0])}`;
   if (issue.table) return `${base}/data/${issue.table}?q=${encodeURIComponent(sample)}`;
   return base;
 }
@@ -86,7 +87,7 @@ export default async function ValidationPage({ params }: { params: Promise<{ fee
                           <p className="mt-0.5 text-body-small text-on-surface-muted">
                             {[
                               issue.table ? GTFS_SPEC[issue.table].file : t('validation.wholeFeed'),
-                              issue.code,
+                              issue.google ?? issue.code,
                             ].join(' · ')}
                           </p>
                           {issue.samples.length ? (

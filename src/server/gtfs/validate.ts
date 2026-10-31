@@ -3,19 +3,12 @@
  * violate it and up to five examples; the text comes from the interface (`validation.<code>`).
  */
 import type { ValidationIssue, ValidationSeverity } from '@shared/contracts';
-import type { GtfsTable } from '@shared/gtfs-spec';
+import { GOOGLE_SUPPORTED_ROUTE_TYPES, type GtfsTable } from '@shared/gtfs-spec';
 import { tidyRouteName } from '@shared/gtfs-values';
 import { getSql } from '../db/client';
+import { GOOGLE_RULES, type ValidationRule } from './rules-google';
 
-interface Rule {
-  code: string;
-  severity: ValidationSeverity;
-  table: GtfsTable | null;
-  /** A query returning one row per violation with the `sample` column. */
-  query: string;
-}
-
-const RULES: Rule[] = [
+const BASE_RULES: ValidationRule[] = [
   {
     code: 'missingAgency',
     severity: 'error',
@@ -26,6 +19,7 @@ const RULES: Rule[] = [
     code: 'missingStops',
     severity: 'error',
     table: 'stops',
+    google: 'Unable to Find Any Stops',
     query: `SELECT 'stops.txt' AS sample WHERE NOT EXISTS (SELECT 1 FROM stops WHERE feed_id = $1)`,
   },
   {
@@ -82,6 +76,7 @@ const RULES: Rule[] = [
     code: 'routeWithoutName',
     severity: 'error',
     table: 'routes',
+    google: 'Route Short Name Or Long Name Required',
     query: `SELECT route_id AS sample FROM routes
             WHERE feed_id = $1 AND coalesce(route_short_name, '') = '' AND coalesce(route_long_name, '') = ''`,
   },
@@ -92,12 +87,12 @@ const RULES: Rule[] = [
     query: `SELECT route_id AS sample FROM routes WHERE feed_id = $1 AND route_type IS NULL`,
   },
   {
-    code: 'routeColorContrast',
+    code: 'routeTypeNotSupported',
     severity: 'warning',
     table: 'routes',
     query: `SELECT route_id AS sample FROM routes
-            WHERE feed_id = $1 AND route_color IS NOT NULL AND route_text_color IS NOT NULL
-              AND upper(route_color) = upper(route_text_color)`,
+            WHERE feed_id = $1 AND route_type IS NOT NULL
+              AND route_type <> ALL(ARRAY[${GOOGLE_SUPPORTED_ROUTE_TYPES.join(', ')}])`,
   },
   {
     code: 'routeWithoutTrips',
@@ -119,6 +114,7 @@ const RULES: Rule[] = [
     code: 'stopAtNullIsland',
     severity: 'error',
     table: 'stops',
+    google: 'Point Location Too Close To Origin (0,0)',
     query: `SELECT stop_id AS sample FROM stops
             WHERE feed_id = $1 AND abs(coalesce(stop_lat, 1)) < 0.01 AND abs(coalesce(stop_lon, 1)) < 0.01`,
   },
@@ -139,8 +135,9 @@ const RULES: Rule[] = [
   },
   {
     code: 'stopUnused',
-    severity: 'info',
+    severity: 'warning',
     table: 'stops',
+    google: 'Stop Unused',
     query: `SELECT s.stop_id AS sample FROM stops s
             WHERE s.feed_id = $1 AND coalesce(s.location_type, 0) = 0
               AND NOT EXISTS (SELECT 1 FROM stop_times st WHERE st.feed_id = $1 AND st.stop_id = s.stop_id)`,
@@ -172,12 +169,11 @@ const RULES: Rule[] = [
   },
   {
     code: 'tripTooFewStops',
-    severity: 'error',
+    severity: 'warning',
     table: 'trips',
-    query: `SELECT t.trip_id AS sample FROM trips t
-            LEFT JOIN (SELECT trip_id, count(*) AS n FROM stop_times WHERE feed_id = $1 GROUP BY trip_id) c
-              ON c.trip_id = t.trip_id
-            WHERE t.feed_id = $1 AND coalesce(c.n, 0) < 2`,
+    google: 'Unusable Trip',
+    query: `SELECT trip_id AS sample FROM stop_times WHERE feed_id = $1
+            GROUP BY trip_id HAVING count(*) = 1`,
   },
   {
     code: 'stopTimeUnknownTrip',
@@ -205,6 +201,7 @@ const RULES: Rule[] = [
     code: 'stopTimeGoesBackwards',
     severity: 'error',
     table: 'stop_times',
+    google: 'Stop Times with Arrival Before Previous Departure Time',
     query: `SELECT trip_id || ' #' || stop_sequence AS sample FROM (
               SELECT trip_id, stop_sequence, arrival_time,
                      lag(departure_time) OVER (PARTITION BY trip_id ORDER BY stop_sequence) AS prev
@@ -245,6 +242,7 @@ const RULES: Rule[] = [
     code: 'serviceWithoutDays',
     severity: 'warning',
     table: 'calendar',
+    google: 'Calendar Has No Active Days Of Week',
     query: `SELECT c.service_id AS sample FROM calendar c
             WHERE c.feed_id = $1
               AND monday + tuesday + wednesday + thursday + friday + saturday + sunday = 0
@@ -261,6 +259,7 @@ const RULES: Rule[] = [
     code: 'feedExpired',
     severity: 'warning',
     table: 'calendar',
+    google: 'Feed Expiration',
     query: `SELECT max(d) AS sample FROM (
               SELECT end_date AS d FROM calendar WHERE feed_id = $1
               UNION ALL SELECT date FROM calendar_dates WHERE feed_id = $1 AND exception_type = 1) x
@@ -283,6 +282,8 @@ const RULES: Rule[] = [
               OR (t.to_stop_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM stops s WHERE s.feed_id = $1 AND s.stop_id = t.to_stop_id)))`,
   },
 ];
+
+const RULES: ValidationRule[] = [...BASE_RULES, ...GOOGLE_RULES];
 
 /** The readable name of the examples that are route, stop or trip identifiers. */
 async function sampleNames(
@@ -322,7 +323,7 @@ export const VALIDATION_CODES = RULES.map((r) => r.code);
 /** How many rules run at once: the heavy ones (stop_times) use more than one core without saturating the pool. */
 const CONCURRENCY = 4;
 
-async function runRule(feedId: string, rule: Rule): Promise<ValidationIssue | null> {
+async function runRule(feedId: string, rule: ValidationRule): Promise<ValidationIssue | null> {
   const [result] = await getSql().unsafe<{ count: number; samples: string[] | null }[]>(
     `SELECT count(*)::int AS count, (array_agg(sample ORDER BY sample))[1:5] AS samples
      FROM (${rule.query}) v`,
@@ -335,6 +336,7 @@ async function runRule(feedId: string, rule: Rule): Promise<ValidationIssue | nu
     code: rule.code,
     severity: rule.severity,
     table: rule.table,
+    ...(rule.google ? { google: rule.google } : {}),
     count: result.count,
     samples,
     ...(names ? { sampleNames: names } : {}),

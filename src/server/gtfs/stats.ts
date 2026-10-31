@@ -144,14 +144,17 @@ export function ensureStats(feedId: string): Promise<FeedStats | null> {
   return job;
 }
 
+/** Raise it when the figures or the validation rules change, so stored figures are recomputed. */
+const STATS_VERSION = 2;
+
 async function refreshStats(feedId: string): Promise<FeedStats | null> {
   const sql = getSql();
   const [feed] = await sql<{ stats: FeedStats | null; statsStale: boolean; version: string }[]>`
     SELECT stats, stats_stale AS "statsStale", updated_at::text AS version
     FROM feeds WHERE id = ${feedId}`;
   if (!feed) return null;
-  if (feed.stats && !feed.statsStale) return feed.stats;
-  const stats = await computeStats(feedId);
+  if (feed.stats && !feed.statsStale && feed.stats.version === STATS_VERSION) return feed.stats;
+  const stats: FeedStats = { version: STATS_VERSION, ...(await computeStats(feedId)) };
   // If the feed was edited while computing, the figures are stored but the feed stays "dirty":
   // the next time they are recomputed instead of trusting stale figures.
   await sql`

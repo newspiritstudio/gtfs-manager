@@ -25,6 +25,22 @@ Built with Next.js (App Router), React, TypeScript, Tailwind CSS 4 with Material
 - **GTFS Realtime**: live vehicles on the map, delays on stop departures and trips, service alerts,
   and a check of the realtime data against the schedule (see below).
 
+## Validation
+
+The validator (`src/server/gtfs/validate.ts`) runs SQL checks over the imported feed. Besides the
+specification's own (missing files, unknown references, times going backwards...), it includes
+Google's
+[static errors and warnings](https://developers.google.com/transit/gtfs/guides/static-errors-warnings)
+with the same severity, and each issue shows Google's title (`src/server/gtfs/rules-google.ts`).
+Routes whose `route_type` is valid but missing from Google's list of
+[supported extended route types](https://developers.google.com/transit/gtfs/reference/extended-route-types)
+get a warning. Where Google names a threshold it is used (headways over 30 minutes or of one minute
+or less, a first departure after 36:00, 24 hours between stop times, short names over six
+characters, colour contrast below 4.5:1). Checks whose threshold Google does not publish (stops too
+close or too far, trips too long, very short service...) and those over files the app keeps
+unmodelled (fares, pathways, translations, attributions) are not run yet. Import-level checks
+(missing required or unknown columns, unknown files, trimmed spaces) use the import report.
+
 ## GTFS Realtime
 
 A feed can have up to three [GTFS Realtime](https://gtfs.org/documentation/realtime/reference/)
