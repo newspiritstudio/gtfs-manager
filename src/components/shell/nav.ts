@@ -6,6 +6,7 @@ import {
   Library,
   Map,
   MapPin,
+  Radio,
   Route,
   ShieldCheck,
   Table2,
@@ -28,6 +29,7 @@ export const FEED_NAV: FeedNavItem[] = [
   { key: 'stops', path: '/stops', icon: MapPin, mobile: true },
   { key: 'calendar', path: '/calendar', icon: CalendarDays },
   { key: 'validation', path: '/validation', icon: ShieldCheck },
+  { key: 'realtime', path: '/realtime', icon: Radio },
   { key: 'data', path: '/data', icon: Table2 },
   { key: 'generator', path: '/generator', icon: WandSparkles },
 ];

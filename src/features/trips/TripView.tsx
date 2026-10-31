@@ -13,6 +13,9 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ClockTime } from '@/components/ui/ClockTime';
 import KPICard from '@/components/ui/KPICard';
 import RouteBadge from '@/components/ui/RouteBadge';
+import DelayBadge from '@/features/realtime/DelayBadge';
+import { currentStopUpdate } from '@/features/realtime/delay';
+import { useRealtime } from '@/features/realtime/useRealtime';
 import { formatDistance, formatDuration } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import type { TripDetail } from '@/server/gtfs/details';
@@ -22,6 +25,17 @@ export default function TripView({ feedId, detail }: { feedId: string; detail: T
   const { trip, route, stopTimes, shape, serviceDates, blockTrips } = detail;
   const [active, setActive] = useState<string | null>(null);
   const color = route?.color ?? '';
+  const { snapshot } = useRealtime(feedId);
+  const live = snapshot?.tripUpdates.find((u) => u.tripId === trip.tripId) ?? null;
+  const liveNow = live ? currentStopUpdate(live, Date.parse(snapshot!.fetchedAt) / 1000) : null;
+  const extras = useMemo(() => {
+    const out = new Map<string, React.ReactNode>();
+    if (!live) return out;
+    for (const s of live.stops) {
+      if (s.stopId) out.set(s.stopId, <DelayBadge update={live} stopIds={[s.stopId]} />);
+    }
+    return out;
+  }, [live]);
 
   const stops: PatternStop[] = useMemo(() => {
     let distance = 0;
@@ -94,6 +108,9 @@ export default function TripView({ feedId, detail }: { feedId: string; detail: T
                 <Badge>{t(`enums.direction_id.${trip.directionId}`)}</Badge>
               ) : null}
               {trip.shortName ? <span>{trip.shortName}</span> : null}
+              {live ? (
+                <DelayBadge update={live} stopIds={liveNow?.stopId ? [liveNow.stopId] : []} />
+              ) : null}
             </p>
           </div>
         </div>
@@ -135,6 +152,7 @@ export default function TripView({ feedId, detail }: { feedId: string; detail: T
               color={color || '6F7A8A'}
               feedId={feedId}
               times={times}
+              extras={extras}
               activeStopId={active}
               onStopHover={setActive}
             />

@@ -17,6 +17,7 @@ export default function LineDiagram({
   color,
   feedId,
   times,
+  extras,
   activeStopId,
   onStopHover,
 }: {
@@ -25,6 +26,8 @@ export default function LineDiagram({
   feedId: string;
   /** Pass time per stop (optional: the diagram of a specific trip). */
   times?: Map<string, string>;
+  /** Extra content after each stop's name, by stop id (the live delay of a trip). */
+  extras?: Map<string, React.ReactNode>;
   activeStopId?: string | null;
   onStopHover?: (stopId: string | null) => void;
 }) {
@@ -95,6 +98,7 @@ export default function LineDiagram({
                     ))}
                 </span>
               ) : null}
+              {extras?.get(stop.stopId) ?? null}
             </span>
           </li>
         );

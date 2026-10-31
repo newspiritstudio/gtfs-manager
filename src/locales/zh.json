@@ -20,7 +20,8 @@
     "openMenu": "打开菜单",
     "skipToContent": "跳到正文",
     "catalog": "目录",
-    "home": "首页"
+    "home": "首页",
+    "realtime": "实时"
   },
   "theme": {
     "switch": "主题：{theme}",
@@ -156,7 +157,9 @@
     "dailyDepartures": {
       "other": "最繁忙日发车 {count} 班"
     },
-    "legend": "{stops} 个站点 · {lines} 条线路 · 圆圈大小表示发车数"
+    "legend": "{stops} 个站点 · {lines} 条线路 · 圆圈大小表示发车数",
+    "showVehicles": "显示车辆",
+    "hideVehicles": "隐藏车辆"
   },
   "routes": {
     "subtitle": "数据源中的所有线路，按乘客看到的方式分组。",
@@ -723,5 +726,128 @@
     },
     "moreTitle": "目录中的更多数据源",
     "details": "数据源详情"
+  },
+  "realtime": {
+    "subtitle": "运营方的 GTFS Realtime 数据，与时刻表对照检查",
+    "editSources": "编辑数据源",
+    "showOnMap": "在地图上查看",
+    "noSourcesHint": "添加运营方的 GTFS Realtime URL，即可查看实时车辆、延误和通告。",
+    "sources": "实时数据源",
+    "sourcesHint": "公开的 GTFS Realtime protobuf 文件（https）。可以填写一个、两个或全部三个。",
+    "kinds": {
+      "vehiclePositions": "车辆位置",
+      "tripUpdates": "班次预测",
+      "alerts": "服务通告"
+    },
+    "opendatasoft": "当前：Opendatasoft 数据集“{dataset}”。输入 URL 即可替换。",
+    "urlHint": ".pb 文件的 https URL",
+    "invalidSources": "请检查 URL：必须以 https:// 开头。",
+    "resetSources": "恢复目录中的数据源",
+    "saved": "数据源已保存",
+    "feeds": "数据源状态",
+    "origin": {
+      "feed": "Feed 自己的数据源",
+      "catalog": "来自目录的数据源"
+    },
+    "fetched": "获取于{time}",
+    "refresh": "刷新",
+    "ok": "正常",
+    "failed": "错误",
+    "entities": {
+      "other": "{count} 个实体"
+    },
+    "vehicles": "运营中的车辆",
+    "tripsWithUpdates": "有预测的班次",
+    "averageDelay": "平均延误",
+    "check": "与时刻表对照",
+    "checkHint": "Google Transit Partner Dashboard 的检查项与严重级别，以及与时刻表的匹配",
+    "checkOk": "一切与时刻表一致。",
+    "issues": {
+      "dnsFailed": "找不到数据源的域名",
+      "connectionFailed": "无法连接到数据源",
+      "httpFailed": "数据源返回 HTTP 错误",
+      "tooLarge": "文件超过 20 MB",
+      "blockedHost": "地址不允许：必须是公开的 https 地址",
+      "decodeFailed": "数据源不是有效的 GTFS Realtime 消息",
+      "missingFields": "消息缺少必填字段",
+      "fullDatasetRequired": "消息不是完整数据集（FULL_DATASET）",
+      "invalidTimestampRange": "消息头时间不是 POSIX 秒",
+      "feedTooOld": "数据过旧（超过一小时）",
+      "timestampMissing": "消息头没有时间",
+      "timestampFuture": "消息头时间在未来",
+      "timestampPast": "数据较旧（超过 5 分钟）",
+      "entityWithoutAlert": "没有提醒的实体",
+      "entityWithoutPosition": "没有车辆位置的实体",
+      "entityWithoutUpdate": "没有行程更新的实体",
+      "duplicateEntityId": "id 重复的实体",
+      "unknownTrip": "时刻表中没有的行程",
+      "unknownRoute": "时刻表中没有的线路",
+      "unknownStop": "时刻表中没有的站点",
+      "ambiguousTrip": "没有行程或线路的更新",
+      "invalidStartDate": "不是 YYYYMMDD 的开始日期",
+      "invalidStartTime": "不是 HH:MM:SS 的开始时间",
+      "vehicleIdMissing": "没有标识的车辆",
+      "vehicleWithoutPosition": "没有有效位置的车辆",
+      "vehicleTimestampMissing": "没有时间的位置",
+      "vehicleTimestampFuture": "时间在未来的位置",
+      "vehicleTimestampStale": "过旧的位置（超过 15 分钟）",
+      "duplicateVehicleTrip": "由多辆车执行的行程",
+      "tripUpdateWithoutContent": "没有站点也没有延误的更新",
+      "multipleEntitiesPerTrip": "有多条更新的行程",
+      "delayWithTimes": "行程延误与站点时间同时给出",
+      "tripUpdateTimestampFuture": "时间在未来的更新",
+      "suspiciousDelay": "可疑延误（超过 3 小时）",
+      "stopUpdateWithoutIds": "没有 stop_id 或 stop_sequence 的站点",
+      "stopUpdateOrder": "顺序错乱的站点",
+      "arrivalWithoutTime": "没有时间或延误的到达",
+      "departureWithoutTime": "没有时间或延误的出发",
+      "prematureArrival": "早于上一站的到达",
+      "prematureDeparture": "早于上一站的出发",
+      "stopNotMatched": "不在计划行程中的站点",
+      "sequenceNotMatched": "不在计划行程中的 stop_sequence",
+      "inconsistentStopIds": "不一致的 stop_id 与 stop_sequence",
+      "timeAndDelayMismatch": "互相矛盾的时间与延误",
+      "alertWithoutEntity": "未说明影响对象的提醒",
+      "alertWithoutContent": "没有效果也没有文字的提醒",
+      "alertTripNotMatched": "涉及时刻表中没有的行程的提醒",
+      "alertRouteNotMatched": "涉及时刻表中没有的线路的提醒",
+      "alertStopNotMatched": "涉及时刻表中没有的站点的提醒",
+      "alertPeriodOrder": "开始晚于结束的时段",
+      "alertPeriodEndPast": "一个多月前已结束的时段",
+      "alertPeriodStartFuture": "一年多以后才开始的时段",
+      "textWithoutValue": "没有有效翻译的文本",
+      "textWithHtml": "含 HTML 标签的文本",
+      "textInvalidLanguage": "无效的语言代码",
+      "textInvalidUrl": "不是绝对 http(s) 地址的链接",
+      "textUnspecifiedLanguage": "多个未指定语言的翻译"
+    },
+    "next": "下一站：{stop}",
+    "relationship": {
+      "CANCELED": "已取消",
+      "DELETED": "已取消",
+      "ADDED": "加开",
+      "NEW": "新增",
+      "UNSCHEDULED": "无时刻表",
+      "DUPLICATED": "复制",
+      "REPLACEMENT": "替代"
+    },
+    "onTime": "准点",
+    "skipped": "本站不停",
+    "noTrips": "目前没有任何预测。",
+    "alertCount": {
+      "other": "{count} 条通告"
+    },
+    "noAlerts": "没有生效的通告。",
+    "from": "自 {time} 起",
+    "until": "至 {time}",
+    "moreInfo": "更多信息",
+    "vehicleStatus": {
+      "INCOMING_AT": "即将到达{stop}",
+      "STOPPED_AT": "停靠在{stop}",
+      "IN_TRANSIT_TO": "开往{stop}"
+    },
+    "liveVehicles": {
+      "other": "{count} 辆实时车辆"
+    }
   }
 }

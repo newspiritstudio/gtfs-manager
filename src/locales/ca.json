@@ -20,7 +20,8 @@
     "openMenu": "Obre el menú",
     "skipToContent": "Salta al contingut",
     "catalog": "Catàleg",
-    "home": "Inici"
+    "home": "Inici",
+    "realtime": "Temps real"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -160,7 +161,9 @@
       "one": "{count} sortida el dia més ple",
       "other": "{count} sortides el dia més ple"
     },
-    "legend": "{stops} parades · {lines} línies · la mida del cercle és el volum de pas"
+    "legend": "{stops} parades · {lines} línies · la mida del cercle és el volum de pas",
+    "showVehicles": "Mostra els vehicles",
+    "hideVehicles": "Amaga els vehicles"
   },
   "routes": {
     "subtitle": "Totes les línies del feed, agrupades com les veu el viatger.",
@@ -742,5 +745,131 @@
     },
     "moreTitle": "Més feeds del catàleg",
     "details": "Fitxa del feed"
+  },
+  "realtime": {
+    "subtitle": "Dades GTFS Realtime de l'operador, comprovades amb l'horari",
+    "editSources": "Edita les fonts",
+    "showOnMap": "Mostra-ho al mapa",
+    "noSourcesHint": "Afegeix les URL de GTFS Realtime de l'operador per veure els vehicles en directe, els retards i els avisos.",
+    "sources": "Fonts de temps real",
+    "sourcesHint": "Fitxers protobuf GTFS Realtime públics (https). Pots posar-ne un, dos o tots tres.",
+    "kinds": {
+      "vehiclePositions": "Posicions dels vehicles",
+      "tripUpdates": "Previsions dels viatges",
+      "alerts": "Avisos del servei"
+    },
+    "opendatasoft": "Ara: conjunt de dades Opendatasoft «{dataset}». Escriu una URL per substituir-lo.",
+    "urlHint": "URL https del fitxer .pb",
+    "invalidSources": "Revisa les URL: han de començar per https://.",
+    "resetSources": "Restableix les del catàleg",
+    "saved": "Fonts desades",
+    "feeds": "Estat de les fonts",
+    "origin": {
+      "feed": "Fonts pròpies del feed",
+      "catalog": "Fonts del catàleg"
+    },
+    "fetched": "consultat {time}",
+    "refresh": "Actualitza",
+    "ok": "Correcte",
+    "failed": "Error",
+    "entities": {
+      "one": "{count} entitat",
+      "other": "{count} entitats"
+    },
+    "vehicles": "Vehicles en servei",
+    "tripsWithUpdates": "Viatges amb previsió",
+    "averageDelay": "Retard mitjà",
+    "check": "Comprovació amb l'horari",
+    "checkHint": "Les comprovacions i severitats del Transit Partner Dashboard de Google, i l'encaix amb l'horari",
+    "checkOk": "Tot quadra amb l'horari.",
+    "issues": {
+      "dnsFailed": "No es troba el domini de la font",
+      "connectionFailed": "No s'ha pogut connectar amb la font",
+      "httpFailed": "La font respon amb un error HTTP",
+      "tooLarge": "El fitxer supera els 20 MB",
+      "blockedHost": "Adreça no permesa: ha de ser https i pública",
+      "decodeFailed": "La font no és un missatge GTFS Realtime vàlid",
+      "missingFields": "Falten camps obligatoris al missatge",
+      "fullDatasetRequired": "El missatge no és un conjunt complet (FULL_DATASET)",
+      "invalidTimestampRange": "L'hora de la capçalera no és en segons POSIX",
+      "feedTooOld": "Dades massa antigues (més d'una hora)",
+      "timestampMissing": "La capçalera no té hora",
+      "timestampFuture": "L'hora de la capçalera és en el futur",
+      "timestampPast": "Dades antigues (més de 5 minuts)",
+      "entityWithoutAlert": "Entitats sense avís",
+      "entityWithoutPosition": "Entitats sense posició de vehicle",
+      "entityWithoutUpdate": "Entitats sense previsió de viatge",
+      "duplicateEntityId": "Entitats amb el mateix id",
+      "unknownTrip": "Viatges que no són a l'horari",
+      "unknownRoute": "Línies que no són a l'horari",
+      "unknownStop": "Parades que no són a l'horari",
+      "ambiguousTrip": "Previsions sense viatge ni línia",
+      "invalidStartDate": "Dates d'inici que no són AAAAMMDD",
+      "invalidStartTime": "Hores d'inici que no són HH:MM:SS",
+      "vehicleIdMissing": "Vehicles sense identificador",
+      "vehicleWithoutPosition": "Vehicles sense posició vàlida",
+      "vehicleTimestampMissing": "Posicions sense hora",
+      "vehicleTimestampFuture": "Posicions amb l'hora en el futur",
+      "vehicleTimestampStale": "Posicions antigues (més de 15 minuts)",
+      "duplicateVehicleTrip": "Viatges que fan diversos vehicles",
+      "tripUpdateWithoutContent": "Previsions sense parades ni retard",
+      "multipleEntitiesPerTrip": "Viatges amb més d'una previsió",
+      "delayWithTimes": "Retard del viatge juntament amb hores de parada",
+      "tripUpdateTimestampFuture": "Previsions amb l'hora en el futur",
+      "suspiciousDelay": "Retards sospitosos (més de 3 hores)",
+      "stopUpdateWithoutIds": "Parades sense stop_id ni stop_sequence",
+      "stopUpdateOrder": "Parades fora d'ordre",
+      "arrivalWithoutTime": "Arribades sense hora ni retard",
+      "departureWithoutTime": "Sortides sense hora ni retard",
+      "prematureArrival": "Arribades abans de la parada anterior",
+      "prematureDeparture": "Sortides abans de la parada anterior",
+      "stopNotMatched": "Parades que no són al viatge de l'horari",
+      "sequenceNotMatched": "stop_sequence que no són al viatge de l'horari",
+      "inconsistentStopIds": "stop_id i stop_sequence que no coincideixen",
+      "timeAndDelayMismatch": "Hora i retard que es contradiuen",
+      "alertWithoutEntity": "Avisos que no diuen a qui afecten",
+      "alertWithoutContent": "Avisos sense efecte ni text",
+      "alertTripNotMatched": "Avisos de viatges que no són a l'horari",
+      "alertRouteNotMatched": "Avisos de línies que no són a l'horari",
+      "alertStopNotMatched": "Avisos de parades que no són a l'horari",
+      "alertPeriodOrder": "Períodes amb l'inici després del final",
+      "alertPeriodEndPast": "Períodes acabats fa més d'un mes",
+      "alertPeriodStartFuture": "Períodes que comencen d'aquí a més d'un any",
+      "textWithoutValue": "Textos sense cap traducció vàlida",
+      "textWithHtml": "Textos amb etiquetes HTML",
+      "textInvalidLanguage": "Codis d'idioma no vàlids",
+      "textInvalidUrl": "Enllaços que no són http(s) absoluts",
+      "textUnspecifiedLanguage": "Més d'una traducció sense idioma"
+    },
+    "next": "Propera parada: {stop}",
+    "relationship": {
+      "CANCELED": "Cancel·lat",
+      "DELETED": "Cancel·lat",
+      "ADDED": "Afegit",
+      "NEW": "Nou",
+      "UNSCHEDULED": "Sense horari",
+      "DUPLICATED": "Duplicat",
+      "REPLACEMENT": "Substitut"
+    },
+    "onTime": "A l'hora",
+    "skipped": "No s'hi atura",
+    "noTrips": "Ara mateix no hi ha cap previsió.",
+    "alertCount": {
+      "one": "{count} avís",
+      "other": "{count} avisos"
+    },
+    "noAlerts": "No hi ha cap avís actiu.",
+    "from": "Des de {time}",
+    "until": "Fins a {time}",
+    "moreInfo": "Més informació",
+    "vehicleStatus": {
+      "INCOMING_AT": "Arribant a {stop}",
+      "STOPPED_AT": "Aturat a {stop}",
+      "IN_TRANSIT_TO": "Cap a {stop}"
+    },
+    "liveVehicles": {
+      "one": "{count} vehicle en directe",
+      "other": "{count} vehicles en directe"
+    }
   }
 }

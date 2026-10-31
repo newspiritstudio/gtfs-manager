@@ -22,6 +22,38 @@ Built with Next.js (App Router), React, TypeScript, Tailwind CSS 4 with Material
 - **Edit** any GTFS file, with field validation based on the specification.
 - **Generate trips** from a line, a list of stops and a frequency.
 - **Validate** the feed and **export** it back as a GTFS ZIP (extra columns are kept).
+- **GTFS Realtime**: live vehicles on the map, delays on stop departures and trips, service alerts,
+  and a check of the realtime data against the schedule (see below).
+
+## GTFS Realtime
+
+A feed can have up to three [GTFS Realtime](https://gtfs.org/documentation/realtime/reference/)
+sources: vehicle positions, trip updates and service alerts. Set them on the feed's **Realtime**
+page as public `https` URLs of the protobuf files; catalog entries can bring their own (FGC's come
+from its Opendatasoft portal). The server downloads and decodes them (`src/server/realtime/`), fills
+in delays from absolute times using the static schedule and the agency time zone, and checks the
+data. Snapshots are cached for 15 seconds and the pages poll every 20 seconds while visible.
+
+The checks follow Google's
+[realtime errors and warnings](https://developers.google.com/transit/gtfs-realtime/guides/realtime-errors-warnings):
+each issue shows Google's code, and only what makes Google discard a feed (fetch and parse
+failures, missing required fields, a differential feed, a header timestamp out of range or too
+old) is an error; everything else is a warning. The list is `REALTIME_CHECKS` in
+`shared/realtime.ts`. Google publishes the alert time limits (an end over a month ago, a start
+over a year ahead) but no other thresholds, so these are this app's own:
+
+| Check                                | Threshold                        |
+| ------------------------------------ | -------------------------------- |
+| Timestamp in the future              | more than 60 s ahead             |
+| Feed header old (warning) / too old  | over 5 minutes / over 1 hour     |
+| Vehicle position stale               | 15 minutes older than its header |
+| Suspicious delay                     | over 3 hours                     |
+| Given delay and stop time contradict | more than 60 s apart             |
+
+Realtime URLs are fetched by the server, so it only follows `https` URLs whose host (and every
+redirect target) resolves to public addresses, with a 20 MB cap. `gtfs-realtime.proto` is vendored
+from [google/transit](https://github.com/google/transit) (Apache-2.0); after updating it, run
+`npm run realtime:proto`.
 
 ## Languages and SEO
 
@@ -65,17 +97,19 @@ npm run gtfs:import -- fgc.zip --catalog fgc    # link it to a catalog entry
 | `npm run db:generate` / `db:migrate`     | Drizzle migrations                              |
 | `npm run gtfs:import`                    | Import a GTFS folder or ZIP                     |
 | `npm run landing:network`                | Regenerate the home page animation data         |
+| `npm run realtime:proto`                 | Rebuild the GTFS Realtime protobuf descriptor   |
 
 ## Project structure
 
 ```text
 app/            Pages (App Router) and /api route handlers
 src/features/   One folder per area: overview, network, routes, stops, trips, calendar,
-                validation, data, generator, feeds, catalog, landing
+                validation, data, generator, feeds, catalog, landing, realtime
 src/components/ Shared pieces: app shell, UI primitives, maps (Leaflet), charts, loading skeletons
 src/server/     Database (Drizzle/Postgres) and GTFS logic: import, export, validation,
-                network, details, trip generator, catalog
-shared/         Contracts shared by client and server: GTFS spec, values, catalog, generator
+                network, details, trip generator, catalog, realtime
+shared/         Contracts shared by client and server: GTFS spec, values, catalog, generator,
+                realtime
 src/locales/    One JSON file per language
 ```
 
@@ -100,6 +134,8 @@ is the Tuesday, Wednesday or Thursday with the most trips in the next four weeks
   catalog page links to the file's page. The AMB, STM and TFI files were cropped to the symbol.
 - Country flags (`public/flags/`) are from [circle-flags](https://github.com/HatScripts/circle-flags)
   v2.8.0 (MIT).
+- `src/server/realtime/gtfs-realtime.proto` is the official GTFS Realtime definition from
+  [google/transit](https://github.com/google/transit), under the Apache License 2.0.
 - Feed data belongs to each operator and is used under its open data licence.
 
 ## Contributing

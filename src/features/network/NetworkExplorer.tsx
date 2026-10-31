@@ -1,14 +1,18 @@
 'use client';
 
-import { ArrowRight, Eye, EyeOff, Layers, MapPin, X } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, Layers, MapPin, TrainFront, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { NetworkStop } from '@shared/contracts';
+import type { RealtimeVehicle } from '@shared/realtime';
 import { NetworkMap } from '@/components/map';
+import { badgeHtml, escapeHtml } from '@/components/map/colors';
 import { ButtonLink } from '@/components/ui/Button';
 import IconButton from '@/components/ui/IconButton';
 import RouteBadge from '@/components/ui/RouteBadge';
 import SearchField from '@/components/ui/SearchField';
 import { ListSkeleton, MapSkeleton } from '@/components/ui/Skeleton';
+import { formatDelay, tripDelay } from '@/features/realtime/delay';
+import { useRealtime } from '@/features/realtime/useRealtime';
 import { dedupeRouteBadges, groupRoutes } from '@/features/routes/groupRoutes';
 import { formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
@@ -26,6 +30,18 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
   const [showStops, setShowStops] = useState(true);
   const [stop, setStop] = useState<NetworkStop | null>(null);
   const [panelOpen, setPanelOpen] = useState(true);
+  const { snapshot } = useRealtime(feedId);
+  const [showVehicles, setShowVehicles] = useState(true);
+  const vehicles = snapshot?.vehicles.length ? snapshot.vehicles : null;
+  const delayByTrip = useMemo(() => {
+    const out = new Map<string, number>();
+    const now = snapshot ? Date.parse(snapshot.fetchedAt) / 1000 : 0;
+    for (const u of snapshot?.tripUpdates ?? []) {
+      const delay = tripDelay(u, now);
+      if (u.tripId && delay !== null) out.set(u.tripId, delay);
+    }
+    return out;
+  }, [snapshot]);
 
   const groups = useMemo(() => (data ? groupRoutes(data.routes) : []), [data]);
   const visible = useMemo(() => {
@@ -55,6 +71,21 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
     setHidden(new Set(data.routes.map((r) => r.routeId).filter((id) => !ids.includes(id))));
   }
 
+  function vehicleTooltip(v: RealtimeVehicle): string {
+    const route = v.routeId ? routeById.get(v.routeId) : undefined;
+    const headsign = (v.tripId && snapshot?.names.trips[v.tripId]) || v.label || v.id;
+    const stopName = v.stopId ? (snapshot?.names.stops[v.stopId] ?? v.stopId) : null;
+    const delay = v.tripId ? delayByTrip.get(v.tripId) : undefined;
+    const lines = [
+      `${route ? badgeHtml(route.shortName || route.routeId, route.color, route.textColor) : ''} ${escapeHtml(headsign)}`,
+      stopName && v.status
+        ? escapeHtml(t(`realtime.vehicleStatus.${v.status}`, { stop: stopName }))
+        : null,
+      delay === undefined ? null : escapeHtml(formatDelay(delay) ?? t('realtime.onTime')),
+    ];
+    return lines.filter(Boolean).join('<br>');
+  }
+
   const stopRoutes = stop
     ? dedupeRouteBadges(groupRoutes(stop.routeIds.map((id) => routeById.get(id)!).filter(Boolean)))
     : [];
@@ -72,6 +103,8 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
           highlightRouteIds={hoverGroup}
           selectedStopId={stop?.stopId ?? null}
           onStopClick={setStop}
+          vehicles={showVehicles ? vehicles : null}
+          vehicleTooltip={vehicleTooltip}
           onRouteClick={(id) => {
             const g = groups.find((x) => x.routeIds.includes(id));
             if (g) setHoverGroup((cur) => (cur && cur[0] === g.routeIds[0] ? null : g.routeIds));
@@ -92,6 +125,15 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
           <section className="pointer-events-auto flex max-h-full min-h-0 flex-col rounded-lg bg-surface-container">
             <header className="flex items-center gap-2 px-4 pt-3">
               <h1 className="flex-1 text-title-medium text-on-surface">{t('map.lines')}</h1>
+              {vehicles ? (
+                <IconButton
+                  label={showVehicles ? t('map.hideVehicles') : t('map.showVehicles')}
+                  onClick={() => setShowVehicles((v) => !v)}
+                  selected={showVehicles}
+                >
+                  <TrainFront />
+                </IconButton>
+              ) : null}
               <IconButton
                 label={showStops ? t('map.hideStops') : t('map.showStops')}
                 onClick={() => setShowStops((v) => !v)}
@@ -254,6 +296,9 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
             stops: formatNumber(locale, data.stops.length),
             lines: formatNumber(locale, groups.length),
           })}
+          {vehicles && showVehicles
+            ? ` · ${t('realtime.liveVehicles', { count: vehicles.length })}`
+            : null}
         </p>
       ) : null}
     </div>

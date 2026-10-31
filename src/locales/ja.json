@@ -20,7 +20,8 @@
     "openMenu": "メニューを開く",
     "skipToContent": "本文へスキップ",
     "catalog": "カタログ",
-    "home": "ホーム"
+    "home": "ホーム",
+    "realtime": "リアルタイム"
   },
   "theme": {
     "switch": "テーマ：{theme}",
@@ -156,7 +157,9 @@
     "dailyDepartures": {
       "other": "最多運行日に {count} 本発車"
     },
-    "legend": "停留所 {stops} · 路線 {lines} · 円の大きさは発車数を表します"
+    "legend": "停留所 {stops} · 路線 {lines} · 円の大きさは発車数を表します",
+    "showVehicles": "車両を表示",
+    "hideVehicles": "車両を非表示"
   },
   "routes": {
     "subtitle": "フィード内のすべての路線を、利用者に見える単位でグループ化して表示します。",
@@ -723,5 +726,128 @@
     },
     "moreTitle": "カタログのほかのフィード",
     "details": "フィードの詳細"
+  },
+  "realtime": {
+    "subtitle": "事業者の GTFS Realtime データを時刻表と照合",
+    "editSources": "ソースを編集",
+    "showOnMap": "地図で見る",
+    "noSourcesHint": "事業者の GTFS Realtime の URL を追加すると、車両の現在位置、遅延、運行情報を表示できます。",
+    "sources": "リアルタイムのソース",
+    "sourcesHint": "公開されている GTFS Realtime の protobuf ファイル（https）。1 つ、2 つ、または 3 つすべてを設定できます。",
+    "kinds": {
+      "vehiclePositions": "車両位置",
+      "tripUpdates": "便の予測",
+      "alerts": "運行情報"
+    },
+    "opendatasoft": "現在：Opendatasoft のデータセット「{dataset}」。URL を入力すると置き換えます。",
+    "urlHint": ".pb ファイルの https URL",
+    "invalidSources": "URL を確認してください。https:// で始まる必要があります。",
+    "resetSources": "カタログのソースに戻す",
+    "saved": "ソースを保存しました",
+    "feeds": "ソースの状態",
+    "origin": {
+      "feed": "フィード独自のソース",
+      "catalog": "カタログのソース"
+    },
+    "fetched": "{time}に取得",
+    "refresh": "更新",
+    "ok": "正常",
+    "failed": "エラー",
+    "entities": {
+      "other": "{count} 件のエンティティ"
+    },
+    "vehicles": "運行中の車両",
+    "tripsWithUpdates": "予測のある便",
+    "averageDelay": "平均遅延",
+    "check": "時刻表との照合",
+    "checkHint": "Google Transit Partner Dashboard のチェック項目と重大度、および時刻表との整合",
+    "checkOk": "すべて時刻表と一致しています。",
+    "issues": {
+      "dnsFailed": "ソースのドメインが見つかりません",
+      "connectionFailed": "ソースに接続できません",
+      "httpFailed": "ソースが HTTP エラーを返しています",
+      "tooLarge": "ファイルが 20 MB を超えています",
+      "blockedHost": "許可されていないアドレス：公開の https である必要があります",
+      "decodeFailed": "ソースは有効な GTFS Realtime メッセージではありません",
+      "missingFields": "メッセージに必須フィールドがありません",
+      "fullDatasetRequired": "メッセージが完全なデータセット（FULL_DATASET）ではありません",
+      "invalidTimestampRange": "ヘッダーの時刻が POSIX 秒ではありません",
+      "feedTooOld": "データが古すぎます（1 時間超）",
+      "timestampMissing": "ヘッダーに時刻がありません",
+      "timestampFuture": "ヘッダーの時刻が未来です",
+      "timestampPast": "古いデータ（5 分超）",
+      "entityWithoutAlert": "アラートのないエンティティ",
+      "entityWithoutPosition": "車両位置のないエンティティ",
+      "entityWithoutUpdate": "運行更新のないエンティティ",
+      "duplicateEntityId": "同じ id のエンティティ",
+      "unknownTrip": "時刻表にない便",
+      "unknownRoute": "時刻表にない路線",
+      "unknownStop": "時刻表にない停留所",
+      "ambiguousTrip": "便も路線もない更新",
+      "invalidStartDate": "YYYYMMDD でない開始日",
+      "invalidStartTime": "HH:MM:SS でない開始時刻",
+      "vehicleIdMissing": "ID のない車両",
+      "vehicleWithoutPosition": "有効な位置のない車両",
+      "vehicleTimestampMissing": "時刻のない位置",
+      "vehicleTimestampFuture": "時刻が未来の位置",
+      "vehicleTimestampStale": "古い位置（15 分超）",
+      "duplicateVehicleTrip": "複数の車両が運行する便",
+      "tripUpdateWithoutContent": "停留所も遅延もない更新",
+      "multipleEntitiesPerTrip": "更新が複数ある便",
+      "delayWithTimes": "停留所の時刻と同時に指定された便の遅延",
+      "tripUpdateTimestampFuture": "時刻が未来の更新",
+      "suspiciousDelay": "不自然な遅延（3 時間超）",
+      "stopUpdateWithoutIds": "stop_id も stop_sequence もない停留所",
+      "stopUpdateOrder": "順序が乱れた停留所",
+      "arrivalWithoutTime": "時刻も遅延もない到着",
+      "departureWithoutTime": "時刻も遅延もない出発",
+      "prematureArrival": "前の停留所より早い到着",
+      "prematureDeparture": "前の停留所より早い出発",
+      "stopNotMatched": "予定の便にない停留所",
+      "sequenceNotMatched": "予定の便にない stop_sequence",
+      "inconsistentStopIds": "一致しない stop_id と stop_sequence",
+      "timeAndDelayMismatch": "矛盾する時刻と遅延",
+      "alertWithoutEntity": "影響対象を示さないアラート",
+      "alertWithoutContent": "効果もテキストもないアラート",
+      "alertTripNotMatched": "時刻表にない便へのアラート",
+      "alertRouteNotMatched": "時刻表にない路線へのアラート",
+      "alertStopNotMatched": "時刻表にない停留所へのアラート",
+      "alertPeriodOrder": "開始が終了より後の期間",
+      "alertPeriodEndPast": "1 か月以上前に終了した期間",
+      "alertPeriodStartFuture": "1 年以上先に始まる期間",
+      "textWithoutValue": "有効な翻訳のないテキスト",
+      "textWithHtml": "HTML タグを含むテキスト",
+      "textInvalidLanguage": "無効な言語コード",
+      "textInvalidUrl": "絶対 http(s) ではないリンク",
+      "textUnspecifiedLanguage": "言語指定のない翻訳が複数"
+    },
+    "next": "次の停留所：{stop}",
+    "relationship": {
+      "CANCELED": "運休",
+      "DELETED": "運休",
+      "ADDED": "臨時",
+      "NEW": "新規",
+      "UNSCHEDULED": "時刻表なし",
+      "DUPLICATED": "増発",
+      "REPLACEMENT": "代替"
+    },
+    "onTime": "定刻",
+    "skipped": "通過",
+    "noTrips": "現在、予測はありません。",
+    "alertCount": {
+      "other": "運行情報 {count} 件"
+    },
+    "noAlerts": "有効な運行情報はありません。",
+    "from": "{time} から",
+    "until": "{time} まで",
+    "moreInfo": "詳細",
+    "vehicleStatus": {
+      "INCOMING_AT": "{stop} に到着中",
+      "STOPPED_AT": "{stop} に停車中",
+      "IN_TRANSIT_TO": "{stop} へ向かっています"
+    },
+    "liveVehicles": {
+      "other": "リアルタイムの車両 {count} 台"
+    }
   }
 }

@@ -2,7 +2,25 @@
   "name": "gtfs-manager",
   "version": "0.1.0",
   "private": true,
-  "description": "Crea, visualitza i edita feeds GTFS amb l'stack i el sistema de disseny d'Àgora",
+  "description": "Import, explore, edit, validate and export GTFS feeds in the browser",
+  "license": "AGPL-3.0-or-later",
+  "homepage": "https://gtfs.newspirit.studio",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/newspiritstudio/gtfs-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/newspiritstudio/gtfs-manager/issues"
+  },
+  "keywords": [
+    "gtfs",
+    "gtfs-editor",
+    "gtfs-viewer",
+    "gtfs-validator",
+    "public-transport",
+    "transit",
+    "nextjs"
+  ],
   "type": "module",
   "scripts": {
     "dev": "next dev --webpack",
@@ -18,7 +36,8 @@
     "db:migrate": "drizzle-kit migrate",
     "gtfs:import": "tsx --env-file-if-exists=.env.local scripts/import-gtfs.ts",
     "prepare": "husky || true",
-    "landing:network": "tsx --env-file-if-exists=.env.local scripts/build-landing-network.ts"
+    "landing:network": "tsx --env-file-if-exists=.env.local scripts/build-landing-network.ts",
+    "realtime:proto": "node scripts/realtime-proto.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -29,6 +48,7 @@
     "motion": "^14.6.0",
     "next": "^16.4.3",
     "postgres": "^3.4.9",
+    "protobufjs": "^8.8.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "tailwind-merge": "^3.7.0",

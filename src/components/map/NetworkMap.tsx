@@ -3,6 +3,7 @@
 import L from 'leaflet';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { NetworkData, NetworkStop } from '@shared/contracts';
+import type { RealtimeVehicle } from '@shared/realtime';
 import { useResolvedTheme } from '@/lib/useResolvedTheme';
 import BaseMap from './BaseMap';
 import { badgeHtml, escapeHtml, mapPalette } from './colors';
@@ -24,6 +25,10 @@ export interface NetworkMapProps {
   insetLeft?: number;
   /** Shows the stop name on hover. */
   stopTooltip?: (stop: NetworkStop) => string;
+  /** Live vehicles (GTFS Realtime), drawn in their line's colour above everything else. */
+  vehicles?: RealtimeVehicle[] | null;
+  /** HTML for a vehicle's tooltip. */
+  vehicleTooltip?: (vehicle: RealtimeVehicle) => string;
 }
 
 export default function NetworkMap({
@@ -40,17 +45,21 @@ export default function NetworkMap({
   scrollZoom = false,
   insetLeft = 0,
   stopTooltip,
+  vehicles = null,
+  vehicleTooltip,
 }: NetworkMapProps) {
   const mapRef = useRef<L.Map | null>(null);
   const linesRef = useRef<L.LayerGroup | null>(null);
   const stopsRef = useRef<L.LayerGroup | null>(null);
+  const vehiclesRef = useRef<L.LayerGroup | null>(null);
   // One renderer per layer and per map: a new one on every effect would leave a canvas at each zoom.
   const lineRendererRef = useRef<L.Canvas | null>(null);
   const stopRendererRef = useRef<L.Canvas | null>(null);
+  const vehicleRendererRef = useRef<L.Canvas | null>(null);
   const theme = useResolvedTheme();
   const [zoom, setZoom] = useState(0);
-  const handlers = useRef({ onStopClick, onRouteClick, onMapClick, stopTooltip });
-  handlers.current = { onStopClick, onRouteClick, onMapClick, stopTooltip };
+  const handlers = useRef({ onStopClick, onRouteClick, onMapClick, stopTooltip, vehicleTooltip });
+  handlers.current = { onStopClick, onRouteClick, onMapClick, stopTooltip, vehicleTooltip };
   const routeById = useMemo(() => new Map(data.routes.map((r) => [r.routeId, r])), [data.routes]);
   const highlight = useMemo(
     () => (highlightRouteIds?.length ? new Set(highlightRouteIds) : null),
@@ -65,9 +74,11 @@ export default function NetworkMap({
     mapRef.current = map;
     linesRef.current = L.layerGroup().addTo(map);
     stopsRef.current = L.layerGroup().addTo(map);
-    // Added up front so stops always sit above the lines.
+    vehiclesRef.current = L.layerGroup().addTo(map);
+    // Added up front so stops always sit above the lines, and vehicles above both.
     lineRendererRef.current = L.canvas({ padding: 0.5, tolerance: 6 }).addTo(map);
     stopRendererRef.current = L.canvas({ padding: 0.5, tolerance: 4 }).addTo(map);
+    vehicleRendererRef.current = L.canvas({ padding: 0.5, tolerance: 6 }).addTo(map);
     map.on('click', (e: L.LeafletMouseEvent) =>
       handlers.current.onMapClick?.(e.latlng.lat, e.latlng.lng)
     );
@@ -77,8 +88,10 @@ export default function NetworkMap({
       mapRef.current = null;
       linesRef.current = null;
       stopsRef.current = null;
+      vehiclesRef.current = null;
       lineRendererRef.current = null;
       stopRendererRef.current = null;
+      vehicleRendererRef.current = null;
     };
   };
 
@@ -190,6 +203,41 @@ export default function NetworkMap({
     interactive,
     zoom,
   ]);
+
+  // Vehicles: a dot in the line colour with a surface ring, so it stands out over the line.
+  useEffect(() => {
+    const group = vehiclesRef.current;
+    const renderer = vehicleRendererRef.current;
+    if (!group || !renderer) return;
+    group.clearLayers();
+    if (!vehicles?.length) return;
+    const palette = mapPalette();
+    const radius = Math.min(8, Math.max(5, zoom - 5));
+    for (const vehicle of vehicles) {
+      if (vehicle.routeId && visibleRouteIds && !visibleRouteIds.has(vehicle.routeId)) continue;
+      const route = vehicle.routeId ? routeById.get(vehicle.routeId) : undefined;
+      const dimmed = highlight && !(vehicle.routeId && highlight.has(vehicle.routeId));
+      const marker = L.circleMarker([vehicle.lat, vehicle.lon], {
+        renderer,
+        radius,
+        color: palette.surface,
+        weight: 2.5,
+        fillColor: route ? `#${route.color}` : palette.onSurface,
+        fillOpacity: dimmed ? 0.3 : 1,
+        opacity: dimmed ? 0.3 : 1,
+      }).addTo(group);
+      if (interactive) {
+        const tip = handlers.current.vehicleTooltip?.(vehicle);
+        if (tip) {
+          marker.bindTooltip(tip, {
+            direction: 'top',
+            offset: [0, -radius],
+            className: 'gtfs-map-tooltip',
+          });
+        }
+      }
+    }
+  }, [vehicles, visibleRouteIds, highlight, routeById, theme, interactive, zoom]);
 
   return (
     <BaseMap

@@ -20,7 +20,8 @@
     "openMenu": "Open menu",
     "skipToContent": "Skip to content",
     "catalog": "Catalogue",
-    "home": "Home"
+    "home": "Home",
+    "realtime": "Realtime"
   },
   "theme": {
     "switch": "Theme: {theme}",
@@ -160,7 +161,9 @@
       "one": "{count} departure on the busiest day",
       "other": "{count} departures on the busiest day"
     },
-    "legend": "{stops} stops · {lines} routes · circle size shows departures"
+    "legend": "{stops} stops · {lines} routes · circle size shows departures",
+    "showVehicles": "Show vehicles",
+    "hideVehicles": "Hide vehicles"
   },
   "routes": {
     "subtitle": "Every route in the feed, grouped as riders see them.",
@@ -742,5 +745,131 @@
     },
     "moreTitle": "More feeds in the catalogue",
     "details": "Feed details"
+  },
+  "realtime": {
+    "subtitle": "The operator's GTFS Realtime data, checked against the schedule",
+    "editSources": "Edit sources",
+    "showOnMap": "Show on map",
+    "noSourcesHint": "Add the operator's GTFS Realtime URLs to see live vehicles, delays and alerts.",
+    "sources": "Realtime sources",
+    "sourcesHint": "Public GTFS Realtime protobuf files (https). You can set one, two or all three.",
+    "kinds": {
+      "vehiclePositions": "Vehicle positions",
+      "tripUpdates": "Trip updates",
+      "alerts": "Service alerts"
+    },
+    "opendatasoft": "Now: Opendatasoft dataset “{dataset}”. Enter a URL to replace it.",
+    "urlHint": "https URL of the .pb file",
+    "invalidSources": "Check the URLs: they must start with https://.",
+    "resetSources": "Restore catalog sources",
+    "saved": "Sources saved",
+    "feeds": "Source status",
+    "origin": {
+      "feed": "The feed's own sources",
+      "catalog": "Sources from the catalog"
+    },
+    "fetched": "fetched {time}",
+    "refresh": "Refresh",
+    "ok": "OK",
+    "failed": "Error",
+    "entities": {
+      "one": "{count} entity",
+      "other": "{count} entities"
+    },
+    "vehicles": "Vehicles in service",
+    "tripsWithUpdates": "Trips with updates",
+    "averageDelay": "Average delay",
+    "check": "Check against the schedule",
+    "checkHint": "The checks and severities of Google's Transit Partner Dashboard, and the fit with the schedule",
+    "checkOk": "Everything matches the schedule.",
+    "issues": {
+      "dnsFailed": "The source's domain cannot be found",
+      "connectionFailed": "Could not connect to the source",
+      "httpFailed": "The source answers with an HTTP error",
+      "tooLarge": "The file is larger than 20 MB",
+      "blockedHost": "Address not allowed: it must be public and https",
+      "decodeFailed": "The source is not a valid GTFS Realtime message",
+      "missingFields": "Required fields are missing from the message",
+      "fullDatasetRequired": "The message is not a full dataset (FULL_DATASET)",
+      "invalidTimestampRange": "The header time is not in POSIX seconds",
+      "feedTooOld": "Data too old (over an hour)",
+      "timestampMissing": "The header has no time",
+      "timestampFuture": "The header time is in the future",
+      "timestampPast": "Old data (over 5 minutes)",
+      "entityWithoutAlert": "Entities without an alert",
+      "entityWithoutPosition": "Entities without a vehicle position",
+      "entityWithoutUpdate": "Entities without a trip update",
+      "duplicateEntityId": "Entities with the same id",
+      "unknownTrip": "Trips that are not in the schedule",
+      "unknownRoute": "Routes that are not in the schedule",
+      "unknownStop": "Stops that are not in the schedule",
+      "ambiguousTrip": "Updates without a trip or route",
+      "invalidStartDate": "Start dates that are not YYYYMMDD",
+      "invalidStartTime": "Start times that are not HH:MM:SS",
+      "vehicleIdMissing": "Vehicles without an id",
+      "vehicleWithoutPosition": "Vehicles without a valid position",
+      "vehicleTimestampMissing": "Positions without a time",
+      "vehicleTimestampFuture": "Positions timed in the future",
+      "vehicleTimestampStale": "Old positions (over 15 minutes)",
+      "duplicateVehicleTrip": "Trips run by several vehicles",
+      "tripUpdateWithoutContent": "Updates without stops or delay",
+      "multipleEntitiesPerTrip": "Trips with more than one update",
+      "delayWithTimes": "Trip delay given along with stop times",
+      "tripUpdateTimestampFuture": "Updates timed in the future",
+      "suspiciousDelay": "Suspicious delays (over 3 hours)",
+      "stopUpdateWithoutIds": "Stops without stop_id or stop_sequence",
+      "stopUpdateOrder": "Stops out of order",
+      "arrivalWithoutTime": "Arrivals without time or delay",
+      "departureWithoutTime": "Departures without time or delay",
+      "prematureArrival": "Arrivals before the previous stop",
+      "prematureDeparture": "Departures before the previous stop",
+      "stopNotMatched": "Stops that are not in the scheduled trip",
+      "sequenceNotMatched": "stop_sequence values not in the scheduled trip",
+      "inconsistentStopIds": "stop_id and stop_sequence that do not match",
+      "timeAndDelayMismatch": "Time and delay that contradict each other",
+      "alertWithoutEntity": "Alerts that do not say what they affect",
+      "alertWithoutContent": "Alerts without effect or text",
+      "alertTripNotMatched": "Alerts on trips not in the schedule",
+      "alertRouteNotMatched": "Alerts on routes not in the schedule",
+      "alertStopNotMatched": "Alerts on stops not in the schedule",
+      "alertPeriodOrder": "Periods that start after they end",
+      "alertPeriodEndPast": "Periods that ended over a month ago",
+      "alertPeriodStartFuture": "Periods that start over a year from now",
+      "textWithoutValue": "Texts without any valid translation",
+      "textWithHtml": "Texts with HTML tags",
+      "textInvalidLanguage": "Invalid language codes",
+      "textInvalidUrl": "Links that are not absolute http(s)",
+      "textUnspecifiedLanguage": "More than one translation without a language"
+    },
+    "next": "Next stop: {stop}",
+    "relationship": {
+      "CANCELED": "Cancelled",
+      "DELETED": "Cancelled",
+      "ADDED": "Added",
+      "NEW": "New",
+      "UNSCHEDULED": "Unscheduled",
+      "DUPLICATED": "Duplicated",
+      "REPLACEMENT": "Replacement"
+    },
+    "onTime": "On time",
+    "skipped": "Not stopping",
+    "noTrips": "There are no trip updates right now.",
+    "alertCount": {
+      "one": "{count} alert",
+      "other": "{count} alerts"
+    },
+    "noAlerts": "There are no active alerts.",
+    "from": "From {time}",
+    "until": "Until {time}",
+    "moreInfo": "More information",
+    "vehicleStatus": {
+      "INCOMING_AT": "Arriving at {stop}",
+      "STOPPED_AT": "Stopped at {stop}",
+      "IN_TRANSIT_TO": "Heading to {stop}"
+    },
+    "liveVehicles": {
+      "one": "{count} live vehicle",
+      "other": "{count} live vehicles"
+    }
   }
 }

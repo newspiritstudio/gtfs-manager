@@ -20,7 +20,8 @@
     "openMenu": "Ouvrir le menu",
     "skipToContent": "Aller au contenu",
     "catalog": "Catalogue",
-    "home": "Accueil"
+    "home": "Accueil",
+    "realtime": "Temps réel"
   },
   "theme": {
     "switch": "Thème : {theme}",
@@ -160,7 +161,9 @@
       "one": "{count} départ le jour de pointe",
       "other": "{count} départs le jour de pointe"
     },
-    "legend": "{stops} arrêts · {lines} lignes · la taille du cercle indique les départs"
+    "legend": "{stops} arrêts · {lines} lignes · la taille du cercle indique les départs",
+    "showVehicles": "Afficher les véhicules",
+    "hideVehicles": "Masquer les véhicules"
   },
   "routes": {
     "subtitle": "Toutes les lignes du flux, regroupées comme les voyageurs les voient.",
@@ -742,5 +745,131 @@
     },
     "moreTitle": "Plus de flux dans le catalogue",
     "details": "Fiche du flux"
+  },
+  "realtime": {
+    "subtitle": "Données GTFS Realtime de l'opérateur, vérifiées par rapport aux horaires",
+    "editSources": "Modifier les sources",
+    "showOnMap": "Voir sur la carte",
+    "noSourcesHint": "Ajoutez les URL GTFS Realtime de l'opérateur pour voir les véhicules en direct, les retards et les alertes.",
+    "sources": "Sources temps réel",
+    "sourcesHint": "Fichiers protobuf GTFS Realtime publics (https). Vous pouvez en indiquer un, deux ou les trois.",
+    "kinds": {
+      "vehiclePositions": "Positions des véhicules",
+      "tripUpdates": "Prévisions des courses",
+      "alerts": "Alertes de service"
+    },
+    "opendatasoft": "Actuellement : jeu de données Opendatasoft « {dataset} ». Saisissez une URL pour le remplacer.",
+    "urlHint": "URL https du fichier .pb",
+    "invalidSources": "Vérifiez les URL : elles doivent commencer par https://.",
+    "resetSources": "Rétablir celles du catalogue",
+    "saved": "Sources enregistrées",
+    "feeds": "État des sources",
+    "origin": {
+      "feed": "Sources propres au flux",
+      "catalog": "Sources du catalogue"
+    },
+    "fetched": "consulté {time}",
+    "refresh": "Actualiser",
+    "ok": "Correct",
+    "failed": "Erreur",
+    "entities": {
+      "one": "{count} entité",
+      "other": "{count} entités"
+    },
+    "vehicles": "Véhicules en service",
+    "tripsWithUpdates": "Courses avec prévision",
+    "averageDelay": "Retard moyen",
+    "check": "Vérification par rapport aux horaires",
+    "checkHint": "Les contrôles et gravités du Transit Partner Dashboard de Google, et la cohérence avec les horaires",
+    "checkOk": "Tout concorde avec les horaires.",
+    "issues": {
+      "dnsFailed": "Le domaine de la source est introuvable",
+      "connectionFailed": "Impossible de se connecter à la source",
+      "httpFailed": "La source répond par une erreur HTTP",
+      "tooLarge": "Le fichier dépasse 20 Mo",
+      "blockedHost": "Adresse non autorisée : elle doit être publique et en https",
+      "decodeFailed": "La source n'est pas un message GTFS Realtime valide",
+      "missingFields": "Des champs obligatoires manquent dans le message",
+      "fullDatasetRequired": "Le message n'est pas un jeu complet (FULL_DATASET)",
+      "invalidTimestampRange": "L'heure de l'en-tête n'est pas en secondes POSIX",
+      "feedTooOld": "Données trop anciennes (plus d'une heure)",
+      "timestampMissing": "L'en-tête n'a pas d'heure",
+      "timestampFuture": "L'heure de l'en-tête est dans le futur",
+      "timestampPast": "Données anciennes (plus de 5 minutes)",
+      "entityWithoutAlert": "Entités sans alerte",
+      "entityWithoutPosition": "Entités sans position de véhicule",
+      "entityWithoutUpdate": "Entités sans mise à jour de course",
+      "duplicateEntityId": "Entités avec le même id",
+      "unknownTrip": "Courses absentes des horaires",
+      "unknownRoute": "Lignes absentes des horaires",
+      "unknownStop": "Arrêts absents des horaires",
+      "ambiguousTrip": "Mises à jour sans course ni ligne",
+      "invalidStartDate": "Dates de début qui ne sont pas AAAAMMJJ",
+      "invalidStartTime": "Heures de début qui ne sont pas HH:MM:SS",
+      "vehicleIdMissing": "Véhicules sans identifiant",
+      "vehicleWithoutPosition": "Véhicules sans position valide",
+      "vehicleTimestampMissing": "Positions sans heure",
+      "vehicleTimestampFuture": "Positions datées dans le futur",
+      "vehicleTimestampStale": "Positions anciennes (plus de 15 minutes)",
+      "duplicateVehicleTrip": "Courses assurées par plusieurs véhicules",
+      "tripUpdateWithoutContent": "Mises à jour sans arrêts ni retard",
+      "multipleEntitiesPerTrip": "Courses avec plus d'une mise à jour",
+      "delayWithTimes": "Retard de la course donné avec des heures d'arrêt",
+      "tripUpdateTimestampFuture": "Mises à jour datées dans le futur",
+      "suspiciousDelay": "Retards suspects (plus de 3 heures)",
+      "stopUpdateWithoutIds": "Arrêts sans stop_id ni stop_sequence",
+      "stopUpdateOrder": "Arrêts dans le désordre",
+      "arrivalWithoutTime": "Arrivées sans heure ni retard",
+      "departureWithoutTime": "Départs sans heure ni retard",
+      "prematureArrival": "Arrivées avant l'arrêt précédent",
+      "prematureDeparture": "Départs avant l'arrêt précédent",
+      "stopNotMatched": "Arrêts absents de la course prévue",
+      "sequenceNotMatched": "stop_sequence absents de la course prévue",
+      "inconsistentStopIds": "stop_id et stop_sequence qui ne correspondent pas",
+      "timeAndDelayMismatch": "Heure et retard qui se contredisent",
+      "alertWithoutEntity": "Alertes qui ne disent pas ce qu'elles concernent",
+      "alertWithoutContent": "Alertes sans effet ni texte",
+      "alertTripNotMatched": "Alertes sur des courses absentes des horaires",
+      "alertRouteNotMatched": "Alertes sur des lignes absentes des horaires",
+      "alertStopNotMatched": "Alertes sur des arrêts absents des horaires",
+      "alertPeriodOrder": "Périodes qui commencent après leur fin",
+      "alertPeriodEndPast": "Périodes terminées depuis plus d'un mois",
+      "alertPeriodStartFuture": "Périodes qui commencent dans plus d'un an",
+      "textWithoutValue": "Textes sans aucune traduction valide",
+      "textWithHtml": "Textes avec des balises HTML",
+      "textInvalidLanguage": "Codes de langue non valides",
+      "textInvalidUrl": "Liens qui ne sont pas en http(s) absolu",
+      "textUnspecifiedLanguage": "Plus d'une traduction sans langue"
+    },
+    "next": "Prochain arrêt : {stop}",
+    "relationship": {
+      "CANCELED": "Supprimée",
+      "DELETED": "Supprimée",
+      "ADDED": "Ajoutée",
+      "NEW": "Nouvelle",
+      "UNSCHEDULED": "Sans horaire",
+      "DUPLICATED": "Dupliquée",
+      "REPLACEMENT": "Remplacement"
+    },
+    "onTime": "À l'heure",
+    "skipped": "Ne marque pas l’arrêt",
+    "noTrips": "Aucune prévision pour l'instant.",
+    "alertCount": {
+      "one": "{count} alerte",
+      "other": "{count} alertes"
+    },
+    "noAlerts": "Aucune alerte active.",
+    "from": "À partir du {time}",
+    "until": "Jusqu'au {time}",
+    "moreInfo": "Plus d'informations",
+    "vehicleStatus": {
+      "INCOMING_AT": "Arrive à {stop}",
+      "STOPPED_AT": "À l’arrêt à {stop}",
+      "IN_TRANSIT_TO": "Vers {stop}"
+    },
+    "liveVehicles": {
+      "one": "{count} véhicule en direct",
+      "other": "{count} véhicules en direct"
+    }
   }
 }

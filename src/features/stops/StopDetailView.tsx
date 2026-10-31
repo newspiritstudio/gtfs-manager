@@ -23,6 +23,9 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import DateStepper from '@/components/ui/DateStepper';
 import RouteBadge from '@/components/ui/RouteBadge';
 import { ListSkeleton } from '@/components/ui/Skeleton';
+import DelayBadge from '@/features/realtime/DelayBadge';
+import { tripUpdatesFor } from '@/features/realtime/delay';
+import { useRealtime } from '@/features/realtime/useRealtime';
 import { dedupeRouteBadges, groupRoutes } from '@/features/routes/groupRoutes';
 import { apiFetch } from '@/lib/api';
 import { defaultServiceDate } from '@/lib/dates';
@@ -46,6 +49,12 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
   const [attempt, setAttempt] = useState(0);
   const [filter, setFilter] = useState<string | null>(null);
   const groups = useMemo(() => dedupeRouteBadges(groupRoutes(routes)), [routes]);
+  const { snapshot } = useRealtime(feedId);
+  const live = useMemo(() => tripUpdatesFor(snapshot?.tripUpdates, date), [snapshot, date]);
+  const stopIds = useMemo(
+    () => [stop.stopId, ...children.map((c) => c.stopId)],
+    [stop.stopId, children]
+  );
 
   useEffect(() => {
     if (!date) {
@@ -250,6 +259,9 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
                       <span className="min-w-0 flex-1 truncate text-body-medium text-on-surface">
                         {d.headsign ?? d.tripId}
                       </span>
+                      {live.get(d.tripId) ? (
+                        <DelayBadge update={live.get(d.tripId)!} stopIds={stopIds} />
+                      ) : null}
                       {d.isLast ? (
                         <Badge tone="neutral" icon={<ArrowDownToLine />}>
                           {t('stops.terminates')}

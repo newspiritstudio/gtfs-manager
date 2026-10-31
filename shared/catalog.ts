@@ -7,6 +7,8 @@
  * language; the country is localized from its ISO code.
  */
 
+import type { RealtimeSources } from './realtime';
+
 export type CatalogSource =
   /** A ZIP at a fixed URL. */
   | { kind: 'zip'; url: string }
@@ -28,6 +30,8 @@ export interface CatalogEntry {
   source: CatalogSource;
   /** Key in `CATALOG_LOGOS`: the brand symbol, when a freely licensed one exists. */
   logo?: CatalogLogoId;
+  /** Open GTFS Realtime sources for the same feed, if the operator publishes them. */
+  realtime?: RealtimeSources;
 }
 
 /**
@@ -271,6 +275,23 @@ const ENTRIES: CatalogEntry[] = [
     homepage: 'https://dadesobertes.fgc.cat/explore/dataset/gtfs_zip/',
     source: { kind: 'opendatasoft', portal: 'https://dadesobertes.fgc.cat', dataset: 'gtfs_zip' },
     logo: 'fgc',
+    realtime: {
+      vehiclePositions: {
+        kind: 'opendatasoft',
+        portal: 'https://dadesobertes.fgc.cat',
+        dataset: 'vehicle-positions-gtfs_realtime',
+      },
+      tripUpdates: {
+        kind: 'opendatasoft',
+        portal: 'https://dadesobertes.fgc.cat',
+        dataset: 'trip-updates-gtfs_realtime',
+      },
+      alerts: {
+        kind: 'opendatasoft',
+        portal: 'https://dadesobertes.fgc.cat',
+        dataset: 'alerts-gtfs_realtime',
+      },
+    },
   },
   {
     id: 'renfe-cercanias',
@@ -285,6 +306,11 @@ const ENTRIES: CatalogEntry[] = [
       url: 'https://ssl.renfe.com/ftransit/Fichero_CER_FOMENTO/fomento_transit.zip',
     },
     logo: 'cercanias',
+    realtime: {
+      vehiclePositions: { kind: 'url', url: 'https://gtfsrt.renfe.com/vehicle_positions.pb' },
+      tripUpdates: { kind: 'url', url: 'https://gtfsrt.renfe.com/trip_updates.pb' },
+      alerts: { kind: 'url', url: 'https://gtfsrt.renfe.com/alerts.pb' },
+    },
   },
   {
     id: 'renfe-ld',

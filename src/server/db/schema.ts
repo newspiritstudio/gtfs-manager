@@ -26,6 +26,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 import type { FeedStats, ImportReport } from '@shared/contracts';
+import type { RealtimeSources } from '@shared/realtime';
 
 export const feeds = pgTable('feeds', {
   id: uuid().primaryKey().defaultRandom(),
@@ -35,6 +36,8 @@ export const feeds = pgTable('feeds', {
   origin: text().notNull().default('blank'),
   /** The public catalog entry it comes from (`shared/catalog.ts`), if any. */
   catalogId: text(),
+  /** GTFS Realtime sources set on the feed; when null, those of its catalog entry apply. */
+  realtime: jsonb().$type<RealtimeSources>(),
   importReport: jsonb().$type<ImportReport>(),
   stats: jsonb().$type<FeedStats>(),
   statsStale: boolean().notNull().default(true),
