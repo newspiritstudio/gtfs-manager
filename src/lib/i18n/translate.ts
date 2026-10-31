@@ -2,10 +2,19 @@
  * Traducció per clau amb punts («nav.routes») i variables entre claus («{count} línies»). Un valor
  * pot ser un objecte de plurals (`one`, `other`, i opcionalment `zero`) quan hi ha `count`. Si la
  * clau no existeix a l'idioma triat, es fa servir el català; si tampoc, la clau mateixa.
+ *
+ * Les paraules d'una lletra («i», «o», «a», «y», «e»...) s'enganxen a la següent amb un espai
+ * no separable: una línia no pot acabar amb una conjunció o una preposició soltes.
  */
 export type Messages = { [key: string]: string | Messages };
 export type TranslateVars = Record<string, string | number>;
 export type Translate = (key: string, vars?: TranslateVars) => string;
+
+const SHORT_WORD = /(^|[\s(«“"])(\p{L}) /gu;
+
+export function keepShortWords(text: string): string {
+  return text.replace(SHORT_WORD, '$1$2\u00a0');
+}
 
 function lookup(messages: Messages, key: string): string | Messages | undefined {
   let node: string | Messages | undefined = messages;
@@ -30,6 +39,7 @@ export function createTranslator(
       value = (vars.count === 0 && forms.zero) || forms[plural.select(vars.count)] || forms.other;
     }
     if (typeof value !== 'string') return key;
+    value = keepShortWords(value);
     if (!vars) return value;
     return value.replace(/\{(\w+)\}/g, (match, name: string) => {
       const v = vars[name];

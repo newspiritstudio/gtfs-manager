@@ -19,7 +19,8 @@
     "sections": "Seccions del feed",
     "openMenu": "Obre el menú",
     "skipToContent": "Salta al contingut",
-    "catalog": "Catàleg"
+    "catalog": "Catàleg",
+    "home": "Inici"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -28,10 +29,7 @@
     "dark": "fosc"
   },
   "language": {
-    "label": "Idioma",
-    "ca": "Català",
-    "es": "Castellà",
-    "en": "Anglès"
+    "label": "Idioma"
   },
   "common": {
     "all": "Totes",
@@ -440,12 +438,15 @@
     "unavailable": "No respon ara mateix",
     "checking": "Comprovant la font…",
     "browse": "Explora el catàleg",
-    "all": "Tots",
     "logosCredit": "Isotips de les marques en vector, de Wikimedia Commons:",
     "license": {
       "pd": "domini públic",
       "cc0": "CC0"
-    }
+    },
+    "search": "Cerca per operador, ciutat o país",
+    "country": "País",
+    "allCountries": "Tots els països",
+    "noResults": "Cap feed del catàleg coincideix amb la cerca."
   },
   "fields": {
     "agency_id": "Identificador de l'operador",
@@ -635,5 +636,99 @@
       "0": "0 · No circula",
       "1": "1 · Circula"
     }
+  },
+  "seo": {
+    "homeTitle": "Visor, editor i validador GTFS en línia | GTFS Manager",
+    "homeDescription": "Visualitza, edita i valida feeds GTFS des del navegador: mapa interactiu de la xarxa, esquemes de línia, horaris, diagrames de Marey, validació de l'especificació i exportació a ZIP.",
+    "catalogDescription": "Catàleg de feeds GTFS oberts i vigents d'operadors de tot el món: FGC, Renfe, SNCF, VBB, Ruter, MTA, TTC, Transperth. Consulta'n l'estat i importa'ls.",
+    "catalogEntryTitle": "{name}: feed GTFS",
+    "catalogEntryDescription": "Feed GTFS obert de {operator} ({region}). Consulta'n la font oficial i l'estat de publicació, i importa'l per explorar-ne les línies, les parades i els horaris."
+  },
+  "landing": {
+    "title": "Visualitza, edita i valida feeds GTFS",
+    "lead": "Importa un feed GTFS i el veuràs com a mapa de la xarxa, esquemes de línia, horaris i diagrames de Marey. Corregeix-lo amb la validació de l'especificació i torna'l a exportar en ZIP.",
+    "openEditor": "Obre l'editor",
+    "importFeed": "Importa un feed",
+    "featuresTitle": "Què fa",
+    "features": {
+      "import": {
+        "title": "Importa feeds grans",
+        "body": "Puja un ZIP o una carpeta GTFS. La importació va en streaming i aguanta feeds com Renfe Cercanías, amb gairebé dos milions d'hores de pas."
+      },
+      "visualize": {
+        "title": "Visualitza la xarxa",
+        "body": "Mapa de totes les línies i parades, esquema de cada línia, horaris, diagrames de Marey i calendari de servei."
+      },
+      "edit": {
+        "title": "Edita qualsevol fitxer",
+        "body": "Un editor per a cada taula GTFS, amb validació de camps, referències entre fitxers i cerca."
+      },
+      "generate": {
+        "title": "Genera viatges",
+        "body": "Crea tots els viatges d'una línia a partir de les parades, els minuts entre parades i una freqüència."
+      },
+      "validate": {
+        "title": "Valida el feed",
+        "body": "Comprovacions de l'especificació GTFS sobre tot el feed, amb enllaç directe a cada cas per corregir-lo."
+      },
+      "export": {
+        "title": "Exporta a ZIP",
+        "body": "Torna a generar un ZIP GTFS que conserva les columnes extra del feed original."
+      }
+    },
+    "catalogTitle": "Catàleg de feeds públics",
+    "catalogText": "Feeds oberts d'operadors de tot el món, amb servei vigent. Tria'n un i importa'l per explorar-lo.",
+    "filesTitle": "Fitxers GTFS que edita",
+    "filesText": "Els fitxers principals de GTFS Schedule s'editen i es validen camp a camp. Les columnes que no coneix es conserven en exportar.",
+    "faqTitle": "Preguntes freqüents",
+    "faq": {
+      "what": {
+        "q": "Què és un feed GTFS?",
+        "a": "GTFS (General Transit Feed Specification) és el format obert amb què els operadors de transport publiquen línies, parades, horaris i calendaris. És un ZIP de fitxers de text que fan servir els planificadors de viatges i les apps de mobilitat."
+      },
+      "create": {
+        "q": "Puc crear un feed GTFS des de zero?",
+        "a": "Sí. Crea un feed en blanc amb l'operador, afegeix-hi parades, línies i calendaris des de l'editor i fes servir el generador per crear-ne els viatges i les hores de pas."
+      },
+      "validate": {
+        "q": "Com es valida un feed?",
+        "a": "GTFS Manager revisa el feed sencer: fitxers i camps obligatoris, referències entre fitxers, hores de pas que tornen enrere o massa ràpides, parades sense coordenades o sense servei, calendaris caducats i contrast dels colors de línia. Cada avís enllaça als registres afectats."
+      },
+      "large": {
+        "q": "Funciona amb feeds grans?",
+        "a": "Sí. La importació llegeix els fitxers en streaming i desa les dades a PostgreSQL. Feeds com Renfe Cercanías, amb més de 130.000 viatges, s'importen i s'exploren sencers."
+      },
+      "data": {
+        "q": "On es desen les dades?",
+        "a": "A la base de dades PostgreSQL del servidor on funciona GTFS Manager. Els feeds no s'envien a cap servei extern."
+      },
+      "export": {
+        "q": "Puc tornar a exportar el feed?",
+        "a": "Sí, en qualsevol moment. L'exportació genera un ZIP GTFS amb tots els fitxers i conserva les columnes extra que tenia l'original."
+      }
+    },
+    "network": {
+      "label": "Animació: trens de FGC circulant per la xarxa de l'àrea de Barcelona entre les 7 i les 10 d'un dia feiner",
+      "caption": "Trens de FGC entre les 7 i les 10 d'un dia feiner, a partir del seu feed GTFS obert. Cada segon són tres minuts.",
+      "pause": "Atura l'animació",
+      "play": "Reprèn l'animació"
+    }
+  },
+  "catalogEntry": {
+    "intro": "Feed GTFS obert de {operator}, amb servei vigent. Importa'l per explorar-ne la xarxa, els horaris i el calendari, o descarrega'l de la font oficial.",
+    "operator": "Operador",
+    "area": "Territori",
+    "modes": "Modes",
+    "status": "Estat de la font",
+    "officialSource": "Font oficial",
+    "download": "Descarrega el ZIP",
+    "whatTitle": "Què hi pots fer",
+    "what": {
+      "map": "Veure totes les línies i parades al mapa.",
+      "lines": "Consultar l'esquema, l'horari i el diagrama de Marey de cada línia.",
+      "validate": "Validar-lo i exportar-lo de nou a ZIP."
+    },
+    "moreTitle": "Més feeds del catàleg",
+    "details": "Fitxa del feed"
   }
 }

@@ -1,27 +1,42 @@
 import type { Metadata } from 'next';
 import { GTFS_CATALOG } from '@shared/catalog';
+import JsonLd from '@/components/seo/JsonLd';
 import PageHeader from '@/components/ui/PageHeader';
 import CatalogGallery from '@/features/catalog/CatalogGallery';
-import { listFeeds } from '@/server/gtfs/feeds';
+import { localizedPath } from '@/lib/i18n/paths';
+import { importedCatalogFeeds } from '@/server/gtfs/feeds';
 import { getI18n } from '@/server/i18n';
+import { absoluteUrl, publicMetadata } from '@/server/seo';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getI18n();
-  return { title: t('catalog.title') };
+  const { t, locale } = await getI18n();
+  return publicMetadata({
+    locale,
+    path: '/catalog',
+    title: t('catalog.title'),
+    description: t('seo.catalogDescription'),
+  });
 }
 
 export default async function CatalogPage() {
-  const { t } = await getI18n();
-  const imported: Record<string, string> = {};
-  try {
-    // La llista ve ordenada pel més recent: el primer feed de cada entrada és el que s'obre.
-    for (const feed of await listFeeds())
-      if (feed.catalogId && !imported[feed.catalogId]) imported[feed.catalogId] = feed.id;
-  } catch {
-    // Sense base de dades el catàleg es pot consultar igualment.
-  }
+  const { t, locale } = await getI18n();
+  const imported = await importedCatalogFeeds();
   return (
     <div className="mx-auto max-w-7xl">
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'DataCatalog',
+          name: t('catalog.title'),
+          description: t('seo.catalogDescription'),
+          url: absoluteUrl(localizedPath(locale, '/catalog')),
+          dataset: GTFS_CATALOG.map((entry) => ({
+            '@type': 'Dataset',
+            name: t('seo.catalogEntryTitle', { name: entry.name }),
+            url: absoluteUrl(localizedPath(locale, `/catalog/${entry.id}`)),
+          })),
+        }}
+      />
       <PageHeader title={t('catalog.title')} subtitle={t('catalog.subtitle')} />
       <CatalogGallery entries={GTFS_CATALOG} imported={imported} />
     </div>

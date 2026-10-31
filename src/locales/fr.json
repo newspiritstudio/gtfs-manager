@@ -1,0 +1,734 @@
+{
+  "app": {
+    "description": "Créez, modifiez et visualisez des flux GTFS de transport public."
+  },
+  "nav": {
+    "feeds": "Flux",
+    "allFeeds": "Tous les flux",
+    "overview": "Vue d'ensemble",
+    "map": "Carte",
+    "routes": "Lignes",
+    "stops": "Arrêts",
+    "calendar": "Calendrier",
+    "validation": "Validation",
+    "data": "Données",
+    "generator": "Générateur",
+    "more": "Plus",
+    "breadcrumbs": "Fil d'Ariane",
+    "main": "Navigation principale",
+    "sections": "Sections du flux",
+    "openMenu": "Ouvrir le menu",
+    "skipToContent": "Aller au contenu",
+    "catalog": "Catalogue",
+    "home": "Accueil"
+  },
+  "theme": {
+    "switch": "Thème : {theme}",
+    "system": "système",
+    "light": "clair",
+    "dark": "sombre"
+  },
+  "language": {
+    "label": "Langue"
+  },
+  "common": {
+    "all": "Tous",
+    "close": "Fermer",
+    "date": "Date",
+    "nextDay": "Jour suivant",
+    "previousDay": "Jour précédent",
+    "noResults": "Aucun résultat.",
+    "seeAll": "Tout voir",
+    "showMore": "Afficher plus",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "clearSearch": "Effacer la recherche",
+    "retry": "Réessayer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "charts": {
+    "less": "Moins",
+    "more": "Plus",
+    "max": "Max : {value}"
+  },
+  "errors": {
+    "database": "Impossible de se connecter à la base de données",
+    "databaseHint": "Vérifiez DATABASE_URL dans .env.local et que PostgreSQL est démarré.",
+    "generic": "Une erreur s'est produite. Veuillez réessayer.",
+    "invalidForm": "Vérifiez les champs signalés.",
+    "notFound": "Page introuvable",
+    "notFoundHint": "Le flux, la ligne ou l'arrêt n'existe peut-être plus."
+  },
+  "feed": {
+    "name": "Nom",
+    "description": "Description",
+    "export": "Exporter le GTFS",
+    "trips": "Courses"
+  },
+  "feeds": {
+    "title": "Flux GTFS",
+    "subtitle": "Les horaires de transport que vous gérez, au même endroit.",
+    "new": "Nouveau flux",
+    "noAgency": "Aucune agence",
+    "valid": "Valide",
+    "statsPending": "Les chiffres seront calculés à l'ouverture.",
+    "emptyTitle": "Aucun flux pour le moment",
+    "emptyDescription": "Importez un dossier ou un ZIP GTFS, ou partez de zéro."
+  },
+  "newFeed": {
+    "subtitle": "Importez un GTFS existant ou créez-en un nouveau.",
+    "mode": "Comment commencer",
+    "modeImport": "Importer",
+    "modeBlank": "De zéro",
+    "importTitle": "Importer un dossier GTFS",
+    "importSubtitle": "Les fichiers .txt d'un dossier ou d'un ZIP.",
+    "blankTitle": "Un nouveau flux",
+    "blankSubtitle": "Commencez par l'agence, puis ajoutez arrêts, lignes et courses.",
+    "dropTitle": "Déposez le dossier ou le ZIP ici",
+    "dropHint": "Les fichiers sont envoyés un par un avec leur progression ; un stop_times de plusieurs centaines de Mo passe aussi.",
+    "pickFolder": "Choisir un dossier",
+    "pickZip": "Choisir un ZIP",
+    "zipError": "Le ZIP n'a pas pu être lu.",
+    "noTxt": "Aucun fichier .txt trouvé.",
+    "rows": {
+      "one": "{count} ligne",
+      "other": "{count} lignes"
+    },
+    "columns": {
+      "one": "{count} colonne",
+      "other": "{count} colonnes"
+    },
+    "duplicates": {
+      "one": "{count} doublon",
+      "other": "{count} doublons"
+    },
+    "extraFile": "Fichier supplémentaire",
+    "processing": "Traitement en cours…",
+    "done": "Terminé",
+    "failed": "Échec",
+    "agency": "Agence",
+    "summary": "Résumé",
+    "files": "Fichiers",
+    "size": "Taille",
+    "blankNext": "Une fois créé, vous accéderez à l'éditeur de données pour ajouter arrêts, lignes et calendriers.",
+    "computing": "Calcul des chiffres et de la validation…",
+    "import": "Importer le flux",
+    "create": "Créer le flux",
+    "imported": "Flux importé",
+    "created": "Flux créé",
+    "downloading": "Téléchargement depuis {source}…",
+    "downloadFailed": "Le flux n'a pas pu être téléchargé depuis sa source.",
+    "retry": "Réessayer"
+  },
+  "overview": {
+    "openMap": "Ouvrir la carte",
+    "startBuilding": "Commencer",
+    "busiestDay": "Courses le jour de pointe",
+    "serviceSpan": "Amplitude du service",
+    "emptyTitle": "Ce flux est encore vide",
+    "emptyDescription": "Ajoutez des arrêts et une ligne, et le générateur créera les courses.",
+    "addStops": "Ajouter des arrêts",
+    "network": "Le réseau",
+    "networkHint": "Chaque ligne dans sa couleur ; arrêts dimensionnés selon les départs.",
+    "modes": "Modes de transport",
+    "calendar": "Courses par jour",
+    "calendarHint": "Cliquez sur un jour pour l'ouvrir dans le calendrier.",
+    "hours": "Départs par heure",
+    "hoursHint": "Courses commençant à chaque heure le {date}.",
+    "topStops": "Arrêts les plus fréquentés",
+    "topStopsHint": "Départs le jour de pointe.",
+    "files": "Fichiers du flux",
+    "filesHint": "Cliquez sur l'un d'eux pour l'ouvrir dans l'éditeur.",
+    "missingFile": "Manquant"
+  },
+  "map": {
+    "zoomIn": "Zoom avant",
+    "zoomOut": "Zoom arrière",
+    "lines": "Lignes",
+    "hideStops": "Masquer les arrêts",
+    "showStops": "Afficher les arrêts",
+    "searchLines": "Rechercher des lignes",
+    "showAll": "Tout afficher",
+    "hideAll": "Tout masquer",
+    "only": "Seulement celle-ci",
+    "openStop": "Ouvrir l'arrêt",
+    "dailyDepartures": {
+      "one": "{count} départ le jour de pointe",
+      "other": "{count} départs le jour de pointe"
+    },
+    "legend": "{stops} arrêts · {lines} lignes · la taille du cercle indique les départs"
+  },
+  "routes": {
+    "subtitle": "Toutes les lignes du flux, regroupées comme les voyageurs les voient.",
+    "search": "Rechercher des lignes",
+    "view": "Vue",
+    "grid": "Cartes",
+    "list": "Liste",
+    "variants": {
+      "one": "{count} variante",
+      "other": "{count} variantes"
+    },
+    "emptyTitle": "Aucune ligne pour le moment",
+    "emptyDescription": "Ajoutez-en une depuis l'éditeur de données.",
+    "website": "Site web",
+    "variantsOf": "Variantes de {name}",
+    "allVariants": "Tout afficher ({count})",
+    "fewerVariants": "Afficher moins",
+    "tripsOnDay": "Courses ce jour-là",
+    "firstLast": "Première et dernière",
+    "length": "Longueur",
+    "avgDuration": "Durée moyenne",
+    "pattern": "Parcours",
+    "views": "Vues de la ligne",
+    "diagram": "Schéma",
+    "timetable": "Horaires",
+    "marey": "Marey",
+    "noTrips": "Cette ligne n'a aucune course.",
+    "noTripsOnDay": "Aucune course sur ce parcours le {date}.",
+    "stopTrip": "Arrêt / course",
+    "mareyHint": "Le temps s'écoule horizontalement et les arrêts sont espacés selon la distance : plus la ligne est pentue, plus la course est rapide. Cliquez sur l'une d'elles pour ouvrir la course.",
+    "serviceDays": "Jours de service",
+    "departuresByHour": "Départs par heure le {date}"
+  },
+  "stops": {
+    "subtitle": "Classés par départs le jour de pointe.",
+    "search": "Rechercher des arrêts",
+    "emptyTitle": "Aucun arrêt pour le moment",
+    "emptyDescription": "Ajoutez-en depuis l'éditeur de données en cliquant sur la carte.",
+    "accessible": "Accessible",
+    "partOf": "Fait partie de",
+    "departures": "Départs",
+    "terminates": "Terminus",
+    "noDepartures": "Aucun départ le {date}.",
+    "platforms": "Quais",
+    "nearby": "Arrêts à proximité"
+  },
+  "trips": {
+    "departure": "Départ",
+    "arrival": "Arrivée",
+    "duration": "Durée",
+    "stopTimes": "Horaires aux arrêts",
+    "noShape": "Aucun tracé : les arrêts sont reliés",
+    "serviceDays": "Jours de circulation",
+    "runs": "Circule",
+    "doesNotRun": "Ne circule pas",
+    "noService": "Ne circule aucun jour.",
+    "block": "Bloc {block}",
+    "blockHint": "Courses assurées par le même véhicule."
+  },
+  "calendar": {
+    "subtitle": "Combien de courses circulent chaque jour, et sous quels services.",
+    "tripsPerDay": "Courses par jour",
+    "pickDay": "Cliquez sur un jour pour voir le détail.",
+    "selected": {
+      "one": "{date} : {count} course",
+      "other": "{date} : {count} courses"
+    },
+    "services": "Services",
+    "servicesHint": {
+      "one": "{count} service (calendar et calendar_dates)",
+      "other": "{count} services (calendar et calendar_dates)"
+    },
+    "search": "Rechercher des services",
+    "weekdays": "Jours",
+    "period": "Période",
+    "exceptions": "Exceptions",
+    "activeDays": "Jours actifs",
+    "onlyDates": "Dates précises uniquement",
+    "truncated": {
+      "one": "Et {count} autre service : recherchez par nom.",
+      "other": "Et {count} autres services : recherchez par nom."
+    }
+  },
+  "severity": {
+    "error": "Erreurs",
+    "warning": "Avertissements",
+    "info": "Remarques",
+    "errorPlural": "Erreurs",
+    "warningPlural": "Avertissements",
+    "infoPlural": "Remarques"
+  },
+  "units": {
+    "trips": {
+      "one": "{count} course",
+      "other": "{count} courses"
+    },
+    "departures": {
+      "one": "{count} départ",
+      "other": "{count} départs"
+    },
+    "routes": {
+      "one": "{count} ligne",
+      "other": "{count} lignes"
+    },
+    "lines": {
+      "one": "{count} ligne",
+      "other": "{count} lignes"
+    },
+    "stops": {
+      "one": "{count} arrêt",
+      "other": "{count} arrêts"
+    },
+    "rows": {
+      "one": "{count} ligne",
+      "other": "{count} lignes"
+    },
+    "columns": {
+      "one": "{count} colonne",
+      "other": "{count} colonnes"
+    },
+    "days": {
+      "one": "{count} jour",
+      "other": "{count} jours"
+    },
+    "cases": {
+      "one": "{count} cas",
+      "other": "{count} cas"
+    },
+    "errors": {
+      "one": "{count} erreur",
+      "other": "{count} erreurs"
+    }
+  },
+  "modes": {
+    "tram": "Tramway",
+    "subway": "Métro",
+    "rail": "Train",
+    "bus": "Bus",
+    "ferry": "Ferry",
+    "cableTram": "Tramway à câble",
+    "aerial": "Transport par câble",
+    "funicular": "Funiculaire",
+    "trolleybus": "Trolleybus",
+    "monorail": "Monorail",
+    "other": "Autre"
+  },
+  "tables": {
+    "agency": "Agences",
+    "stops": "Arrêts",
+    "routes": "Lignes",
+    "trips": "Courses",
+    "stop_times": "Horaires aux arrêts",
+    "calendar": "Calendrier",
+    "calendar_dates": "Dates du calendrier",
+    "shapes": "Tracés",
+    "frequencies": "Fréquences",
+    "transfers": "Correspondances",
+    "feed_info": "Infos du flux"
+  },
+  "validation": {
+    "subtitle": "Contrôles de la spécification GTFS sur l'ensemble du flux.",
+    "allGood": "Aucune erreur ni avertissement",
+    "allGoodHint": "Le flux réussit tous les contrôles.",
+    "wholeFeed": "Flux entier",
+    "missingAgency": "agency.txt est manquant ou vide",
+    "missingStops": "stops.txt est manquant ou vide",
+    "missingRoutes": "routes.txt est manquant ou vide",
+    "missingTrips": "trips.txt est manquant ou vide",
+    "missingStopTimes": "stop_times.txt est manquant ou vide",
+    "missingCalendar": "Ni calendar.txt ni calendar_dates.txt",
+    "agencyMissingFields": "Agences sans nom, URL ou fuseau horaire",
+    "agencyIdRequired": "agency_id est obligatoire avec plusieurs agences",
+    "routeUnknownAgency": "Lignes avec une agence inconnue",
+    "routeWithoutName": "Lignes sans nom court ni long",
+    "routeWithoutType": "Lignes sans route_type",
+    "routeColorContrast": "Lignes au faible contraste couleur/texte",
+    "routeWithoutTrips": "Lignes sans courses",
+    "stopWithoutCoordinates": "Arrêts sans coordonnées",
+    "stopAtNullIsland": "Arrêts en 0,0",
+    "stopWithoutName": "Arrêts sans nom",
+    "stopUnknownParent": "Arrêts avec une station mère inconnue",
+    "stopUnused": "Arrêts desservis par aucune course",
+    "tripUnknownRoute": "Courses avec une ligne inconnue",
+    "tripUnknownService": "Courses avec un service inconnu",
+    "tripUnknownShape": "Courses avec un tracé inconnu",
+    "tripTooFewStops": "Courses avec moins de deux arrêts",
+    "stopTimeUnknownTrip": "Horaires pour une course inconnue",
+    "stopTimeUnknownStop": "Horaires à un arrêt inconnu",
+    "stopTimeArrivalAfterDeparture": "Arrivée après le départ",
+    "stopTimeGoesBackwards": "Horaires qui reculent au sein d'une course",
+    "stopTimeEndpointWithoutTime": "Premier ou dernier arrêt sans horaire",
+    "stopTimeTooFast": "Tronçons à plus de 350 km/h",
+    "serviceWithoutDays": "Services sans jour actif",
+    "serviceEndBeforeStart": "Services se terminant avant de commencer",
+    "feedExpired": "Le flux a expiré",
+    "shapeTooFewPoints": "Tracés de moins de deux points",
+    "transferUnknownStop": "Correspondances avec un arrêt inconnu"
+  },
+  "data": {
+    "subtitle": "Modifiez n'importe quel fichier du flux, ligne par ligne.",
+    "required": "Obligatoire",
+    "optional": "Facultatif",
+    "add": "Ajouter une ligne",
+    "editRow": "Modifier la ligne",
+    "newRow": "Nouvelle ligne",
+    "search": "Rechercher dans ce fichier",
+    "empty": "Ce fichier est vide",
+    "emptyHint": "Ajoutez la première ligne.",
+    "page": "{from}–{to} sur {total}",
+    "saved": "Ligne enregistrée",
+    "created": "Ligne ajoutée",
+    "deleted": "Ligne supprimée",
+    "deleteConfirm": "Supprimer cette ligne ? Cette action est irréversible.",
+    "fieldRequired": "Ce champ est obligatoire",
+    "fieldInvalid": "Cette valeur n'est pas valide",
+    "pickOnMap": "Cliquez sur la carte pour placer l'arrêt",
+    "extraColumns": "Colonnes supplémentaires",
+    "columns": "Colonnes",
+    "timeHint": "HH:MM:SS (peut dépasser 24 h)",
+    "dateHint": "AAAAMMJJ",
+    "colorHint": "Hexadécimal sans #",
+    "noValue": "(vide)",
+    "conflict": "Une ligne avec cet identifiant existe déjà."
+  },
+  "generator": {
+    "subtitle": "Créez d'un coup toutes les courses d'une ligne : arrêts ordonnés, temps de parcours et fréquence.",
+    "line": "Ligne et service",
+    "route": "Ligne",
+    "service": "Service",
+    "headsign": "Destination",
+    "direction": "Sens",
+    "noDirection": "Sans sens",
+    "stops": "Arrêts le long de la course",
+    "searchStop": "Rechercher un arrêt à ajouter",
+    "mapHint": "Vous pouvez aussi cliquer sur les arrêts de la carte pour les ajouter dans l'ordre.",
+    "travel": "Minutes depuis le précédent",
+    "remove": "Retirer l'arrêt",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "schedule": "Horaire",
+    "first": "Premier départ",
+    "last": "Dernier départ",
+    "headway": "Toutes les (minutes)",
+    "dwell": "Arrêt à chaque station (minutes)",
+    "prefix": "Préfixe de l'ID de course",
+    "createShape": "Créer un tracé rectiligne entre les arrêts",
+    "preview": "Aperçu",
+    "previewSummary": "{trips} courses · {duration} de temps de parcours · dernière arrivée {arrival}",
+    "generate": "Générer les courses",
+    "generated": "{trips} courses et {stopTimes} horaires aux arrêts créés",
+    "needData": "Il faut d'abord une ligne, un service et des arrêts",
+    "needDataHint": "Créez-les dans l'éditeur de données (lignes, calendrier et arrêts) puis revenez.",
+    "errors": {
+      "unknownRoute": "La ligne n'existe pas.",
+      "unknownService": "Le service n'existe pas.",
+      "unknownStop": "Un arrêt n'existe pas.",
+      "tripIdTaken": "Des courses avec ce préfixe et cet horaire existent déjà : changez le préfixe.",
+      "badWindow": "Le dernier départ précède le premier.",
+      "lengthMismatch": "Des temps de parcours sont manquants."
+    }
+  },
+  "catalog": {
+    "title": "Catalogue GTFS public",
+    "subtitle": "Flux ouverts d'opérateurs réels, vérifiés et à service en cours. Importez-en un pour l'explorer.",
+    "count": {
+      "one": "{count} flux",
+      "other": "{count} flux"
+    },
+    "import": "Importer",
+    "open": "Ouvrir",
+    "reimport": "Réimporter",
+    "imported": "Importé",
+    "source": "Source",
+    "updated": "Publié {when}",
+    "available": "Disponible",
+    "unavailable": "Ne répond pas actuellement",
+    "checking": "Vérification de la source…",
+    "browse": "Parcourir le catalogue",
+    "logosCredit": "Symboles de marque en vectoriel, depuis Wikimedia Commons :",
+    "license": {
+      "pd": "domaine public",
+      "cc0": "CC0"
+    },
+    "search": "Rechercher par opérateur, ville ou pays",
+    "country": "Pays",
+    "allCountries": "Tous les pays",
+    "noResults": "Aucun flux du catalogue ne correspond à la recherche."
+  },
+  "fields": {
+    "agency_id": "ID de l'agence",
+    "agency_name": "Nom de l'agence",
+    "agency_url": "URL de l'agence",
+    "agency_timezone": "Fuseau horaire",
+    "agency_lang": "Langue",
+    "agency_phone": "Téléphone",
+    "agency_fare_url": "URL des tarifs",
+    "agency_email": "E-mail",
+    "stop_id": "ID de l'arrêt",
+    "stop_code": "Code",
+    "stop_name": "Nom de l'arrêt",
+    "tts_stop_name": "Nom pour la synthèse vocale",
+    "stop_desc": "Description",
+    "stop_lat": "Latitude",
+    "stop_lon": "Longitude",
+    "zone_id": "Zone",
+    "stop_url": "URL",
+    "location_type": "Type de lieu",
+    "parent_station": "Station mère",
+    "stop_timezone": "Fuseau horaire",
+    "wheelchair_boarding": "Accès en fauteuil roulant",
+    "level_id": "Niveau",
+    "platform_code": "Quai",
+    "route_id": "ID de la ligne",
+    "route_short_name": "Nom court",
+    "route_long_name": "Nom long",
+    "route_desc": "Description",
+    "route_type": "Type",
+    "route_url": "URL",
+    "route_color": "Couleur",
+    "route_text_color": "Couleur du texte",
+    "route_sort_order": "Ordre de tri",
+    "continuous_pickup": "Montée continue",
+    "continuous_drop_off": "Descente continue",
+    "network_id": "Réseau",
+    "service_id": "Service",
+    "trip_id": "ID de la course",
+    "trip_headsign": "Destination",
+    "trip_short_name": "Nom court",
+    "direction_id": "Sens",
+    "block_id": "Bloc",
+    "shape_id": "Tracé",
+    "wheelchair_accessible": "Accessible en fauteuil roulant",
+    "bikes_allowed": "Vélos autorisés",
+    "arrival_time": "Arrivée",
+    "departure_time": "Départ",
+    "stop_sequence": "Séquence",
+    "stop_headsign": "Destination à l'arrêt",
+    "pickup_type": "Montée",
+    "drop_off_type": "Descente",
+    "shape_dist_traveled": "Distance parcourue",
+    "timepoint": "Point horaire",
+    "monday": "Lundi",
+    "tuesday": "Mardi",
+    "wednesday": "Mercredi",
+    "thursday": "Jeudi",
+    "friday": "Vendredi",
+    "saturday": "Samedi",
+    "sunday": "Dimanche",
+    "start_date": "Date de début",
+    "end_date": "Date de fin",
+    "date": "Date",
+    "exception_type": "Exception",
+    "shape_pt_lat": "Latitude",
+    "shape_pt_lon": "Longitude",
+    "shape_pt_sequence": "Séquence",
+    "start_time": "Heure de début",
+    "end_time": "Heure de fin",
+    "headway_secs": "Intervalle (s)",
+    "exact_times": "Horaires exacts",
+    "from_stop_id": "Arrêt de départ",
+    "to_stop_id": "Arrêt d'arrivée",
+    "from_route_id": "Ligne de départ",
+    "to_route_id": "Ligne d'arrivée",
+    "from_trip_id": "Course de départ",
+    "to_trip_id": "Course d'arrivée",
+    "transfer_type": "Type de correspondance",
+    "min_transfer_time": "Temps de correspondance min. (s)",
+    "feed_publisher_name": "Éditeur",
+    "feed_publisher_url": "URL de l'éditeur",
+    "feed_lang": "Langue",
+    "default_lang": "Langue par défaut",
+    "feed_start_date": "Valide à partir du",
+    "feed_end_date": "Valide jusqu'au",
+    "feed_version": "Version",
+    "feed_contact_email": "E-mail de contact",
+    "feed_contact_url": "URL de contact"
+  },
+  "enums": {
+    "location_type": {
+      "0": "Arrêt ou quai",
+      "1": "Station",
+      "2": "Entrée/sortie",
+      "3": "Nœud générique",
+      "4": "Zone d'embarquement"
+    },
+    "wheelchair_boarding": {
+      "0": "0 · Aucune information",
+      "1": "1 · Oui",
+      "2": "2 · Non"
+    },
+    "wheelchair_accessible": {
+      "0": "0 · Aucune information",
+      "1": "1 · Oui",
+      "2": "2 · Non"
+    },
+    "bikes_allowed": {
+      "0": "0 · Aucune information",
+      "1": "1 · Oui",
+      "2": "2 · Non"
+    },
+    "continuous_pickup": {
+      "0": "0 · Continue",
+      "1": "1 · Aucune",
+      "2": "2 · Appeler l'agence",
+      "3": "3 · Demander au conducteur"
+    },
+    "continuous_drop_off": {
+      "0": "0 · Continue",
+      "1": "1 · Aucune",
+      "2": "2 · Appeler l'agence",
+      "3": "3 · Demander au conducteur"
+    },
+    "pickup_type": {
+      "0": "0 · Régulière",
+      "1": "1 · Aucune",
+      "2": "2 · Appeler l'agence",
+      "3": "3 · Demander au conducteur"
+    },
+    "drop_off_type": {
+      "0": "0 · Régulière",
+      "1": "1 · Aucune",
+      "2": "2 · Appeler l'agence",
+      "3": "3 · Demander au conducteur"
+    },
+    "direction_id": {
+      "0": "Aller",
+      "1": "Retour"
+    },
+    "timepoint": {
+      "0": "0 · Approximatif",
+      "1": "1 · Exact"
+    },
+    "exact_times": {
+      "0": "0 · Basé sur la fréquence",
+      "1": "1 · Horaire exact"
+    },
+    "exception_type": {
+      "1": "1 · Service ajouté",
+      "2": "2 · Service supprimé"
+    },
+    "transfer_type": {
+      "0": "0 · Recommandée",
+      "1": "1 · Avec attente",
+      "2": "2 · Temps minimum",
+      "3": "3 · Impossible",
+      "4": "4 · Sans descendre",
+      "5": "5 · Descente obligatoire"
+    },
+    "monday": {
+      "0": "0 · Pas de service",
+      "1": "1 · Service"
+    },
+    "tuesday": {
+      "0": "0 · Pas de service",
+      "1": "1 · Service"
+    },
+    "wednesday": {
+      "0": "0 · Pas de service",
+      "1": "1 · Service"
+    },
+    "thursday": {
+      "0": "0 · Pas de service",
+      "1": "1 · Service"
+    },
+    "friday": {
+      "0": "0 · Pas de service",
+      "1": "1 · Service"
+    },
+    "saturday": {
+      "0": "0 · Pas de service",
+      "1": "1 · Service"
+    },
+    "sunday": {
+      "0": "0 · Pas de service",
+      "1": "1 · Service"
+    }
+  },
+  "seo": {
+    "homeTitle": "Visualiseur, éditeur et validateur GTFS en ligne | GTFS Manager",
+    "homeDescription": "Visualisez, modifiez et validez des flux GTFS dans votre navigateur : carte interactive du réseau, schémas de ligne, horaires, graphiques de Marey, validation de la spécification et export ZIP.",
+    "catalogDescription": "Catalogue de flux GTFS ouverts et à jour d'opérateurs du monde entier : FGC, Renfe, SNCF, VBB, Ruter, MTA, TTC, Transperth. Consultez leur état et importez-les.",
+    "catalogEntryTitle": "{name} : flux GTFS",
+    "catalogEntryDescription": "Flux GTFS ouvert de {operator} ({region}). Consultez sa source officielle et son état de publication, puis importez-le pour explorer ses lignes, ses arrêts et ses horaires."
+  },
+  "landing": {
+    "title": "Visualisez, modifiez et validez vos flux GTFS",
+    "lead": "Importez un flux GTFS et retrouvez-le sous forme de carte du réseau, de schémas de ligne, d'horaires et de graphiques de Marey. Corrigez-le grâce à la validation de la spécification et réexportez-le en ZIP.",
+    "openEditor": "Ouvrir l'éditeur",
+    "importFeed": "Importer un flux",
+    "featuresTitle": "Ce qu'il fait",
+    "features": {
+      "import": {
+        "title": "Importer de gros flux",
+        "body": "Téléversez un ZIP ou un dossier GTFS. L'import traite les fichiers en flux continu et gère des flux comme Renfe Cercanías, avec près de deux millions d'horaires aux arrêts."
+      },
+      "visualize": {
+        "title": "Visualiser le réseau",
+        "body": "Une carte de toutes les lignes et de tous les arrêts, un schéma de chaque ligne, des horaires, des graphiques de Marey et le calendrier de service."
+      },
+      "edit": {
+        "title": "Modifier n'importe quel fichier",
+        "body": "Un éditeur pour chaque table GTFS, avec validation des champs, références entre fichiers et recherche."
+      },
+      "generate": {
+        "title": "Générer des courses",
+        "body": "Créez toutes les courses d'une ligne à partir de ses arrêts, des minutes entre eux et d'une fréquence."
+      },
+      "validate": {
+        "title": "Valider le flux",
+        "body": "Des contrôles de la spécification GTFS sur l'ensemble du flux, avec un lien direct vers chaque cas pour le corriger."
+      },
+      "export": {
+        "title": "Exporter en ZIP",
+        "body": "Reconstruisez un ZIP GTFS qui conserve les colonnes supplémentaires du flux d'origine."
+      }
+    },
+    "catalogTitle": "Catalogue de flux publics",
+    "catalogText": "Des flux ouverts d'opérateurs du monde entier, avec un service en cours. Choisissez-en un et importez-le pour l'explorer.",
+    "filesTitle": "Fichiers GTFS modifiables",
+    "filesText": "Les principaux fichiers GTFS Schedule sont modifiés et validés champ par champ. Les colonnes qu'il ne connaît pas sont conservées à l'export.",
+    "faqTitle": "Questions fréquentes",
+    "faq": {
+      "what": {
+        "q": "Qu'est-ce qu'un flux GTFS ?",
+        "a": "GTFS (General Transit Feed Specification) est le format ouvert que les opérateurs de transport utilisent pour publier lignes, arrêts, horaires et calendriers. C'est un ZIP de fichiers texte utilisé par les calculateurs d'itinéraires et les applications de mobilité."
+      },
+      "create": {
+        "q": "Puis-je créer un flux GTFS de zéro ?",
+        "a": "Oui. Créez un flux vide avec son agence, ajoutez arrêts, lignes et calendriers dans l'éditeur, puis utilisez le générateur pour créer les courses et les horaires aux arrêts."
+      },
+      "validate": {
+        "q": "Comment un flux est-il validé ?",
+        "a": "GTFS Manager contrôle l'ensemble du flux : fichiers et champs obligatoires, références entre fichiers, horaires de passage qui reculent ou trop rapides, arrêts sans coordonnées ou sans service, calendriers expirés et contraste des couleurs de ligne. Chaque avertissement renvoie aux enregistrements concernés."
+      },
+      "large": {
+        "q": "Gère-t-il les gros flux ?",
+        "a": "Oui. L'import traite les fichiers en flux continu et stocke les données dans PostgreSQL. Des flux comme Renfe Cercanías, avec plus de 130 000 courses, sont importés et explorés en entier."
+      },
+      "data": {
+        "q": "Où sont stockées les données ?",
+        "a": "Dans la base de données PostgreSQL du serveur qui fait tourner GTFS Manager. Les flux ne sont envoyés à aucun service externe."
+      },
+      "export": {
+        "q": "Puis-je exporter à nouveau le flux ?",
+        "a": "Oui, à tout moment. L'export produit un ZIP GTFS avec tous les fichiers et conserve les colonnes supplémentaires de l'original."
+      }
+    },
+    "network": {
+      "label": "Animation : trains FGC circulant sur le réseau de la région de Barcelone entre 7 h et 10 h un jour de semaine",
+      "caption": "Trains FGC entre 7 h et 10 h un jour de semaine, d'après son flux GTFS ouvert. Chaque seconde représente trois minutes.",
+      "pause": "Mettre l'animation en pause",
+      "play": "Reprendre l'animation"
+    }
+  },
+  "catalogEntry": {
+    "intro": "Flux GTFS ouvert de {operator}, avec service en cours. Importez-le pour explorer son réseau, ses horaires et son calendrier, ou téléchargez-le depuis la source officielle.",
+    "operator": "Opérateur",
+    "area": "Territoire",
+    "modes": "Modes",
+    "status": "État de la source",
+    "officialSource": "Source officielle",
+    "download": "Télécharger le ZIP",
+    "whatTitle": "Ce que vous pouvez en faire",
+    "what": {
+      "map": "Voir toutes les lignes et tous les arrêts sur la carte.",
+      "lines": "Consulter le schéma, les horaires et le graphique de Marey de chaque ligne.",
+      "validate": "Le valider et l'exporter à nouveau en ZIP."
+    },
+    "moreTitle": "Plus de flux dans le catalogue",
+    "details": "Fiche du flux"
+  }
+}

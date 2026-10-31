@@ -1,77 +1,19 @@
-import { DatabaseZap, FolderInput, Library, Plus } from 'lucide-react';
 import type { Metadata } from 'next';
-import type { FeedSummary } from '@shared/contracts';
-import { ButtonLink } from '@/components/ui/Button';
-import EmptyState from '@/components/ui/EmptyState';
-import PageHeader from '@/components/ui/PageHeader';
-import FeedCard from '@/features/feeds/FeedCard';
-import { listFeeds } from '@/server/gtfs/feeds';
+import LandingPage from './_landing/LandingPage';
 import { getI18n } from '@/server/i18n';
+import { publicMetadata } from '@/server/seo';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getI18n();
-  return { title: t('nav.feeds') };
+  const { t, locale } = await getI18n();
+  return publicMetadata({
+    locale,
+    path: '/',
+    title: t('seo.homeTitle'),
+    description: t('seo.homeDescription'),
+    absoluteTitle: true,
+  });
 }
 
-export default async function FeedsPage() {
-  const { t, locale } = await getI18n();
-  let feeds: FeedSummary[] | null = null;
-  try {
-    feeds = await listFeeds();
-  } catch (error) {
-    console.error('No es poden llegir els feeds', error);
-  }
-  return (
-    <div className="mx-auto max-w-7xl">
-      <PageHeader
-        title={t('feeds.title')}
-        subtitle={t('feeds.subtitle')}
-        actions={
-          feeds?.length ? (
-            <>
-              <ButtonLink href="/catalog" variant="tonal">
-                <Library />
-                {t('catalog.browse')}
-              </ButtonLink>
-              <ButtonLink href="/new">
-                <Plus />
-                {t('feeds.new')}
-              </ButtonLink>
-            </>
-          ) : null
-        }
-      />
-      {feeds === null ? (
-        <EmptyState
-          icon={<DatabaseZap />}
-          title={t('errors.database')}
-          description={t('errors.databaseHint')}
-        />
-      ) : feeds.length === 0 ? (
-        <EmptyState
-          icon={<FolderInput />}
-          title={t('feeds.emptyTitle')}
-          description={t('feeds.emptyDescription')}
-          action={
-            <div className="flex flex-wrap justify-center gap-2">
-              <ButtonLink href="/new">
-                <Plus />
-                {t('feeds.new')}
-              </ButtonLink>
-              <ButtonLink href="/catalog" variant="tonal">
-                <Library />
-                {t('catalog.browse')}
-              </ButtonLink>
-            </div>
-          }
-        />
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {feeds.map((feed) => (
-            <FeedCard key={feed.id} feed={feed} t={t} locale={locale} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+export default function HomePage() {
+  return <LandingPage />;
 }

@@ -3,8 +3,10 @@
 import { ChevronRight, Download } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { GTFS_CATALOG } from '@shared/catalog';
 import { ButtonLink } from '@/components/ui/Button';
 import { useI18n } from '@/lib/i18n/client';
+import { splitLocalePath } from '@/lib/i18n/paths';
 import { useCrumbLabel } from './CrumbLabel';
 import { activeFeedNav, feedIdFromPath } from './nav';
 import { LanguageSelect, ThemeToggle } from './Preferences';
@@ -14,30 +16,42 @@ export function useBreadcrumbs(feeds: ShellFeed[]) {
   const pathname = usePathname();
   const { t } = useI18n();
   const detail = useCrumbLabel(pathname);
-  const crumbs: { label: string; href: string }[] = [{ label: t('nav.feeds'), href: '/' }];
-  const feedId = feedIdFromPath(pathname);
-  if (feedId) {
-    const feed = feeds.find((f) => f.id === feedId);
-    crumbs.push({ label: feed?.name ?? '…', href: `/feeds/${feedId}` });
-    const item = activeFeedNav(pathname, feedId);
-    if (item && item.path) {
-      crumbs.push({ label: t(`nav.${item.key}`), href: `/feeds/${feedId}${item.path}` });
-      const rest = pathname.slice(`/feeds/${feedId}${item.path}`.length).split('/').filter(Boolean);
-      if (rest.length)
-        crumbs.push({ label: detail?.label ?? decodeURIComponent(rest[0]), href: pathname });
-    } else if (pathname.startsWith(`/feeds/${feedId}/trips/`)) {
-      // Els viatges no són a la navegació: pengen de la línia que els fa.
-      crumbs.push({ label: t('nav.routes'), href: `/feeds/${feedId}/routes` });
-      if (detail?.parent) crumbs.push(detail.parent);
-      crumbs.push({
-        label: detail?.label ?? decodeURIComponent(pathname.split('/').pop() ?? ''),
-        href: pathname,
-      });
+  const { path } = splitLocalePath(pathname);
+  const crumbs: { label: string; href: string }[] = [];
+  const feedId = feedIdFromPath(path);
+  if (path === '/') {
+    crumbs.push({ label: t('nav.home'), href: pathname });
+  } else if (path === '/catalog' || path.startsWith('/catalog/')) {
+    const base = pathname.slice(0, pathname.length - path.length) + '/catalog';
+    crumbs.push({ label: t('nav.catalog'), href: base });
+    const entry = GTFS_CATALOG.find((e) => `/catalog/${e.id}` === path);
+    if (entry) crumbs.push({ label: entry.name, href: pathname });
+  } else {
+    crumbs.push({ label: t('nav.feeds'), href: '/feeds' });
+    if (feedId) {
+      const feed = feeds.find((f) => f.id === feedId);
+      crumbs.push({ label: feed?.name ?? '…', href: `/feeds/${feedId}` });
+      const item = activeFeedNav(pathname, feedId);
+      if (item && item.path) {
+        crumbs.push({ label: t(`nav.${item.key}`), href: `/feeds/${feedId}${item.path}` });
+        const rest = pathname
+          .slice(`/feeds/${feedId}${item.path}`.length)
+          .split('/')
+          .filter(Boolean);
+        if (rest.length)
+          crumbs.push({ label: detail?.label ?? decodeURIComponent(rest[0]), href: pathname });
+      } else if (pathname.startsWith(`/feeds/${feedId}/trips/`)) {
+        // Els viatges no són a la navegació: pengen de la línia que els fa.
+        crumbs.push({ label: t('nav.routes'), href: `/feeds/${feedId}/routes` });
+        if (detail?.parent) crumbs.push(detail.parent);
+        crumbs.push({
+          label: detail?.label ?? decodeURIComponent(pathname.split('/').pop() ?? ''),
+          href: pathname,
+        });
+      }
+    } else if (pathname === '/new') {
+      crumbs.push({ label: t('feeds.new'), href: '/new' });
     }
-  } else if (pathname === '/new') {
-    crumbs.push({ label: t('feeds.new'), href: '/new' });
-  } else if (pathname === '/catalog') {
-    crumbs.push({ label: t('nav.catalog'), href: '/catalog' });
   }
   return { crumbs, feedId };
 }

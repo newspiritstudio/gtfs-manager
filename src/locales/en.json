@@ -19,7 +19,8 @@
     "sections": "Feed sections",
     "openMenu": "Open menu",
     "skipToContent": "Skip to content",
-    "catalog": "Catalogue"
+    "catalog": "Catalogue",
+    "home": "Home"
   },
   "theme": {
     "switch": "Theme: {theme}",
@@ -28,10 +29,7 @@
     "dark": "dark"
   },
   "language": {
-    "label": "Language",
-    "ca": "Catalan",
-    "es": "Spanish",
-    "en": "English"
+    "label": "Language"
   },
   "common": {
     "all": "All",
@@ -440,12 +438,15 @@
     "unavailable": "Not responding right now",
     "checking": "Checking the source…",
     "browse": "Browse the catalogue",
-    "all": "All",
     "logosCredit": "Brand symbols as vectors, from Wikimedia Commons:",
     "license": {
       "pd": "public domain",
       "cc0": "CC0"
-    }
+    },
+    "search": "Search by operator, city or country",
+    "country": "Country",
+    "allCountries": "All countries",
+    "noResults": "No catalogue feed matches your search."
   },
   "fields": {
     "agency_id": "Agency ID",
@@ -635,5 +636,99 @@
       "0": "0 · No service",
       "1": "1 · Service"
     }
+  },
+  "seo": {
+    "homeTitle": "Online GTFS viewer, editor and validator | GTFS Manager",
+    "homeDescription": "View, edit and validate GTFS feeds in your browser: interactive network map, line diagrams, timetables, Marey charts, spec validation and GTFS ZIP export.",
+    "catalogDescription": "Catalogue of open, current GTFS feeds from operators around the world: FGC, Renfe, SNCF, VBB, Ruter, MTA, TTC, Transperth. Check their status and import them.",
+    "catalogEntryTitle": "{name} GTFS feed",
+    "catalogEntryDescription": "Open GTFS feed from {operator} ({region}). Check its official source and publication status, and import it to explore its lines, stops and timetables."
+  },
+  "landing": {
+    "title": "View, edit and validate GTFS feeds",
+    "lead": "Import a GTFS feed and see it as a network map, line diagrams, timetables and Marey charts. Fix it with spec-based validation and export it again as a ZIP.",
+    "openEditor": "Open the editor",
+    "importFeed": "Import a feed",
+    "featuresTitle": "What it does",
+    "features": {
+      "import": {
+        "title": "Import large feeds",
+        "body": "Upload a GTFS ZIP or folder. Import streams the files and handles feeds like Renfe Cercanías, with almost two million stop times."
+      },
+      "visualize": {
+        "title": "See the network",
+        "body": "A map of every line and stop, a diagram of each line, timetables, Marey charts and the service calendar."
+      },
+      "edit": {
+        "title": "Edit any file",
+        "body": "An editor for every GTFS table, with field validation, cross-file references and search."
+      },
+      "generate": {
+        "title": "Generate trips",
+        "body": "Create every trip on a line from its stops, the minutes between them and a headway."
+      },
+      "validate": {
+        "title": "Validate the feed",
+        "body": "GTFS spec checks across the whole feed, with a direct link to each case so you can fix it."
+      },
+      "export": {
+        "title": "Export to ZIP",
+        "body": "Rebuild a GTFS ZIP that keeps the extra columns of the original feed."
+      }
+    },
+    "catalogTitle": "Public feed catalogue",
+    "catalogText": "Open feeds with current service from operators around the world. Pick one and import it to explore it.",
+    "filesTitle": "GTFS files it edits",
+    "filesText": "The core GTFS Schedule files are edited and validated field by field. Columns it doesn't know are kept on export.",
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "what": {
+        "q": "What is a GTFS feed?",
+        "a": "GTFS (General Transit Feed Specification) is the open format transit operators use to publish lines, stops, timetables and calendars. It is a ZIP of text files used by trip planners and mobility apps."
+      },
+      "create": {
+        "q": "Can I create a GTFS feed from scratch?",
+        "a": "Yes. Create a blank feed with its agency, add stops, lines and calendars in the editor, and use the generator to create the trips and stop times."
+      },
+      "validate": {
+        "q": "How is a feed validated?",
+        "a": "GTFS Manager checks the whole feed: required files and fields, references between files, stop times that go backwards or are too fast, stops without coordinates or service, expired calendars and route colour contrast. Each warning links to the affected records."
+      },
+      "large": {
+        "q": "Does it handle large feeds?",
+        "a": "Yes. Import streams the files and stores the data in PostgreSQL. Feeds like Renfe Cercanías, with more than 130,000 trips, are imported and explored in full."
+      },
+      "data": {
+        "q": "Where is the data stored?",
+        "a": "In the PostgreSQL database of the server running GTFS Manager. Feeds are not sent to any external service."
+      },
+      "export": {
+        "q": "Can I export the feed again?",
+        "a": "Yes, at any time. Export builds a GTFS ZIP with every file and keeps the extra columns the original had."
+      }
+    },
+    "network": {
+      "label": "Animation: FGC trains running on the Barcelona-area network between 7 and 10 am on a weekday",
+      "caption": "FGC trains between 7 and 10 am on a weekday, from its open GTFS feed. Each second is three minutes.",
+      "pause": "Pause animation",
+      "play": "Play animation"
+    }
+  },
+  "catalogEntry": {
+    "intro": "Open GTFS feed from {operator}, with current service. Import it to explore its network, timetables and calendar, or download it from the official source.",
+    "operator": "Operator",
+    "area": "Area",
+    "modes": "Modes",
+    "status": "Source status",
+    "officialSource": "Official source",
+    "download": "Download the ZIP",
+    "whatTitle": "What you can do with it",
+    "what": {
+      "map": "See every line and stop on the map.",
+      "lines": "Check each line's diagram, timetable and Marey chart.",
+      "validate": "Validate it and export it again as a ZIP."
+    },
+    "moreTitle": "More feeds in the catalogue",
+    "details": "Feed details"
   }
 }

@@ -1,0 +1,9 @@
+/** Dades estructurades (schema.org) per als cercadors. `<` s'escapa perquè no tanqui l'script. */
+export default function JsonLd({ data }: { data: Record<string, unknown> }) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }}
+    />
+  );
+}

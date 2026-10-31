@@ -1,0 +1,715 @@
+{
+  "app": {
+    "description": "创建、编辑并可视化公共交通 GTFS 数据源。"
+  },
+  "nav": {
+    "feeds": "数据源",
+    "allFeeds": "全部数据源",
+    "overview": "概览",
+    "map": "地图",
+    "routes": "线路",
+    "stops": "站点",
+    "calendar": "日历",
+    "validation": "校验",
+    "data": "数据",
+    "generator": "生成器",
+    "more": "更多",
+    "breadcrumbs": "面包屑导航",
+    "main": "主导航",
+    "sections": "数据源栏目",
+    "openMenu": "打开菜单",
+    "skipToContent": "跳到正文",
+    "catalog": "目录",
+    "home": "首页"
+  },
+  "theme": {
+    "switch": "主题：{theme}",
+    "system": "跟随系统",
+    "light": "浅色",
+    "dark": "深色"
+  },
+  "language": {
+    "label": "语言"
+  },
+  "common": {
+    "all": "全部",
+    "close": "关闭",
+    "date": "日期",
+    "nextDay": "后一天",
+    "previousDay": "前一天",
+    "noResults": "没有结果。",
+    "seeAll": "查看全部",
+    "showMore": "显示更多",
+    "save": "保存",
+    "cancel": "取消",
+    "clearSearch": "清除搜索",
+    "retry": "重试",
+    "delete": "删除",
+    "edit": "编辑",
+    "previous": "上一页",
+    "next": "下一页"
+  },
+  "charts": {
+    "less": "少",
+    "more": "多",
+    "max": "最大值：{value}"
+  },
+  "errors": {
+    "database": "无法连接到数据库",
+    "databaseHint": "请检查 .env.local 中的 DATABASE_URL，并确认 PostgreSQL 正在运行。",
+    "generic": "出错了，请重试。",
+    "invalidForm": "请检查高亮的字段。",
+    "notFound": "找不到页面",
+    "notFoundHint": "该数据源、线路或站点可能已不存在。"
+  },
+  "feed": {
+    "name": "名称",
+    "description": "描述",
+    "export": "导出 GTFS",
+    "trips": "车次"
+  },
+  "feeds": {
+    "title": "GTFS 数据源",
+    "subtitle": "您管理的所有时刻表，集中在一处。",
+    "new": "新建数据源",
+    "noAgency": "无运营机构",
+    "valid": "有效",
+    "statsPending": "打开后将计算统计数据。",
+    "emptyTitle": "还没有数据源",
+    "emptyDescription": "导入 GTFS 文件夹或 ZIP，或从零开始创建。"
+  },
+  "newFeed": {
+    "subtitle": "导入现有 GTFS，或创建新的数据源。",
+    "mode": "开始方式",
+    "modeImport": "导入",
+    "modeBlank": "从零开始",
+    "importTitle": "导入 GTFS 文件夹",
+    "importSubtitle": "文件夹或 ZIP 中的 .txt 文件。",
+    "blankTitle": "新数据源",
+    "blankSubtitle": "先填写运营机构，再添加站点、线路和车次。",
+    "dropTitle": "将文件夹或 ZIP 拖到此处",
+    "dropHint": "文件逐个上传并显示进度；数百 MB 的 stop_times 也可以。",
+    "pickFolder": "选择文件夹",
+    "pickZip": "选择 ZIP",
+    "zipError": "无法读取该 ZIP。",
+    "noTxt": "未找到 .txt 文件。",
+    "rows": {
+      "other": "{count} 行"
+    },
+    "columns": {
+      "other": "{count} 列"
+    },
+    "duplicates": {
+      "other": "{count} 项重复"
+    },
+    "extraFile": "额外文件",
+    "processing": "处理中…",
+    "done": "完成",
+    "failed": "失败",
+    "agency": "运营机构",
+    "summary": "摘要",
+    "files": "文件",
+    "size": "大小",
+    "blankNext": "创建后将进入数据编辑器，您可以添加站点、线路和日历。",
+    "computing": "正在计算统计数据和校验…",
+    "import": "导入数据源",
+    "create": "创建数据源",
+    "imported": "数据源已导入",
+    "created": "数据源已创建",
+    "downloading": "正在从 {source} 下载…",
+    "downloadFailed": "无法从来源下载该数据源。",
+    "retry": "重试"
+  },
+  "overview": {
+    "openMap": "打开地图",
+    "startBuilding": "开始构建",
+    "busiestDay": "最繁忙日的车次",
+    "serviceSpan": "服务时段",
+    "emptyTitle": "该数据源仍是空的",
+    "emptyDescription": "添加站点和线路后，生成器会创建车次。",
+    "addStops": "添加站点",
+    "network": "线网",
+    "networkHint": "每条线路使用各自的颜色；站点大小按发车数缩放。",
+    "modes": "交通方式",
+    "calendar": "每日车次",
+    "calendarHint": "点击某一天，在日历中打开。",
+    "hours": "每小时发车数",
+    "hoursHint": "{date} 每小时开出的车次。",
+    "topStops": "最繁忙的站点",
+    "topStopsHint": "最繁忙日的发车数。",
+    "files": "数据源文件",
+    "filesHint": "点击文件，在编辑器中打开。",
+    "missingFile": "缺失"
+  },
+  "map": {
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "lines": "线路",
+    "hideStops": "隐藏站点",
+    "showStops": "显示站点",
+    "searchLines": "搜索线路",
+    "showAll": "全部显示",
+    "hideAll": "全部隐藏",
+    "only": "仅此线路",
+    "openStop": "打开站点",
+    "dailyDepartures": {
+      "other": "最繁忙日发车 {count} 班"
+    },
+    "legend": "{stops} 个站点 · {lines} 条线路 · 圆圈大小表示发车数"
+  },
+  "routes": {
+    "subtitle": "数据源中的所有线路，按乘客看到的方式分组。",
+    "search": "搜索线路",
+    "view": "视图",
+    "grid": "卡片",
+    "list": "列表",
+    "variants": {
+      "other": "{count} 个变体"
+    },
+    "emptyTitle": "还没有线路",
+    "emptyDescription": "请在数据编辑器中添加。",
+    "website": "网站",
+    "variantsOf": "{name} 的变体",
+    "allVariants": "显示全部（{count}）",
+    "fewerVariants": "收起",
+    "tripsOnDay": "当天车次",
+    "firstLast": "首末班",
+    "length": "长度",
+    "avgDuration": "平均时长",
+    "pattern": "走向",
+    "views": "线路视图",
+    "diagram": "示意图",
+    "timetable": "时刻表",
+    "marey": "Marey 图",
+    "noTrips": "该线路没有车次。",
+    "noTripsOnDay": "{date} 该走向没有车次。",
+    "stopTrip": "站点 / 车次",
+    "mareyHint": "横轴为时间，站点按距离排布：线条越陡，车次越快。点击线条可打开该车次。",
+    "serviceDays": "运营日",
+    "departuresByHour": "{date} 每小时发车数"
+  },
+  "stops": {
+    "subtitle": "按最繁忙日的发车数排序。",
+    "search": "搜索站点",
+    "emptyTitle": "还没有站点",
+    "emptyDescription": "请在数据编辑器中点击地图添加。",
+    "accessible": "无障碍",
+    "partOf": "所属",
+    "departures": "发车",
+    "terminates": "终到",
+    "noDepartures": "{date} 没有发车。",
+    "platforms": "站台",
+    "nearby": "附近站点"
+  },
+  "trips": {
+    "departure": "出发",
+    "arrival": "到达",
+    "duration": "时长",
+    "stopTimes": "停靠时间",
+    "noShape": "无线形：站点之间直线相连",
+    "serviceDays": "运行日",
+    "runs": "运行",
+    "doesNotRun": "不运行",
+    "noService": "任何一天都不运行。",
+    "block": "车辆班次 {block}",
+    "blockHint": "由同一辆车执行的车次。"
+  },
+  "calendar": {
+    "subtitle": "每天有多少车次运行，以及属于哪些服务。",
+    "tripsPerDay": "每日车次",
+    "pickDay": "点击某一天查看详情。",
+    "selected": {
+      "other": "{date}：{count} 个车次"
+    },
+    "services": "服务",
+    "servicesHint": {
+      "other": "{count} 个服务（calendar 和 calendar_dates）"
+    },
+    "search": "搜索服务",
+    "weekdays": "星期",
+    "period": "期间",
+    "exceptions": "例外",
+    "activeDays": "运行天数",
+    "onlyDates": "仅限特定日期",
+    "truncated": {
+      "other": "另有 {count} 个服务：请按名称搜索。"
+    }
+  },
+  "severity": {
+    "error": "错误",
+    "warning": "警告",
+    "info": "提示",
+    "errorPlural": "错误",
+    "warningPlural": "警告",
+    "infoPlural": "提示"
+  },
+  "units": {
+    "trips": {
+      "other": "{count} 个车次"
+    },
+    "departures": {
+      "other": "{count} 班发车"
+    },
+    "routes": {
+      "other": "{count} 条线路"
+    },
+    "lines": {
+      "other": "{count} 条线路"
+    },
+    "stops": {
+      "other": "{count} 个站点"
+    },
+    "rows": {
+      "other": "{count} 行"
+    },
+    "columns": {
+      "other": "{count} 列"
+    },
+    "days": {
+      "other": "{count} 天"
+    },
+    "cases": {
+      "other": "{count} 例"
+    },
+    "errors": {
+      "other": "{count} 个错误"
+    }
+  },
+  "modes": {
+    "tram": "有轨电车",
+    "subway": "地铁",
+    "rail": "铁路",
+    "bus": "公交",
+    "ferry": "渡轮",
+    "cableTram": "缆索电车",
+    "aerial": "空中索道",
+    "funicular": "缆索铁路",
+    "trolleybus": "无轨电车",
+    "monorail": "单轨",
+    "other": "其他"
+  },
+  "tables": {
+    "agency": "运营机构",
+    "stops": "站点",
+    "routes": "线路",
+    "trips": "车次",
+    "stop_times": "停靠时间",
+    "calendar": "日历",
+    "calendar_dates": "日历日期",
+    "shapes": "线形",
+    "frequencies": "发车间隔",
+    "transfers": "换乘",
+    "feed_info": "数据源信息"
+  },
+  "validation": {
+    "subtitle": "对整个数据源进行 GTFS 规范检查。",
+    "allGood": "没有错误或警告",
+    "allGoodHint": "该数据源通过了所有检查。",
+    "wholeFeed": "整个数据源",
+    "missingAgency": "agency.txt 缺失或为空",
+    "missingStops": "stops.txt 缺失或为空",
+    "missingRoutes": "routes.txt 缺失或为空",
+    "missingTrips": "trips.txt 缺失或为空",
+    "missingStopTimes": "stop_times.txt 缺失或为空",
+    "missingCalendar": "calendar.txt 和 calendar_dates.txt 均不存在",
+    "agencyMissingFields": "缺少名称、URL 或时区的运营机构",
+    "agencyIdRequired": "存在多个运营机构时必须填写 agency_id",
+    "routeUnknownAgency": "运营机构未知的线路",
+    "routeWithoutName": "没有短名称或长名称的线路",
+    "routeWithoutType": "没有 route_type 的线路",
+    "routeColorContrast": "颜色与文字对比度过低的线路",
+    "routeWithoutTrips": "没有车次的线路",
+    "stopWithoutCoordinates": "没有坐标的站点",
+    "stopAtNullIsland": "位于 0,0 的站点",
+    "stopWithoutName": "没有名称的站点",
+    "stopUnknownParent": "父车站未知的站点",
+    "stopUnused": "没有车次经过的站点",
+    "tripUnknownRoute": "线路未知的车次",
+    "tripUnknownService": "服务未知的车次",
+    "tripUnknownShape": "线形未知的车次",
+    "tripTooFewStops": "站点少于两个的车次",
+    "stopTimeUnknownTrip": "对应车次未知的停靠时间",
+    "stopTimeUnknownStop": "对应站点未知的停靠时间",
+    "stopTimeArrivalAfterDeparture": "到达时间晚于出发时间",
+    "stopTimeGoesBackwards": "同一车次内时间倒退",
+    "stopTimeEndpointWithoutTime": "首站或末站没有时间",
+    "stopTimeTooFast": "速度超过 350 km/h 的区间",
+    "serviceWithoutDays": "没有运行日的服务",
+    "serviceEndBeforeStart": "结束早于开始的服务",
+    "feedExpired": "数据源已过期",
+    "shapeTooFewPoints": "点数少于两个的线形",
+    "transferUnknownStop": "站点未知的换乘"
+  },
+  "data": {
+    "subtitle": "逐行编辑数据源中的任意文件。",
+    "required": "必填",
+    "optional": "可选",
+    "add": "添加行",
+    "editRow": "编辑行",
+    "newRow": "新行",
+    "search": "搜索此文件",
+    "empty": "此文件为空",
+    "emptyHint": "添加第一行。",
+    "page": "第 {from}–{to} 条，共 {total} 条",
+    "saved": "行已保存",
+    "created": "行已添加",
+    "deleted": "行已删除",
+    "deleteConfirm": "删除此行？此操作无法撤销。",
+    "fieldRequired": "此字段为必填项",
+    "fieldInvalid": "此值无效",
+    "pickOnMap": "点击地图以放置站点",
+    "extraColumns": "额外列",
+    "columns": "列",
+    "timeHint": "HH:MM:SS（可超过 24 小时）",
+    "dateHint": "YYYYMMDD",
+    "colorHint": "十六进制，不含 #",
+    "noValue": "（空）",
+    "conflict": "已存在具有此标识符的行。"
+  },
+  "generator": {
+    "subtitle": "一次性创建某条线路的所有车次：有序站点、运行时间和发车间隔。",
+    "line": "线路和服务",
+    "route": "线路",
+    "service": "服务",
+    "headsign": "车头标识",
+    "direction": "方向",
+    "noDirection": "无方向",
+    "stops": "沿途站点",
+    "searchStop": "搜索站点并添加",
+    "mapHint": "也可以在地图上点击站点，按顺序添加。",
+    "travel": "距上一站的分钟数",
+    "remove": "移除站点",
+    "moveUp": "上移",
+    "moveDown": "下移",
+    "schedule": "时刻安排",
+    "first": "首班发车",
+    "last": "末班发车",
+    "headway": "每隔（分钟）",
+    "dwell": "每站停留（分钟）",
+    "prefix": "车次 ID 前缀",
+    "createShape": "在站点之间创建直线线形",
+    "preview": "预览",
+    "previewSummary": "{trips} 个车次 · 运行时间 {duration} · 末班到达 {arrival}",
+    "generate": "生成车次",
+    "generated": "已创建 {trips} 个车次和 {stopTimes} 条停靠时间",
+    "needData": "需要先有线路、服务和站点",
+    "needDataHint": "请在数据编辑器中创建（线路、日历和站点），然后回到这里。",
+    "errors": {
+      "unknownRoute": "该线路不存在。",
+      "unknownService": "该服务不存在。",
+      "unknownStop": "有站点不存在。",
+      "tripIdTaken": "已存在使用此前缀和时间的车次：请更改前缀。",
+      "badWindow": "末班发车早于首班。",
+      "lengthMismatch": "缺少运行时间。"
+    }
+  },
+  "catalog": {
+    "title": "公共 GTFS 目录",
+    "subtitle": "来自真实运营商的开放数据源，已检查且服务有效。导入一个即可开始浏览。",
+    "count": {
+      "other": "{count} 个数据源"
+    },
+    "import": "导入",
+    "open": "打开",
+    "reimport": "重新导入",
+    "imported": "已导入",
+    "source": "来源",
+    "updated": "发布于 {when}",
+    "available": "可用",
+    "unavailable": "目前无响应",
+    "checking": "正在检查来源…",
+    "browse": "浏览目录",
+    "logosCredit": "品牌标志矢量图，来自 Wikimedia Commons：",
+    "license": {
+      "pd": "公有领域",
+      "cc0": "CC0"
+    },
+    "search": "按运营商、城市或国家搜索",
+    "country": "国家",
+    "allCountries": "所有国家",
+    "noResults": "目录中没有符合搜索条件的数据源。"
+  },
+  "fields": {
+    "agency_id": "机构 ID",
+    "agency_name": "机构名称",
+    "agency_url": "机构 URL",
+    "agency_timezone": "时区",
+    "agency_lang": "语言",
+    "agency_phone": "电话",
+    "agency_fare_url": "票价 URL",
+    "agency_email": "电子邮件",
+    "stop_id": "站点 ID",
+    "stop_code": "编码",
+    "stop_name": "站点名称",
+    "tts_stop_name": "语音朗读名称",
+    "stop_desc": "描述",
+    "stop_lat": "纬度",
+    "stop_lon": "经度",
+    "zone_id": "区域",
+    "stop_url": "URL",
+    "location_type": "位置类型",
+    "parent_station": "父车站",
+    "stop_timezone": "时区",
+    "wheelchair_boarding": "轮椅上车",
+    "level_id": "楼层",
+    "platform_code": "站台",
+    "route_id": "线路 ID",
+    "route_short_name": "短名称",
+    "route_long_name": "长名称",
+    "route_desc": "描述",
+    "route_type": "类型",
+    "route_url": "URL",
+    "route_color": "颜色",
+    "route_text_color": "文字颜色",
+    "route_sort_order": "排序",
+    "continuous_pickup": "连续上车",
+    "continuous_drop_off": "连续下车",
+    "network_id": "线网",
+    "service_id": "服务",
+    "trip_id": "车次 ID",
+    "trip_headsign": "车头标识",
+    "trip_short_name": "短名称",
+    "direction_id": "方向",
+    "block_id": "车辆班次",
+    "shape_id": "线形",
+    "wheelchair_accessible": "轮椅无障碍",
+    "bikes_allowed": "允许携带自行车",
+    "arrival_time": "到达",
+    "departure_time": "出发",
+    "stop_sequence": "顺序",
+    "stop_headsign": "站点车头标识",
+    "pickup_type": "上车",
+    "drop_off_type": "下车",
+    "shape_dist_traveled": "行驶距离",
+    "timepoint": "时间点",
+    "monday": "星期一",
+    "tuesday": "星期二",
+    "wednesday": "星期三",
+    "thursday": "星期四",
+    "friday": "星期五",
+    "saturday": "星期六",
+    "sunday": "星期日",
+    "start_date": "开始日期",
+    "end_date": "结束日期",
+    "date": "日期",
+    "exception_type": "例外",
+    "shape_pt_lat": "纬度",
+    "shape_pt_lon": "经度",
+    "shape_pt_sequence": "顺序",
+    "start_time": "开始时间",
+    "end_time": "结束时间",
+    "headway_secs": "发车间隔（秒）",
+    "exact_times": "精确时间",
+    "from_stop_id": "起始站点",
+    "to_stop_id": "目的站点",
+    "from_route_id": "起始线路",
+    "to_route_id": "目的线路",
+    "from_trip_id": "起始车次",
+    "to_trip_id": "目的车次",
+    "transfer_type": "换乘类型",
+    "min_transfer_time": "最短换乘时间（秒）",
+    "feed_publisher_name": "发布者",
+    "feed_publisher_url": "发布者 URL",
+    "feed_lang": "语言",
+    "default_lang": "默认语言",
+    "feed_start_date": "有效期起",
+    "feed_end_date": "有效期至",
+    "feed_version": "版本",
+    "feed_contact_email": "联系邮箱",
+    "feed_contact_url": "联系 URL"
+  },
+  "enums": {
+    "location_type": {
+      "0": "站点或站台",
+      "1": "车站",
+      "2": "出入口",
+      "3": "通用节点",
+      "4": "上车区域"
+    },
+    "wheelchair_boarding": {
+      "0": "0 · 无信息",
+      "1": "1 · 是",
+      "2": "2 · 否"
+    },
+    "wheelchair_accessible": {
+      "0": "0 · 无信息",
+      "1": "1 · 是",
+      "2": "2 · 否"
+    },
+    "bikes_allowed": {
+      "0": "0 · 无信息",
+      "1": "1 · 是",
+      "2": "2 · 否"
+    },
+    "continuous_pickup": {
+      "0": "0 · 连续",
+      "1": "1 · 无",
+      "2": "2 · 电话联系机构",
+      "3": "3 · 询问司机"
+    },
+    "continuous_drop_off": {
+      "0": "0 · 连续",
+      "1": "1 · 无",
+      "2": "2 · 电话联系机构",
+      "3": "3 · 询问司机"
+    },
+    "pickup_type": {
+      "0": "0 · 常规",
+      "1": "1 · 无",
+      "2": "2 · 电话联系机构",
+      "3": "3 · 询问司机"
+    },
+    "drop_off_type": {
+      "0": "0 · 常规",
+      "1": "1 · 无",
+      "2": "2 · 电话联系机构",
+      "3": "3 · 询问司机"
+    },
+    "direction_id": {
+      "0": "去程",
+      "1": "回程"
+    },
+    "timepoint": {
+      "0": "0 · 大致",
+      "1": "1 · 精确"
+    },
+    "exact_times": {
+      "0": "0 · 按发车间隔",
+      "1": "1 · 精确时刻表"
+    },
+    "exception_type": {
+      "1": "1 · 增加服务",
+      "2": "2 · 取消服务"
+    },
+    "transfer_type": {
+      "0": "0 · 推荐",
+      "1": "1 · 定时",
+      "2": "2 · 最短时间",
+      "3": "3 · 不可换乘",
+      "4": "4 · 原车换乘",
+      "5": "5 · 必须下车"
+    },
+    "monday": {
+      "0": "0 · 不运行",
+      "1": "1 · 运行"
+    },
+    "tuesday": {
+      "0": "0 · 不运行",
+      "1": "1 · 运行"
+    },
+    "wednesday": {
+      "0": "0 · 不运行",
+      "1": "1 · 运行"
+    },
+    "thursday": {
+      "0": "0 · 不运行",
+      "1": "1 · 运行"
+    },
+    "friday": {
+      "0": "0 · 不运行",
+      "1": "1 · 运行"
+    },
+    "saturday": {
+      "0": "0 · 不运行",
+      "1": "1 · 运行"
+    },
+    "sunday": {
+      "0": "0 · 不运行",
+      "1": "1 · 运行"
+    }
+  },
+  "seo": {
+    "homeTitle": "在线 GTFS 查看器、编辑器和验证器 | GTFS Manager",
+    "homeDescription": "在浏览器中查看、编辑和验证 GTFS 数据：交互式线网地图、线路图、时刻表、Marey 运行图、规范校验以及 ZIP 导出。",
+    "catalogDescription": "来自世界各地运营商的开放、有效的 GTFS 数据源目录：FGC、Renfe、SNCF、VBB、Ruter、MTA、TTC、Transperth。查看状态并导入。",
+    "catalogEntryTitle": "{name} GTFS 数据源",
+    "catalogEntryDescription": "{operator}（{region}）的开放 GTFS 数据源。查看其官方来源和发布状态，并导入后浏览线路、站点和时刻表。"
+  },
+  "landing": {
+    "title": "查看、编辑和验证 GTFS 数据",
+    "lead": "导入 GTFS 数据源，即可查看线网地图、线路图、时刻表和 Marey 运行图。根据规范校验并修正后，再导出为 ZIP。",
+    "openEditor": "打开编辑器",
+    "importFeed": "导入数据源",
+    "featuresTitle": "功能",
+    "features": {
+      "import": {
+        "title": "导入大型数据源",
+        "body": "上传 GTFS ZIP 或文件夹。导入时按流处理文件，可处理 Renfe Cercanías 这类拥有近两百万条停靠时间的数据源。"
+      },
+      "visualize": {
+        "title": "看清线网",
+        "body": "每条线路和每个站点的地图、各线路示意图、时刻表、Marey 图和运营日历。"
+      },
+      "edit": {
+        "title": "编辑任意文件",
+        "body": "为每张 GTFS 表提供编辑器，支持字段校验、跨文件引用和搜索。"
+      },
+      "generate": {
+        "title": "生成车次",
+        "body": "根据站点、站间分钟数和发车间隔，创建一条线路的所有车次。"
+      },
+      "validate": {
+        "title": "校验数据源",
+        "body": "对整个数据源进行 GTFS 规范检查，每个问题都有直达链接，方便修正。"
+      },
+      "export": {
+        "title": "导出为 ZIP",
+        "body": "重新生成 GTFS ZIP，并保留原数据源中的额外列。"
+      }
+    },
+    "catalogTitle": "公开数据源目录",
+    "catalogText": "来自世界各地运营商、服务仍在有效期内的开放数据源。选择一个并导入即可浏览。",
+    "filesTitle": "可编辑的 GTFS 文件",
+    "filesText": "GTFS Schedule 的核心文件可逐字段编辑和校验。无法识别的列会在导出时保留。",
+    "faqTitle": "常见问题",
+    "faq": {
+      "what": {
+        "q": "什么是 GTFS 数据源？",
+        "a": "GTFS（General Transit Feed Specification）是交通运营商用来发布线路、站点、时刻表和日历的开放格式。它是一组文本文件打包成的 ZIP，供出行规划器和出行应用使用。"
+      },
+      "create": {
+        "q": "可以从零创建 GTFS 数据源吗？",
+        "a": "可以。创建一个带运营机构的空白数据源，在编辑器中添加站点、线路和日历，再用生成器创建车次和停靠时间。"
+      },
+      "validate": {
+        "q": "数据源如何校验？",
+        "a": "GTFS Manager 会检查整个数据源：必需的文件和字段、文件之间的引用、倒流或过快的到发时间、缺少坐标或无服务的站点、已过期的日历以及线路颜色的对比度。每条提示都链接到相关记录。"
+      },
+      "large": {
+        "q": "能处理大型数据源吗？",
+        "a": "可以。导入时按流处理文件，并将数据存入 PostgreSQL。像 Renfe Cercanías 这样拥有超过 130,000 个车次的数据源，也能完整导入和浏览。"
+      },
+      "data": {
+        "q": "数据存放在哪里？",
+        "a": "保存在运行 GTFS Manager 的服务器上的 PostgreSQL 数据库中。数据源不会发送给任何外部服务。"
+      },
+      "export": {
+        "q": "可以再次导出数据源吗？",
+        "a": "可以，随时都行。导出会生成包含所有文件的 GTFS ZIP，并保留原数据源中的额外列。"
+      }
+    },
+    "network": {
+      "label": "动画：工作日 7 点至 10 点 FGC 列车在巴塞罗那地区线网上运行",
+      "caption": "工作日 7 点至 10 点的 FGC 列车，数据来自其开放的 GTFS 数据源。每秒代表三分钟。",
+      "pause": "暂停动画",
+      "play": "继续动画"
+    }
+  },
+  "catalogEntry": {
+    "intro": "{operator} 的开放 GTFS 数据源，服务现行。导入后可浏览其线网、时刻表和日历，也可从官方来源下载。",
+    "operator": "运营商",
+    "area": "地区",
+    "modes": "交通方式",
+    "status": "来源状态",
+    "officialSource": "官方来源",
+    "download": "下载 ZIP",
+    "whatTitle": "您可以用它做什么",
+    "what": {
+      "map": "在地图上查看每条线路和每个站点。",
+      "lines": "查看每条线路的示意图、时刻表和 Marey 图。",
+      "validate": "校验数据，并重新导出为 ZIP。"
+    },
+    "moreTitle": "目录中的更多数据源",
+    "details": "数据源详情"
+  }
+}

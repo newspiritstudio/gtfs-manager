@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
@@ -20,18 +16,10 @@
     "noFallthroughCasesInSwitch": true,
     "incremental": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@shared/*": [
-        "./shared/*"
-      ]
+      "@/*": ["./src/*"],
+      "@shared/*": ["./shared/*"]
     },
-    "types": [
-      "vitest/globals",
-      "node",
-      "@testing-library/jest-dom"
-    ],
+    "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
     "plugins": [
       {
         "name": "next"
@@ -40,16 +28,6 @@
     "moduleDetection": "force",
     "allowJs": true
   },
-  "include": [
-    "app",
-    "next-env.d.ts",
-    "src",
-    "shared",
-    "scripts",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["app", "next-env.d.ts", "src", "shared", "scripts", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

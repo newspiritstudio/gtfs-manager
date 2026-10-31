@@ -1,0 +1,715 @@
+{
+  "app": {
+    "description": "公共交通の GTFS フィードを作成・編集・可視化します。"
+  },
+  "nav": {
+    "feeds": "フィード",
+    "allFeeds": "すべてのフィード",
+    "overview": "概要",
+    "map": "地図",
+    "routes": "路線",
+    "stops": "停留所",
+    "calendar": "カレンダー",
+    "validation": "検証",
+    "data": "データ",
+    "generator": "ジェネレーター",
+    "more": "その他",
+    "breadcrumbs": "パンくずリスト",
+    "main": "メインナビゲーション",
+    "sections": "フィードのセクション",
+    "openMenu": "メニューを開く",
+    "skipToContent": "本文へスキップ",
+    "catalog": "カタログ",
+    "home": "ホーム"
+  },
+  "theme": {
+    "switch": "テーマ：{theme}",
+    "system": "システム",
+    "light": "ライト",
+    "dark": "ダーク"
+  },
+  "language": {
+    "label": "言語"
+  },
+  "common": {
+    "all": "すべて",
+    "close": "閉じる",
+    "date": "日付",
+    "nextDay": "翌日",
+    "previousDay": "前日",
+    "noResults": "結果がありません。",
+    "seeAll": "すべて表示",
+    "showMore": "もっと見る",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "clearSearch": "検索をクリア",
+    "retry": "再試行",
+    "delete": "削除",
+    "edit": "編集",
+    "previous": "前へ",
+    "next": "次へ"
+  },
+  "charts": {
+    "less": "少",
+    "more": "多",
+    "max": "最大：{value}"
+  },
+  "errors": {
+    "database": "データベースに接続できません",
+    "databaseHint": ".env.local の DATABASE_URL と、PostgreSQL が起動していることを確認してください。",
+    "generic": "問題が発生しました。もう一度お試しください。",
+    "invalidForm": "ハイライトされた項目を確認してください。",
+    "notFound": "ページが見つかりません",
+    "notFoundHint": "フィード、路線、または停留所が既に存在しない可能性があります。"
+  },
+  "feed": {
+    "name": "名前",
+    "description": "説明",
+    "export": "GTFS をエクスポート",
+    "trips": "便"
+  },
+  "feeds": {
+    "title": "GTFS フィード",
+    "subtitle": "管理している時刻表を一か所にまとめます。",
+    "new": "新規フィード",
+    "noAgency": "事業者なし",
+    "valid": "有効",
+    "statsPending": "開くと数値が計算されます。",
+    "emptyTitle": "フィードはまだありません",
+    "emptyDescription": "GTFS のフォルダーまたは ZIP をインポートするか、ゼロから作成します。"
+  },
+  "newFeed": {
+    "subtitle": "既存の GTFS をインポートするか、新規に作成します。",
+    "mode": "開始方法",
+    "modeImport": "インポート",
+    "modeBlank": "ゼロから作成",
+    "importTitle": "GTFS フォルダーをインポート",
+    "importSubtitle": "フォルダーまたは ZIP 内の .txt ファイル。",
+    "blankTitle": "新しいフィード",
+    "blankSubtitle": "まず事業者を設定し、続けて停留所、路線、便を追加します。",
+    "dropTitle": "フォルダーまたは ZIP をここにドロップ",
+    "dropHint": "ファイルは進捗を表示しながら 1 つずつアップロードされます。数百 MB の stop_times も扱えます。",
+    "pickFolder": "フォルダーを選択",
+    "pickZip": "ZIP を選択",
+    "zipError": "ZIP を読み込めませんでした。",
+    "noTxt": ".txt ファイルが見つかりません。",
+    "rows": {
+      "other": "{count} 行"
+    },
+    "columns": {
+      "other": "{count} 列"
+    },
+    "duplicates": {
+      "other": "重複 {count} 件"
+    },
+    "extraFile": "追加ファイル",
+    "processing": "処理中…",
+    "done": "完了",
+    "failed": "失敗",
+    "agency": "事業者",
+    "summary": "サマリー",
+    "files": "ファイル",
+    "size": "サイズ",
+    "blankNext": "作成後はデータエディターに移動し、停留所、路線、カレンダーを追加できます。",
+    "computing": "数値と検証を計算しています…",
+    "import": "フィードをインポート",
+    "create": "フィードを作成",
+    "imported": "フィードをインポートしました",
+    "created": "フィードを作成しました",
+    "downloading": "{source} からダウンロード中…",
+    "downloadFailed": "提供元からフィードをダウンロードできませんでした。",
+    "retry": "再試行"
+  },
+  "overview": {
+    "openMap": "地図を開く",
+    "startBuilding": "作成を始める",
+    "busiestDay": "最多運行日の便数",
+    "serviceSpan": "運行時間帯",
+    "emptyTitle": "このフィードはまだ空です",
+    "emptyDescription": "停留所と路線を追加すると、ジェネレーターが便を作成します。",
+    "addStops": "停留所を追加",
+    "network": "路線網",
+    "networkHint": "各路線を路線色で表示し、停留所は発車数に応じた大きさで表示します。",
+    "modes": "交通モード",
+    "calendar": "日別の便数",
+    "calendarHint": "日をクリックすると、カレンダーで開きます。",
+    "hours": "時間帯別の発車数",
+    "hoursHint": "{date} に各時間帯に出発する便。",
+    "topStops": "最も発車の多い停留所",
+    "topStopsHint": "最多運行日の発車数。",
+    "files": "フィードのファイル",
+    "filesHint": "クリックすると、エディターで開きます。",
+    "missingFile": "なし"
+  },
+  "map": {
+    "zoomIn": "拡大",
+    "zoomOut": "縮小",
+    "lines": "路線",
+    "hideStops": "停留所を非表示",
+    "showStops": "停留所を表示",
+    "searchLines": "路線を検索",
+    "showAll": "すべて表示",
+    "hideAll": "すべて非表示",
+    "only": "この路線のみ",
+    "openStop": "停留所を開く",
+    "dailyDepartures": {
+      "other": "最多運行日に {count} 本発車"
+    },
+    "legend": "停留所 {stops} · 路線 {lines} · 円の大きさは発車数を表します"
+  },
+  "routes": {
+    "subtitle": "フィード内のすべての路線を、利用者に見える単位でグループ化して表示します。",
+    "search": "路線を検索",
+    "view": "表示",
+    "grid": "カード",
+    "list": "リスト",
+    "variants": {
+      "other": "バリアント {count} 件"
+    },
+    "emptyTitle": "路線はまだありません",
+    "emptyDescription": "データエディターから追加してください。",
+    "website": "ウェブサイト",
+    "variantsOf": "{name} のバリアント",
+    "allVariants": "すべて表示（{count}）",
+    "fewerVariants": "表示を減らす",
+    "tripsOnDay": "この日の便",
+    "firstLast": "始発・終発",
+    "length": "距離",
+    "avgDuration": "平均所要時間",
+    "pattern": "運行パターン",
+    "views": "路線の表示",
+    "diagram": "路線図",
+    "timetable": "時刻表",
+    "marey": "マレー図",
+    "noTrips": "この路線には便がありません。",
+    "noTripsOnDay": "{date} にこのパターンの便はありません。",
+    "stopTrip": "停留所 / 便",
+    "mareyHint": "横軸は時間、停留所は距離に応じて配置されます。線が急なほど速い便です。クリックすると便を開きます。",
+    "serviceDays": "運行日",
+    "departuresByHour": "{date} の時間帯別発車数"
+  },
+  "stops": {
+    "subtitle": "最多運行日の発車数順。",
+    "search": "停留所を検索",
+    "emptyTitle": "停留所はまだありません",
+    "emptyDescription": "データエディターで地図をクリックして追加してください。",
+    "accessible": "バリアフリー",
+    "partOf": "所属",
+    "departures": "発車",
+    "terminates": "終着",
+    "noDepartures": "{date} に発車はありません。",
+    "platforms": "のりば",
+    "nearby": "近くの停留所"
+  },
+  "trips": {
+    "departure": "出発",
+    "arrival": "到着",
+    "duration": "所要時間",
+    "stopTimes": "停車時刻",
+    "noShape": "シェイプなし：停留所間を直線で結びます",
+    "serviceDays": "運行日",
+    "runs": "運行する",
+    "doesNotRun": "運行しない",
+    "noService": "どの日にも運行しません。",
+    "block": "ブロック {block}",
+    "blockHint": "同じ車両が運行する便。"
+  },
+  "calendar": {
+    "subtitle": "日ごとの運行便数と、どのサービスで運行されるか。",
+    "tripsPerDay": "日別の便数",
+    "pickDay": "日をクリックすると詳細が表示されます。",
+    "selected": {
+      "other": "{date}：{count} 便"
+    },
+    "services": "サービス",
+    "servicesHint": {
+      "other": "{count} サービス（calendar と calendar_dates）"
+    },
+    "search": "サービスを検索",
+    "weekdays": "曜日",
+    "period": "期間",
+    "exceptions": "例外",
+    "activeDays": "運行日数",
+    "onlyDates": "特定の日付のみ",
+    "truncated": {
+      "other": "ほか {count} サービス：名前で検索してください。"
+    }
+  },
+  "severity": {
+    "error": "エラー",
+    "warning": "警告",
+    "info": "お知らせ",
+    "errorPlural": "エラー",
+    "warningPlural": "警告",
+    "infoPlural": "お知らせ"
+  },
+  "units": {
+    "trips": {
+      "other": "{count} 便"
+    },
+    "departures": {
+      "other": "{count} 本発車"
+    },
+    "routes": {
+      "other": "{count} 路線"
+    },
+    "lines": {
+      "other": "{count} 路線"
+    },
+    "stops": {
+      "other": "{count} 停留所"
+    },
+    "rows": {
+      "other": "{count} 行"
+    },
+    "columns": {
+      "other": "{count} 列"
+    },
+    "days": {
+      "other": "{count} 日"
+    },
+    "cases": {
+      "other": "{count} 件"
+    },
+    "errors": {
+      "other": "エラー {count} 件"
+    }
+  },
+  "modes": {
+    "tram": "路面電車",
+    "subway": "地下鉄",
+    "rail": "鉄道",
+    "bus": "バス",
+    "ferry": "フェリー",
+    "cableTram": "ケーブルトラム",
+    "aerial": "ロープウェイ",
+    "funicular": "ケーブルカー",
+    "trolleybus": "トロリーバス",
+    "monorail": "モノレール",
+    "other": "その他"
+  },
+  "tables": {
+    "agency": "事業者",
+    "stops": "停留所",
+    "routes": "路線",
+    "trips": "便",
+    "stop_times": "停車時刻",
+    "calendar": "カレンダー",
+    "calendar_dates": "カレンダー日付",
+    "shapes": "シェイプ",
+    "frequencies": "運行間隔",
+    "transfers": "乗り換え",
+    "feed_info": "フィード情報"
+  },
+  "validation": {
+    "subtitle": "フィード全体の GTFS 仕様チェック。",
+    "allGood": "エラーも警告もありません",
+    "allGoodHint": "このフィードはすべてのチェックに合格しています。",
+    "wholeFeed": "フィード全体",
+    "missingAgency": "agency.txt がないか、空です",
+    "missingStops": "stops.txt がないか、空です",
+    "missingRoutes": "routes.txt がないか、空です",
+    "missingTrips": "trips.txt がないか、空です",
+    "missingStopTimes": "stop_times.txt がないか、空です",
+    "missingCalendar": "calendar.txt も calendar_dates.txt もありません",
+    "agencyMissingFields": "名前、URL、タイムゾーンのいずれかがない事業者",
+    "agencyIdRequired": "複数の事業者がある場合は agency_id が必須です",
+    "routeUnknownAgency": "事業者が不明な路線",
+    "routeWithoutName": "短い名前も長い名前もない路線",
+    "routeWithoutType": "route_type がない路線",
+    "routeColorContrast": "色と文字色のコントラストが低い路線",
+    "routeWithoutTrips": "便がない路線",
+    "stopWithoutCoordinates": "座標がない停留所",
+    "stopAtNullIsland": "0,0 にある停留所",
+    "stopWithoutName": "名前がない停留所",
+    "stopUnknownParent": "親駅が不明な停留所",
+    "stopUnused": "どの便も停車しない停留所",
+    "tripUnknownRoute": "路線が不明な便",
+    "tripUnknownService": "サービスが不明な便",
+    "tripUnknownShape": "シェイプが不明な便",
+    "tripTooFewStops": "停留所が 2 つ未満の便",
+    "stopTimeUnknownTrip": "便が不明な停車時刻",
+    "stopTimeUnknownStop": "停留所が不明な停車時刻",
+    "stopTimeArrivalAfterDeparture": "到着が出発より後",
+    "stopTimeGoesBackwards": "便の中で時刻が逆戻り",
+    "stopTimeEndpointWithoutTime": "最初または最後の停留所に時刻がない",
+    "stopTimeTooFast": "時速 350 km/h を超える区間",
+    "serviceWithoutDays": "運行日がないサービス",
+    "serviceEndBeforeStart": "終了が開始より前のサービス",
+    "feedExpired": "フィードの有効期限が切れています",
+    "shapeTooFewPoints": "点が 2 つ未満のシェイプ",
+    "transferUnknownStop": "停留所が不明な乗り換え"
+  },
+  "data": {
+    "subtitle": "フィードのファイルを行単位で編集します。",
+    "required": "必須",
+    "optional": "任意",
+    "add": "行を追加",
+    "editRow": "行を編集",
+    "newRow": "新しい行",
+    "search": "このファイルを検索",
+    "empty": "このファイルは空です",
+    "emptyHint": "最初の行を追加してください。",
+    "page": "{from}–{to} / {total}",
+    "saved": "行を保存しました",
+    "created": "行を追加しました",
+    "deleted": "行を削除しました",
+    "deleteConfirm": "この行を削除しますか？この操作は元に戻せません。",
+    "fieldRequired": "この項目は必須です",
+    "fieldInvalid": "この値は無効です",
+    "pickOnMap": "地図をクリックして停留所を配置",
+    "extraColumns": "追加の列",
+    "columns": "列",
+    "timeHint": "HH:MM:SS（24 時間を超えても可）",
+    "dateHint": "YYYYMMDD",
+    "colorHint": "# なしの 16 進数",
+    "noValue": "（空）",
+    "conflict": "この識別子の行は既に存在します。"
+  },
+  "generator": {
+    "subtitle": "路線の全便を一度に作成します。停留所の順序、所要時間、運行間隔を指定します。",
+    "line": "路線とサービス",
+    "route": "路線",
+    "service": "サービス",
+    "headsign": "行先表示",
+    "direction": "方向",
+    "noDirection": "方向なし",
+    "stops": "経由する停留所",
+    "searchStop": "停留所を検索して追加",
+    "mapHint": "地図上で停留所をクリックして、順番に追加することもできます。",
+    "travel": "前の停留所からの分数",
+    "remove": "停留所を削除",
+    "moveUp": "上へ移動",
+    "moveDown": "下へ移動",
+    "schedule": "運行スケジュール",
+    "first": "始発",
+    "last": "終発",
+    "headway": "間隔（分）",
+    "dwell": "各停留所での停車時間（分）",
+    "prefix": "便 ID のプレフィックス",
+    "createShape": "停留所間を結ぶ直線のシェイプを作成",
+    "preview": "プレビュー",
+    "previewSummary": "{trips} 便 · 所要時間 {duration} · 最終到着 {arrival}",
+    "generate": "便を生成",
+    "generated": "{trips} 便と停車時刻 {stopTimes} 件を作成しました",
+    "needData": "先に路線、サービス、停留所が必要です",
+    "needDataHint": "データエディター（路線、カレンダー、停留所）で作成してから、戻ってきてください。",
+    "errors": {
+      "unknownRoute": "路線が存在しません。",
+      "unknownService": "サービスが存在しません。",
+      "unknownStop": "存在しない停留所があります。",
+      "tripIdTaken": "このプレフィックスと時刻の便が既に存在します。プレフィックスを変更してください。",
+      "badWindow": "終発が始発より前です。",
+      "lengthMismatch": "所要時間が不足しています。"
+    }
+  },
+  "catalog": {
+    "title": "公開 GTFS カタログ",
+    "subtitle": "実在する事業者のオープンフィードで、確認済みかつ現行のものです。インポートして中身を確認できます。",
+    "count": {
+      "other": "{count} フィード"
+    },
+    "import": "インポート",
+    "open": "開く",
+    "reimport": "再インポート",
+    "imported": "インポート済み",
+    "source": "提供元",
+    "updated": "{when} 公開",
+    "available": "利用可能",
+    "unavailable": "現在応答がありません",
+    "checking": "提供元を確認しています…",
+    "browse": "カタログを見る",
+    "logosCredit": "ブランドシンボル（ベクター）：Wikimedia Commons より",
+    "license": {
+      "pd": "パブリックドメイン",
+      "cc0": "CC0"
+    },
+    "search": "事業者・都市・国で検索",
+    "country": "国",
+    "allCountries": "すべての国",
+    "noResults": "検索に一致するフィードはカタログにありません。"
+  },
+  "fields": {
+    "agency_id": "事業者 ID",
+    "agency_name": "事業者名",
+    "agency_url": "事業者 URL",
+    "agency_timezone": "タイムゾーン",
+    "agency_lang": "言語",
+    "agency_phone": "電話番号",
+    "agency_fare_url": "運賃 URL",
+    "agency_email": "メールアドレス",
+    "stop_id": "停留所 ID",
+    "stop_code": "コード",
+    "stop_name": "停留所名",
+    "tts_stop_name": "音声読み上げ名",
+    "stop_desc": "説明",
+    "stop_lat": "緯度",
+    "stop_lon": "経度",
+    "zone_id": "ゾーン",
+    "stop_url": "URL",
+    "location_type": "地点タイプ",
+    "parent_station": "親駅",
+    "stop_timezone": "タイムゾーン",
+    "wheelchair_boarding": "車いすでの乗車",
+    "level_id": "階層",
+    "platform_code": "のりば",
+    "route_id": "路線 ID",
+    "route_short_name": "短い名前",
+    "route_long_name": "長い名前",
+    "route_desc": "説明",
+    "route_type": "種類",
+    "route_url": "URL",
+    "route_color": "色",
+    "route_text_color": "文字色",
+    "route_sort_order": "並び順",
+    "continuous_pickup": "連続乗車",
+    "continuous_drop_off": "連続降車",
+    "network_id": "路線網",
+    "service_id": "サービス",
+    "trip_id": "便 ID",
+    "trip_headsign": "行先表示",
+    "trip_short_name": "短い名前",
+    "direction_id": "方向",
+    "block_id": "ブロック",
+    "shape_id": "シェイプ",
+    "wheelchair_accessible": "車いす対応",
+    "bikes_allowed": "自転車持ち込み可",
+    "arrival_time": "到着",
+    "departure_time": "出発",
+    "stop_sequence": "順序",
+    "stop_headsign": "停留所の行先表示",
+    "pickup_type": "乗車",
+    "drop_off_type": "降車",
+    "shape_dist_traveled": "走行距離",
+    "timepoint": "タイムポイント",
+    "monday": "月曜日",
+    "tuesday": "火曜日",
+    "wednesday": "水曜日",
+    "thursday": "木曜日",
+    "friday": "金曜日",
+    "saturday": "土曜日",
+    "sunday": "日曜日",
+    "start_date": "開始日",
+    "end_date": "終了日",
+    "date": "日付",
+    "exception_type": "例外",
+    "shape_pt_lat": "緯度",
+    "shape_pt_lon": "経度",
+    "shape_pt_sequence": "順序",
+    "start_time": "開始時刻",
+    "end_time": "終了時刻",
+    "headway_secs": "運行間隔（秒）",
+    "exact_times": "正確な時刻",
+    "from_stop_id": "乗り換え元の停留所",
+    "to_stop_id": "乗り換え先の停留所",
+    "from_route_id": "乗り換え元の路線",
+    "to_route_id": "乗り換え先の路線",
+    "from_trip_id": "乗り換え元の便",
+    "to_trip_id": "乗り換え先の便",
+    "transfer_type": "乗り換えタイプ",
+    "min_transfer_time": "最短乗り換え時間（秒）",
+    "feed_publisher_name": "発行者",
+    "feed_publisher_url": "発行者 URL",
+    "feed_lang": "言語",
+    "default_lang": "既定の言語",
+    "feed_start_date": "有効開始日",
+    "feed_end_date": "有効終了日",
+    "feed_version": "バージョン",
+    "feed_contact_email": "連絡先メールアドレス",
+    "feed_contact_url": "連絡先 URL"
+  },
+  "enums": {
+    "location_type": {
+      "0": "停留所またはのりば",
+      "1": "駅",
+      "2": "出入口",
+      "3": "汎用ノード",
+      "4": "乗車エリア"
+    },
+    "wheelchair_boarding": {
+      "0": "0 · 情報なし",
+      "1": "1 · 可",
+      "2": "2 · 不可"
+    },
+    "wheelchair_accessible": {
+      "0": "0 · 情報なし",
+      "1": "1 · 可",
+      "2": "2 · 不可"
+    },
+    "bikes_allowed": {
+      "0": "0 · 情報なし",
+      "1": "1 · 可",
+      "2": "2 · 不可"
+    },
+    "continuous_pickup": {
+      "0": "0 · 連続",
+      "1": "1 · なし",
+      "2": "2 · 事業者に電話",
+      "3": "3 · 運転手に確認"
+    },
+    "continuous_drop_off": {
+      "0": "0 · 連続",
+      "1": "1 · なし",
+      "2": "2 · 事業者に電話",
+      "3": "3 · 運転手に確認"
+    },
+    "pickup_type": {
+      "0": "0 · 通常",
+      "1": "1 · なし",
+      "2": "2 · 事業者に電話",
+      "3": "3 · 運転手に確認"
+    },
+    "drop_off_type": {
+      "0": "0 · 通常",
+      "1": "1 · なし",
+      "2": "2 · 事業者に電話",
+      "3": "3 · 運転手に確認"
+    },
+    "direction_id": {
+      "0": "往路",
+      "1": "復路"
+    },
+    "timepoint": {
+      "0": "0 · おおよそ",
+      "1": "1 · 正確"
+    },
+    "exact_times": {
+      "0": "0 · 運行間隔ベース",
+      "1": "1 · 正確な時刻表"
+    },
+    "exception_type": {
+      "1": "1 · サービス追加",
+      "2": "2 · サービス削除"
+    },
+    "transfer_type": {
+      "0": "0 · 推奨",
+      "1": "1 · 接続待ち合わせ",
+      "2": "2 · 最短時間",
+      "3": "3 · 乗り換え不可",
+      "4": "4 · 同一車両で継続",
+      "5": "5 · 降車が必要"
+    },
+    "monday": {
+      "0": "0 · 運行なし",
+      "1": "1 · 運行"
+    },
+    "tuesday": {
+      "0": "0 · 運行なし",
+      "1": "1 · 運行"
+    },
+    "wednesday": {
+      "0": "0 · 運行なし",
+      "1": "1 · 運行"
+    },
+    "thursday": {
+      "0": "0 · 運行なし",
+      "1": "1 · 運行"
+    },
+    "friday": {
+      "0": "0 · 運行なし",
+      "1": "1 · 運行"
+    },
+    "saturday": {
+      "0": "0 · 運行なし",
+      "1": "1 · 運行"
+    },
+    "sunday": {
+      "0": "0 · 運行なし",
+      "1": "1 · 運行"
+    }
+  },
+  "seo": {
+    "homeTitle": "オンライン GTFS ビューアー・エディター・バリデーター | GTFS Manager",
+    "homeDescription": "ブラウザで GTFS データを表示・編集・検証：路線網のインタラクティブ地図、路線図、時刻表、マレー図、仕様に基づく検証、ZIP エクスポート。",
+    "catalogDescription": "世界各地の事業者によるオープンで有効な GTFS フィードのカタログ：FGC、Renfe、SNCF、VBB、Ruter、MTA、TTC、Transperth。状態を確認してインポートできます。",
+    "catalogEntryTitle": "{name} の GTFS フィード",
+    "catalogEntryDescription": "{operator}（{region}）のオープン GTFS フィード。公式の提供元と公開状況を確認し、インポートして路線、停留所、時刻表を確認できます。"
+  },
+  "landing": {
+    "title": "GTFS データを表示・編集・検証",
+    "lead": "GTFS フィードをインポートすると、路線網の地図、路線図、時刻表、マレー図で確認できます。仕様に基づく検証で修正し、ZIP として再びエクスポートできます。",
+    "openEditor": "エディターを開く",
+    "importFeed": "フィードをインポート",
+    "featuresTitle": "できること",
+    "features": {
+      "import": {
+        "title": "大規模なフィードをインポート",
+        "body": "GTFS の ZIP またはフォルダーをアップロードします。インポートはファイルをストリーム処理し、停車時刻が 200 万件近い Renfe Cercanías のようなフィードも扱えます。"
+      },
+      "visualize": {
+        "title": "路線網を見渡す",
+        "body": "全路線と全停留所の地図、各路線の路線図、時刻表、マレー図、運行カレンダー。"
+      },
+      "edit": {
+        "title": "あらゆるファイルを編集",
+        "body": "GTFS の各テーブル用エディターで、項目の検証、ファイル間の参照、検索に対応します。"
+      },
+      "generate": {
+        "title": "便を生成",
+        "body": "停留所、停留所間の所要分数、運行間隔から、路線のすべての便を作成します。"
+      },
+      "validate": {
+        "title": "フィードを検証",
+        "body": "フィード全体の GTFS 仕様チェック。各項目へ直接リンクするので、すぐに修正できます。"
+      },
+      "export": {
+        "title": "ZIP にエクスポート",
+        "body": "元のフィードの追加列を保持したまま、GTFS の ZIP を再構築します。"
+      }
+    },
+    "catalogTitle": "公開フィードのカタログ",
+    "catalogText": "世界各地の事業者が公開している、運行期間中のオープンなフィードです。選んでインポートすると閲覧できます。",
+    "filesTitle": "編集できる GTFS ファイル",
+    "filesText": "GTFS Schedule の主要ファイルを、項目ごとに編集・検証します。未対応の列はエクスポート時に保持されます。",
+    "faqTitle": "よくある質問",
+    "faq": {
+      "what": {
+        "q": "GTFS フィードとは？",
+        "a": "GTFS（General Transit Feed Specification）は、交通事業者が路線、停留所、時刻表、カレンダーを公開するためのオープンな形式です。テキストファイルをまとめた ZIP で、乗換案内や移動アプリで利用されます。"
+      },
+      "create": {
+        "q": "GTFS フィードをゼロから作成できますか？",
+        "a": "はい。事業者を設定した空のフィードを作成し、エディターで停留所、路線、カレンダーを追加して、ジェネレーターで便と停車時刻を作成します。"
+      },
+      "validate": {
+        "q": "フィードはどのように検証されますか？",
+        "a": "GTFS Manager はフィード全体を検査します：必須ファイルと必須フィールド、ファイル間の参照、逆行や速すぎる時刻、座標や運行のない停留所、期限切れのカレンダー、路線色のコントラスト。各警告から該当レコードへ移動できます。"
+      },
+      "large": {
+        "q": "大規模なフィードも扱えますか？",
+        "a": "はい。インポートはファイルをストリーム処理し、データを PostgreSQL に保存します。13 万を超える便がある Renfe Cercanías のようなフィードも、丸ごとインポートして確認できます。"
+      },
+      "data": {
+        "q": "データはどこに保存されますか？",
+        "a": "GTFS Manager が動作しているサーバーの PostgreSQL データベースに保存されます。フィードが外部サービスに送信されることはありません。"
+      },
+      "export": {
+        "q": "フィードを再びエクスポートできますか？",
+        "a": "はい、いつでも可能です。エクスポートでは、すべてのファイルを含む GTFS ZIP を作成し、元のフィードにあった追加列も保持します。"
+      }
+    },
+    "network": {
+      "label": "アニメーション：平日 7 時から 10 時にバルセロナ都市圏の路線網を走る FGC の列車",
+      "caption": "平日 7 時から 10 時の FGC の列車（オープンな GTFS フィードより）。1 秒が 3 分に相当します。",
+      "pause": "アニメーションを一時停止",
+      "play": "アニメーションを再生"
+    }
+  },
+  "catalogEntry": {
+    "intro": "{operator} のオープン GTFS フィードで、現行の運行があります。インポートして路線網、時刻表、カレンダーを確認するか、公式の提供元からダウンロードできます。",
+    "operator": "事業者",
+    "area": "地域",
+    "modes": "交通モード",
+    "status": "提供元の状態",
+    "officialSource": "公式の提供元",
+    "download": "ZIP をダウンロード",
+    "whatTitle": "このフィードでできること",
+    "what": {
+      "map": "全路線と全停留所を地図で見られます。",
+      "lines": "各路線の路線図、時刻表、マレー図を確認できます。",
+      "validate": "検証して、ZIP として再びエクスポートできます。"
+    },
+    "moreTitle": "カタログのほかのフィード",
+    "details": "フィードの詳細"
+  }
+}

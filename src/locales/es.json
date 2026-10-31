@@ -19,7 +19,8 @@
     "sections": "Secciones del feed",
     "openMenu": "Abre el menú",
     "skipToContent": "Salta al contenido",
-    "catalog": "Catálogo"
+    "catalog": "Catálogo",
+    "home": "Inicio"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -28,10 +29,7 @@
     "dark": "oscuro"
   },
   "language": {
-    "label": "Idioma",
-    "ca": "Catalán",
-    "es": "Castellano",
-    "en": "Inglés"
+    "label": "Idioma"
   },
   "common": {
     "all": "Todas",
@@ -440,12 +438,15 @@
     "unavailable": "No responde ahora mismo",
     "checking": "Comprobando la fuente…",
     "browse": "Explora el catálogo",
-    "all": "Todos",
     "logosCredit": "Isotipos de las marcas en vectorial, de Wikimedia Commons:",
     "license": {
       "pd": "dominio público",
       "cc0": "CC0"
-    }
+    },
+    "search": "Busca por operador, ciudad o país",
+    "country": "País",
+    "allCountries": "Todos los países",
+    "noResults": "Ningún feed del catálogo coincide con la búsqueda."
   },
   "fields": {
     "agency_id": "Identificador del operador",
@@ -635,5 +636,99 @@
       "0": "0 · No circula",
       "1": "1 · Circula"
     }
+  },
+  "seo": {
+    "homeTitle": "Visor, editor y validador GTFS online | GTFS Manager",
+    "homeDescription": "Visualiza, edita y valida feeds GTFS desde el navegador: mapa interactivo de la red, esquemas de línea, horarios, diagramas de Marey, validación de la especificación y exportación a ZIP.",
+    "catalogDescription": "Catálogo de feeds GTFS abiertos y vigentes de operadores de todo el mundo: FGC, Renfe, SNCF, VBB, Ruter, MTA, TTC, Transperth. Consulta su estado e impórtalos.",
+    "catalogEntryTitle": "{name}: feed GTFS",
+    "catalogEntryDescription": "Feed GTFS abierto de {operator} ({region}). Consulta su fuente oficial y su estado de publicación, e impórtalo para explorar sus líneas, paradas y horarios."
+  },
+  "landing": {
+    "title": "Visualiza, edita y valida feeds GTFS",
+    "lead": "Importa un feed GTFS y lo verás como mapa de la red, esquemas de línea, horarios y diagramas de Marey. Corrígelo con la validación de la especificación y vuelve a exportarlo en ZIP.",
+    "openEditor": "Abre el editor",
+    "importFeed": "Importa un feed",
+    "featuresTitle": "Qué hace",
+    "features": {
+      "import": {
+        "title": "Importa feeds grandes",
+        "body": "Sube un ZIP o una carpeta GTFS. La importación va en streaming y soporta feeds como Renfe Cercanías, con casi dos millones de horas de paso."
+      },
+      "visualize": {
+        "title": "Visualiza la red",
+        "body": "Mapa de todas las líneas y paradas, esquema de cada línea, horarios, diagramas de Marey y calendario de servicio."
+      },
+      "edit": {
+        "title": "Edita cualquier archivo",
+        "body": "Un editor para cada tabla GTFS, con validación de campos, referencias entre archivos y búsqueda."
+      },
+      "generate": {
+        "title": "Genera viajes",
+        "body": "Crea todos los viajes de una línea a partir de las paradas, los minutos entre paradas y una frecuencia."
+      },
+      "validate": {
+        "title": "Valida el feed",
+        "body": "Comprobaciones de la especificación GTFS sobre todo el feed, con enlace directo a cada caso para corregirlo."
+      },
+      "export": {
+        "title": "Exporta a ZIP",
+        "body": "Vuelve a generar un ZIP GTFS que conserva las columnas extra del feed original."
+      }
+    },
+    "catalogTitle": "Catálogo de feeds públicos",
+    "catalogText": "Feeds abiertos de operadores de todo el mundo, con servicio vigente. Elige uno e impórtalo para explorarlo.",
+    "filesTitle": "Archivos GTFS que edita",
+    "filesText": "Los archivos principales de GTFS Schedule se editan y se validan campo a campo. Las columnas que no conoce se conservan al exportar.",
+    "faqTitle": "Preguntas frecuentes",
+    "faq": {
+      "what": {
+        "q": "¿Qué es un feed GTFS?",
+        "a": "GTFS (General Transit Feed Specification) es el formato abierto con el que los operadores de transporte publican líneas, paradas, horarios y calendarios. Es un ZIP de archivos de texto que usan los planificadores de viajes y las apps de movilidad."
+      },
+      "create": {
+        "q": "¿Puedo crear un feed GTFS desde cero?",
+        "a": "Sí. Crea un feed en blanco con el operador, añade paradas, líneas y calendarios desde el editor y usa el generador para crear los viajes y las horas de paso."
+      },
+      "validate": {
+        "q": "¿Cómo se valida un feed?",
+        "a": "GTFS Manager revisa el feed entero: archivos y campos obligatorios, referencias entre archivos, horas de paso que retroceden o demasiado rápidas, paradas sin coordenadas o sin servicio, calendarios caducados y contraste de los colores de línea. Cada aviso enlaza a los registros afectados."
+      },
+      "large": {
+        "q": "¿Funciona con feeds grandes?",
+        "a": "Sí. La importación lee los archivos en streaming y guarda los datos en PostgreSQL. Feeds como Renfe Cercanías, con más de 130.000 viajes, se importan y se exploran enteros."
+      },
+      "data": {
+        "q": "¿Dónde se guardan los datos?",
+        "a": "En la base de datos PostgreSQL del servidor donde funciona GTFS Manager. Los feeds no se envían a ningún servicio externo."
+      },
+      "export": {
+        "q": "¿Puedo volver a exportar el feed?",
+        "a": "Sí, en cualquier momento. La exportación genera un ZIP GTFS con todos los archivos y conserva las columnas extra que tenía el original."
+      }
+    },
+    "network": {
+      "label": "Animación: trenes de FGC circulando por la red del área de Barcelona entre las 7 y las 10 de un día laborable",
+      "caption": "Trenes de FGC entre las 7 y las 10 de un día laborable, a partir de su feed GTFS abierto. Cada segundo son tres minutos.",
+      "pause": "Pausa la animación",
+      "play": "Reanuda la animación"
+    }
+  },
+  "catalogEntry": {
+    "intro": "Feed GTFS abierto de {operator}, con servicio vigente. Impórtalo para explorar su red, sus horarios y su calendario, o descárgalo de la fuente oficial.",
+    "operator": "Operador",
+    "area": "Territorio",
+    "modes": "Modos",
+    "status": "Estado de la fuente",
+    "officialSource": "Fuente oficial",
+    "download": "Descarga el ZIP",
+    "whatTitle": "Qué puedes hacer",
+    "what": {
+      "map": "Ver todas las líneas y paradas en el mapa.",
+      "lines": "Consultar el esquema, el horario y el diagrama de Marey de cada línea.",
+      "validate": "Validarlo y volver a exportarlo a ZIP."
+    },
+    "moreTitle": "Más feeds del catálogo",
+    "details": "Ficha del feed"
   }
 }

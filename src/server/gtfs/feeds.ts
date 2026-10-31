@@ -125,3 +125,17 @@ export async function listFeedNames(): Promise<{ id: string; name: string }[]> {
     return [];
   }
 }
+
+/** El feed importat més recent de cada entrada del catàleg (és el que s'obre des del catàleg). */
+export async function importedCatalogFeeds(): Promise<Record<string, string>> {
+  const imported: Record<string, string> = {};
+  try {
+    const rows = await getSql()<{ id: string; catalogId: string }[]>`
+      SELECT id, catalog_id AS "catalogId" FROM feeds
+      WHERE catalog_id IS NOT NULL ORDER BY updated_at DESC`;
+    for (const row of rows) imported[row.catalogId] ??= row.id;
+  } catch {
+    // Sense base de dades el catàleg es pot consultar igualment.
+  }
+  return imported;
+}

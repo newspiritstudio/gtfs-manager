@@ -1,6 +1,7 @@
 import {
   CalendarDays,
   Database,
+  House,
   LayoutDashboard,
   Library,
   Map,
@@ -31,6 +32,7 @@ export const FEED_NAV: FeedNavItem[] = [
   { key: 'generator', path: '/generator', icon: WandSparkles },
 ];
 
+export const HOME_ICON = House;
 export const FEEDS_ICON = Database;
 export const CATALOG_ICON = Library;
 

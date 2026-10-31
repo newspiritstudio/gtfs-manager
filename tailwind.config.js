@@ -1,13 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./app/**/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        'primary': 'var(--md-sys-color-primary)',
+        primary: 'var(--md-sys-color-primary)',
         'on-primary': 'var(--md-sys-color-on-primary)',
         'primary-container': 'var(--md-sys-color-primary-container)',
         'on-primary-container': 'var(--md-sys-color-on-primary-container)',
@@ -21,30 +18,30 @@ export default {
           'color-mix(in oklab, var(--md-sys-color-primary) calc(var(--md-sys-state-selected) * 100%), transparent)',
         'primary-tint-subtle':
           'color-mix(in oklab, var(--md-sys-color-primary) calc(var(--md-sys-state-highlight) * 100%), transparent)',
-        'secondary':'var(--md-sys-color-secondary)',
+        secondary: 'var(--md-sys-color-secondary)',
         'on-secondary': 'var(--md-sys-color-on-secondary)',
         'secondary-container': 'var(--md-sys-color-secondary-container)',
         'on-secondary-container': 'var(--md-sys-color-on-secondary-container)',
-        'tertiary': 'var(--md-sys-color-tertiary)',
+        tertiary: 'var(--md-sys-color-tertiary)',
         'on-tertiary': 'var(--md-sys-color-on-tertiary)',
         'tertiary-container': 'var(--md-sys-color-tertiary-container)',
         'on-tertiary-container': 'var(--md-sys-color-on-tertiary-container)',
-        'error': 'var(--md-sys-color-error)',
+        error: 'var(--md-sys-color-error)',
         'on-error': 'var(--md-sys-color-on-error)',
         'error-container': 'var(--md-sys-color-error-container)',
         'on-error-container': 'var(--md-sys-color-on-error-container)',
-        'surface': 'var(--md-sys-color-surface)',
+        surface: 'var(--md-sys-color-surface)',
         'on-surface': 'var(--md-sys-color-on-surface)',
         'surface-variant': 'var(--md-sys-color-surface-variant)',
         'on-surface-variant': 'var(--md-sys-color-on-surface-variant)',
         // Text terciari validat (≥4,5:1 sobre totes les superfícies). No es fa
         // servir mai `text-on-surface-variant/NN`: l'opacitat no garanteix el contrast.
         'on-surface-muted': 'var(--md-sys-color-on-surface-muted)',
-        'outline': 'var(--md-sys-color-outline)',
+        outline: 'var(--md-sys-color-outline)',
         'outline-variant': 'var(--md-sys-color-outline-variant)',
         // Separador suau i sòlid, en lloc de `border-outline-variant/NN`.
         'outline-subtle': 'var(--md-sys-color-outline-subtle)',
-        'scrim': 'var(--md-sys-color-scrim)',
+        scrim: 'var(--md-sys-color-scrim)',
         'inverse-surface': 'var(--md-sys-color-inverse-surface)',
         'inverse-on-surface': 'var(--md-sys-color-inverse-on-surface)',
         'inverse-primary': 'var(--md-sys-color-inverse-primary)',
@@ -52,7 +49,7 @@ export default {
         'surface-bright': 'var(--md-sys-color-surface-bright)',
         'surface-container-lowest': 'var(--md-sys-color-surface-container-lowest)',
         // Fons únic dels camps d'escriptura (vegeu --md-sys-color-field a index.css).
-        'field': 'var(--md-sys-color-field)',
+        field: 'var(--md-sys-color-field)',
         'surface-container-low': 'var(--md-sys-color-surface-container-low)',
         'surface-container': 'var(--md-sys-color-surface-container)',
         'surface-container-high': 'var(--md-sys-color-surface-container-high)',
@@ -61,13 +58,13 @@ export default {
         // pàgina, surface-container; dins d'un altre contenidor, -highest; dins d'un diàleg,
         // -lowest; dins d'un menú, surface-container (src/index.css). Un contenidor es
         // distingeix pel fons, no per una vora.
-        'tonal': 'var(--surface-tonal, var(--md-sys-color-surface-container))',
+        tonal: 'var(--surface-tonal, var(--md-sys-color-surface-container))',
         // El to del contenidor tonal que l'envolta, per a una peça que l'ha de tapar sense
         // destacar-ne (capçalera enganxada, cel·la fixa en desplaçar de costat).
         'tonal-self': 'var(--tonal-self, var(--md-sys-color-surface))',
         // Superfície flotant (menús, popovers, fulls mòbils): el fons de la pàgina, amb la vora
         // que la separa del que té a sota. Un sol lloc per decidir el to de tots els menús.
-        'floating': 'var(--md-sys-color-surface)',
+        floating: 'var(--md-sys-color-surface)',
         // M3 Fixed color roles — theme-independent accent surfaces
         'primary-fixed': 'var(--md-sys-color-primary-fixed)',
         'primary-fixed-dim': 'var(--md-sys-color-primary-fixed-dim)',
@@ -87,30 +84,30 @@ export default {
         // so `bg-success text-on-success` painted text the colour of its own
         // background. `X` on its own is still correct for dots, bars and fills,
         // which carry no text.
-        'success': 'var(--support-positive-on)',
+        success: 'var(--support-positive-on)',
         'success-container': 'var(--support-positive-container)',
-        'warning': 'var(--support-caution-on)',
+        warning: 'var(--support-caution-on)',
         'warning-container': 'var(--support-caution-container)',
-        'info': 'var(--support-info-on)',
+        info: 'var(--support-info-on)',
         'info-container': 'var(--support-info-container)',
-        'critical': 'var(--support-critical-on)',
+        critical: 'var(--support-critical-on)',
         'critical-container': 'var(--support-critical-container)',
       },
       // M3 Shape Scale - use rounded-{size} for semantic radii
       borderRadius: {
-        'none': 'var(--md-sys-shape-corner-none)',
-        'xs': 'var(--md-sys-shape-corner-extra-small)',
-        'sm': 'var(--md-sys-shape-corner-small)',
-        'md': 'var(--md-sys-shape-corner-medium)',
-        'lg': 'var(--md-sys-shape-corner-large)',
+        none: 'var(--md-sys-shape-corner-none)',
+        xs: 'var(--md-sys-shape-corner-extra-small)',
+        sm: 'var(--md-sys-shape-corner-small)',
+        md: 'var(--md-sys-shape-corner-medium)',
+        lg: 'var(--md-sys-shape-corner-large)',
         'lg-inc': 'var(--md-sys-shape-corner-large-increased)',
-        'xl': 'var(--md-sys-shape-corner-extra-large)',
+        xl: 'var(--md-sys-shape-corner-extra-large)',
         '2xl': 'var(--md-sys-shape-corner-extra-extra-large)',
-        'full': 'var(--md-sys-shape-corner-full)',
+        full: 'var(--md-sys-shape-corner-full)',
       },
       // Font family - matches Google Sans in index.css
       fontFamily: {
-        'sans': ['Google Sans', 'system-ui', 'sans-serif'],
+        sans: ['Google Sans', 'system-ui', 'sans-serif'],
       },
       // Aliases for dense UI text-sizes that sit below M3 label-small (11px).
       // Use these instead of arbitrary text-[10px]/text-[11px] when no extra
@@ -119,9 +116,9 @@ export default {
       // utility classes defined in src/index.css.
       fontSize: {
         // Only the size, like the text-[9px] it replaces: the line height is inherited.
-        'nano': '9px',                                // locale tags, counter dots on 16 px icons
-        'micro': ['10px', { lineHeight: '14px' }],   // chips, meta labels, watermarks
-        'tiny': ['11px', { lineHeight: '16px' }],    // same size as label-small but no extra weight
+        nano: '9px', // locale tags, counter dots on 16 px icons
+        micro: ['10px', { lineHeight: '14px' }], // chips, meta labels, watermarks
+        tiny: ['11px', { lineHeight: '16px' }], // same size as label-small but no extra weight
       },
       // Semantic z-index scale — replaces arbitrary z-[NNN] values.
       // Values come from the --z-* variables in src/index.css (single source). When picking a value:
@@ -141,22 +138,22 @@ export default {
       //   mobile-overlay     → mobile drawer backdrop (must beat everything UI)
       //   mobile-overlay-top → mobile drawer surface, confetti (topmost)
       zIndex: {
-        'base': 'var(--z-base)',
-        'above': 'var(--z-above)',
-        'raised': 'var(--z-raised)',
+        base: 'var(--z-base)',
+        above: 'var(--z-above)',
+        raised: 'var(--z-raised)',
         'sticky-inner': 'var(--z-sticky-inner)',
-        'sticky': 'var(--z-sticky)',
-        'fab': 'var(--z-fab)',
-        'banner': 'var(--z-banner)',
-        'modal': 'var(--z-modal)',
+        sticky: 'var(--z-sticky)',
+        fab: 'var(--z-fab)',
+        banner: 'var(--z-banner)',
+        modal: 'var(--z-modal)',
         'modal-loading': 'var(--z-modal-loading)',
-        'popover': 'var(--z-popover)',
+        popover: 'var(--z-popover)',
         'system-dialog': 'var(--z-system-dialog)',
-        'toast': 'var(--z-toast)',
+        toast: 'var(--z-toast)',
         'mobile-overlay': 'var(--z-mobile-overlay)',
         'mobile-overlay-top': 'var(--z-mobile-overlay-top)',
       },
     },
   },
   plugins: [],
-}
+};

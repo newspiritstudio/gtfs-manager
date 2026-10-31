@@ -11,6 +11,7 @@ import { useI18n } from '@/lib/i18n/client';
 import { SPRING } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 import BrandMark from './BrandMark';
+import StudioByline from './StudioByline';
 import { activeFeedNav, FEED_NAV, feedIdFromPath } from './nav';
 import { LanguageSelect, ThemeToggle } from './Preferences';
 import { NavContent, type ShellFeed } from './SideNav';
@@ -51,7 +52,10 @@ export function MobileHeader({ feeds }: { feeds: ShellFeed[] }) {
             <span className="truncate">{crumbs[1].label}</span>
           </Link>
         ) : (
-          <p className="min-w-0 flex-1 truncate text-title-large text-on-surface">GTFS Manager</p>
+          <div className="flex min-w-0 flex-1 flex-col">
+            <p className="truncate text-title-medium text-on-surface">GTFS Manager</p>
+            <StudioByline />
+          </div>
         )}
         <ThemeToggle />
       </header>

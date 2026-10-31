@@ -485,3 +485,40 @@ export function NewFeedSkeleton() {
     </Status>
   );
 }
+
+/** La fitxa d'un feed del catàleg: capçalera amb isotip, fitxa i la columna d'altres feeds. */
+export function CatalogEntrySkeleton() {
+  return (
+    <Status>
+      <div className="mx-auto max-w-6xl">
+        <HeaderSkeleton actions={1} badge />
+        <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+          <div className="space-y-6">
+            <div className="space-y-5 rounded-lg bg-tonal p-5">
+              <SkeletonText lines={2} />
+              <div className="grid gap-4 sm:grid-cols-2">
+                {Array.from({ length: 4 }, (_, i) => (
+                  <div key={i} className="space-y-2">
+                    <Skeleton className="h-3 w-20 rounded-full" />
+                    <Skeleton className="h-5 w-40 max-w-full rounded-full" />
+                  </div>
+                ))}
+              </div>
+              <Skeleton className="h-10 w-36 rounded-xl" />
+            </div>
+            <div className="space-y-2">
+              {Array.from({ length: 3 }, (_, i) => (
+                <Skeleton key={i} className="h-15 rounded-md" />
+              ))}
+            </div>
+          </div>
+          <div className="space-y-2">
+            {Array.from({ length: 6 }, (_, i) => (
+              <Skeleton key={i} className="h-16 rounded-md" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </Status>
+  );
+}

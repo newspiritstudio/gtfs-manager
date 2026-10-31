@@ -12,8 +12,8 @@ export default async function NotFound() {
       title={t('errors.notFound')}
       description={t('errors.notFoundHint')}
       action={
-        <ButtonLink href="/" variant="tonal">
-          {t('nav.feeds')}
+        <ButtonLink href="/feeds" variant="tonal">
+          {t('nav.allFeeds')}
         </ButtonLink>
       }
     />

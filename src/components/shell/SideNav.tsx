@@ -5,10 +5,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useId } from 'react';
 import { useI18n } from '@/lib/i18n/client';
+import { splitLocalePath } from '@/lib/i18n/paths';
 import { SPRING } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 import BrandMark from './BrandMark';
-import { activeFeedNav, CATALOG_ICON, FEED_NAV, FEEDS_ICON, feedIdFromPath } from './nav';
+import {
+  activeFeedNav,
+  CATALOG_ICON,
+  FEED_NAV,
+  FEEDS_ICON,
+  feedIdFromPath,
+  HOME_ICON,
+} from './nav';
 
 export interface ShellFeed {
   id: string;
@@ -65,6 +73,7 @@ export function NavContent({ feeds, onNavigate }: { feeds: ShellFeed[]; onNaviga
   const feedId = feedIdFromPath(pathname);
   const currentFeed = feedId ? feeds.find((f) => f.id === feedId) : null;
   const activeItem = feedId ? activeFeedNav(pathname, feedId) : null;
+  const { path } = splitLocalePath(pathname);
 
   return (
     <nav aria-label={t('nav.main')} className="space-y-4 p-3">
@@ -93,29 +102,42 @@ export function NavContent({ feeds, onNavigate }: { feeds: ShellFeed[]; onNaviga
           </ul>
         </div>
       ) : null}
+      <ul className="space-y-1">
+        <li>
+          <NavLink
+            href="/"
+            active={path === '/'}
+            icon={HOME_ICON}
+            onNavigate={onNavigate}
+            indicatorId={indicatorId}
+          >
+            {t('nav.home')}
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            href="/catalog"
+            active={path === '/catalog' || path.startsWith('/catalog/')}
+            icon={CATALOG_ICON}
+            onNavigate={onNavigate}
+            indicatorId={indicatorId}
+          >
+            {t('nav.catalog')}
+          </NavLink>
+        </li>
+      </ul>
       <div className="space-y-1">
         <p className="px-3 py-1 text-label-medium text-on-surface-variant">{t('nav.feeds')}</p>
         <ul className="space-y-1">
           <li>
             <NavLink
-              href="/"
-              active={pathname === '/'}
+              href="/feeds"
+              active={path === '/feeds'}
               icon={FEEDS_ICON}
               onNavigate={onNavigate}
               indicatorId={indicatorId}
             >
               {t('nav.allFeeds')}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              href="/catalog"
-              active={pathname === '/catalog'}
-              icon={CATALOG_ICON}
-              onNavigate={onNavigate}
-              indicatorId={indicatorId}
-            >
-              {t('nav.catalog')}
             </NavLink>
           </li>
           {feeds

@@ -8,14 +8,22 @@ import { I18nProvider } from '@/lib/i18n/client';
 import { themeBootstrapScript } from '@/lib/theme';
 import { listFeedNames } from '@/server/gtfs/feeds';
 import { getI18n, MESSAGES } from '@/server/i18n';
+import { SITE_NAME, SITE_URL } from '@/server/seo';
+import { LOCALE_TAGS } from '@/lib/i18n/config';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getI18n();
   return {
-    title: { default: 'GTFS Manager', template: '%s · GTFS Manager' },
+    metadataBase: new URL(SITE_URL),
+    title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
     description: t('app.description'),
+    applicationName: SITE_NAME,
+    category: 'technology',
+    formatDetection: { telephone: false, address: false, email: false },
+    openGraph: { type: 'website', siteName: SITE_NAME },
+    twitter: { card: 'summary_large_image' },
   };
 }
 
@@ -33,7 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { locale, messages } = await getI18n();
   const feeds = await listFeedNames();
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={LOCALE_TAGS[locale]} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript() }} />
       </head>

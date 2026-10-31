@@ -1,13 +1,13 @@
 /**
- * Comprova els textos de la interfície: els tres idiomes (ca, es, en) han de tenir exactament les
- * mateixes claus, i cada `t('clau')` literal del codi ha d'existir. Un objecte de plurals
+ * Comprova els textos de la interfície: tots els idiomes de `LOCALES` han de tenir exactament les
+ * mateixes claus que el català, i cada `t('clau')` literal del codi ha d'existir. Un objecte de plurals
  * (`one`/`other`) compta com una sola clau.
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { LOCALES } from '../src/lib/i18n/config';
 
 type Messages = { [key: string]: string | Messages };
-const LOCALES = ['ca', 'es', 'en'] as const;
 const PLURAL_FORMS = new Set(['zero', 'one', 'two', 'few', 'many', 'other']);
 
 function isPlural(node: Messages): boolean {
@@ -46,6 +46,29 @@ const problems: string[] = [];
 for (const locale of LOCALES.slice(1)) {
   for (const k of keys.ca) if (!keys[locale].has(k)) problems.push(`${locale}: falta «${k}»`);
   for (const k of keys[locale]) if (!keys.ca.has(k)) problems.push(`${locale}: sobra «${k}»`);
+}
+
+// Cada traducció ha de portar les mateixes variables ({count}, {name}...) que el català.
+function lookup(node: Messages, key: string): string | Messages | undefined {
+  let value: string | Messages | undefined = node;
+  for (const part of key.split('.')) value = typeof value === 'object' ? value[part] : undefined;
+  return value;
+}
+function placeholders(value: string | Messages | undefined): string {
+  const text = typeof value === 'string' ? value : JSON.stringify(value ?? '');
+  return [...new Set(text.match(/\{\w+\}/g) ?? [])].sort().join(' ');
+}
+const sources = Object.fromEntries(
+  LOCALES.map((l) => [l, JSON.parse(readFileSync(join(root, 'src/locales', `${l}.json`), 'utf8'))])
+) as Record<(typeof LOCALES)[number], Messages>;
+for (const locale of LOCALES.slice(1)) {
+  for (const k of keys.ca) {
+    if (!keys[locale].has(k)) continue;
+    const expected = placeholders(lookup(sources.ca, k));
+    const actual = placeholders(lookup(sources[locale], k));
+    if (expected !== actual)
+      problems.push(`${locale}: «${k}» té les variables [${actual}] i el català [${expected}]`);
+  }
 }
 
 const pattern = /\bt\(\s*'([a-zA-Z0-9_.]+)'/g;

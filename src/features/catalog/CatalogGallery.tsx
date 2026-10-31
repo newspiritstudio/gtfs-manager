@@ -1,20 +1,20 @@
 'use client';
 
-import { CircleCheck, CircleDashed, CircleX, Download, ExternalLink } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
-import { CATALOG_LOGOS, type CatalogEntry, type CatalogStatus } from '@shared/catalog';
+import { Download, ExternalLink, Globe2 } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useMemo, useState } from 'react';
+import { CATALOG_LOGOS, type CatalogEntry } from '@shared/catalog';
 import { transitModeForRouteType } from '@shared/gtfs-spec';
 import Badge from '@/components/ui/Badge';
 import ModeIcon from '@/components/ui/ModeIcon';
 import { ButtonLink } from '@/components/ui/Button';
-import { SegmentedControl } from '@/components/ui/Tabs';
-import { apiFetch } from '@/lib/api';
-import { formatNumber, formatRelative } from '@/lib/i18n/format';
+import SearchField from '@/components/ui/SearchField';
+import MenuSelect from '@/components/ui/MenuSelect';
 import { useI18n } from '@/lib/i18n/client';
-
-function formatSize(locale: string, bytes: number) {
-  return `${formatNumber(locale, bytes / 1024 / 1024, { maximumFractionDigits: bytes < 10 * 1024 * 1024 ? 1 : 0 })} MB`;
-}
+import { localizedPath } from '@/lib/i18n/paths';
+import CountryFlag from './CountryFlag';
+import CatalogStatusLine, { useCatalogStatuses } from './CatalogStatusLine';
 
 export default function CatalogGallery({
   entries,
@@ -24,47 +24,82 @@ export default function CatalogGallery({
   imported: Record<string, string>;
 }) {
   const { t, locale } = useI18n();
-  const [statuses, setStatuses] = useState<Record<string, CatalogStatus> | null>(null);
-  const [statusFailed, setStatusFailed] = useState(false);
-  const [country, setCountry] = useState('all');
-
-  useEffect(() => {
-    let alive = true;
-    apiFetch<CatalogStatus[]>('/api/catalog')
-      .then((list) => alive && setStatuses(Object.fromEntries(list.map((s) => [s.id, s]))))
-      // Si la comprovació falla no sabem res de les fonts: no les marquem com a caigudes.
-      .catch(() => alive && setStatusFailed(true));
-    return () => {
-      alive = false;
-    };
-  }, []);
+  const { statuses, failed: statusFailed } = useCatalogStatuses();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  // El filtre viu a l'adreça: es pot compartir i el botó enrere el desfà.
+  const country = params.get('country') ?? 'all';
+  const [query, setQuery] = useState(params.get('q') ?? '');
+  const setParam = (key: string, value: string) => {
+    const next = new URLSearchParams(params);
+    if (value && value !== 'all') next.set(key, value);
+    else next.delete(key);
+    router.replace(`${pathname}${next.size ? `?${next}` : ''}`, { scroll: false });
+  };
 
   const countryName = useMemo(() => new Intl.DisplayNames([locale], { type: 'region' }), [locale]);
-  const countries = useMemo(
-    () =>
-      [...new Set(entries.map((e) => e.country))].sort((a, b) =>
-        (countryName.of(a) ?? a).localeCompare(countryName.of(b) ?? b, locale)
-      ),
-    [entries, countryName, locale]
+  const countries = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const e of entries) counts.set(e.country, (counts.get(e.country) ?? 0) + 1);
+    return [...counts]
+      .map(([code, count]) => ({ code, count, name: countryName.of(code) ?? code }))
+      .sort((a, b) => a.name.localeCompare(b.name, locale));
+  }, [entries, countryName, locale]);
+  const needle = query.trim().toLocaleLowerCase(locale);
+  const visible = entries.filter(
+    (e) =>
+      (country === 'all' || e.country === country) &&
+      (!needle ||
+        [e.name, e.operator, e.region, countryName.of(e.country) ?? '']
+          .join(' ')
+          .toLocaleLowerCase(locale)
+          .includes(needle))
   );
-  const visible = country === 'all' ? entries : entries.filter((e) => e.country === country);
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <SegmentedControl
-          label={t('catalog.title')}
-          value={country}
-          onChange={setCountry}
-          options={[
-            { value: 'all', label: t('catalog.all') },
-            ...countries.map((c) => ({ value: c, label: countryName.of(c) ?? c })),
-          ]}
+      <div className="flex flex-wrap items-center gap-3">
+        <SearchField
+          value={query}
+          onChange={(value) => {
+            setQuery(value);
+            setParam('q', value.trim());
+          }}
+          label={t('catalog.search')}
+          placeholder={t('catalog.search')}
+          className="w-full sm:w-96"
         />
-        <p className="text-body-medium text-on-surface-variant">
+        <div className="w-full sm:w-64">
+          <MenuSelect
+            label={t('catalog.country')}
+            value={country}
+            onChange={(next) => setParam('country', next)}
+            options={[
+              {
+                value: 'all',
+                label: t('catalog.allCountries'),
+                icon: <Globe2 className="size-5 text-on-surface-variant" />,
+                trailing: String(entries.length),
+              },
+              ...countries.map((c) => ({
+                value: c.code,
+                label: c.name,
+                icon: <CountryFlag code={c.code} />,
+                trailing: String(c.count),
+              })),
+            ]}
+          />
+        </div>
+        <p className="text-body-medium text-on-surface-variant sm:ml-auto">
           {t('catalog.count', { count: visible.length })}
         </p>
       </div>
+      {visible.length ? null : (
+        <p className="rounded-lg bg-tonal p-6 text-center text-body-large text-on-surface-variant">
+          {t('catalog.noResults')}
+        </p>
+      )}
       <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {visible.map((entry) => {
           const status = statuses?.[entry.id];
@@ -88,7 +123,14 @@ export default function CatalogGallery({
                   </span>
                 )}
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-title-medium text-on-surface">{entry.name}</h2>
+                  <h2 className="text-title-medium text-on-surface">
+                    <Link
+                      href={localizedPath(locale, `/catalog/${entry.id}`)}
+                      className="rounded-xs hover:underline focus-ring"
+                    >
+                      {entry.name}
+                    </Link>
+                  </h2>
                   {entry.operator !== entry.name ? (
                     <p className="truncate text-body-small text-on-surface-variant">
                       {entry.operator}
@@ -109,28 +151,12 @@ export default function CatalogGallery({
                   </li>
                 ))}
               </ul>
-              <p className="mt-auto flex min-h-5 items-center gap-1.5 text-body-small text-on-surface-variant [&_svg]:size-4">
-                {statusFailed ? null : !statuses ? (
-                  <>
-                    <CircleDashed className="animate-spin text-on-surface-muted" />{' '}
-                    {t('catalog.checking')}
-                  </>
-                ) : status?.available ? (
-                  <>
-                    <CircleCheck className="text-success" />
-                    <span>
-                      {status.updatedAt
-                        ? t('catalog.updated', { when: formatRelative(locale, status.updatedAt) })
-                        : t('catalog.available')}
-                      {status.size ? ` · ${formatSize(locale, status.size)}` : ''}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <CircleX className="text-critical" /> {t('catalog.unavailable')}
-                  </>
-                )}
-              </p>
+              <CatalogStatusLine
+                className="mt-auto"
+                status={status}
+                loading={!statuses}
+                failed={statusFailed}
+              />
               <div className="flex flex-wrap items-center gap-2">
                 {feedId ? (
                   <>

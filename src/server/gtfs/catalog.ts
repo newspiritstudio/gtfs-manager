@@ -3,7 +3,12 @@
  * (mai una URL que arribi de fora), i l'estat es guarda una hora a la memòria del procés.
  */
 import JSZip from 'jszip';
-import { GTFS_CATALOG, type CatalogEntry, type CatalogStatus } from '@shared/catalog';
+import {
+  catalogZipUrl,
+  GTFS_CATALOG,
+  type CatalogEntry,
+  type CatalogStatus,
+} from '@shared/catalog';
 
 const USER_AGENT = 'gtfs-manager (+https://github.com/newspiritstudio/gtfs-manager)';
 const STATUS_TTL = 60 * 60 * 1000;
@@ -112,10 +117,7 @@ export async function downloadCatalogZip(
     });
     return { body: bytes, size: bytes.byteLength };
   }
-  const url =
-    source.kind === 'zip'
-      ? source.url
-      : `${source.portal}/sharing/rest/content/items/${source.item}/data`;
+  const url = catalogZipUrl(source)!;
   const response = await fetchWithTimeout(url, { redirect: 'follow' }, 300_000);
   if (!response.ok || !response.body) throw new CatalogDownloadError(`${response.status}`);
   // Si la font comprimeix la resposta, la mida de la capçalera no és la del ZIP que arriba.

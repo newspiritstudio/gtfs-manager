@@ -1,0 +1,734 @@
+{
+  "app": {
+    "description": "Crea, modifica e visualizza feed GTFS di trasporto pubblico."
+  },
+  "nav": {
+    "feeds": "Feed",
+    "allFeeds": "Tutti i feed",
+    "overview": "Panoramica",
+    "map": "Mappa",
+    "routes": "Linee",
+    "stops": "Fermate",
+    "calendar": "Calendario",
+    "validation": "Validazione",
+    "data": "Dati",
+    "generator": "Generatore",
+    "more": "Altro",
+    "breadcrumbs": "Percorso di navigazione",
+    "main": "Navigazione principale",
+    "sections": "Sezioni del feed",
+    "openMenu": "Apri il menu",
+    "skipToContent": "Vai al contenuto",
+    "catalog": "Catalogo",
+    "home": "Home"
+  },
+  "theme": {
+    "switch": "Tema: {theme}",
+    "system": "di sistema",
+    "light": "chiaro",
+    "dark": "scuro"
+  },
+  "language": {
+    "label": "Lingua"
+  },
+  "common": {
+    "all": "Tutti",
+    "close": "Chiudi",
+    "date": "Data",
+    "nextDay": "Giorno successivo",
+    "previousDay": "Giorno precedente",
+    "noResults": "Nessun risultato.",
+    "seeAll": "Vedi tutto",
+    "showMore": "Mostra altro",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "clearSearch": "Cancella ricerca",
+    "retry": "Riprova",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "charts": {
+    "less": "Meno",
+    "more": "Più",
+    "max": "Max: {value}"
+  },
+  "errors": {
+    "database": "Impossibile connettersi al database",
+    "databaseHint": "Controlla DATABASE_URL in .env.local e che PostgreSQL sia in esecuzione.",
+    "generic": "Qualcosa è andato storto. Riprova.",
+    "invalidForm": "Controlla i campi evidenziati.",
+    "notFound": "Pagina non trovata",
+    "notFoundHint": "Il feed, la linea o la fermata potrebbero non esistere più."
+  },
+  "feed": {
+    "name": "Nome",
+    "description": "Descrizione",
+    "export": "Esporta GTFS",
+    "trips": "Corse"
+  },
+  "feeds": {
+    "title": "Feed GTFS",
+    "subtitle": "Gli orari di trasporto che gestisci, in un unico posto.",
+    "new": "Nuovo feed",
+    "noAgency": "Nessuna agenzia",
+    "valid": "Valido",
+    "statsPending": "I dati verranno calcolati all'apertura.",
+    "emptyTitle": "Ancora nessun feed",
+    "emptyDescription": "Importa una cartella o uno ZIP GTFS, oppure parti da zero."
+  },
+  "newFeed": {
+    "subtitle": "Importa un GTFS esistente o creane uno nuovo.",
+    "mode": "Come iniziare",
+    "modeImport": "Importa",
+    "modeBlank": "Da zero",
+    "importTitle": "Importa una cartella GTFS",
+    "importSubtitle": "I file .txt di una cartella o di uno ZIP.",
+    "blankTitle": "Un nuovo feed",
+    "blankSubtitle": "Inizia dall'agenzia; poi aggiungi fermate, linee e corse.",
+    "dropTitle": "Trascina qui la cartella o lo ZIP",
+    "dropHint": "I file vengono caricati uno alla volta con l'avanzamento; anche uno stop_times da centinaia di MB è supportato.",
+    "pickFolder": "Scegli una cartella",
+    "pickZip": "Scegli uno ZIP",
+    "zipError": "Impossibile leggere lo ZIP.",
+    "noTxt": "Nessun file .txt trovato.",
+    "rows": {
+      "one": "{count} riga",
+      "other": "{count} righe"
+    },
+    "columns": {
+      "one": "{count} colonna",
+      "other": "{count} colonne"
+    },
+    "duplicates": {
+      "one": "{count} duplicato",
+      "other": "{count} duplicati"
+    },
+    "extraFile": "File aggiuntivo",
+    "processing": "Elaborazione in corso…",
+    "done": "Fatto",
+    "failed": "Non riuscito",
+    "agency": "Agenzia",
+    "summary": "Riepilogo",
+    "files": "File",
+    "size": "Dimensione",
+    "blankNext": "Una volta creato, passerai all'editor dei dati per aggiungere fermate, linee e calendari.",
+    "computing": "Calcolo dei dati e della validazione…",
+    "import": "Importa feed",
+    "create": "Crea feed",
+    "imported": "Feed importato",
+    "created": "Feed creato",
+    "downloading": "Download da {source}…",
+    "downloadFailed": "Impossibile scaricare il feed dalla sua fonte.",
+    "retry": "Riprova"
+  },
+  "overview": {
+    "openMap": "Apri la mappa",
+    "startBuilding": "Inizia",
+    "busiestDay": "Corse nel giorno di punta",
+    "serviceSpan": "Fascia di servizio",
+    "emptyTitle": "Questo feed è ancora vuoto",
+    "emptyDescription": "Aggiungi fermate e una linea, e il generatore creerà le corse.",
+    "addStops": "Aggiungi fermate",
+    "network": "La rete",
+    "networkHint": "Ogni linea nel suo colore; fermate dimensionate in base alle partenze.",
+    "modes": "Modalità di trasporto",
+    "calendar": "Corse al giorno",
+    "calendarHint": "Fai clic su un giorno per aprirlo nel calendario.",
+    "hours": "Partenze per ora",
+    "hoursHint": "Corse che iniziano a ogni ora il {date}.",
+    "topStops": "Fermate più frequentate",
+    "topStopsHint": "Partenze nel giorno di punta.",
+    "files": "File del feed",
+    "filesHint": "Fai clic su uno per aprirlo nell'editor.",
+    "missingFile": "Mancante"
+  },
+  "map": {
+    "zoomIn": "Ingrandisci",
+    "zoomOut": "Riduci",
+    "lines": "Linee",
+    "hideStops": "Nascondi fermate",
+    "showStops": "Mostra fermate",
+    "searchLines": "Cerca linee",
+    "showAll": "Mostra tutte",
+    "hideAll": "Nascondi tutte",
+    "only": "Solo questa",
+    "openStop": "Apri fermata",
+    "dailyDepartures": {
+      "one": "{count} partenza nel giorno di punta",
+      "other": "{count} partenze nel giorno di punta"
+    },
+    "legend": "{stops} fermate · {lines} linee · la dimensione del cerchio indica le partenze"
+  },
+  "routes": {
+    "subtitle": "Tutte le linee del feed, raggruppate come le vedono i passeggeri.",
+    "search": "Cerca linee",
+    "view": "Vista",
+    "grid": "Schede",
+    "list": "Elenco",
+    "variants": {
+      "one": "{count} variante",
+      "other": "{count} varianti"
+    },
+    "emptyTitle": "Ancora nessuna linea",
+    "emptyDescription": "Aggiungine una dall'editor dei dati.",
+    "website": "Sito web",
+    "variantsOf": "Varianti di {name}",
+    "allVariants": "Mostra tutte ({count})",
+    "fewerVariants": "Mostra meno",
+    "tripsOnDay": "Corse in questo giorno",
+    "firstLast": "Prima e ultima",
+    "length": "Lunghezza",
+    "avgDuration": "Durata media",
+    "pattern": "Percorso",
+    "views": "Viste della linea",
+    "diagram": "Diagramma",
+    "timetable": "Orario",
+    "marey": "Marey",
+    "noTrips": "Questa linea non ha corse.",
+    "noTripsOnDay": "Nessuna corsa su questo percorso il {date}.",
+    "stopTrip": "Fermata / corsa",
+    "mareyHint": "Il tempo scorre in orizzontale e le fermate sono distanziate in base alla distanza: più la linea è ripida, più la corsa è veloce. Fai clic su una per aprire la corsa.",
+    "serviceDays": "Giorni di servizio",
+    "departuresByHour": "Partenze per ora il {date}"
+  },
+  "stops": {
+    "subtitle": "Ordinate per partenze nel giorno di punta.",
+    "search": "Cerca fermate",
+    "emptyTitle": "Ancora nessuna fermata",
+    "emptyDescription": "Aggiungile dall'editor dei dati facendo clic sulla mappa.",
+    "accessible": "Accessibile",
+    "partOf": "Fa parte di",
+    "departures": "Partenze",
+    "terminates": "Capolinea",
+    "noDepartures": "Nessuna partenza il {date}.",
+    "platforms": "Banchine",
+    "nearby": "Fermate vicine"
+  },
+  "trips": {
+    "departure": "Partenza",
+    "arrival": "Arrivo",
+    "duration": "Durata",
+    "stopTimes": "Orari alle fermate",
+    "noShape": "Nessun tracciato: le fermate sono collegate",
+    "serviceDays": "Giorni di effettuazione",
+    "runs": "Circola",
+    "doesNotRun": "Non circola",
+    "noService": "Non circola in nessun giorno.",
+    "block": "Blocco {block}",
+    "blockHint": "Corse effettuate dallo stesso veicolo."
+  },
+  "calendar": {
+    "subtitle": "Quante corse circolano ogni giorno e con quali servizi.",
+    "tripsPerDay": "Corse al giorno",
+    "pickDay": "Fai clic su un giorno per i dettagli.",
+    "selected": {
+      "one": "{date}: {count} corsa",
+      "other": "{date}: {count} corse"
+    },
+    "services": "Servizi",
+    "servicesHint": {
+      "one": "{count} servizio (calendar e calendar_dates)",
+      "other": "{count} servizi (calendar e calendar_dates)"
+    },
+    "search": "Cerca servizi",
+    "weekdays": "Giorni",
+    "period": "Periodo",
+    "exceptions": "Eccezioni",
+    "activeDays": "Giorni attivi",
+    "onlyDates": "Solo date specifiche",
+    "truncated": {
+      "one": "E {count} altro servizio: cerca per nome.",
+      "other": "E altri {count} servizi: cerca per nome."
+    }
+  },
+  "severity": {
+    "error": "Errori",
+    "warning": "Avvisi",
+    "info": "Note",
+    "errorPlural": "Errori",
+    "warningPlural": "Avvisi",
+    "infoPlural": "Note"
+  },
+  "units": {
+    "trips": {
+      "one": "{count} corsa",
+      "other": "{count} corse"
+    },
+    "departures": {
+      "one": "{count} partenza",
+      "other": "{count} partenze"
+    },
+    "routes": {
+      "one": "{count} linea",
+      "other": "{count} linee"
+    },
+    "lines": {
+      "one": "{count} linea",
+      "other": "{count} linee"
+    },
+    "stops": {
+      "one": "{count} fermata",
+      "other": "{count} fermate"
+    },
+    "rows": {
+      "one": "{count} riga",
+      "other": "{count} righe"
+    },
+    "columns": {
+      "one": "{count} colonna",
+      "other": "{count} colonne"
+    },
+    "days": {
+      "one": "{count} giorno",
+      "other": "{count} giorni"
+    },
+    "cases": {
+      "one": "{count} caso",
+      "other": "{count} casi"
+    },
+    "errors": {
+      "one": "{count} errore",
+      "other": "{count} errori"
+    }
+  },
+  "modes": {
+    "tram": "Tram",
+    "subway": "Metropolitana",
+    "rail": "Treno",
+    "bus": "Autobus",
+    "ferry": "Traghetto",
+    "cableTram": "Tram a fune",
+    "aerial": "Impianto a fune",
+    "funicular": "Funicolare",
+    "trolleybus": "Filobus",
+    "monorail": "Monorotaia",
+    "other": "Altro"
+  },
+  "tables": {
+    "agency": "Agenzie",
+    "stops": "Fermate",
+    "routes": "Linee",
+    "trips": "Corse",
+    "stop_times": "Orari alle fermate",
+    "calendar": "Calendario",
+    "calendar_dates": "Date del calendario",
+    "shapes": "Tracciati",
+    "frequencies": "Frequenze",
+    "transfers": "Interscambi",
+    "feed_info": "Info sul feed"
+  },
+  "validation": {
+    "subtitle": "Controlli della specifica GTFS sull'intero feed.",
+    "allGood": "Nessun errore o avviso",
+    "allGoodHint": "Il feed supera tutti i controlli.",
+    "wholeFeed": "Intero feed",
+    "missingAgency": "agency.txt è mancante o vuoto",
+    "missingStops": "stops.txt è mancante o vuoto",
+    "missingRoutes": "routes.txt è mancante o vuoto",
+    "missingTrips": "trips.txt è mancante o vuoto",
+    "missingStopTimes": "stop_times.txt è mancante o vuoto",
+    "missingCalendar": "Né calendar.txt né calendar_dates.txt",
+    "agencyMissingFields": "Agenzie senza nome, URL o fuso orario",
+    "agencyIdRequired": "agency_id è obbligatorio con più agenzie",
+    "routeUnknownAgency": "Linee con un'agenzia sconosciuta",
+    "routeWithoutName": "Linee senza nome breve o lungo",
+    "routeWithoutType": "Linee senza route_type",
+    "routeColorContrast": "Linee con basso contrasto colore/testo",
+    "routeWithoutTrips": "Linee senza corse",
+    "stopWithoutCoordinates": "Fermate senza coordinate",
+    "stopAtNullIsland": "Fermate in 0,0",
+    "stopWithoutName": "Fermate senza nome",
+    "stopUnknownParent": "Fermate con una stazione madre sconosciuta",
+    "stopUnused": "Fermate non servite da alcuna corsa",
+    "tripUnknownRoute": "Corse con una linea sconosciuta",
+    "tripUnknownService": "Corse con un servizio sconosciuto",
+    "tripUnknownShape": "Corse con un tracciato sconosciuto",
+    "tripTooFewStops": "Corse con meno di due fermate",
+    "stopTimeUnknownTrip": "Orari per una corsa sconosciuta",
+    "stopTimeUnknownStop": "Orari a una fermata sconosciuta",
+    "stopTimeArrivalAfterDeparture": "Arrivo dopo la partenza",
+    "stopTimeGoesBackwards": "Orari che tornano indietro all'interno di una corsa",
+    "stopTimeEndpointWithoutTime": "Prima o ultima fermata senza orario",
+    "stopTimeTooFast": "Tratte a più di 350 km/h",
+    "serviceWithoutDays": "Servizi senza giorni attivi",
+    "serviceEndBeforeStart": "Servizi che terminano prima di iniziare",
+    "feedExpired": "Il feed è scaduto",
+    "shapeTooFewPoints": "Tracciati con meno di due punti",
+    "transferUnknownStop": "Interscambi con una fermata sconosciuta"
+  },
+  "data": {
+    "subtitle": "Modifica qualsiasi file del feed, riga per riga.",
+    "required": "Obbligatorio",
+    "optional": "Facoltativo",
+    "add": "Aggiungi riga",
+    "editRow": "Modifica riga",
+    "newRow": "Nuova riga",
+    "search": "Cerca in questo file",
+    "empty": "Questo file è vuoto",
+    "emptyHint": "Aggiungi la prima riga.",
+    "page": "{from}–{to} di {total}",
+    "saved": "Riga salvata",
+    "created": "Riga aggiunta",
+    "deleted": "Riga eliminata",
+    "deleteConfirm": "Eliminare questa riga? L'operazione non può essere annullata.",
+    "fieldRequired": "Questo campo è obbligatorio",
+    "fieldInvalid": "Questo valore non è valido",
+    "pickOnMap": "Fai clic sulla mappa per posizionare la fermata",
+    "extraColumns": "Colonne aggiuntive",
+    "columns": "Colonne",
+    "timeHint": "HH:MM:SS (può superare le 24 h)",
+    "dateHint": "AAAAMMGG",
+    "colorHint": "Esadecimale senza #",
+    "noValue": "(vuoto)",
+    "conflict": "Esiste già una riga con questo identificatore."
+  },
+  "generator": {
+    "subtitle": "Crea in un colpo solo tutte le corse di una linea: fermate in ordine, tempi di percorrenza e frequenza.",
+    "line": "Linea e servizio",
+    "route": "Linea",
+    "service": "Servizio",
+    "headsign": "Destinazione",
+    "direction": "Direzione",
+    "noDirection": "Nessuna direzione",
+    "stops": "Fermate lungo la corsa",
+    "searchStop": "Cerca una fermata da aggiungere",
+    "mapHint": "Puoi anche fare clic sulle fermate della mappa per aggiungerle in ordine.",
+    "travel": "Minuti dalla precedente",
+    "remove": "Rimuovi fermata",
+    "moveUp": "Sposta su",
+    "moveDown": "Sposta giù",
+    "schedule": "Orario",
+    "first": "Prima partenza",
+    "last": "Ultima partenza",
+    "headway": "Ogni (minuti)",
+    "dwell": "Sosta a ogni fermata (minuti)",
+    "prefix": "Prefisso dell'ID corsa",
+    "createShape": "Crea un tracciato rettilineo tra le fermate",
+    "preview": "Anteprima",
+    "previewSummary": "{trips} corse · {duration} di tempo di percorrenza · ultimo arrivo {arrival}",
+    "generate": "Genera corse",
+    "generated": "Create {trips} corse e {stopTimes} orari alle fermate",
+    "needData": "Servono prima una linea, un servizio e delle fermate",
+    "needDataHint": "Creali nell'editor dei dati (linee, calendario e fermate) e torna qui.",
+    "errors": {
+      "unknownRoute": "La linea non esiste.",
+      "unknownService": "Il servizio non esiste.",
+      "unknownStop": "Una fermata non esiste.",
+      "tripIdTaken": "Esistono già corse con questo prefisso e questo orario: cambia il prefisso.",
+      "badWindow": "L'ultima partenza precede la prima.",
+      "lengthMismatch": "Mancano dei tempi di percorrenza."
+    }
+  },
+  "catalog": {
+    "title": "Catalogo GTFS pubblico",
+    "subtitle": "Feed aperti di operatori reali, verificati e con servizio attuale. Importane uno per esplorarlo.",
+    "count": {
+      "one": "{count} feed",
+      "other": "{count} feed"
+    },
+    "import": "Importa",
+    "open": "Apri",
+    "reimport": "Importa di nuovo",
+    "imported": "Importato",
+    "source": "Fonte",
+    "updated": "Pubblicato {when}",
+    "available": "Disponibile",
+    "unavailable": "Al momento non risponde",
+    "checking": "Verifica della fonte…",
+    "browse": "Sfoglia il catalogo",
+    "logosCredit": "Simboli dei marchi in formato vettoriale, da Wikimedia Commons:",
+    "license": {
+      "pd": "pubblico dominio",
+      "cc0": "CC0"
+    },
+    "search": "Cerca per operatore, città o paese",
+    "country": "Paese",
+    "allCountries": "Tutti i paesi",
+    "noResults": "Nessun feed del catalogo corrisponde alla ricerca."
+  },
+  "fields": {
+    "agency_id": "ID agenzia",
+    "agency_name": "Nome dell'agenzia",
+    "agency_url": "URL dell'agenzia",
+    "agency_timezone": "Fuso orario",
+    "agency_lang": "Lingua",
+    "agency_phone": "Telefono",
+    "agency_fare_url": "URL delle tariffe",
+    "agency_email": "E-mail",
+    "stop_id": "ID fermata",
+    "stop_code": "Codice",
+    "stop_name": "Nome della fermata",
+    "tts_stop_name": "Nome per la sintesi vocale",
+    "stop_desc": "Descrizione",
+    "stop_lat": "Latitudine",
+    "stop_lon": "Longitudine",
+    "zone_id": "Zona",
+    "stop_url": "URL",
+    "location_type": "Tipo di luogo",
+    "parent_station": "Stazione madre",
+    "stop_timezone": "Fuso orario",
+    "wheelchair_boarding": "Accesso in sedia a rotelle",
+    "level_id": "Livello",
+    "platform_code": "Banchina",
+    "route_id": "ID linea",
+    "route_short_name": "Nome breve",
+    "route_long_name": "Nome lungo",
+    "route_desc": "Descrizione",
+    "route_type": "Tipo",
+    "route_url": "URL",
+    "route_color": "Colore",
+    "route_text_color": "Colore del testo",
+    "route_sort_order": "Ordine di visualizzazione",
+    "continuous_pickup": "Salita continua",
+    "continuous_drop_off": "Discesa continua",
+    "network_id": "Rete",
+    "service_id": "Servizio",
+    "trip_id": "ID corsa",
+    "trip_headsign": "Destinazione",
+    "trip_short_name": "Nome breve",
+    "direction_id": "Direzione",
+    "block_id": "Blocco",
+    "shape_id": "Tracciato",
+    "wheelchair_accessible": "Accessibile in sedia a rotelle",
+    "bikes_allowed": "Biciclette ammesse",
+    "arrival_time": "Arrivo",
+    "departure_time": "Partenza",
+    "stop_sequence": "Sequenza",
+    "stop_headsign": "Destinazione alla fermata",
+    "pickup_type": "Salita",
+    "drop_off_type": "Discesa",
+    "shape_dist_traveled": "Distanza percorsa",
+    "timepoint": "Punto orario",
+    "monday": "Lunedì",
+    "tuesday": "Martedì",
+    "wednesday": "Mercoledì",
+    "thursday": "Giovedì",
+    "friday": "Venerdì",
+    "saturday": "Sabato",
+    "sunday": "Domenica",
+    "start_date": "Data di inizio",
+    "end_date": "Data di fine",
+    "date": "Data",
+    "exception_type": "Eccezione",
+    "shape_pt_lat": "Latitudine",
+    "shape_pt_lon": "Longitudine",
+    "shape_pt_sequence": "Sequenza",
+    "start_time": "Ora di inizio",
+    "end_time": "Ora di fine",
+    "headway_secs": "Intervallo (s)",
+    "exact_times": "Orari esatti",
+    "from_stop_id": "Fermata di partenza",
+    "to_stop_id": "Fermata di arrivo",
+    "from_route_id": "Linea di partenza",
+    "to_route_id": "Linea di arrivo",
+    "from_trip_id": "Corsa di partenza",
+    "to_trip_id": "Corsa di arrivo",
+    "transfer_type": "Tipo di interscambio",
+    "min_transfer_time": "Tempo min. di interscambio (s)",
+    "feed_publisher_name": "Editore",
+    "feed_publisher_url": "URL dell'editore",
+    "feed_lang": "Lingua",
+    "default_lang": "Lingua predefinita",
+    "feed_start_date": "Valido dal",
+    "feed_end_date": "Valido fino al",
+    "feed_version": "Versione",
+    "feed_contact_email": "E-mail di contatto",
+    "feed_contact_url": "URL di contatto"
+  },
+  "enums": {
+    "location_type": {
+      "0": "Fermata o banchina",
+      "1": "Stazione",
+      "2": "Ingresso/uscita",
+      "3": "Nodo generico",
+      "4": "Area di imbarco"
+    },
+    "wheelchair_boarding": {
+      "0": "0 · Nessuna informazione",
+      "1": "1 · Sì",
+      "2": "2 · No"
+    },
+    "wheelchair_accessible": {
+      "0": "0 · Nessuna informazione",
+      "1": "1 · Sì",
+      "2": "2 · No"
+    },
+    "bikes_allowed": {
+      "0": "0 · Nessuna informazione",
+      "1": "1 · Sì",
+      "2": "2 · No"
+    },
+    "continuous_pickup": {
+      "0": "0 · Continua",
+      "1": "1 · Nessuna",
+      "2": "2 · Telefonare all'agenzia",
+      "3": "3 · Chiedere al conducente"
+    },
+    "continuous_drop_off": {
+      "0": "0 · Continua",
+      "1": "1 · Nessuna",
+      "2": "2 · Telefonare all'agenzia",
+      "3": "3 · Chiedere al conducente"
+    },
+    "pickup_type": {
+      "0": "0 · Regolare",
+      "1": "1 · Nessuna",
+      "2": "2 · Telefonare all'agenzia",
+      "3": "3 · Chiedere al conducente"
+    },
+    "drop_off_type": {
+      "0": "0 · Regolare",
+      "1": "1 · Nessuna",
+      "2": "2 · Telefonare all'agenzia",
+      "3": "3 · Chiedere al conducente"
+    },
+    "direction_id": {
+      "0": "Andata",
+      "1": "Ritorno"
+    },
+    "timepoint": {
+      "0": "0 · Approssimato",
+      "1": "1 · Esatto"
+    },
+    "exact_times": {
+      "0": "0 · Basato sulla frequenza",
+      "1": "1 · Orario esatto"
+    },
+    "exception_type": {
+      "1": "1 · Servizio aggiunto",
+      "2": "2 · Servizio rimosso"
+    },
+    "transfer_type": {
+      "0": "0 · Consigliato",
+      "1": "1 · Con attesa",
+      "2": "2 · Tempo minimo",
+      "3": "3 · Non possibile",
+      "4": "4 · Senza scendere",
+      "5": "5 · Discesa obbligatoria"
+    },
+    "monday": {
+      "0": "0 · Nessun servizio",
+      "1": "1 · Servizio"
+    },
+    "tuesday": {
+      "0": "0 · Nessun servizio",
+      "1": "1 · Servizio"
+    },
+    "wednesday": {
+      "0": "0 · Nessun servizio",
+      "1": "1 · Servizio"
+    },
+    "thursday": {
+      "0": "0 · Nessun servizio",
+      "1": "1 · Servizio"
+    },
+    "friday": {
+      "0": "0 · Nessun servizio",
+      "1": "1 · Servizio"
+    },
+    "saturday": {
+      "0": "0 · Nessun servizio",
+      "1": "1 · Servizio"
+    },
+    "sunday": {
+      "0": "0 · Nessun servizio",
+      "1": "1 · Servizio"
+    }
+  },
+  "seo": {
+    "homeTitle": "Visualizzatore, editor e validatore GTFS online | GTFS Manager",
+    "homeDescription": "Visualizza, modifica e convalida feed GTFS dal browser: mappa interattiva della rete, schemi di linea, orari, diagrammi di Marey, validazione secondo la specifica ed esportazione ZIP.",
+    "catalogDescription": "Catalogo di feed GTFS aperti e aggiornati di operatori di tutto il mondo: FGC, Renfe, SNCF, VBB, Ruter, MTA, TTC, Transperth. Controllane lo stato e importali.",
+    "catalogEntryTitle": "{name}: feed GTFS",
+    "catalogEntryDescription": "Feed GTFS aperto di {operator} ({region}). Consulta la fonte ufficiale e lo stato di pubblicazione, e importalo per esplorarne linee, fermate e orari."
+  },
+  "landing": {
+    "title": "Visualizza, modifica e convalida feed GTFS",
+    "lead": "Importa un feed GTFS e lo vedrai come mappa della rete, schemi di linea, orari e diagrammi di Marey. Correggilo con la validazione secondo la specifica ed esportalo di nuovo in ZIP.",
+    "openEditor": "Apri l'editor",
+    "importFeed": "Importa un feed",
+    "featuresTitle": "Cosa fa",
+    "features": {
+      "import": {
+        "title": "Importa feed di grandi dimensioni",
+        "body": "Carica uno ZIP o una cartella GTFS. L'importazione elabora i file in streaming e gestisce feed come Renfe Cercanías, con quasi due milioni di orari alle fermate."
+      },
+      "visualize": {
+        "title": "Visualizza la rete",
+        "body": "Una mappa di tutte le linee e fermate, un diagramma di ogni linea, orari, grafici di Marey e il calendario di servizio."
+      },
+      "edit": {
+        "title": "Modifica qualsiasi file",
+        "body": "Un editor per ogni tabella GTFS, con validazione dei campi, riferimenti tra file e ricerca."
+      },
+      "generate": {
+        "title": "Genera corse",
+        "body": "Crea tutte le corse di una linea a partire dalle sue fermate, dai minuti tra l'una e l'altra e da una frequenza."
+      },
+      "validate": {
+        "title": "Valida il feed",
+        "body": "Controlli della specifica GTFS sull'intero feed, con un link diretto a ogni caso per correggerlo."
+      },
+      "export": {
+        "title": "Esporta in ZIP",
+        "body": "Ricostruisci uno ZIP GTFS che conserva le colonne aggiuntive del feed originale."
+      }
+    },
+    "catalogTitle": "Catalogo di feed pubblici",
+    "catalogText": "Feed aperti di operatori di tutto il mondo, con servizio in vigore. Scegline uno e importalo per esplorarlo.",
+    "filesTitle": "File GTFS modificabili",
+    "filesText": "I file principali di GTFS Schedule vengono modificati e validati campo per campo. Le colonne che non conosce vengono conservate in esportazione.",
+    "faqTitle": "Domande frequenti",
+    "faq": {
+      "what": {
+        "q": "Che cos'è un feed GTFS?",
+        "a": "GTFS (General Transit Feed Specification) è il formato aperto con cui gli operatori di trasporto pubblicano linee, fermate, orari e calendari. È uno ZIP di file di testo usato dai pianificatori di viaggio e dalle app di mobilità."
+      },
+      "create": {
+        "q": "Posso creare un feed GTFS da zero?",
+        "a": "Sì. Crea un feed vuoto con la sua agenzia, aggiungi fermate, linee e calendari nell'editor e usa il generatore per creare le corse e gli orari alle fermate."
+      },
+      "validate": {
+        "q": "Come viene validato un feed?",
+        "a": "GTFS Manager controlla l'intero feed: file e campi obbligatori, riferimenti tra file, orari che tornano indietro o troppo veloci, fermate senza coordinate o senza servizio, calendari scaduti e contrasto dei colori di linea. Ogni avviso rimanda ai record interessati."
+      },
+      "large": {
+        "q": "Gestisce feed di grandi dimensioni?",
+        "a": "Sì. L'importazione elabora i file in streaming e salva i dati in PostgreSQL. Feed come Renfe Cercanías, con oltre 130.000 corse, vengono importati ed esplorati per intero."
+      },
+      "data": {
+        "q": "Dove vengono salvati i dati?",
+        "a": "Nel database PostgreSQL del server su cui gira GTFS Manager. I feed non vengono inviati a nessun servizio esterno."
+      },
+      "export": {
+        "q": "Posso esportare di nuovo il feed?",
+        "a": "Sì, in qualsiasi momento. L'esportazione crea uno ZIP GTFS con tutti i file e conserva le colonne aggiuntive dell'originale."
+      }
+    },
+    "network": {
+      "label": "Animazione: treni FGC in circolazione sulla rete dell'area di Barcellona tra le 7 e le 10 di un giorno feriale",
+      "caption": "Treni FGC tra le 7 e le 10 di un giorno feriale, dal suo feed GTFS aperto. Ogni secondo corrisponde a tre minuti.",
+      "pause": "Metti in pausa l'animazione",
+      "play": "Riprendi l'animazione"
+    }
+  },
+  "catalogEntry": {
+    "intro": "Feed GTFS aperto di {operator}, con servizio attuale. Importalo per esplorarne la rete, gli orari e il calendario, oppure scaricalo dalla fonte ufficiale.",
+    "operator": "Operatore",
+    "area": "Territorio",
+    "modes": "Modalità",
+    "status": "Stato della fonte",
+    "officialSource": "Fonte ufficiale",
+    "download": "Scarica lo ZIP",
+    "whatTitle": "Cosa puoi farci",
+    "what": {
+      "map": "Vedere tutte le linee e le fermate sulla mappa.",
+      "lines": "Consultare diagramma, orario e grafico di Marey di ogni linea.",
+      "validate": "Validarlo ed esportarlo di nuovo in ZIP."
+    },
+    "moreTitle": "Altri feed nel catalogo",
+    "details": "Scheda del feed"
+  }
+}
