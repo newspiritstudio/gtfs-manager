@@ -101,13 +101,15 @@ export default function Modal({
             exit={{ opacity: 0, scale: 0.96 }}
             transition={SPRING.defaultSpatial}
           >
-            <header className="flex items-center gap-3 px-5 pt-5 pb-3 md:px-6">
+            <header className="flex items-center gap-3 px-5 pt-5 pb-1 md:px-6">
               <h2 className="flex-1 text-title-large text-on-surface">{title}</h2>
               <IconButton label={closeLabel} onClick={onClose} data-close>
                 <X />
               </IconButton>
             </header>
-            <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-4 md:px-6">{children}</div>
+            {/* Top padding inside the scroll area: an outlined field's label sits half above its
+                border, and the first row's would be clipped. */}
+            <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-3 pb-4 md:px-6">{children}</div>
             {footer ? (
               <footer className="flex flex-wrap justify-end gap-2 px-5 pb-5 pt-2 md:px-6">
                 {footer}
