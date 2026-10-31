@@ -121,7 +121,8 @@
     "created": "Feed creat",
     "downloading": "Descarregant de {source}…",
     "downloadFailed": "No s'ha pogut descarregar el feed de la font.",
-    "retry": "Torna-ho a provar"
+    "retry": "Torna-ho a provar",
+    "needFiles": "Tria una carpeta o un ZIP per importar."
   },
   "overview": {
     "openMap": "Obre el mapa",
@@ -382,7 +383,8 @@
     "dateHint": "AAAAMMDD",
     "colorHint": "Hexadecimal sense #",
     "noValue": "(buit)",
-    "conflict": "Ja hi ha una fila amb aquest identificador."
+    "conflict": "Ja hi ha una fila amb aquest identificador.",
+    "colorPicker": "selector de color"
   },
   "generator": {
     "subtitle": "Crea de cop tots els viatges d'una línia: parades en ordre, temps entre parades i freqüència.",
@@ -708,11 +710,21 @@
       }
     },
     "network": {
-      "label": "Animació: trens de FGC circulant per la xarxa de l'àrea de Barcelona entre les 7 i les 10 d'un dia feiner",
-      "caption": "Trens de FGC entre les 7 i les 10 d'un dia feiner, a partir del seu feed GTFS obert. Cada segon són tres minuts.",
+      "label": "Animació: trens de {network} circulant per la xarxa entre les {from} i les {to} d'un dia feiner",
+      "caption": "Les {lines} línies de {operator} i els {trips} viatges que hi circulen el {date}, entre les {from} i les {to}, segons el seu feed GTFS obert. Cada segon són {minutes} minuts.",
       "pause": "Atura l'animació",
-      "play": "Reprèn l'animació"
+      "play": "Reprèn l'animació",
+      "feed": "Mira el feed de {network}",
+      "other": "Mostra una altra xarxa"
     }
+  },
+  "footer": {
+    "links": "Enllaços",
+    "gtfsReference": "Referència GTFS",
+    "languages": "Idiomes",
+    "creditLogos": "Isotips de les marques:",
+    "creditFlags": "Banderes:",
+    "creditAnimation": "Animació: trens reals dels feeds GTFS oberts dels operadors que s'hi mostren."
   },
   "catalogEntry": {
     "intro": "Feed GTFS obert de {operator}, amb servei vigent. Importa'l per explorar-ne la xarxa, els horaris i el calendari, o descarrega'l de la font oficial.",

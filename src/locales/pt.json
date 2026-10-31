@@ -121,7 +121,8 @@
     "created": "Feed criado",
     "downloading": "A transferir de {source}…",
     "downloadFailed": "Não foi possível transferir o feed a partir da origem.",
-    "retry": "Tentar novamente"
+    "retry": "Tentar novamente",
+    "needFiles": "Escolha uma pasta ou um ZIP para importar."
   },
   "overview": {
     "openMap": "Abrir mapa",
@@ -382,7 +383,8 @@
     "dateHint": "YYYYMMDD",
     "colorHint": "Hex sem #",
     "noValue": "(vazio)",
-    "conflict": "Já existe uma linha com este identificador."
+    "conflict": "Já existe uma linha com este identificador.",
+    "colorPicker": "seletor de cor"
   },
   "generator": {
     "subtitle": "Crie de uma só vez todas as viagens de uma linha: paragens ordenadas, tempos de percurso e intervalo.",
@@ -708,11 +710,21 @@
       }
     },
     "network": {
-      "label": "Animação: comboios da FGC a circular na rede da área de Barcelona entre as 7 e as 10 de um dia útil",
-      "caption": "Comboios da FGC entre as 7 e as 10 de um dia útil, a partir do seu feed GTFS aberto. Cada segundo corresponde a três minutos.",
+      "label": "Animação: comboios de {network} a circular na rede entre as {from} e as {to} de um dia útil",
+      "caption": "As {lines} linhas de {operator} e as {trips} viagens que nelas circulam em {date}, entre as {from} e as {to}, a partir do seu feed GTFS aberto. Cada segundo são {minutes} minutos.",
       "pause": "Pausar a animação",
-      "play": "Retomar a animação"
+      "play": "Retomar a animação",
+      "feed": "Ver o feed de {network}",
+      "other": "Mostrar outra rede"
     }
+  },
+  "footer": {
+    "links": "Ligações",
+    "gtfsReference": "Referência GTFS",
+    "languages": "Idiomas",
+    "creditLogos": "Símbolos das marcas:",
+    "creditFlags": "Bandeiras:",
+    "creditAnimation": "Animação: viagens reais dos feeds GTFS abertos dos operadores mostrados."
   },
   "catalogEntry": {
     "intro": "Feed GTFS aberto de {operator}, com serviço atual. Importe-o para explorar a rede, os horários e o calendário, ou transfira-o a partir da fonte oficial.",

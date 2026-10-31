@@ -8,6 +8,7 @@ import { useI18n } from '@/lib/i18n/client';
 import { splitLocalePath } from '@/lib/i18n/paths';
 import { SPRING } from '@/lib/motion';
 import { cn } from '@/lib/utils';
+import type { ShellFeed } from '@shared/contracts';
 import BrandMark from './BrandMark';
 import {
   activeFeedNav,
@@ -18,10 +19,7 @@ import {
   HOME_ICON,
 } from './nav';
 
-export interface ShellFeed {
-  id: string;
-  name: string;
-}
+export type { ShellFeed };
 
 function NavLink({
   href,
@@ -63,6 +61,21 @@ function NavLink({
       />
       <span className="relative min-w-0 break-words">{children}</span>
     </Link>
+  );
+}
+
+/** L'isotip oficial de la xarxa o, si no en té, un punt del seu color. */
+function FeedMark({ feed }: { feed: ShellFeed }) {
+  if (feed.logo) {
+    return <img src={feed.logo} alt="" className="size-5 shrink-0 object-contain" loading="lazy" />;
+  }
+  return (
+    <span aria-hidden className="flex size-5 shrink-0 items-center justify-center">
+      <span
+        className={cn('size-3 rounded-full', !feed.color && 'bg-outline')}
+        style={feed.color ? { backgroundColor: feed.color } : undefined}
+      />
+    </span>
   );
 }
 
@@ -150,7 +163,7 @@ export function NavContent({ feeds, onNavigate }: { feeds: ShellFeed[]; onNaviga
                   onClick={onNavigate}
                   className="flex min-h-11 items-center gap-2.5 rounded-full px-3 py-1.5 text-body-medium text-on-surface-variant state-layer state-layer-on-surface focus-ring md:min-h-9"
                 >
-                  <span aria-hidden className="ml-1.5 size-2 shrink-0 rounded-full bg-outline" />
+                  <FeedMark feed={feed} />
                   <span className="truncate">{feed.name}</span>
                 </Link>
               </li>

@@ -121,7 +121,8 @@
     "created": "Flux créé",
     "downloading": "Téléchargement depuis {source}…",
     "downloadFailed": "Le flux n'a pas pu être téléchargé depuis sa source.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "needFiles": "Choisissez un dossier ou un ZIP à importer."
   },
   "overview": {
     "openMap": "Ouvrir la carte",
@@ -382,7 +383,8 @@
     "dateHint": "AAAAMMJJ",
     "colorHint": "Hexadécimal sans #",
     "noValue": "(vide)",
-    "conflict": "Une ligne avec cet identifiant existe déjà."
+    "conflict": "Une ligne avec cet identifiant existe déjà.",
+    "colorPicker": "sélecteur de couleur"
   },
   "generator": {
     "subtitle": "Créez d'un coup toutes les courses d'une ligne : arrêts ordonnés, temps de parcours et fréquence.",
@@ -708,11 +710,21 @@
       }
     },
     "network": {
-      "label": "Animation : trains FGC circulant sur le réseau de la région de Barcelone entre 7 h et 10 h un jour de semaine",
-      "caption": "Trains FGC entre 7 h et 10 h un jour de semaine, d'après son flux GTFS ouvert. Chaque seconde représente trois minutes.",
+      "label": "Animation : trains de {network} circulant sur le réseau entre {from} et {to} un jour de semaine",
+      "caption": "Les {lines} lignes de {operator} et les {trips} trajets qui y circulent le {date}, entre {from} et {to}, d'après son flux GTFS ouvert. Chaque seconde représente {minutes} minutes.",
       "pause": "Mettre l'animation en pause",
-      "play": "Reprendre l'animation"
+      "play": "Reprendre l'animation",
+      "feed": "Voir le flux {network}",
+      "other": "Afficher un autre réseau"
     }
+  },
+  "footer": {
+    "links": "Liens",
+    "gtfsReference": "Référence GTFS",
+    "languages": "Langues",
+    "creditLogos": "Symboles des marques :",
+    "creditFlags": "Drapeaux :",
+    "creditAnimation": "Animation : trajets réels issus des flux GTFS ouverts des opérateurs représentés."
   },
   "catalogEntry": {
     "intro": "Flux GTFS ouvert de {operator}, avec service en cours. Importez-le pour explorer son réseau, ses horaires et son calendrier, ou téléchargez-le depuis la source officielle.",

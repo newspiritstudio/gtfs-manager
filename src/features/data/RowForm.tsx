@@ -179,6 +179,7 @@ export default function RowForm({
                     label={label}
                     value={value}
                     onChange={(e) => set(field.name, e.target.value.replace('#', '').toUpperCase())}
+                    required={field.required}
                     error={errorText(field.name)}
                     helper={hintFor(t, field)}
                     maxLength={6}
@@ -186,10 +187,10 @@ export default function RowForm({
                 </div>
                 <input
                   type="color"
-                  aria-label={label}
+                  aria-label={`${label} · ${t('data.colorPicker')}`}
                   value={/^[0-9A-F]{6}$/i.test(value) ? `#${value}` : '#000000'}
                   onChange={(e) => set(field.name, e.target.value.slice(1).toUpperCase())}
-                  className="mt-1 size-10 shrink-0 cursor-pointer rounded-sm border border-outline-variant bg-transparent"
+                  className="mt-1 size-11 shrink-0 cursor-pointer md:size-10 rounded-sm border border-outline-variant bg-transparent"
                 />
               </div>
             );

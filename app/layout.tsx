@@ -7,7 +7,7 @@ import { ToastProvider } from '@/components/ui/Toast';
 import { I18nProvider } from '@/lib/i18n/client';
 import { themeBootstrapScript } from '@/lib/theme';
 import { listFeedNames } from '@/server/gtfs/feeds';
-import { getI18n, MESSAGES } from '@/server/i18n';
+import { clientFallback, getI18n } from '@/server/i18n';
 import { SITE_NAME, SITE_URL } from '@/server/seo';
 import { LOCALE_TAGS } from '@/lib/i18n/config';
 
@@ -43,10 +43,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={LOCALE_TAGS[locale]} suppressHydrationWarning>
       <head>
+        <link
+          rel="preload"
+          href="/fonts/google-sans-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript() }} />
       </head>
       <body suppressHydrationWarning>
-        <I18nProvider locale={locale} messages={messages} fallback={MESSAGES.ca}>
+        <I18nProvider locale={locale} messages={messages} fallback={clientFallback(locale)}>
           <MotionProvider>
             <ToastProvider>
               <AppShell feeds={feeds}>{children}</AppShell>

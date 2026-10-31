@@ -121,7 +121,8 @@
     "created": "Feed creato",
     "downloading": "Download da {source}…",
     "downloadFailed": "Impossibile scaricare il feed dalla sua fonte.",
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "needFiles": "Scegli una cartella o uno ZIP da importare."
   },
   "overview": {
     "openMap": "Apri la mappa",
@@ -382,7 +383,8 @@
     "dateHint": "AAAAMMGG",
     "colorHint": "Esadecimale senza #",
     "noValue": "(vuoto)",
-    "conflict": "Esiste già una riga con questo identificatore."
+    "conflict": "Esiste già una riga con questo identificatore.",
+    "colorPicker": "selettore colore"
   },
   "generator": {
     "subtitle": "Crea in un colpo solo tutte le corse di una linea: fermate in ordine, tempi di percorrenza e frequenza.",
@@ -708,11 +710,21 @@
       }
     },
     "network": {
-      "label": "Animazione: treni FGC in circolazione sulla rete dell'area di Barcellona tra le 7 e le 10 di un giorno feriale",
-      "caption": "Treni FGC tra le 7 e le 10 di un giorno feriale, dal suo feed GTFS aperto. Ogni secondo corrisponde a tre minuti.",
+      "label": "Animazione: treni di {network} in circolazione sulla rete tra le {from} e le {to} di un giorno feriale",
+      "caption": "Le {lines} linee di {operator} e le {trips} corse che vi circolano {date}, tra le {from} e le {to}, dal suo feed GTFS aperto. Ogni secondo sono {minutes} minuti.",
       "pause": "Metti in pausa l'animazione",
-      "play": "Riprendi l'animazione"
+      "play": "Riprendi l'animazione",
+      "feed": "Vedi il feed di {network}",
+      "other": "Mostra un'altra rete"
     }
+  },
+  "footer": {
+    "links": "Link",
+    "gtfsReference": "Riferimento GTFS",
+    "languages": "Lingue",
+    "creditLogos": "Simboli dei marchi:",
+    "creditFlags": "Bandiere:",
+    "creditAnimation": "Animazione: corse reali dai feed GTFS aperti degli operatori mostrati."
   },
   "catalogEntry": {
     "intro": "Feed GTFS aperto di {operator}, con servizio attuale. Importalo per esplorarne la rete, gli orari e il calendario, oppure scaricalo dalla fonte ufficiale.",

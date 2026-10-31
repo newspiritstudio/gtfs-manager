@@ -33,6 +33,18 @@ function rovingKeyDown(role: 'tab' | 'radio') {
   };
 }
 
+/**
+ * Les props del tauler que mostra la pestanya triada (APG: Tabs). Només n'hi ha un de pintat, per
+ * això el id és un de sol: `Tabs` apunta cada pestanya a aquest tauler amb `aria-controls`.
+ */
+export function tabPanelProps(idBase: string, value: string) {
+  return {
+    role: 'tabpanel' as const,
+    id: `${idBase}-panel`,
+    'aria-labelledby': `${idBase}-tab-${value}`,
+  };
+}
+
 /** Pestanyes primàries: l'indicador de 3 px es desplaça, no apareix. */
 export default function Tabs<T extends string>({
   tabs,
@@ -40,12 +52,15 @@ export default function Tabs<T extends string>({
   onChange,
   label,
   className,
+  idBase,
 }: {
   tabs: { value: T; label: string; icon?: React.ReactNode; count?: number }[];
   value: T;
   onChange: (value: T) => void;
   label: string;
   className?: string;
+  /** Si hi és, cada pestanya té `id` i apunta al tauler de `tabPanelProps(idBase, value)`. */
+  idBase?: string;
 }) {
   const layoutId = useId();
   return (
@@ -63,6 +78,8 @@ export default function Tabs<T extends string>({
             key={tab.value}
             type="button"
             role="tab"
+            id={idBase ? `${idBase}-tab-${tab.value}` : undefined}
+            aria-controls={idBase && active ? `${idBase}-panel` : undefined}
             aria-selected={active}
             tabIndex={stop ? 0 : -1}
             onClick={() => onChange(tab.value)}

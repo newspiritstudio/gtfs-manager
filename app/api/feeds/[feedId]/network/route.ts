@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { feedVersion, getNetwork } from '@/server/gtfs/network';
+import { feedVersion, getNetworkBody, pickEncoding } from '@/server/gtfs/network';
 import { jsonError, requireFeed, type RouteContext } from '@/server/http';
 
 /**
@@ -21,6 +21,15 @@ export async function GET(request: Request, { params }: RouteContext<{ feedId: s
   if (sent.includes(headers.ETag) || sent.includes('*')) {
     return new NextResponse(null, { status: 304, headers });
   }
-  const network = await getNetwork(feedId);
-  return network ? NextResponse.json(network, { headers }) : jsonError(404, 'feedNotFound');
+  const encoding = pickEncoding(request.headers.get('accept-encoding'));
+  const body = await getNetworkBody(feedId, version, encoding);
+  if (!body) return jsonError(404, 'feedNotFound');
+  return new NextResponse(new Uint8Array(body), {
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+      Vary: 'Accept-Encoding',
+      ...(encoding === 'identity' ? {} : { 'Content-Encoding': encoding }),
+    },
+  });
 }

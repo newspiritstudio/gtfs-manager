@@ -269,6 +269,9 @@ export default function TripGenerator({
                 </p>
               ) : null}
             </div>
+            <p className="sr-only" aria-live="polite">
+              {t('units.stops', { count: stops.length })}
+            </p>
             {stops.length ? (
               <ol className="space-y-1">
                 {stops.map((s, i) => (
@@ -284,14 +287,13 @@ export default function TripGenerator({
                     </span>
                     {i > 0 ? (
                       <label className="flex items-center gap-1 text-body-small text-on-surface-variant">
-                        <span className="sr-only">{t('generator.travel')}</span>
                         +
                         <input
                           type="number"
                           min={0}
                           max={600}
                           value={s.travel}
-                          title={t('generator.travel')}
+                          aria-label={`${t('generator.travel')} · ${s.stop.name ?? s.stop.stopId}`}
                           onChange={(e) =>
                             setStops((list) =>
                               list.map((x, j) =>
@@ -307,7 +309,7 @@ export default function TripGenerator({
                       </label>
                     ) : null}
                     <IconButton
-                      label={t('generator.moveUp')}
+                      label={`${t('generator.moveUp')} · ${s.stop.name ?? s.stop.stopId}`}
                       className="size-8"
                       disabled={i === 0}
                       onClick={() => move(i, -1)}
@@ -315,7 +317,7 @@ export default function TripGenerator({
                       <ArrowUp />
                     </IconButton>
                     <IconButton
-                      label={t('generator.moveDown')}
+                      label={`${t('generator.moveDown')} · ${s.stop.name ?? s.stop.stopId}`}
                       className="size-8"
                       disabled={i === stops.length - 1}
                       onClick={() => move(i, 1)}
@@ -323,7 +325,7 @@ export default function TripGenerator({
                       <ArrowDown />
                     </IconButton>
                     <IconButton
-                      label={t('generator.remove')}
+                      label={`${t('generator.remove')} · ${s.stop.name ?? s.stop.stopId}`}
                       className="size-8"
                       onClick={() =>
                         setStops((list) =>
@@ -380,7 +382,7 @@ export default function TripGenerator({
               placeholder={effectivePrefix}
               onChange={(e) => setPrefix(e.target.value.replace(/[^\w.-]/g, ''))}
             />
-            <label className="flex items-center gap-3 px-1 text-body-medium text-on-surface">
+            <label className="flex min-h-11 items-center gap-3 px-1 text-body-medium text-on-surface md:min-h-10">
               <input
                 type="checkbox"
                 checked={createShape}

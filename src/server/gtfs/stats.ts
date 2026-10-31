@@ -11,14 +11,23 @@ import { validateFeed } from './validate';
 export async function computeStats(feedId: string): Promise<FeedStats> {
   const sql = getSql();
 
-  const counts = {} as Record<GtfsTable, number>;
-  for (const table of GTFS_TABLES) {
-    const [row] = await sql.unsafe<{ n: number }[]>(
-      `SELECT count(*)::int AS n FROM ${ident(table)} WHERE feed_id = $1`,
-      [feedId]
-    );
-    counts[table] = row.n;
-  }
+  // Les consultes pesades (validació, franja horària) corren mentre es fan les altres.
+  const issuesJob = validateFeed(feedId);
+  const spanJob = sql<{ first: number | null; last: number | null }[]>`
+    SELECT min(coalesce(departure_time, arrival_time)) AS first,
+           max(coalesce(arrival_time, departure_time)) AS last
+    FROM stop_times WHERE feed_id = ${feedId}`;
+
+  const countRows = await Promise.all(
+    GTFS_TABLES.map(async (table) => {
+      const [row] = await sql.unsafe<{ n: number }[]>(
+        `SELECT count(*)::int AS n FROM ${ident(table)} WHERE feed_id = $1`,
+        [feedId]
+      );
+      return [table, row.n] as const;
+    })
+  );
+  const counts = Object.fromEntries(countRows) as Record<GtfsTable, number>;
 
   const extraFiles = (
     await sql<{ fileName: string }[]>`
@@ -82,12 +91,7 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
       ORDER BY departures DESC LIMIT 10`;
   }
 
-  const [span] = await sql<{ first: number | null; last: number | null }[]>`
-    SELECT min(coalesce(departure_time, arrival_time)) AS first,
-           max(coalesce(arrival_time, departure_time)) AS last
-    FROM stop_times WHERE feed_id = ${feedId}`;
-
-  const issues = await validateFeed(feedId);
+  const [[span], issues] = await Promise.all([spanJob, issuesJob]);
 
   return {
     computedAt: new Date().toISOString(),

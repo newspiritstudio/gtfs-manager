@@ -54,21 +54,23 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
   const patternRows = await sql<
     { pattern: string; directionId: number | null; headsign: string | null; trips: number }[]
   >`
-    WITH rt AS (
-      SELECT trip_id, direction_id, trip_headsign FROM trips
-      WHERE feed_id = ${feedId} AND route_id = ${routeId}
-    ),
-    seq AS (
-      SELECT st.trip_id, string_agg(st.stop_id, '>' ORDER BY st.stop_sequence) AS pattern
-      FROM stop_times st JOIN rt ON rt.trip_id = st.trip_id
-      WHERE st.feed_id = ${feedId}
-      GROUP BY st.trip_id
+    WITH seq AS (
+      SELECT t.direction_id, t.trip_headsign, p.pattern
+      FROM trips t
+      -- Un viatge cada cop pel seu índex: l'agregat sobre tot stop_times el planificador el feia
+      -- recórrer sencer (1,9 M de files a Renfe Rodalies).
+      CROSS JOIN LATERAL (
+        SELECT string_agg(st.stop_id, '>' ORDER BY st.stop_sequence) AS pattern
+        FROM stop_times st
+        WHERE st.feed_id = t.feed_id AND st.trip_id = t.trip_id) p
+      WHERE t.feed_id = ${feedId} AND t.route_id = ${routeId}
     )
-    SELECT seq.pattern, rt.direction_id AS "directionId",
-           mode() WITHIN GROUP (ORDER BY nullif(trim(rt.trip_headsign), '')) AS headsign,
+    SELECT pattern, direction_id AS "directionId",
+           mode() WITHIN GROUP (ORDER BY nullif(trim(trip_headsign), '')) AS headsign,
            count(*)::int AS trips
-    FROM seq JOIN rt ON rt.trip_id = seq.trip_id
-    GROUP BY seq.pattern, rt.direction_id
+    FROM seq
+    WHERE pattern IS NOT NULL
+    GROUP BY pattern, direction_id
     ORDER BY trips DESC
     LIMIT 16`;
 

@@ -30,6 +30,34 @@ export async function getLocale(): Promise<Locale> {
   return DEFAULT_LOCALE;
 }
 
+/** Només les claus del català que falten a l'idioma: el que el client necessita com a recanvi. */
+function missingFrom(messages: Messages, locale: Messages): Messages {
+  const out: Messages = {};
+  for (const [key, value] of Object.entries(messages)) {
+    const have = locale[key];
+    if (typeof value === 'string') {
+      if (typeof have !== 'string') out[key] = value;
+    } else {
+      const nested = missingFrom(value, typeof have === 'object' ? have : {});
+      if (Object.keys(nested).length) out[key] = nested;
+    }
+  }
+  return out;
+}
+
+const fallbacks = new Map<Locale, Messages>();
+
+/** El recanvi (català) que s'envia al navegador: buit si l'idioma ja ho porta tot. */
+export function clientFallback(locale: Locale): Messages {
+  if (locale === 'ca') return {};
+  let fallback = fallbacks.get(locale);
+  if (!fallback) {
+    fallback = missingFrom(MESSAGES.ca, MESSAGES[locale]);
+    fallbacks.set(locale, fallback);
+  }
+  return fallback;
+}
+
 export async function getI18n() {
   const locale = await getLocale();
   return {

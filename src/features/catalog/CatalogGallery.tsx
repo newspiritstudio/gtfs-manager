@@ -100,7 +100,7 @@ export default function CatalogGallery({
           {t('catalog.noResults')}
         </p>
       )}
-      <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {visible.map((entry) => {
           const status = statuses?.[entry.id];
           const modes = [...new Set(entry.routeTypes.map(transitModeForRouteType))];
@@ -162,15 +162,18 @@ export default function CatalogGallery({
                   <>
                     <ButtonLink href={`/feeds/${feedId}`} variant="tonal">
                       {t('catalog.open')}
+                      <span className="sr-only"> · {entry.name}</span>
                     </ButtonLink>
                     <ButtonLink href={`/new?catalog=${entry.id}`} variant="ghost">
                       {t('catalog.reimport')}
+                      <span className="sr-only"> · {entry.name}</span>
                     </ButtonLink>
                   </>
                 ) : (
                   <ButtonLink href={`/new?catalog=${entry.id}`} variant="tonal">
                     <Download />
                     {t('catalog.import')}
+                    <span className="sr-only"> · {entry.name}</span>
                   </ButtonLink>
                 )}
                 <ButtonLink
@@ -181,6 +184,7 @@ export default function CatalogGallery({
                   className="ml-auto"
                 >
                   {t('catalog.source')}
+                  <span className="sr-only"> · {entry.name}</span>
                   <ExternalLink />
                 </ButtonLink>
               </div>

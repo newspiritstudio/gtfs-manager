@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { useEffect, useId, useMemo, useState, useSyncExternalStore } from 'react';
 import type { DayTrip, NetworkRoute } from '@shared/contracts';
 import { transitModeForRouteType } from '@shared/gtfs-spec';
 import CalendarHeatmap from '@/components/charts/CalendarHeatmap';
@@ -32,7 +32,7 @@ import ModeIcon from '@/components/ui/ModeIcon';
 import RouteBadge from '@/components/ui/RouteBadge';
 import Select from '@/components/ui/Select';
 import { BarsSkeleton, MapSkeleton, TableSkeleton } from '@/components/ui/Skeleton';
-import Tabs from '@/components/ui/Tabs';
+import Tabs, { tabPanelProps } from '@/components/ui/Tabs';
 import { apiFetch } from '@/lib/api';
 import { defaultServiceDate } from '@/lib/dates';
 import { formatDistance, formatDuration, formatGtfsDate } from '@/lib/i18n/format';
@@ -66,6 +66,7 @@ export default function RouteDetailView(props: { feedId: string; detail: RouteDe
 }
 
 function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDetail }) {
+  const tabsId = useId();
   const { t, locale } = useI18n();
   const router = useRouter();
   const { route, patterns, lines, serviceDates, siblings } = detail;
@@ -257,6 +258,7 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
         </div>
         <Tabs
           className="mt-2 px-2"
+          idBase={`${tabsId}-views`}
           label={t('routes.views')}
           value={view}
           onChange={setView}
@@ -273,7 +275,10 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
             { value: 'calendar', label: t('nav.calendar'), icon: <CalendarDays /> },
           ]}
         />
-        <div className="border-t border-outline-variant/60 p-4">
+        <div
+          {...tabPanelProps(`${tabsId}-views`, view)}
+          className="border-t border-outline-variant/60 p-4"
+        >
           {!pattern ? (
             <p className="py-8 text-center text-on-surface-variant">{t('routes.noTrips')}</p>
           ) : view === 'diagram' ? (
@@ -355,7 +360,7 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
           ) : (
             <div className="grid gap-6 lg:grid-cols-2">
               <div>
-                <h3 className="mb-3 text-title-small text-on-surface">{t('routes.serviceDays')}</h3>
+                <h2 className="mb-3 text-title-small text-on-surface">{t('routes.serviceDays')}</h2>
                 <CalendarHeatmap
                   data={serviceDates}
                   selected={date}
@@ -364,9 +369,9 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
                 />
               </div>
               <div>
-                <h3 className="mb-3 text-title-small text-on-surface">
+                <h2 className="mb-3 text-title-small text-on-surface">
                   {t('routes.departuresByHour', { date: formatGtfsDate(locale, date) })}
-                </h3>
+                </h2>
                 {trips === null ? (
                   <BarsSkeleton />
                 ) : failed ? (

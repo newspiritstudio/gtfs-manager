@@ -8,6 +8,7 @@ import { GTFS_SPEC, type GtfsTable } from '@shared/gtfs-spec';
 import { formatFieldValue, parseFieldValue } from '@shared/gtfs-values';
 import { getSql, ident } from '../db/client';
 import { markStatsStale, notNullColumns } from './import';
+import { feedVersion } from './network';
 
 /** Postgres no admet el byte 0 en un text: una cerca amb ell tombaria la consulta. */
 const stripNul = (value: string) => value.replaceAll('\0', '');
@@ -16,6 +17,25 @@ export class RowValidationError extends Error {
   constructor(public readonly fields: Record<string, 'required' | 'invalid'>) {
     super('Els valors de la fila no són vàlids');
   }
+}
+
+const totals = new Map<string, { version: string; total: number }>();
+
+/**
+ * El total de files d'una taula sense filtres, guardat per versió del feed (`updated_at`, que
+ * qualsevol edició mou): un recompte exacte de stop_times (1,9 M) costa ~200 ms a cada pàgina.
+ */
+async function cachedTotal(feedId: string, table: GtfsTable): Promise<number> {
+  const version = await feedVersion(feedId);
+  const key = `${feedId}:${table}`;
+  const hit = totals.get(key);
+  if (version && hit?.version === version) return hit.total;
+  const [row] = await getSql().unsafe<{ total: number }[]>(
+    `SELECT count(*)::int AS total FROM ${ident(table)} WHERE feed_id = $1`,
+    [feedId]
+  );
+  if (version) totals.set(key, { version, total: row.total });
+  return row.total;
 }
 
 export async function listRows(
@@ -48,15 +68,21 @@ export async function listRows(
   }
   const order = spec.key.length ? spec.key.map(ident).join(', ') : 'id';
   const offset = (options.page - 1) * options.pageSize;
-  const [{ total }] = await sql.unsafe<{ total: number }[]>(
-    `SELECT count(*)::int AS total FROM ${ident(table)} WHERE ${where.join(' AND ')}`,
-    params as never[]
-  );
-  const rows = await sql.unsafe<Record<string, unknown>[]>(
+  const unfiltered = where.length === 1;
+  const totalJob = unfiltered
+    ? cachedTotal(feedId, table)
+    : sql
+        .unsafe<{ total: number }[]>(
+          `SELECT count(*)::int AS total FROM ${ident(table)} WHERE ${where.join(' AND ')}`,
+          params as never[]
+        )
+        .then(([row]) => row.total);
+  const rowsJob = sql.unsafe<Record<string, unknown>[]>(
     `SELECT id, ${columns}, extra FROM ${ident(table)} WHERE ${where.join(' AND ')}
      ORDER BY ${order} LIMIT ${options.pageSize} OFFSET ${offset}`,
     params as never[]
   );
+  const [total, rows] = await Promise.all([totalJob, rowsJob]);
   return {
     total,
     page: options.page,

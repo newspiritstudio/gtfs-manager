@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight, Pencil, Plus, Table2 } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { TablePage, TableRow } from '@shared/contracts';
 import { GTFS_SPEC, type GtfsTable } from '@shared/gtfs-spec';
 import Button from '@/components/ui/Button';
@@ -46,6 +46,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
   const [errors, setErrors] = useState<FieldErrors>({});
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const confirmRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (query === debounced) return;
@@ -61,6 +62,11 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
     // Només la cerca escrita mou la URL.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
+
+  // En demanar la confirmació, el botó que es clicava desapareix: el focus passa al nou.
+  useEffect(() => {
+    if (confirmDelete) confirmRef.current?.focus();
+  }, [confirmDelete]);
 
   const load = () => setReloadKey((n) => n + 1);
 
@@ -141,9 +147,13 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
       load();
       router.refresh();
     } catch (error) {
-      if (error instanceof ApiError && error.code === 'invalidRow')
+      if (error instanceof ApiError && error.code === 'invalidRow') {
         setErrors(error.details as FieldErrors);
-      else if (error instanceof ApiError && error.code === 'duplicateKey')
+        // El focus va al primer camp amb error, perquè el lector de pantalla en llegeixi el missatge.
+        requestAnimationFrame(() =>
+          document.querySelector<HTMLElement>('[role="dialog"] [aria-invalid="true"]')?.focus()
+        );
+      } else if (error instanceof ApiError && error.code === 'duplicateKey')
         toast(t('data.conflict'), 'error');
       else toast(t('errors.generic'), 'error');
     } finally {
@@ -188,6 +198,11 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
     return value;
   }
 
+  // Què identifica la fila davant d'un lector de pantalla: el primer valor de la fila amb contingut.
+  const rowName = (row: TableRow): string =>
+    [...columns.specCols, ...columns.extra].map((c) => row.values[c]).find((v) => v) ??
+    String(row.id);
+
   const from = data && data.total ? (data.page - 1) * data.pageSize + 1 : 0;
   const to = data ? Math.min(data.total, data.page * data.pageSize) : 0;
 
@@ -202,7 +217,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
           className="w-full sm:w-80"
         />
         {data ? (
-          <span className="text-body-medium text-on-surface-variant">
+          <span aria-live="polite" className="text-body-medium text-on-surface-variant">
             {t('units.rows', { count: data.total })}
           </span>
         ) : null}
@@ -234,13 +249,22 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
               loading && 'opacity-60'
             )}
           >
-            <table className="w-full border-separate border-spacing-0 text-body-medium">
+            <table
+              aria-label={t(`tables.${table}`)}
+              className="w-full border-separate border-spacing-0 text-body-medium"
+            >
               <thead>
                 <tr>
-                  <th className="sticky left-0 top-0 z-20 w-12 bg-surface-container-high" />
+                  <th
+                    scope="col"
+                    className="sticky left-0 top-0 z-20 w-12 bg-surface-container-high"
+                  >
+                    <span className="sr-only">{t('common.edit')}</span>
+                  </th>
                   {[...columns.specCols, ...columns.extra].map((c) => (
                     <th
                       key={c}
+                      scope="col"
                       className="sticky top-0 z-10 whitespace-nowrap bg-surface-container-high px-3 py-2 text-left text-label-medium text-on-surface-variant"
                     >
                       <span
@@ -259,7 +283,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
                   <tr key={row.id} className="group cursor-pointer" onClick={() => open(row)}>
                     <td className="sticky left-0 border-b border-outline-variant/40 bg-surface-container px-1 group-hover:bg-surface-container-highest">
                       <IconButton
-                        label={t('common.edit')}
+                        label={`${t('common.edit')} · ${rowName(row)}`}
                         className="size-8"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -288,7 +312,10 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
             ) : null}
           </div>
           <div className="flex items-center justify-end gap-2 border-t border-outline-variant/60 px-3 py-2">
-            <span className="text-body-small tabular-nums text-on-surface-variant">
+            <span
+              aria-live="polite"
+              className="text-body-small tabular-nums text-on-surface-variant"
+            >
               {t('data.page', {
                 from: formatNumber(locale, from),
                 to: formatNumber(locale, to),
@@ -327,7 +354,13 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
                   <span className="text-body-small text-on-surface-variant">
                     {t('data.deleteConfirm')}
                   </span>
-                  <Button variant="destructive" size="sm" onClick={remove} loading={saving}>
+                  <Button
+                    ref={confirmRef}
+                    variant="destructive"
+                    size="sm"
+                    onClick={remove}
+                    loading={saving}
+                  >
                     {t('common.delete')}
                   </Button>
                 </span>

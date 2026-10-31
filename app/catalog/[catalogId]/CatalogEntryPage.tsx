@@ -6,6 +6,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import Badge from '@/components/ui/Badge';
 import { ButtonLink } from '@/components/ui/Button';
 import ModeIcon from '@/components/ui/ModeIcon';
+import PublicFooter from '../../_public/PublicFooter';
 import PageHeader from '@/components/ui/PageHeader';
 import { LOCALE_TAGS } from '@/lib/i18n/config';
 import { localizedPath } from '@/lib/i18n/paths';
@@ -52,7 +53,7 @@ export default async function CatalogEntryPage({ entry }: { entry: CatalogEntry 
   ] as const;
 
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto max-w-6xl [word-break:auto-phrase]">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -217,11 +218,16 @@ export default async function CatalogEntryPage({ entry }: { entry: CatalogEntry 
               </li>
             ))}
           </ul>
-          <ButtonLink href={localizedPath(locale, '/catalog')} variant="ghost" className="mt-3">
+          <ButtonLink
+            href={localizedPath(locale, '/catalog')}
+            variant="ghost"
+            className="-ml-3 mt-3"
+          >
             {t('catalog.browse')}
           </ButtonLink>
         </aside>
       </div>
+      <PublicFooter path={`/catalog/${entry.id}`} credits={entry.logo ? ['logos'] : []} />
     </div>
   );
 }

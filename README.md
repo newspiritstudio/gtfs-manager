@@ -82,6 +82,10 @@ Les banderes del filtre de països (`public/flags/`) són de
 
 ## Animació de la portada
 
-La xarxa de FGC de la portada i els seus trens surten del feed GTFS obert de FGC: un dia feiner
-entre les 7 i les 10. Per regenerar-la amb un feed més nou, importa FGC des del catàleg i executa
-`npm run landing:network -- AAAA-MM-DD` (amb la data d'un dia feiner dins del període del feed).
+Cada visita mostra a l'atzar una de les xarxes de `src/features/landing/networks.ts` (FGC, metro de
+Nova York, Milà, Tolosa, Metrovalencia, BART i LA Metro Rail) amb els trens reals d'un dia feiner
+entre les 7 i les 10, i un peu que explica què es veu. Les dades són a `public/landing-networks/` i
+surten dels feeds GTFS oberts. Per regenerar-les, importa cada feed des del catàleg (o
+`npm run gtfs:import -- fitxer.zip --catalog <id>`) i executa `npm run landing:network`
+(o `npm run landing:network -- fgc bart` per a només algunes). El dia és el dimarts, dimecres o
+dijous de les quatre setmanes vinents amb més viatges.

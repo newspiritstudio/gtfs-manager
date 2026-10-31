@@ -118,7 +118,8 @@
     "created": "数据源已创建",
     "downloading": "正在从 {source} 下载…",
     "downloadFailed": "无法从来源下载该数据源。",
-    "retry": "重试"
+    "retry": "重试",
+    "needFiles": "请选择要导入的文件夹或 ZIP。"
   },
   "overview": {
     "openMap": "打开地图",
@@ -364,7 +365,8 @@
     "dateHint": "YYYYMMDD",
     "colorHint": "十六进制，不含 #",
     "noValue": "（空）",
-    "conflict": "已存在具有此标识符的行。"
+    "conflict": "已存在具有此标识符的行。",
+    "colorPicker": "颜色选择器"
   },
   "generator": {
     "subtitle": "一次性创建某条线路的所有车次：有序站点、运行时间和发车间隔。",
@@ -689,11 +691,21 @@
       }
     },
     "network": {
-      "label": "动画：工作日 7 点至 10 点 FGC 列车在巴塞罗那地区线网上运行",
-      "caption": "工作日 7 点至 10 点的 FGC 列车，数据来自其开放的 GTFS 数据源。每秒代表三分钟。",
+      "label": "动画：{network} 列车在工作日 {from} 至 {to} 之间于线网中运行",
+      "caption": "{operator} 的 {lines} 条线路，以及 {date} {from} 至 {to} 之间运行的 {trips} 个车次，数据来自其开放 GTFS 数据源。每秒相当于 {minutes} 分钟。",
       "pause": "暂停动画",
-      "play": "继续动画"
+      "play": "继续动画",
+      "feed": "查看 {network} 数据源",
+      "other": "显示另一个线网"
     }
+  },
+  "footer": {
+    "links": "网站链接",
+    "gtfsReference": "GTFS 参考文档",
+    "languages": "语言",
+    "creditLogos": "品牌标志：",
+    "creditFlags": "国旗：",
+    "creditAnimation": "动画：取自所示运营方公开 GTFS 数据的真实班次。"
   },
   "catalogEntry": {
     "intro": "{operator} 的开放 GTFS 数据源，服务现行。导入后可浏览其线网、时刻表和日历，也可从官方来源下载。",

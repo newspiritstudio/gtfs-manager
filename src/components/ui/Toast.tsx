@@ -19,7 +19,7 @@ export function useToast() {
   return useContext(ToastContext);
 }
 
-/** Notificacions emergents: pila centrada a baix, icona del to, 5 s. */
+/** Notificacions emergents: pila centrada a baix, icona del to, 5 s (10 s si és un error). */
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const { t: tr } = useI18n();
   const [items, setItems] = useState<ToastItem[]>([]);
@@ -33,7 +33,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       setItems((list) =>
         list.some((t) => t.message === message) ? list : [...list, { id, tone, message }]
       );
-      setTimeout(() => dismiss(id), 5000);
+      // Un error es llegeix més a poc a poc que una confirmació: es queda el doble de temps.
+      setTimeout(() => dismiss(id), tone === 'error' ? 10000 : 5000);
     },
     [dismiss]
   );

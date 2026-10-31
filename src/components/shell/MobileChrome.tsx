@@ -28,6 +28,22 @@ export function MobileHeader({ feeds }: { feeds: ShellFeed[] }) {
     const previous = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
+      if (e.key !== 'Tab' || !panelRef.current) return;
+      // El calaix és modal: el Tab no en pot sortir cap a la pàgina de darrere.
+      const items = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), select, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const current = document.activeElement;
+      if (e.shiftKey && (current === first || current === panelRef.current)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && current === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener('keydown', onKey);
     requestAnimationFrame(() => panelRef.current?.focus());

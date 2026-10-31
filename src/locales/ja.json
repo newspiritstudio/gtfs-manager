@@ -118,7 +118,8 @@
     "created": "フィードを作成しました",
     "downloading": "{source} からダウンロード中…",
     "downloadFailed": "提供元からフィードをダウンロードできませんでした。",
-    "retry": "再試行"
+    "retry": "再試行",
+    "needFiles": "インポートするフォルダーまたは ZIP を選択してください。"
   },
   "overview": {
     "openMap": "地図を開く",
@@ -139,7 +140,7 @@
     "topStopsHint": "最多運行日の発車数。",
     "files": "フィードのファイル",
     "filesHint": "クリックすると、エディターで開きます。",
-    "missingFile": "なし"
+    "missingFile": "欠落"
   },
   "map": {
     "zoomIn": "拡大",
@@ -364,7 +365,8 @@
     "dateHint": "YYYYMMDD",
     "colorHint": "# なしの 16 進数",
     "noValue": "（空）",
-    "conflict": "この識別子の行は既に存在します。"
+    "conflict": "この識別子の行は既に存在します。",
+    "colorPicker": "カラーピッカー"
   },
   "generator": {
     "subtitle": "路線の全便を一度に作成します。停留所の順序、所要時間、運行間隔を指定します。",
@@ -689,11 +691,21 @@
       }
     },
     "network": {
-      "label": "アニメーション：平日 7 時から 10 時にバルセロナ都市圏の路線網を走る FGC の列車",
-      "caption": "平日 7 時から 10 時の FGC の列車（オープンな GTFS フィードより）。1 秒が 3 分に相当します。",
+      "label": "アニメーション：平日の {from} から {to} までに路線網を走る {network} の列車",
+      "caption": "{operator} の {lines} 路線と、{date} の {from} から {to} までに運行する {trips} 本の便。公開されている GTFS フィードによるデータです。1 秒は {minutes} 分に相当します。",
       "pause": "アニメーションを一時停止",
-      "play": "アニメーションを再生"
+      "play": "アニメーションを再生",
+      "feed": "{network} のフィードを見る",
+      "other": "別の路線網を表示"
     }
+  },
+  "footer": {
+    "links": "サイトのリンク",
+    "gtfsReference": "GTFS リファレンス",
+    "languages": "言語",
+    "creditLogos": "ブランドのシンボル：",
+    "creditFlags": "国旗：",
+    "creditAnimation": "アニメーション：表示している事業者のオープン GTFS フィードの実際の運行。"
   },
   "catalogEntry": {
     "intro": "{operator} のオープン GTFS フィードで、現行の運行があります。インポートして路線網、時刻表、カレンダーを確認するか、公式の提供元からダウンロードできます。",

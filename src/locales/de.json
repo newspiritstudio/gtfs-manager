@@ -23,7 +23,7 @@
     "home": "Startseite"
   },
   "theme": {
-    "switch": "Design: {theme}",
+    "switch": "Darstellung: {theme}",
     "system": "System",
     "light": "hell",
     "dark": "dunkel"
@@ -121,7 +121,8 @@
     "created": "Feed erstellt",
     "downloading": "Download von {source}…",
     "downloadFailed": "Der Feed konnte nicht von der Quelle heruntergeladen werden.",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "needFiles": "Wählen Sie einen Ordner oder ein ZIP zum Importieren."
   },
   "overview": {
     "openMap": "Karte öffnen",
@@ -382,7 +383,8 @@
     "dateHint": "YYYYMMDD",
     "colorHint": "Hex ohne #",
     "noValue": "(leer)",
-    "conflict": "Eine Zeile mit dieser Kennung existiert bereits."
+    "conflict": "Eine Zeile mit dieser Kennung existiert bereits.",
+    "colorPicker": "Farbwähler"
   },
   "generator": {
     "subtitle": "Alle Fahrten einer Linie auf einmal erstellen: geordnete Haltestellen, Fahrzeiten und Takt.",
@@ -708,11 +710,21 @@
       }
     },
     "network": {
-      "label": "Animation: FGC-Züge im Netz rund um Barcelona zwischen 7 und 10 Uhr an einem Werktag",
-      "caption": "FGC-Züge zwischen 7 und 10 Uhr an einem Werktag, nach dem offenen GTFS-Feed. Jede Sekunde entspricht drei Minuten.",
+      "label": "Animation: Züge von {network} im Netz zwischen {from} und {to} Uhr an einem Werktag",
+      "caption": "Die {lines} Linien von {operator} und die {trips} Fahrten am {date} zwischen {from} und {to} Uhr, aus dem offenen GTFS-Feed. Jede Sekunde entspricht {minutes} Minuten.",
       "pause": "Animation anhalten",
-      "play": "Animation fortsetzen"
+      "play": "Animation fortsetzen",
+      "feed": "Feed von {network} ansehen",
+      "other": "Anderes Netz zeigen"
     }
+  },
+  "footer": {
+    "links": "Links",
+    "gtfsReference": "GTFS-Referenz",
+    "languages": "Sprachen",
+    "creditLogos": "Markensymbole:",
+    "creditFlags": "Flaggen:",
+    "creditAnimation": "Animation: echte Fahrten aus den offenen GTFS-Feeds der gezeigten Betreiber."
   },
   "catalogEntry": {
     "intro": "Offener GTFS-Feed von {operator} mit aktuellem Angebot. Importieren Sie ihn, um Netz, Fahrpläne und Kalender zu erkunden, oder laden Sie ihn von der offiziellen Quelle herunter.",

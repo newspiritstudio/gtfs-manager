@@ -217,3 +217,13 @@ export interface StopDeparture {
   departure: number | null;
   isLast: boolean;
 }
+
+/** Un feed a la navegació de l'app. */
+export interface ShellFeed {
+  id: string;
+  name: string;
+  /** Isotip oficial (`public/catalog-logos/`), si el feed ve del catàleg i en té. */
+  logo?: string;
+  /** Color principal de la xarxa (#RRGGBB), si no hi ha isotip. */
+  color?: string;
+}

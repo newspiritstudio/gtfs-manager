@@ -73,11 +73,10 @@ async function planTable(feedId: string, table: GtfsTable): Promise<ExportPlan |
  */
 export async function exportFeedZip(feedId: string, signal?: AbortSignal): Promise<Readable> {
   const sql = getSql();
-  const plans: ExportPlan[] = [];
-  for (const table of GTFS_TABLES) {
-    const plan = await planTable(feedId, table);
-    if (plan) plans.push(plan);
-  }
+  // Els plans (recomptes i columnes amb dades) es calculen alhora: el pool els reparteix.
+  const plans = (await Promise.all(GTFS_TABLES.map((table) => planTable(feedId, table)))).filter(
+    (plan): plan is ExportPlan => plan !== null
+  );
   const zip = new JSZip();
   const passes = plans.map(() => new PassThrough());
   plans.forEach((plan, i) => zip.file(plan.file, passes[i], { binary: true }));

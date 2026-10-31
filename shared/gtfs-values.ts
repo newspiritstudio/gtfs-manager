@@ -155,6 +155,10 @@ export function fallbackRouteColor(routeId: string): string {
   return palette[Math.abs(hash) % palette.length];
 }
 
+/**
+ * Color de fons i de text d'una línia. El text del feed només es respecta si arriba a 4,5:1
+ * (WCAG 1.4.3: els distintius són text petit); si no, es tria blanc o negre.
+ */
 export function routeColors(
   routeId: string,
   color: string | null | undefined,
@@ -163,7 +167,7 @@ export function routeColors(
   const bg =
     color && /^[0-9A-F]{6}$/i.test(color) ? color.toUpperCase() : fallbackRouteColor(routeId);
   const fg =
-    textColor && /^[0-9A-F]{6}$/i.test(textColor) && contrastRatio(bg, textColor) >= 3
+    textColor && /^[0-9A-F]{6}$/i.test(textColor) && contrastRatio(bg, textColor) >= 4.5
       ? textColor.toUpperCase()
       : readableTextColor(bg);
   return { color: bg, textColor: fg };

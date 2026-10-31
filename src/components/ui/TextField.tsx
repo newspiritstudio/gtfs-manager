@@ -39,7 +39,11 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextFiel
           className={cn('md3-field-label', error && 'md3-field-label--error')}
         >
           {label}
-          {required ? <span className="ml-0.5 text-error">*</span> : null}
+          {required ? (
+            <span aria-hidden className="ml-0.5 text-error">
+              *
+            </span>
+          ) : null}
         </label>
       </div>
       {error || helper ? (

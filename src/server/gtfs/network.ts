@@ -3,6 +3,8 @@
  * feed no porta shapes), parades amb les línies que hi paren i el volum de pas. Es calcula un cop
  * per versió del feed i es guarda a la memòria del procés.
  */
+import { brotliCompress, constants as zlibConstants, gzip } from 'node:zlib';
+import { promisify } from 'node:util';
 import type { NetworkData, NetworkLine, NetworkRoute, NetworkStop } from '@shared/contracts';
 import { routeColors, tidyRouteName } from '@shared/gtfs-values';
 import { getSql } from '../db/client';
@@ -19,6 +21,60 @@ export async function feedVersion(feedId: string): Promise<string | null> {
 /** Oblida la xarxa d'un feed (en esborrar-lo): la memòria no ha de guardar feeds que ja no hi són. */
 export function clearNetworkCache(feedId: string) {
   cache.delete(feedId);
+  bodies.delete(feedId);
+}
+
+export type NetworkEncoding = 'br' | 'gzip' | 'identity';
+
+const brotliAsync = promisify(brotliCompress);
+const gzipAsync = promisify(gzip);
+const bodies = new Map<string, { version: string; parts: Map<NetworkEncoding, Promise<Buffer>> }>();
+
+/** L'encoding que el navegador accepta (el millor de brotli, gzip o cap). */
+export function pickEncoding(acceptEncoding: string | null): NetworkEncoding {
+  const accepted = (acceptEncoding ?? '').toLowerCase();
+  if (/\bbr\b/.test(accepted)) return 'br';
+  if (/\bgzip\b/.test(accepted)) return 'gzip';
+  return 'identity';
+}
+
+/**
+ * El JSON de la xarxa ja serialitzat i comprimit, guardat per versió: la xarxa de Renfe pesa
+ * ~1 MB (180 KB amb brotli) i no s'ha de tornar a serialitzar ni a comprimir a cada petició.
+ */
+export async function getNetworkBody(
+  feedId: string,
+  version: string,
+  encoding: NetworkEncoding
+): Promise<Buffer | null> {
+  let entry = bodies.get(feedId);
+  if (!entry || entry.version !== version) {
+    entry = { version, parts: new Map() };
+    bodies.set(feedId, entry);
+  }
+  let part = entry.parts.get(encoding);
+  if (!part) {
+    part = (async () => {
+      if (encoding === 'identity') {
+        const network = await getNetwork(feedId);
+        if (!network) throw new Error('feed-not-found');
+        return Buffer.from(JSON.stringify(network));
+      }
+      const raw = await getNetworkBody(feedId, version, 'identity');
+      if (!raw) throw new Error('feed-not-found');
+      return encoding === 'br'
+        ? // Qualitat 5: el 11 per defecte trigaria ~1 s per a ~5 % menys.
+          brotliAsync(raw, { params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 5 } })
+        : gzipAsync(raw);
+    })();
+    entry.parts.set(encoding, part);
+    part.catch(() => entry!.parts.delete(encoding));
+  }
+  try {
+    return await part;
+  } catch {
+    return null;
+  }
 }
 
 export async function getNetwork(feedId: string): Promise<NetworkData | null> {
@@ -72,8 +128,58 @@ export function simplify(points: [number, number][], tolerance: number): [number
   return points.filter((_, i) => keep[i]);
 }
 
+interface StopRow {
+  stopId: string;
+  name: string | null;
+  lat: number;
+  lon: number;
+  locationType: number | null;
+  departures: number;
+  routeIds: string[] | null;
+}
+
+/**
+ * Les parades amb el volum de pas i les línies que hi paren. Es comprimeix primer per
+ * (línia, parada) sobre stop_times i només després s'agrupa per parada: evita un
+ * `array_agg(DISTINCT)` (que ordena) sobre 1,9 M de files.
+ */
+async function queryStops(feedId: string): Promise<StopRow[]> {
+  return getSql()<StopRow[]>`
+    WITH per_route AS (
+      SELECT st.stop_id, t.route_id, count(*)::int AS n
+      FROM stop_times st
+      JOIN trips t ON t.feed_id = st.feed_id AND t.trip_id = st.trip_id
+      WHERE st.feed_id = ${feedId}
+      GROUP BY st.stop_id, t.route_id
+    ),
+    served AS (
+      SELECT stop_id, sum(n)::int AS departures, array_agg(route_id ORDER BY route_id) AS route_ids
+      FROM per_route GROUP BY stop_id
+    )
+    SELECT s.stop_id AS "stopId", s.stop_name AS name, s.stop_lat AS lat, s.stop_lon AS lon,
+           s.location_type AS "locationType", coalesce(sv.departures, 0) AS departures,
+           sv.route_ids AS "routeIds"
+    FROM stops s
+    LEFT JOIN served sv ON sv.stop_id = s.stop_id
+    WHERE s.feed_id = ${feedId} AND s.stop_lat IS NOT NULL AND s.stop_lon IS NOT NULL`;
+}
+
 async function buildNetwork(feedId: string): Promise<NetworkData> {
   const sql = getSql();
+
+  // Les quatre consultes grans no depenen una de l'altra: corren alhora (el cost és el de la més
+  // lenta, no la suma).
+  const shapePointsJob = sql<{ shapeId: string; lat: number; lon: number }[]>`
+    SELECT shape_id AS "shapeId", shape_pt_lat AS lat, shape_pt_lon AS lon
+    FROM shapes WHERE feed_id = ${feedId}
+    ORDER BY shape_id, shape_pt_sequence`;
+  const stopRowsJob = queryStops(feedId);
+  const routeShapesJob = sql<{ routeId: string; shapeId: string; trips: number }[]>`
+    SELECT route_id AS "routeId", shape_id AS "shapeId", count(*)::int AS trips
+    FROM trips WHERE feed_id = ${feedId} AND shape_id IS NOT NULL
+    GROUP BY route_id, shape_id`;
+  // Si una d'elles falla abans que l'esperem, que no quedi un rebuig sense gestionar.
+  for (const job of [shapePointsJob, stopRowsJob, routeShapesJob]) job.catch(() => {});
 
   const routeRows = await sql<
     {
@@ -106,10 +212,7 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
   const colorOf = new Map(routes.map((r) => [r.routeId, r.color]));
 
   // Línies a partir de les shapes que fan servir els viatges.
-  const routeShapes = await sql<{ routeId: string; shapeId: string; trips: number }[]>`
-    SELECT route_id AS "routeId", shape_id AS "shapeId", count(*)::int AS trips
-    FROM trips WHERE feed_id = ${feedId} AND shape_id IS NOT NULL
-    GROUP BY route_id, shape_id`;
+  const routeShapes = await routeShapesJob;
   const routesByShape = new Map<string, string[]>();
   for (const rs of routeShapes) {
     const list = routesByShape.get(rs.shapeId) ?? [];
@@ -119,10 +222,7 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
 
   const lines: NetworkLine[] = [];
   if (routesByShape.size) {
-    const points = await sql<{ shapeId: string; lat: number; lon: number }[]>`
-      SELECT shape_id AS "shapeId", shape_pt_lat AS lat, shape_pt_lon AS lon
-      FROM shapes WHERE feed_id = ${feedId}
-      ORDER BY shape_id, shape_pt_sequence`;
+    const points = await shapePointsJob;
     let current: string | null = null;
     let coords: [number, number][] = [];
     const flush = () => {
@@ -179,30 +279,7 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
     }
   }
 
-  const stopRows = await sql<
-    {
-      stopId: string;
-      name: string | null;
-      lat: number;
-      lon: number;
-      locationType: number | null;
-      departures: number;
-      routeIds: string[] | null;
-    }[]
-  >`
-    WITH served AS (
-      SELECT st.stop_id, count(*)::int AS departures, array_agg(DISTINCT t.route_id) AS route_ids
-      FROM stop_times st
-      JOIN trips t ON t.feed_id = st.feed_id AND t.trip_id = st.trip_id
-      WHERE st.feed_id = ${feedId}
-      GROUP BY st.stop_id
-    )
-    SELECT s.stop_id AS "stopId", s.stop_name AS name, s.stop_lat AS lat, s.stop_lon AS lon,
-           s.location_type AS "locationType", coalesce(sv.departures, 0) AS departures,
-           sv.route_ids AS "routeIds"
-    FROM stops s
-    LEFT JOIN served sv ON sv.stop_id = s.stop_id
-    WHERE s.feed_id = ${feedId} AND s.stop_lat IS NOT NULL AND s.stop_lon IS NOT NULL`;
+  const stopRows = await stopRowsJob;
   const stops: NetworkStop[] = stopRows.map((s) => ({ ...s, routeIds: s.routeIds ?? [] }));
 
   const valid = stops.filter((s) => !(Math.abs(s.lat) < 0.01 && Math.abs(s.lon) < 0.01));

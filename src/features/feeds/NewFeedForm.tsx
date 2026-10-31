@@ -89,6 +89,14 @@ async function downloadCatalog(
   return new File(chunks, `${id}.zip`, { type: 'application/zip' });
 }
 
+function isHttpUrl(value: string): boolean {
+  try {
+    return /^https?:$/.test(new URL(value.trim()).protocol);
+  } catch {
+    return false;
+  }
+}
+
 export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick | null }) {
   const { t, locale } = useI18n();
   const router = useRouter();
@@ -116,6 +124,35 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
   });
 
   const busy = phase !== 'idle';
+  // Fins que no es prem el botó no es retreu res: llavors es marquen els camps obligatoris buits.
+  const [showErrors, setShowErrors] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const missing = (value: string) => (showErrors && !value.trim() ? t('data.fieldRequired') : null);
+  const badUrl =
+    showErrors && agency.agency_url.trim() && !isHttpUrl(agency.agency_url)
+      ? t('data.fieldInvalid')
+      : null;
+  const invalid =
+    !name.trim() ||
+    (mode === 'import'
+      ? !files.length
+      : !agency.agency_name.trim() ||
+        !isHttpUrl(agency.agency_url) ||
+        !agency.agency_timezone.trim());
+  function submit() {
+    if (invalid) {
+      setShowErrors(true);
+      // El focus va al primer camp amb error; sense camp (cap fitxer triat), al selector de fitxers.
+      requestAnimationFrame(() =>
+        (
+          rootRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]') ??
+          rootRef.current?.querySelector<HTMLElement>('[data-dropzone] button')
+        )?.focus()
+      );
+      return;
+    }
+    void (mode === 'import' ? runImport() : createBlank());
+  }
 
   const accept = useCallback(
     (picked: PickedFile[], suggested: string) => {
@@ -279,7 +316,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
   const totalSize = files.reduce((n, f) => n + f.size, 0);
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div ref={rootRef} className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
       <Card>
         <CardHeader
           title={mode === 'import' ? t('newFeed.importTitle') : t('newFeed.blankTitle')}
@@ -304,6 +341,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              error={missing(name)}
               disabled={busy}
               maxLength={120}
             />
@@ -327,7 +365,18 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
               </p>
               {download.status === 'loading' ? (
                 <>
-                  <span className="h-1.5 w-full max-w-sm overflow-hidden rounded-full bg-surface-container">
+                  <span
+                    role="progressbar"
+                    aria-label={t('newFeed.downloading', { source: catalog?.operator ?? '' })}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={
+                      download.total
+                        ? Math.round((download.loaded / download.total) * 100)
+                        : undefined
+                    }
+                    className="h-1.5 w-full max-w-sm overflow-hidden rounded-full bg-surface-container"
+                  >
                     <span
                       className={cn(
                         'block h-full rounded-full bg-primary transition-[width]',
@@ -356,6 +405,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
             <>
               {catalog && files.length ? null : (
                 <div
+                  data-dropzone
                   onDragOver={(e) => {
                     e.preventDefault();
                     setDragging(true);
@@ -422,8 +472,16 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
                   />
                 </div>
               )}
+              {showErrors && !files.length && !download ? (
+                <p role="alert" className="text-body-small text-error">
+                  {t('newFeed.needFiles')}
+                </p>
+              ) : null}
               {files.length ? (
-                <ul className="divide-y divide-outline-variant/60 overflow-hidden rounded-md bg-surface-container-highest">
+                <ul
+                  aria-live="polite"
+                  className="divide-y divide-outline-variant/60 overflow-hidden rounded-md bg-surface-container-highest"
+                >
                   {files.map((file) => {
                     const table = tableForFile(file.name);
                     const state = states[file.name] ?? { status: 'waiting' };
@@ -452,7 +510,14 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
                         )}
                         <span className="flex w-28 items-center justify-end">
                           {state.status === 'uploading' ? (
-                            <span className="h-1.5 w-full overflow-hidden rounded-full bg-surface-container">
+                            <span
+                              role="progressbar"
+                              aria-label={file.name}
+                              aria-valuemin={0}
+                              aria-valuemax={100}
+                              aria-valuenow={Math.round(state.progress * 100)}
+                              className="h-1.5 w-full overflow-hidden rounded-full bg-surface-container"
+                            >
                               <span
                                 className="block h-full rounded-full bg-primary transition-[width]"
                                 style={{ width: `${state.progress * 100}%` }}
@@ -465,6 +530,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
                           ) : state.status === 'done' ? (
                             <CheckCircle2
                               className="size-5 text-success"
+                              role="img"
                               aria-label={t('newFeed.done')}
                             />
                           ) : state.status === 'failed' ? (
@@ -472,7 +538,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
                               className="flex items-center gap-1 text-label-medium text-critical"
                               title={state.error}
                             >
-                              <XCircle className="size-5" /> {t('newFeed.failed')}
+                              <XCircle aria-hidden className="size-5" /> {t('newFeed.failed')}
                             </span>
                           ) : null}
                         </span>
@@ -491,6 +557,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
                   value={agency.agency_name}
                   onChange={(e) => setAgency({ ...agency, agency_name: e.target.value })}
                   required
+                  error={missing(agency.agency_name)}
                   disabled={busy}
                 />
                 <TextField
@@ -499,6 +566,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
                   value={agency.agency_url}
                   onChange={(e) => setAgency({ ...agency, agency_url: e.target.value })}
                   required
+                  error={missing(agency.agency_url) ?? badUrl}
                   disabled={busy}
                   placeholder="https://"
                 />
@@ -507,6 +575,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
                   value={agency.agency_timezone}
                   onChange={(e) => setAgency({ ...agency, agency_timezone: e.target.value })}
                   required
+                  error={missing(agency.agency_timezone)}
                   disabled={busy}
                 />
                 <TextField
@@ -544,17 +613,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
             {phase === 'stats' ? (
               <p className="text-body-medium text-primary">{t('newFeed.computing')}</p>
             ) : null}
-            <Button
-              className="w-full"
-              loading={busy}
-              disabled={
-                !name.trim() ||
-                (mode === 'import'
-                  ? !files.length
-                  : !agency.agency_name.trim() || !agency.agency_url.trim())
-              }
-              onClick={mode === 'import' ? runImport : createBlank}
-            >
+            <Button className="w-full" loading={busy} onClick={submit}>
               {mode === 'import'
                 ? createdFeed.current
                   ? t('newFeed.retry')

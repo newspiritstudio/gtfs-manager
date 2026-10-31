@@ -12,12 +12,14 @@ import Link from 'next/link';
 import { CATALOG_LOGOS, GTFS_CATALOG } from '@shared/catalog';
 import { GTFS_SPEC, GTFS_TABLES } from '@shared/gtfs-spec';
 import JsonLd from '@/components/seo/JsonLd';
+import PublicFooter from '../_public/PublicFooter';
 import { ButtonLink } from '@/components/ui/Button';
 import { LOCALE_TAGS, LOCALES } from '@/lib/i18n/config';
 import { localizedPath } from '@/lib/i18n/paths';
 import { getI18n } from '@/server/i18n';
 import { absoluteUrl, SITE_NAME, SITE_URL } from '@/server/seo';
 import NetworkAnimation from '@/features/landing/NetworkAnimation';
+import { LANDING_NETWORKS } from '@/features/landing/networks';
 
 const FEATURES = [
   { key: 'import', icon: FileUp },
@@ -32,11 +34,25 @@ const FAQ = ['what', 'create', 'validate', 'large', 'data', 'export'] as const;
 export default async function LandingPage() {
   const { t, locale } = await getI18n();
   const catalogHref = localizedPath(locale, '/catalog');
+  const networks = LANDING_NETWORKS.flatMap(({ id }) => {
+    const entry = GTFS_CATALOG.find((e) => e.id === id);
+    if (!entry) return [];
+    return [
+      {
+        id,
+        name: entry.name,
+        operator: entry.operator,
+        region: entry.region,
+        logo: entry.logo ? CATALOG_LOGOS[entry.logo].src : undefined,
+        href: localizedPath(locale, `/catalog/${id}`),
+      },
+    ];
+  });
   // Una mostra del catàleg (els que tenen isotip); la resta, a la pàgina del catàleg.
   const withLogo = GTFS_CATALOG.filter((e) => e.logo).slice(0, 15);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-16 pb-12 md:space-y-20">
+    <div className="mx-auto max-w-6xl space-y-16 pb-12 [word-break:auto-phrase] md:space-y-20">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -92,7 +108,7 @@ export default async function LandingPage() {
             </ButtonLink>
           </div>
         </div>
-        <NetworkAnimation />
+        <NetworkAnimation networks={networks} />
       </section>
 
       <section aria-labelledby="features-title">
@@ -102,7 +118,7 @@ export default async function LandingPage() {
         >
           {t('landing.featuresTitle')}
         </h2>
-        <ul className="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {FEATURES.map(({ key, icon: Icon }) => (
             <li key={key} className="flex gap-3">
               <Icon aria-hidden className="mt-0.5 size-5 shrink-0 text-primary" />
@@ -137,7 +153,7 @@ export default async function LandingPage() {
             <ArrowRight />
           </ButtonLink>
         </div>
-        <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {withLogo.map((entry) => (
             <li key={entry.id}>
               <Link
@@ -154,7 +170,9 @@ export default async function LandingPage() {
                     className="size-full object-contain"
                   />
                 </span>
-                <span className="min-w-0 text-label-large text-on-surface">{entry.name}</span>
+                <span className="min-w-0 break-words text-label-large text-on-surface">
+                  {entry.name}
+                </span>
               </Link>
             </li>
           ))}
@@ -204,6 +222,8 @@ export default async function LandingPage() {
           ))}
         </div>
       </section>
+
+      <PublicFooter path="/" credits={['animation', 'logos']} />
     </div>
   );
 }

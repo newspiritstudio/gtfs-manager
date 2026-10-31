@@ -121,7 +121,8 @@
     "created": "Feed creado",
     "downloading": "Descargando de {source}…",
     "downloadFailed": "No se ha podido descargar el feed de la fuente.",
-    "retry": "Vuelve a intentarlo"
+    "retry": "Vuelve a intentarlo",
+    "needFiles": "Elige una carpeta o un ZIP para importar."
   },
   "overview": {
     "openMap": "Abre el mapa",
@@ -382,7 +383,8 @@
     "dateHint": "AAAAMMDD",
     "colorHint": "Hexadecimal sin #",
     "noValue": "(vacío)",
-    "conflict": "Ya hay una fila con este identificador."
+    "conflict": "Ya hay una fila con este identificador.",
+    "colorPicker": "selector de color"
   },
   "generator": {
     "subtitle": "Crea de golpe todos los viajes de una línea: paradas en orden, tiempos entre paradas y frecuencia.",
@@ -708,11 +710,21 @@
       }
     },
     "network": {
-      "label": "Animación: trenes de FGC circulando por la red del área de Barcelona entre las 7 y las 10 de un día laborable",
-      "caption": "Trenes de FGC entre las 7 y las 10 de un día laborable, a partir de su feed GTFS abierto. Cada segundo son tres minutos.",
+      "label": "Animación: trenes de {network} circulando por la red entre las {from} y las {to} de un día laborable",
+      "caption": "Las {lines} líneas de {operator} y los {trips} viajes que circulan el {date}, entre las {from} y las {to}, según su feed GTFS abierto. Cada segundo son {minutes} minutos.",
       "pause": "Pausa la animación",
-      "play": "Reanuda la animación"
+      "play": "Reanuda la animación",
+      "feed": "Ver el feed de {network}",
+      "other": "Mostrar otra red"
     }
+  },
+  "footer": {
+    "links": "Enlaces",
+    "gtfsReference": "Referencia GTFS",
+    "languages": "Idiomas",
+    "creditLogos": "Isotipos de las marcas:",
+    "creditFlags": "Banderas:",
+    "creditAnimation": "Animación: trenes reales de los feeds GTFS abiertos de los operadores que aparecen."
   },
   "catalogEntry": {
     "intro": "Feed GTFS abierto de {operator}, con servicio vigente. Impórtalo para explorar su red, sus horarios y su calendario, o descárgalo de la fuente oficial.",

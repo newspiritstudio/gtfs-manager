@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { GTFS_CATALOG } from '@shared/catalog';
 import JsonLd from '@/components/seo/JsonLd';
+import PublicFooter from '../_public/PublicFooter';
 import PageHeader from '@/components/ui/PageHeader';
 import CatalogGallery from '@/features/catalog/CatalogGallery';
 import { localizedPath } from '@/lib/i18n/paths';
@@ -22,7 +23,7 @@ export default async function CatalogPage() {
   const { t, locale } = await getI18n();
   const imported = await importedCatalogFeeds();
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="mx-auto max-w-7xl [word-break:auto-phrase]">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -39,6 +40,7 @@ export default async function CatalogPage() {
       />
       <PageHeader title={t('catalog.title')} subtitle={t('catalog.subtitle')} />
       <CatalogGallery entries={GTFS_CATALOG} imported={imported} />
+      <PublicFooter path="/catalog" credits={['flags']} />
     </div>
   );
 }

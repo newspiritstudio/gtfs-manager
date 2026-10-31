@@ -321,11 +321,8 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
                 <ul className="space-y-1">
                   {nearby.map((n) => (
                     <li key={n.stopId}>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          router.push(`/feeds/${feedId}/stops/${encodeURIComponent(n.stopId)}`)
-                        }
+                      <Link
+                        href={`/feeds/${feedId}/stops/${encodeURIComponent(n.stopId)}`}
                         className="-mx-2 flex w-full items-center justify-between gap-3 rounded-sm px-2 py-1.5 text-left state-layer state-layer-on-surface focus-ring"
                       >
                         <span className="min-w-0 truncate text-body-medium text-on-surface">
@@ -337,7 +334,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
                         <span className="shrink-0 text-body-small tabular-nums text-on-surface-variant">
                           {formatDistance(locale, n.distance)}
                         </span>
-                      </button>
+                      </Link>
                     </li>
                   ))}
                 </ul>

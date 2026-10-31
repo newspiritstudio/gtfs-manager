@@ -37,6 +37,11 @@ describe('colors de línia', () => {
   it('ignora un route_text_color sense contrast', () => {
     expect(routeColors('X', 'FFFF00', 'FFFFFF').textColor).toBe('000000');
   });
+
+  it('no accepta un text de contrast mitjà (blanc sobre un fons de 3,8:1)', () => {
+    expect(routeColors('L6', '797FBC', 'FFFFFF').textColor).toBe('000000');
+    expect(routeColors('L1', '0A3E8A', 'FFFFFF').textColor).toBe('FFFFFF');
+  });
 });
 
 describe('tidyRouteName', () => {

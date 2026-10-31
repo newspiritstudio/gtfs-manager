@@ -319,28 +319,39 @@ async function sampleNames(
 
 export const VALIDATION_CODES = RULES.map((r) => r.code);
 
+/** Quantes regles corren alhora: les pesades (stop_times) s'aprofiten de més d'un nucli sense saturar el pool. */
+const CONCURRENCY = 4;
+
+async function runRule(feedId: string, rule: Rule): Promise<ValidationIssue | null> {
+  const [result] = await getSql().unsafe<{ count: number; samples: string[] | null }[]>(
+    `SELECT count(*)::int AS count, (array_agg(sample ORDER BY sample))[1:5] AS samples
+     FROM (${rule.query}) v`,
+    [feedId]
+  );
+  if (!result || result.count <= 0) return null;
+  const samples = (result.samples ?? []).filter(Boolean);
+  const names = await sampleNames(feedId, rule.table, samples);
+  return {
+    code: rule.code,
+    severity: rule.severity,
+    table: rule.table,
+    count: result.count,
+    samples,
+    ...(names ? { sampleNames: names } : {}),
+  };
+}
+
 export async function validateFeed(feedId: string): Promise<ValidationIssue[]> {
-  const sql = getSql();
-  const issues: ValidationIssue[] = [];
-  for (const rule of RULES) {
-    const [result] = await sql.unsafe<{ count: number; samples: string[] | null }[]>(
-      `SELECT count(*)::int AS count, (array_agg(sample ORDER BY sample))[1:5] AS samples
-       FROM (${rule.query}) v`,
-      [feedId]
-    );
-    if (result && result.count > 0) {
-      const samples = (result.samples ?? []).filter(Boolean);
-      const names = await sampleNames(feedId, rule.table, samples);
-      issues.push({
-        code: rule.code,
-        severity: rule.severity,
-        table: rule.table,
-        count: result.count,
-        samples,
-        ...(names ? { sampleNames: names } : {}),
-      });
+  const results: (ValidationIssue | null)[] = new Array(RULES.length).fill(null);
+  let next = 0;
+  const worker = async () => {
+    while (next < RULES.length) {
+      const index = next++;
+      results[index] = await runRule(feedId, RULES[index]);
     }
-  }
+  };
+  await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+  const issues = results.filter((i): i is ValidationIssue => i !== null);
   const order: Record<ValidationSeverity, number> = { error: 0, warning: 1, info: 2 };
   return issues.sort((a, b) => order[a.severity] - order[b.severity] || b.count - a.count);
 }

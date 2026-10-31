@@ -1,11 +1,12 @@
 /**
  * Importa una carpeta (o un ZIP) GTFS des de la línia d'ordres:
  *
- *   npm run gtfs:import -- /camí/a/la/carpeta --name "Renfe Cercanías"
+ *   npm run gtfs:import -- /camí/a/la/carpeta --name "Renfe Cercanías" [--catalog renfe-cercanias]
  *
  * Fa servir el mateix codi que la importació des del navegador.
  */
 import { createReadStream } from 'node:fs';
+import { Readable } from 'node:stream';
 import { readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import JSZip from 'jszip';
@@ -16,14 +17,18 @@ import { ensureStats } from '../src/server/gtfs/stats';
 
 async function main() {
   const args = process.argv.slice(2);
-  const source = args.find((a) => !a.startsWith('--'));
+  const source = args.find((a, i) => !a.startsWith('--') && !args[i - 1]?.startsWith('--'));
   const nameIndex = args.indexOf('--name');
+  const catalogIndex = args.indexOf('--catalog');
+  const catalogId = catalogIndex >= 0 ? args[catalogIndex + 1] : null;
   if (!source) {
-    console.error('Ús: npm run gtfs:import -- <carpeta|fitxer.zip> [--name "Nom del feed"]');
+    console.error(
+      'Ús: npm run gtfs:import -- <carpeta|fitxer.zip> [--name "Nom del feed"] [--catalog id]'
+    );
     process.exit(1);
   }
   const name = nameIndex >= 0 ? args[nameIndex + 1] : path.basename(source).replace(/\.zip$/i, '');
-  const feedId = await createFeed({ name, origin: 'import' });
+  const feedId = await createFeed({ name, origin: 'import', catalogId });
   console.log(`Feed ${name} (${feedId})`);
 
   const info = await stat(source);
@@ -38,7 +43,8 @@ async function main() {
     const zip = await JSZip.loadAsync(await readFile(source));
     for (const entry of Object.values(zip.files)) {
       if (entry.dir || !entry.name.toLowerCase().endsWith('.txt')) continue;
-      const stream = entry.nodeStream('nodebuffer') as unknown as AsyncIterable<Uint8Array>;
+      // L'stream de JSZip és dels antics (sense iterador asíncron): `wrap` el fa iterable.
+      const stream = new Readable().wrap(entry.nodeStream('nodebuffer'));
       const report = await importGtfsFile(feedId, entry.name, stream);
       await appendImportReport(feedId, report);
       console.log(

@@ -97,11 +97,16 @@ export default function MenuSelect({
       Enter: () => choose(active),
       ' ': () => choose(active),
       Escape: close,
-      Tab: () => setOpen(false),
     };
+    if (event.key === 'Tab') {
+      // El focus torna al camp abans que la llista desaparegui, i el Tab continua des d'allà.
+      setOpen(false);
+      triggerRef.current?.focus();
+      return;
+    }
     const action = keys[event.key];
     if (action) {
-      if (event.key !== 'Tab') event.preventDefault();
+      event.preventDefault();
       action();
       return;
     }

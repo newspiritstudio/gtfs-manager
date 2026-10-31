@@ -23,7 +23,7 @@ export default function RouteBadge({
   title?: string;
 }) {
   const sizes = {
-    sm: 'h-5 min-w-5 px-1.5 text-label-small rounded-xs',
+    sm: 'h-6 min-w-6 px-1.5 text-label-small rounded-xs',
     md: 'h-6 min-w-7 px-2 text-label-medium rounded-sm',
     lg: 'h-8 min-w-10 px-2.5 text-title-small rounded-sm',
     xl: 'h-14 min-w-16 px-4 text-headline-small rounded-md',

@@ -1,4 +1,7 @@
 import type { FeedStats, FeedSummary, FileImportReport, ImportReport } from '@shared/contracts';
+import { CATALOG_LOGOS, GTFS_CATALOG } from '@shared/catalog';
+import type { ShellFeed } from '@shared/contracts';
+import { contrastRatio } from '@shared/gtfs-values';
 import { getSql } from '../db/client';
 
 interface FeedRow {
@@ -116,10 +119,30 @@ export function isUuid(value: string): boolean {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 }
 
-export async function listFeedNames(): Promise<{ id: string; name: string }[]> {
+/**
+ * Els feeds de la navegació, amb la marca de cadascun: l'isotip oficial si ve del catàleg i en té,
+ * i si no el color més repetit de les seves línies (el que identifica la xarxa).
+ */
+export async function listFeedNames(): Promise<ShellFeed[]> {
   try {
-    return await getSql()<{ id: string; name: string }[]>`
-      SELECT id, name FROM feeds ORDER BY updated_at DESC`;
+    const rows = await getSql()<
+      { id: string; name: string; catalogId: string | null; color: string | null }[]
+    >`
+      SELECT f.id, f.name, f.catalog_id AS "catalogId",
+        (SELECT upper(route_color) FROM routes r
+         WHERE r.feed_id = f.id AND route_color ~ '^[0-9A-Fa-f]{6}$'
+         GROUP BY 1 ORDER BY count(*) DESC, 1 LIMIT 1) AS color
+      FROM feeds f ORDER BY f.updated_at DESC`;
+    return rows.map(({ id, name, catalogId, color }) => {
+      const logo = GTFS_CATALOG.find((entry) => entry.id === catalogId)?.logo;
+      return {
+        id,
+        name,
+        logo: logo ? CATALOG_LOGOS[logo].src : undefined,
+        // Un blanc o un gris molt clar no es veurien sobre el fons de la barra.
+        color: color && contrastRatio(color, 'FFFFFF') >= 1.5 ? `#${color}` : undefined,
+      };
+    });
   } catch {
     // Sense base de dades, la closca es pinta igualment i la pàgina en diu l'error.
     return [];

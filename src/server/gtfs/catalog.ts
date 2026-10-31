@@ -1,6 +1,6 @@
 /**
  * Consulta i descàrrega dels feeds del catàleg. Només es descarrega allò que hi ha a `GTFS_CATALOG`
- * (mai una URL que arribi de fora), i l'estat es guarda una hora a la memòria del procés.
+ * (mai una URL que arribi de fora), i l'estat es guarda una hora (cinc minuts si falla) a la memòria del procés.
  */
 import JSZip from 'jszip';
 import {
@@ -66,16 +66,44 @@ async function probe(entry: CatalogEntry): Promise<CatalogStatus> {
   }
 }
 
+/** Un error es recorda poc estona (no es torna a provar a cada visita) i una font caiguda no triga 10 s cada cop. */
+const FAILURE_TTL = 5 * 60 * 1000;
+/** Passat aquest temps, un estat vell que ja no es pot refrescar deixa de servir-se. */
+const MAX_STALE = 24 * 60 * 60 * 1000;
+const refreshing = new Map<string, Promise<CatalogStatus>>();
+
+function refresh(entry: CatalogEntry): Promise<CatalogStatus> {
+  const running = refreshing.get(entry.id);
+  if (running) return running;
+  const job = probe(entry)
+    .then((status) => {
+      const previous = cache.get(entry.id);
+      // Una fallada puntual no esborra un estat bo de fa poc: se serveix el vell fins MAX_STALE.
+      if (!status.available && previous?.status.available && Date.now() - previous.at < MAX_STALE) {
+        cache.set(entry.id, { at: Date.now() - STATUS_TTL + FAILURE_TTL, status: previous.status });
+        return previous.status;
+      }
+      cache.set(entry.id, { at: Date.now(), status });
+      return status;
+    })
+    .finally(() => refreshing.delete(entry.id));
+  refreshing.set(entry.id, job);
+  return job;
+}
+
+/**
+ * L'estat de les fonts. Stale-while-revalidate: un estat vell es serveix al moment i es refresca
+ * en segon pla; només la primera consulta (memòria buida) espera les fonts, totes alhora.
+ */
 export async function catalogStatuses(): Promise<CatalogStatus[]> {
   const now = Date.now();
   return Promise.all(
-    GTFS_CATALOG.map(async (entry) => {
+    GTFS_CATALOG.map((entry) => {
       const cached = cache.get(entry.id);
-      if (cached && now - cached.at < STATUS_TTL) return cached.status;
-      const status = await probe(entry);
-      // Un error no es guarda: el pròxim cop es torna a provar.
-      if (status.available) cache.set(entry.id, { at: now, status });
-      return status;
+      if (!cached) return refresh(entry);
+      const ttl = cached.status.available ? STATUS_TTL : FAILURE_TTL;
+      if (now - cached.at >= ttl) void refresh(entry);
+      return cached.status;
     })
   );
 }
