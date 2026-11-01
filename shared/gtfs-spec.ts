@@ -821,7 +821,7 @@ export const GTFS_SPEC: Record<GtfsTable, GtfsFileSpec> = {
       enumField('is_bidirectional', FLAG, { required: true }),
       float('length', { sign: 'nonNegative' }),
       int('traversal_time', { sign: 'positive' }),
-      int('stair_count'),
+      int('stair_count', { sign: 'nonZero' }),
       float('max_slope'),
       float('min_width', { sign: 'positive' }),
       text('signposted_as'),

@@ -23,6 +23,10 @@ export const MIGRATIONS: readonly Migration[] = [
     for (const statement of versionStatements(2)) driver.exec(statement);
     allowEmptyColumn(driver, 'stop_times', 'stop_id', 'TEXT');
   },
+  // 3: what the import found in the files (`import_notices`) and the stored validation reports.
+  (driver) => {
+    for (const statement of versionStatements(3)) driver.exec(statement);
+  },
 ];
 
 if (MIGRATIONS.length !== SCHEMA_VERSION) {

@@ -1427,5 +1427,671 @@
       "showZones": "Show flex zones",
       "hideZones": "Hide flex zones"
     }
+  },
+  "notices": {
+    "attribution_without_role": {
+      "title": "Attribution without a role",
+      "description": "Attribution with no role."
+    },
+    "bidirectional_exit_gate": {
+      "title": "Bidirectional exit gate",
+      "description": "A pathway with mode 7 (exit gate) is bidirectional."
+    },
+    "big_gap_in_service": {
+      "title": "Big gap in service",
+      "description": "A service has a gap of more than 13 days between active service dates."
+    },
+    "block_trips_with_overlapping_stop_times": {
+      "title": "Block trips overlap in time",
+      "description": "Trips with the same block id have overlapping stop times."
+    },
+    "csv_parsing_failed": {
+      "title": "CSV could not be parsed",
+      "description": "Parsing of a CSV file failed."
+    },
+    "decreasing_or_equal_stop_time_distance": {
+      "title": "Stop time distances do not increase",
+      "description": "The shape_dist_traveled of a stop time is not greater than the previous one."
+    },
+    "decreasing_shape_distance": {
+      "title": "Shape distances decrease",
+      "description": "The shape_dist_traveled of a shape point is smaller than the previous point."
+    },
+    "duplicate_fare_media": {
+      "title": "Duplicate fare media",
+      "description": "Two distinct fare media have the same fare media name and type."
+    },
+    "duplicate_geo_json_key": {
+      "title": "Repeated key in locations.geojson",
+      "description": "A key in locations.geojson is duplicated."
+    },
+    "duplicate_geography_id": {
+      "title": "Geography ID used twice",
+      "description": "The same geography ID is used in more than one file."
+    },
+    "duplicate_key": {
+      "title": "Duplicate key",
+      "description": "Two rows of a file have the same key."
+    },
+    "duplicate_route_name": {
+      "title": "Duplicate route name",
+      "description": "Two distinct routes have either the same route_short_name, the same route_long_name, or the same combination of route_short_name and route_long_name."
+    },
+    "duplicated_column": {
+      "title": "Repeated column",
+      "description": "A column name appears more than once in a file."
+    },
+    "empty_column_name": {
+      "title": "Column without a name",
+      "description": "A column of a file has an empty name."
+    },
+    "empty_file": {
+      "title": "Empty file",
+      "description": "A file has no content."
+    },
+    "empty_row": {
+      "title": "Empty row",
+      "description": "A row of a file has only spaces."
+    },
+    "equal_shape_distance_diff_coordinates": {
+      "title": "Same distance at different points",
+      "description": "Two consecutive points have equal shape_dist_traveled and different lat/lon coordinates in shapes.txt and the distance between the two points is greater than the 1.11m."
+    },
+    "equal_shape_distance_diff_coordinates_distance_below_threshold": {
+      "title": "Same distance at close points",
+      "description": "Two consecutive points have equal shape_dist_traveled and different lat/lon coordinates in shapes.txt and the distance between the two points is greater than 0 but less than 1.11m."
+    },
+    "equal_shape_distance_same_coordinates": {
+      "title": "Same distance at the same point",
+      "description": "Two consecutive points have equal shape_dist_traveled and the same lat/lon coordinates in shapes.txt."
+    },
+    "expired_calendar": {
+      "title": "Expired calendar",
+      "description": "A service has a date range that ended before today."
+    },
+    "fare_product_with_multiple_default_rider_categories": {
+      "title": "Several default rider categories",
+      "description": "This notice is generated when a fare product is associated with multiple rider categories that are marked as default."
+    },
+    "fare_transfer_rule_duration_limit_type_without_duration_limit": {
+      "title": "Duration limit type without a limit",
+      "description": "A row from GTFS file fare_transfer_rules.txt has a defined duration_limit_type field but no duration_limit specified."
+    },
+    "fare_transfer_rule_duration_limit_without_type": {
+      "title": "Duration limit without a type",
+      "description": "A row from GTFS file fare_transfer_rules.txt has a defined duration_limit field but no duration_limit_type specified."
+    },
+    "fare_transfer_rule_invalid_transfer_count": {
+      "title": "Invalid transfer count",
+      "description": "A row from GTFS file fare_transfer_rules.txt has a defined transfer_count with an invalid value."
+    },
+    "fare_transfer_rule_with_forbidden_transfer_count": {
+      "title": "Transfer count not allowed here",
+      "description": "A row from fare_transfer_rules.txt has from_leg_group_id not equal to to_leg_group_id, but has transfer_count specified."
+    },
+    "fare_transfer_rule_without_transfer_count": {
+      "title": "Transfer count missing",
+      "description": "A row from fare_transfer_rules.txt has from_leg_group_id equal to to_leg_group_id, but has no transfer_count specified."
+    },
+    "fast_travel_between_consecutive_stops": {
+      "title": "Too fast between consecutive stops",
+      "description": "A transit vehicle moves too fast between two consecutive stops."
+    },
+    "feed_expiration_date30_days": {
+      "title": "Feed expires within 30 days",
+      "description": "Dataset should cover at least the next 30 days of service."
+    },
+    "feed_expiration_date7_days": {
+      "title": "Feed expires within 7 days",
+      "description": "Dataset should be valid for at least the next 7 days."
+    },
+    "feed_info_lang_and_agency_lang_mismatch": {
+      "title": "Feed and agency languages differ",
+      "description": "Mismatching feed and agency language fields."
+    },
+    "feed_valid_beyond_total_service_window": {
+      "title": "Feed valid beyond its service",
+      "description": "The feed is valid 14 days beyond its total service window."
+    },
+    "forbidden_arrival_or_departure_time": {
+      "title": "Time not allowed",
+      "description": "The arrival or departure times are provided alongside pickup or drop-off windows in stop_times.txt."
+    },
+    "forbidden_continuous_pickup_drop_off": {
+      "title": "Continuous pickup or drop off not allowed",
+      "description": "Continuous pickup or drop-off are forbidden when routes.continuous_pickup or routes.continuous_drop_off are 0, 2 or 3 and stop_times.start_pickup_drop_off_window or stop_times.end_pickup_drop_off_window are defined for any trip of this route."
+    },
+    "forbidden_drop_off_type": {
+      "title": "Drop off type not allowed",
+      "description": "pickup_drop_off_window fields are forbidden when the drop_off_type is regularly scheduled (0)."
+    },
+    "forbidden_geography_id": {
+      "title": "Geography ID not allowed",
+      "description": "A stop_time entry has more than one geographical id defined."
+    },
+    "forbidden_pickup_type": {
+      "title": "Pickup type not allowed",
+      "description": "pickup_drop_off_window fields are forbidden when the pickup_type is regularly scheduled (0) or must be coordinated with the driver (3)."
+    },
+    "forbidden_prior_day_booking_field_value": {
+      "title": "Prior day booking field not allowed",
+      "description": "A forbidden field value is present for a prior-day booking rule in booking_rules.txt"
+    },
+    "forbidden_prior_notice_start_day": {
+      "title": "Prior notice start day not allowed",
+      "description": "prior_notice_start_day value is forbidden when prior_notice_duration_max is set."
+    },
+    "forbidden_prior_notice_start_time": {
+      "title": "Prior notice start time not allowed",
+      "description": "prior_notice_start_time value is forbidden when prior_notice_start_day value is not set in booking_rules.txt."
+    },
+    "forbidden_real_time_booking_field_value": {
+      "title": "Real-time booking field not allowed",
+      "description": "A forbidden field value is present for a real-time booking rule in booking_rules.txt."
+    },
+    "forbidden_same_day_booking_field_value": {
+      "title": "Same-day booking field not allowed",
+      "description": "A forbidden field value is present for a same-day booking rule in booking_rules.txt."
+    },
+    "forbidden_shape_dist_traveled": {
+      "title": "Shape distance not allowed",
+      "description": "A stop_time entry has a shape_dist_traveled without a stop_id value."
+    },
+    "foreign_key_violation": {
+      "title": "Reference to a missing row",
+      "description": "A field refers to an ID that does not exist in the file it points to."
+    },
+    "future_calendar": {
+      "title": "Calendar starts in the future",
+      "description": "Every service of the feed starts after today: none covers today."
+    },
+    "future_feed": {
+      "title": "Feed starts in the future",
+      "description": "The feed covers the future only."
+    },
+    "geo_json_unknown_element": {
+      "title": "Unknown element in locations.geojson",
+      "description": "Unknown elements in locations.geojson file."
+    },
+    "inconsistent_agency_lang": {
+      "title": "Agencies with different languages",
+      "description": "The agencies of the feed declare different languages."
+    },
+    "inconsistent_agency_timezone": {
+      "title": "Agencies with different time zones",
+      "description": "The agencies of the feed declare different time zones."
+    },
+    "inconsistent_route_type_for_block_id": {
+      "title": "Block with several route types",
+      "description": "A block should have the same route mode."
+    },
+    "inconsistent_route_type_for_in_seat_transfer": {
+      "title": "In-seat transfer between route types",
+      "description": "An in-seat transfer should occur in the same route mode."
+    },
+    "invalid_character": {
+      "title": "Invalid character",
+      "description": "A value contains an invalid character, such as the replacement character."
+    },
+    "invalid_color": {
+      "title": "Invalid color",
+      "description": "A field contains an invalid color value."
+    },
+    "invalid_currency": {
+      "title": "Invalid currency code",
+      "description": "A field contains a wrong currency code."
+    },
+    "invalid_currency_amount": {
+      "title": "Invalid currency amount",
+      "description": "A currency amount field has a value that does not match the format of its corresponding currency code field."
+    },
+    "invalid_date": {
+      "title": "Invalid date",
+      "description": "A field cannot be parsed as date."
+    },
+    "invalid_email": {
+      "title": "Invalid email address",
+      "description": "A field contains a malformed email address."
+    },
+    "invalid_float": {
+      "title": "Invalid decimal number",
+      "description": "A field cannot be parsed as a floating point number."
+    },
+    "invalid_integer": {
+      "title": "Invalid integer",
+      "description": "A field cannot be parsed as an integer."
+    },
+    "invalid_language_code": {
+      "title": "Invalid language code",
+      "description": "A field contains a wrong language code."
+    },
+    "invalid_pickup_drop_off_window": {
+      "title": "Invalid pickup or drop off window",
+      "description": "The pickup/drop-off window in stop_times.txt is invalid."
+    },
+    "invalid_prior_notice_duration_min": {
+      "title": "Invalid minimum notice",
+      "description": "An invalid prior_notice_duration_min value is present in a booking rule."
+    },
+    "invalid_row_length": {
+      "title": "Row with the wrong length",
+      "description": "A row has more or fewer values than the header has columns."
+    },
+    "invalid_time": {
+      "title": "Invalid time",
+      "description": "A field cannot be parsed as time."
+    },
+    "invalid_timezone": {
+      "title": "Invalid time zone",
+      "description": "A field cannot be parsed as a timezone."
+    },
+    "invalid_url": {
+      "title": "Invalid URL",
+      "description": "A field contains a malformed URL."
+    },
+    "leading_or_trailing_whitespaces": {
+      "title": "Leading or trailing spaces",
+      "description": "The value in CSV file has leading or trailing whitespaces."
+    },
+    "location_with_unexpected_stop_time": {
+      "title": "Stop time for a location that cannot have one",
+      "description": "A location in stops.txt that is not a stop is referenced by some stop_times.stop_id."
+    },
+    "location_without_parent_station": {
+      "title": "Location without a parent station",
+      "description": "A location that needs a parent_station does not have one."
+    },
+    "malformed_json": {
+      "title": "Malformed JSON",
+      "description": "A JSON file is malformed."
+    },
+    "missing_bike_allowance": {
+      "title": "Missing bike allowance",
+      "description": "Ferry trips should include bike allowance information."
+    },
+    "missing_calendar_and_calendar_date_files": {
+      "title": "No calendar files",
+      "description": "Missing GTFS files calendar.txt and calendar_dates.txt."
+    },
+    "missing_feed_contact_email_and_url": {
+      "title": "No feed contact",
+      "description": "Best Practices for feed_info.txt suggest providing at least one of feed_contact_email and feed_contact_url."
+    },
+    "missing_feed_info_date": {
+      "title": "Feed dates missing",
+      "description": "One of feed_start_date or feed_end_date is specified, but not both."
+    },
+    "missing_level_id": {
+      "title": "Level missing",
+      "description": "stops.level_id is conditionally required."
+    },
+    "missing_pickup_drop_off_booking_rule_id": {
+      "title": "Booking rule missing",
+      "description": "pickup_booking_rule_id is recommended when pickup_type=2 and drop_off_booking_rule_id is recommended when drop_off_type=2."
+    },
+    "missing_pickup_or_drop_off_window": {
+      "title": "Window missing",
+      "description": "Either the start or end pickup/drop-off window is missing in stop_times.txt."
+    },
+    "missing_prior_notice_duration_min": {
+      "title": "Minimum notice missing",
+      "description": "prior_notice_duration_min value is required for same day booking_type in booking_rules.txt."
+    },
+    "missing_prior_notice_last_day": {
+      "title": "Last notice day missing",
+      "description": "The prior_notice_last_day is required when booking_type=2 (prior day booking) is specified in booking_rules.txt."
+    },
+    "missing_prior_notice_last_time": {
+      "title": "Last notice time missing",
+      "description": "The prior_notice_last_time is required when booking_type=2 (prior day booking) is specified in booking_rules.txt."
+    },
+    "missing_prior_notice_start_time": {
+      "title": "Notice start time missing",
+      "description": "prior_notice_start_time value is required when prior_notice_start_day value is set in booking_rules.txt."
+    },
+    "missing_recommended_field": {
+      "title": "Recommended field empty",
+      "description": "A recommended field has no value."
+    },
+    "missing_recommended_file": {
+      "title": "Recommended file missing",
+      "description": "A recommended file is missing."
+    },
+    "missing_required_agency_id": {
+      "title": "agency_id missing",
+      "description": "Agency id is required when there are multiple agencies."
+    },
+    "missing_required_column": {
+      "title": "Required column missing",
+      "description": "A required column is missing in the input file."
+    },
+    "missing_required_element": {
+      "title": "Required element missing",
+      "description": "A required element is missing in locations.geojson."
+    },
+    "missing_required_field": {
+      "title": "Required field empty",
+      "description": "A required field has no value."
+    },
+    "missing_required_file": {
+      "title": "Required file missing",
+      "description": "A required file is missing."
+    },
+    "missing_stop_name": {
+      "title": "Stop without a name",
+      "description": "stops.stop_name is required for location_type equal to 0, 1, or 2."
+    },
+    "missing_stop_times_record": {
+      "title": "Trip with too few stop times",
+      "description": "A trip has one stop time in a location group or location where two are required."
+    },
+    "missing_timepoint_value": {
+      "title": "Timepoint value missing",
+      "description": "stop_times.timepoint value is missing for a record."
+    },
+    "missing_trip_edge": {
+      "title": "First or last stop without times",
+      "description": "The first or last stop time of a trip has no arrival or departure time."
+    },
+    "mixed_case_recommended_field": {
+      "title": "Text in a single case",
+      "description": "This field has customer-facing text and should use Mixed Case (should contain upper and lower case letters)."
+    },
+    "more_than_one_entity": {
+      "title": "More than one row",
+      "description": "A file that must hold a single row holds several."
+    },
+    "new_line_in_value": {
+      "title": "Line break in a value",
+      "description": "New line or carriage return in a value in CSV file."
+    },
+    "non_ascii_or_non_printable_char": {
+      "title": "Non-ASCII or non-printable character",
+      "description": "Non ascii or non printable char in ID field."
+    },
+    "number_out_of_range": {
+      "title": "Number out of range",
+      "description": "A number is outside the range its field allows."
+    },
+    "overlapping_frequency": {
+      "title": "Overlapping frequencies",
+      "description": "Trip frequencies overlap."
+    },
+    "pathway_dangling_generic_node": {
+      "title": "Generic node with one pathway",
+      "description": "A generic node has only one incident location in a pathway graph."
+    },
+    "pathway_loop": {
+      "title": "Pathway loop",
+      "description": "A pathway starts and ends at the same location."
+    },
+    "pathway_to_platform_with_boarding_areas": {
+      "title": "Pathway to a platform with boarding areas",
+      "description": "A pathway has an endpoint that is a platform which has boarding areas."
+    },
+    "pathway_to_stop_with_access_outside_of_station_pathways": {
+      "title": "Pathway to a stop outside station pathways",
+      "description": "A pathway has an endpoint that is a stop with stop_access=1, which should be accessible outside of the station’s pathways."
+    },
+    "pathway_to_wrong_location_type": {
+      "title": "Pathway to the wrong location type",
+      "description": "A pathway has an endpoint that is a station."
+    },
+    "platform_without_parent_station": {
+      "title": "Platform without a parent station",
+      "description": "A platform has no parent_station."
+    },
+    "point_near_origin": {
+      "title": "Point near (0, 0)",
+      "description": "A point is too close to origin (0, 0)."
+    },
+    "point_near_pole": {
+      "title": "Point near a pole",
+      "description": "A point is too close to the North or South Pole."
+    },
+    "prior_notice_last_day_after_start_day": {
+      "title": "Last notice day after the start day",
+      "description": "Prior notice last day should not be greater than the prior notice start day in booking_rules.txt."
+    },
+    "route_both_short_and_long_name_missing": {
+      "title": "Route without a name",
+      "description": "Both route_short_name and route_long_name are missing for a route."
+    },
+    "route_color_contrast": {
+      "title": "Low color contrast",
+      "description": "Insufficient route color contrast."
+    },
+    "route_long_name_contains_short_name": {
+      "title": "Long name contains the short name",
+      "description": "Long name should not contain short name for a single route."
+    },
+    "route_networks_specified_in_more_than_one_file": {
+      "title": "Networks defined twice",
+      "description": "Indicates that route network identifiers are specified across multiple files."
+    },
+    "route_short_name_too_long": {
+      "title": "Short name too long",
+      "description": "Short name of a route is too long (more than 12 characters)."
+    },
+    "same_name_and_description_for_route": {
+      "title": "Route name equals description",
+      "description": "Same name and description for route."
+    },
+    "same_name_and_description_for_stop": {
+      "title": "Stop name equals description",
+      "description": "Same name and description for stop."
+    },
+    "same_route_and_agency_url": {
+      "title": "Route and agency share a URL",
+      "description": "Same routes.route_url and agency.agency_url."
+    },
+    "same_stop_and_agency_url": {
+      "title": "Stop and agency share a URL",
+      "description": "Same stops.stop_url and agency.agency_url."
+    },
+    "same_stop_and_route_url": {
+      "title": "Stop and route share a URL",
+      "description": "Same stops.stop_url and routes.route_url."
+    },
+    "service_extends_far_in_the_future": {
+      "title": "Service far in the future",
+      "description": "A service end date is more than 2 years in the future."
+    },
+    "service_has_no_active_day_of_the_week": {
+      "title": "Service with no active day",
+      "description": "A service is not valid for any day of the week."
+    },
+    "service_window_outside_feed_period": {
+      "title": "Service outside the feed period",
+      "description": "A service window is not covered by the feed's validity period."
+    },
+    "single_shape_point": {
+      "title": "Shape with one point",
+      "description": "The shape within shapes.txt contains a single shape point."
+    },
+    "start_and_end_range_equal": {
+      "title": "Start equals end",
+      "description": "Two date or time fields are equal."
+    },
+    "start_and_end_range_out_of_order": {
+      "title": "End before start",
+      "description": "Two date or time fields are out of order."
+    },
+    "station_with_parent_station": {
+      "title": "Station with a parent station",
+      "description": "A station has parent_station field set."
+    },
+    "stop_access_specified_for_incorrect_location": {
+      "title": "Access defined for the wrong location",
+      "description": "A location that is not a stop has stop_access specified."
+    },
+    "stop_access_specified_for_stop_with_no_parent_station": {
+      "title": "Access defined without a parent station",
+      "description": "A stop without a value for parent station has stop_access specified."
+    },
+    "stop_time_timepoint_without_times": {
+      "title": "Timepoint without times",
+      "description": "arrival_time or departure_time not specified for timepoint."
+    },
+    "stop_time_with_arrival_before_previous_departure_time": {
+      "title": "Arrival before the previous departure",
+      "description": "Backwards time travel between stops in stop_times.txt"
+    },
+    "stop_time_with_only_arrival_or_departure_time": {
+      "title": "Only arrival or departure time",
+      "description": "Missing stop_times.arrival_time or stop_times.departure_time."
+    },
+    "stop_without_location": {
+      "title": "Stop without coordinates",
+      "description": "stop_lat and/or stop_lon is missing for stop with location_type equal to0, 1, or 2"
+    },
+    "stop_without_stop_time": {
+      "title": "Stop not used by any trip",
+      "description": "A stop in stops.txt is not referenced by any stop_times.stop_id."
+    },
+    "stop_without_zone_id": {
+      "title": "Stop without a zone",
+      "description": "Stop without value for stops.zone_id contained in a route with a zone-dependent fare rule."
+    },
+    "timeframe_only_start_or_end_time_specified": {
+      "title": "Timeframe with one limit",
+      "description": "A row from timeframes.txt was found with only one of start_time and end_time specified."
+    },
+    "timeframe_overlap": {
+      "title": "Overlapping timeframes",
+      "description": "Two entries in timeframes.txt with the same timeframe_group_id and service_id have overlapping time intervals."
+    },
+    "timeframe_start_or_end_time_greater_than_twenty_four_hours": {
+      "title": "Timeframe past 24 hours",
+      "description": "A time in timeframes.txt is greater than 24:00:00."
+    },
+    "transfer_distance_above_2_km": {
+      "title": "Transfer over 2 km",
+      "description": "The transfer distance from stop to stop in transfers.txt is larger than 2 km."
+    },
+    "transfer_distance_too_large": {
+      "title": "Transfer over 10 km",
+      "description": "The transfer distance from stop to stop in transfers.txt is larger than 10 km."
+    },
+    "transfer_with_invalid_stop_location_type": {
+      "title": "Transfer between invalid locations",
+      "description": "A stop id field from GTFS file transfers.txt references a stop that has a location_type other than 0 or 1 (aka Stop/Platform or Station)."
+    },
+    "transfer_with_invalid_trip_and_route": {
+      "title": "Transfer with a trip and route that do not match",
+      "description": "A trip id field from GTFS file transfers.txt references a route that does not match its trips.txt route_id."
+    },
+    "transfer_with_invalid_trip_and_stop": {
+      "title": "Transfer with a trip that does not stop there",
+      "description": "A trip id field from GTFS file transfers.txt references a stop that is not included in the referenced trip's stop-times."
+    },
+    "transfer_with_suspicious_mid_trip_in_seat": {
+      "title": "Suspicious in-seat transfer",
+      "description": "A trip id field from GTFS file transfers.txt with an in-seat transfer type references a stop that is not in the expected position in the trip's stop-times."
+    },
+    "translation_foreign_key_violation": {
+      "title": "Translation of a missing row",
+      "description": "An entity with the given record_id and record_sub_id cannot be found in the referenced table."
+    },
+    "translation_unexpected_value": {
+      "title": "Translation with an unexpected value",
+      "description": "A field in a translations row has value but must be empty."
+    },
+    "translation_unknown_table_name": {
+      "title": "Translation of an unknown table",
+      "description": "A translation references an unknown or missing GTFS table."
+    },
+    "trip_coverage_not_active_for_next7_days": {
+      "title": "No trips in the next 7 days",
+      "description": "Trips data should be valid for at least the next seven days."
+    },
+    "trip_distance_exceeds_shape_distance": {
+      "title": "Trip longer than its shape",
+      "description": "The distance between the last shape point and last stop point is greater than or equal to the 11.1m threshold."
+    },
+    "trip_distance_exceeds_shape_distance_below_threshold": {
+      "title": "Trip slightly longer than its shape",
+      "description": "The distance between the last shape point and last stop point is greater than 0 but less than the 11.1m threshold."
+    },
+    "trip_headsign_matches_intermediate_stop": {
+      "title": "Headsign names an intermediate stop",
+      "description": "Trip headsign matches the name of an intermediate stop, not the last stop."
+    },
+    "trip_with_shape_dist_traveled_but_no_shape_distances": {
+      "title": "Stop distances without shape distances",
+      "description": "A trip has shape_dist_traveled values in stop_times.txt but the shape referenced by the trip's shape_id does not have shape_dist_traveled values on all of its points in shapes.txt."
+    },
+    "unexpected_enum_value": {
+      "title": "Unexpected value",
+      "description": "A field has a value that is not one of those the specification defines."
+    },
+    "unknown_column": {
+      "title": "Unknown column",
+      "description": "A file has a column the specification does not define."
+    },
+    "unknown_file": {
+      "title": "Unknown file",
+      "description": "The feed has a file the specification does not define."
+    },
+    "unsorted_stop_times": {
+      "title": "Stop times out of order",
+      "description": "The stop times of a trip are not sorted by stop_sequence in the file."
+    },
+    "unsupported_feature_type": {
+      "title": "Unsupported feature type",
+      "description": "An unsupported feature type is used in the locations.geojson file."
+    },
+    "unsupported_geo_json_type": {
+      "title": "Unsupported GeoJSON type",
+      "description": "An unsupported GeoJSON type is used in the locations.geojson file."
+    },
+    "unsupported_geometry_type": {
+      "title": "Unsupported geometry type",
+      "description": "A GeoJSON feature has an unsupported geometry type in locations.geojson."
+    },
+    "unusable_trip": {
+      "title": "Trip with a single stop",
+      "description": "Trips must have more than one stop to be usable."
+    },
+    "unused_shape": {
+      "title": "Shape not used",
+      "description": "Shape is not used in GTFS file trips.txt."
+    },
+    "unused_station": {
+      "title": "Station not used",
+      "description": "A station has no stop served by any trip."
+    },
+    "unused_trip": {
+      "title": "Trip without stop times",
+      "description": "A trip has no stop times."
+    },
+    "wrong_parent_location_type": {
+      "title": "Parent of the wrong type",
+      "description": "The parent of a location is not of the type it should be."
+    }
+  },
+  "validationReport": {
+    "subtitle": "Checks of the MobilityData GTFS validator rules, computed in your browser, plus the Google Transit checks.",
+    "typesLabel": "Notice types",
+    "casesLabel": "Cases",
+    "filterSeverity": "Severity",
+    "severityAll": "All",
+    "filterFile": "File",
+    "allFiles": "All files",
+    "examples": "Examples",
+    "showMore": "Show more",
+    "showFewer": "Show fewer",
+    "docs": "Documentation",
+    "exportJson": "Export JSON",
+    "exportDone": "Report exported",
+    "exportFailed": "Could not export the report",
+    "googleTitle": "Google Transit checks",
+    "googleHint": "Checks from Google's static validation. They are a separate set from the notices above.",
+    "noMatch": "No notices match these filters",
+    "row": "Row {row}",
+    "notComputed": "Notices of the MobilityData validator that GTFS Manager does not compute: {count}.",
+    "rules": "Rules of the MobilityData validator, version {version}.",
+    "failedRules": "Some checks could not run: {rules}.",
+    "codeLabel": "Code"
   }
 }

@@ -33,7 +33,6 @@ import { both, useEngine } from '@/lib/engine';
 import { useI18n } from '@/lib/i18n/client';
 import { Link } from '@/lib/router';
 import { formatGtfsDate, formatNumber } from '@/lib/i18n/format';
-import { issueKey, issueTitle } from '@/lib/issueTitle';
 import { useDocumentHead } from '@/lib/seo';
 import { useFeedId } from './useFeedId';
 
@@ -380,17 +379,17 @@ function ValidationCard({
           </p>
         ) : (
           <ul className="mt-3 space-y-1">
-            {stats.validation.issues
-              .filter((i) => i.severity !== 'info')
+            {(stats.validation.groups ?? [])
+              .filter((g) => g.severity !== 'INFO')
               .slice(0, 4)
-              .map((issue) => (
+              .map((group) => (
                 <li
-                  key={issueKey(issue)}
+                  key={group.code}
                   className="flex items-start justify-between gap-3 text-body-small"
                 >
-                  <span className="text-on-surface">{issueTitle(t, issue)}</span>
+                  <span className="text-on-surface">{t(`notices.${group.code}.title`)}</span>
                   <span className="shrink-0 tabular-nums text-on-surface-variant">
-                    {issue.count}
+                    {group.total}
                   </span>
                 </li>
               ))}

@@ -7,7 +7,9 @@ import { GTFS_TABLES, type GtfsTable } from '@shared/gtfs-spec';
 import { referenceDateFrom } from '@shared/gtfs-values';
 import { getSql, ident, parseJson } from '../db/client';
 import { activeServicesFragment, serviceDaysCte } from './service-days';
-import { validateFeed } from './validate';
+import { validateGoogleChecks } from './validate';
+import type { NoticeSeverity } from '@shared/notices';
+import { runNotices, storeValidationReport } from './notices';
 
 export async function computeStats(feedId: string): Promise<FeedStats> {
   const sql = getSql();
@@ -19,7 +21,8 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
   await sql.unsafe('ANALYZE');
 
   // The heavy queries (validation, time distribution) run while the others do.
-  const issuesJob = validateFeed(feedId);
+  const issuesJob = validateGoogleChecks(feedId);
+  const noticesJob = runNotices(feedId);
   const spanJob = sql<{ first: number | null; last: number | null }[]>`
     SELECT min(coalesce(departure_time, arrival_time)) AS "first",
            max(coalesce(arrival_time, departure_time)) AS "last"
@@ -100,7 +103,10 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
       ORDER BY departures DESC LIMIT 10`;
   }
 
-  const [[span], issues] = await Promise.all([spanJob, issuesJob]);
+  const [[span], issues, report] = await Promise.all([spanJob, issuesJob, noticesJob]);
+  await storeValidationReport(feedId, report);
+  const bySeverity = (severity: NoticeSeverity) =>
+    report.notices.filter((g) => g.severity === severity).length;
 
   return {
     computedAt: new Date().toISOString(),
@@ -117,10 +123,15 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
         ? { first: span.first, last: span.last }
         : null,
     validation: {
-      errors: issues.filter((i) => i.severity === 'error').length,
-      warnings: issues.filter((i) => i.severity === 'warning').length,
-      infos: issues.filter((i) => i.severity === 'info').length,
+      errors: bySeverity('ERROR'),
+      warnings: bySeverity('WARNING'),
+      infos: bySeverity('INFO'),
       issues,
+      groups: report.notices.map((g) => ({
+        code: g.code,
+        severity: g.severity,
+        total: g.totalNotices,
+      })),
     },
   };
 }
@@ -140,7 +151,7 @@ export function ensureStats(feedId: string): Promise<FeedStats | null> {
 }
 
 /** Raise it when the figures or the validation rules change, so stored figures are recomputed. */
-export const STATS_VERSION = 3;
+export const STATS_VERSION = 4;
 
 async function refreshStats(feedId: string): Promise<FeedStats | null> {
   const sql = getSql();

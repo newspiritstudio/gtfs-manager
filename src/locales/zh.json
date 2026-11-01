@@ -1392,5 +1392,671 @@
       "showZones": "显示灵活区域",
       "hideZones": "隐藏灵活区域"
     }
+  },
+  "notices": {
+    "attribution_without_role": {
+      "title": "归属信息缺少角色",
+      "description": "归属信息没有说明该组织是制作方、运营方还是主管机构。"
+    },
+    "bidirectional_exit_gate": {
+      "title": "双向的出口闸机",
+      "description": "模式为 7（出口闸机）的通道被设为双向。"
+    },
+    "big_gap_in_service": {
+      "title": "运营出现大段空白",
+      "description": "两个运营日之间的空白超过 13 天。"
+    },
+    "block_trips_with_overlapping_stop_times": {
+      "title": "同一区块的车次时间重叠",
+      "description": "block_id 相同的两个车次的停靠时间发生重叠。"
+    },
+    "csv_parsing_failed": {
+      "title": "无法读取 CSV",
+      "description": "读取 CSV 文件失败。"
+    },
+    "decreasing_or_equal_stop_time_distance": {
+      "title": "停靠距离没有递增",
+      "description": "停靠时间的 shape_dist_traveled 不大于前一个值。"
+    },
+    "decreasing_shape_distance": {
+      "title": "线形距离递减",
+      "description": "线形上某个点的 shape_dist_traveled 小于前一个点。"
+    },
+    "duplicate_fare_media": {
+      "title": "票务介质重复",
+      "description": "有两个名称和类型相同的票务介质。"
+    },
+    "duplicate_geo_json_key": {
+      "title": "locations.geojson 中的键重复",
+      "description": "locations.geojson 中有重复的键。"
+    },
+    "duplicate_geography_id": {
+      "title": "地理 ID 被重复使用",
+      "description": "同一个地理 ID 在多个文件中使用。"
+    },
+    "duplicate_key": {
+      "title": "键重复",
+      "description": "文件中有两行使用相同的键。"
+    },
+    "duplicate_route_name": {
+      "title": "线路名称重复",
+      "description": "两条不同的线路有相同的短名称、相同的长名称或相同的组合。"
+    },
+    "duplicated_column": {
+      "title": "列重复",
+      "description": "同一个列名在文件中出现多次。"
+    },
+    "empty_column_name": {
+      "title": "列没有名称",
+      "description": "文件中有一列的名称为空。"
+    },
+    "empty_file": {
+      "title": "空文件",
+      "description": "文件没有任何内容。"
+    },
+    "empty_row": {
+      "title": "空行",
+      "description": "文件中有一行只包含空格。"
+    },
+    "equal_shape_distance_diff_coordinates": {
+      "title": "不同的点距离相同",
+      "description": "线形上相邻两点的距离相同，但相隔超过 1.11 米。"
+    },
+    "equal_shape_distance_diff_coordinates_distance_below_threshold": {
+      "title": "相近的点距离相同",
+      "description": "线形上相邻两点的距离相同，相隔不到 1.11 米，但不在同一位置。"
+    },
+    "equal_shape_distance_same_coordinates": {
+      "title": "同一点的距离相同",
+      "description": "线形上相邻两点的距离和坐标都相同。"
+    },
+    "expired_calendar": {
+      "title": "日历已过期",
+      "description": "有运营日期范围已经结束。"
+    },
+    "fare_product_with_multiple_default_rider_categories": {
+      "title": "有多个默认乘客类别",
+      "description": "一个票价产品有多个被标为默认的乘客类别。"
+    },
+    "fare_transfer_rule_duration_limit_type_without_duration_limit": {
+      "title": "有时长限制类型但没有限制",
+      "description": "换乘规则设置了 duration_limit_type，却没有 duration_limit。"
+    },
+    "fare_transfer_rule_duration_limit_without_type": {
+      "title": "有时长限制但没有类型",
+      "description": "换乘规则设置了 duration_limit，却没有 duration_limit_type。"
+    },
+    "fare_transfer_rule_invalid_transfer_count": {
+      "title": "换乘次数无效",
+      "description": "换乘规则的 transfer_count 值无效。"
+    },
+    "fare_transfer_rule_with_forbidden_transfer_count": {
+      "title": "不允许设置换乘次数",
+      "description": "from_leg_group_id 与 to_leg_group_id 不同的规则设置了 transfer_count。"
+    },
+    "fare_transfer_rule_without_transfer_count": {
+      "title": "缺少换乘次数",
+      "description": "from_leg_group_id 与 to_leg_group_id 相同的规则没有 transfer_count。"
+    },
+    "fast_travel_between_consecutive_stops": {
+      "title": "相邻站点之间速度过快",
+      "description": "车辆在相邻两个站点之间行驶得太快。"
+    },
+    "feed_expiration_date30_days": {
+      "title": "数据包将在 30 天内过期",
+      "description": "数据包应至少覆盖未来 30 天的运营。"
+    },
+    "feed_expiration_date7_days": {
+      "title": "数据包将在 7 天内过期",
+      "description": "数据包应至少在未来 7 天内有效。"
+    },
+    "feed_info_lang_and_agency_lang_mismatch": {
+      "title": "数据包与运营机构语言不一致",
+      "description": "数据包的语言与某个运营机构的语言不一致。"
+    },
+    "feed_valid_beyond_total_service_window": {
+      "title": "数据包有效期超出运营期",
+      "description": "数据包的有效期比整个运营期长出 14 天。"
+    },
+    "forbidden_arrival_or_departure_time": {
+      "title": "不允许设置时间",
+      "description": "在上下车时间窗的同时还设置了到达或出发时间。"
+    },
+    "forbidden_continuous_pickup_drop_off": {
+      "title": "不允许连续上下车",
+      "description": "连续上下车与上下车时间窗同时使用。"
+    },
+    "forbidden_drop_off_type": {
+      "title": "不允许的下车类型",
+      "description": "drop_off_type 为 0 时不能使用上下车时间窗。"
+    },
+    "forbidden_geography_id": {
+      "title": "不允许设置地理 ID",
+      "description": "一条停靠时间设置了多个地理 ID。"
+    },
+    "forbidden_pickup_type": {
+      "title": "不允许的上车类型",
+      "description": "pickup_type 为 0 或 3 时不能使用上下车时间窗。"
+    },
+    "forbidden_prior_day_booking_field_value": {
+      "title": "前一天预订不允许的字段",
+      "description": "前一天预订规则中有不适用的字段。"
+    },
+    "forbidden_prior_notice_start_day": {
+      "title": "不允许设置提前通知开始日",
+      "description": "设置了 prior_notice_duration_max 时，不能使用 prior_notice_start_day。"
+    },
+    "forbidden_prior_notice_start_time": {
+      "title": "不允许设置提前通知开始时间",
+      "description": "没有 prior_notice_start_day 时，不能使用 prior_notice_start_time。"
+    },
+    "forbidden_real_time_booking_field_value": {
+      "title": "实时预订不允许的字段",
+      "description": "实时预订规则中有不适用的字段。"
+    },
+    "forbidden_same_day_booking_field_value": {
+      "title": "当天预订不允许的字段",
+      "description": "当天预订规则中有不适用的字段。"
+    },
+    "forbidden_shape_dist_traveled": {
+      "title": "不允许设置线形距离",
+      "description": "没有 stop_id 的停靠时间设置了 shape_dist_traveled。"
+    },
+    "foreign_key_violation": {
+      "title": "引用了不存在的行",
+      "description": "某个字段指向的 ID 在被引用的文件中不存在。"
+    },
+    "future_calendar": {
+      "title": "日历从未来开始",
+      "description": "数据包的所有运营都在今天之后才开始，没有一项覆盖今天。"
+    },
+    "future_feed": {
+      "title": "数据包从未来开始",
+      "description": "数据包只覆盖未来的日期。"
+    },
+    "geo_json_unknown_element": {
+      "title": "locations.geojson 中有未知元素",
+      "description": "locations.geojson 中有规范未定义的元素。"
+    },
+    "inconsistent_agency_lang": {
+      "title": "运营机构语言不一致",
+      "description": "数据包中的运营机构声明了不同的语言。"
+    },
+    "inconsistent_agency_timezone": {
+      "title": "运营机构时区不一致",
+      "description": "数据包中的运营机构声明了不同的时区。"
+    },
+    "inconsistent_route_type_for_block_id": {
+      "title": "区块包含多种线路类型",
+      "description": "同一区块内的车次应属于相同的线路类型。"
+    },
+    "inconsistent_route_type_for_in_seat_transfer": {
+      "title": "跨线路类型的原座换乘",
+      "description": "原座换乘应发生在相同的线路类型之内。"
+    },
+    "invalid_character": {
+      "title": "无效字符",
+      "description": "某个值含有无效字符，例如替换字符。"
+    },
+    "invalid_color": {
+      "title": "无效颜色",
+      "description": "某个字段含有无效的颜色值。"
+    },
+    "invalid_currency": {
+      "title": "无效货币代码",
+      "description": "某个字段含有错误的货币代码。"
+    },
+    "invalid_currency_amount": {
+      "title": "无效金额",
+      "description": "金额与其货币的格式不符。"
+    },
+    "invalid_date": {
+      "title": "无效日期",
+      "description": "某个字段无法读取为日期。"
+    },
+    "invalid_email": {
+      "title": "无效电子邮件地址",
+      "description": "某个字段的电子邮件地址格式错误。"
+    },
+    "invalid_float": {
+      "title": "无效小数",
+      "description": "某个字段无法读取为小数。"
+    },
+    "invalid_integer": {
+      "title": "无效整数",
+      "description": "某个字段无法读取为整数。"
+    },
+    "invalid_language_code": {
+      "title": "无效语言代码",
+      "description": "某个字段含有错误的语言代码。"
+    },
+    "invalid_pickup_drop_off_window": {
+      "title": "无效的上下车时间窗",
+      "description": "stop_times.txt 中的上下车时间窗无效。"
+    },
+    "invalid_prior_notice_duration_min": {
+      "title": "无效的最短提前通知",
+      "description": "预订规则中的 prior_notice_duration_min 无效。"
+    },
+    "invalid_row_length": {
+      "title": "行长度不正确",
+      "description": "某一行的值数量与表头的列数不符。"
+    },
+    "invalid_time": {
+      "title": "无效时间",
+      "description": "某个字段无法读取为时间。"
+    },
+    "invalid_timezone": {
+      "title": "无效时区",
+      "description": "某个字段无法读取为时区。"
+    },
+    "invalid_url": {
+      "title": "无效网址",
+      "description": "某个字段的网址格式错误。"
+    },
+    "leading_or_trailing_whitespaces": {
+      "title": "首尾有空格",
+      "description": "CSV 中的某个值以空格开头或结尾。"
+    },
+    "location_with_unexpected_stop_time": {
+      "title": "非站点位置有停靠时间",
+      "description": "停靠时间指向了 stops.txt 中不是站点的位置。"
+    },
+    "location_without_parent_station": {
+      "title": "位置没有父车站",
+      "description": "需要 parent_station 的位置没有设置。"
+    },
+    "malformed_json": {
+      "title": "JSON 格式错误",
+      "description": "JSON 文件格式错误。"
+    },
+    "missing_bike_allowance": {
+      "title": "缺少自行车规定",
+      "description": "渡轮车次应说明是否允许携带自行车。"
+    },
+    "missing_calendar_and_calendar_date_files": {
+      "title": "没有日历文件",
+      "description": "缺少 calendar.txt 和 calendar_dates.txt。"
+    },
+    "missing_feed_contact_email_and_url": {
+      "title": "没有数据包联系方式",
+      "description": "最佳实践要求至少提供 feed_contact_email 或 feed_contact_url 之一。"
+    },
+    "missing_feed_info_date": {
+      "title": "缺少数据包日期",
+      "description": "只设置了 feed_start_date 与 feed_end_date 中的一个。"
+    },
+    "missing_level_id": {
+      "title": "缺少楼层",
+      "description": "在这种情况下，站点的 level_id 是必填的。"
+    },
+    "missing_pickup_drop_off_booking_rule_id": {
+      "title": "缺少预订规则",
+      "description": "pickup_type=2 时建议设置 pickup_booking_rule_id，drop_off_type=2 时建议设置 drop_off_booking_rule_id。"
+    },
+    "missing_pickup_or_drop_off_window": {
+      "title": "时间窗不完整",
+      "description": "stop_times.txt 中上下车时间窗缺少开始或结束。"
+    },
+    "missing_prior_notice_duration_min": {
+      "title": "缺少最短提前通知",
+      "description": "当天预订必须设置 prior_notice_duration_min。"
+    },
+    "missing_prior_notice_last_day": {
+      "title": "缺少通知截止日",
+      "description": "前一天预订必须设置 prior_notice_last_day。"
+    },
+    "missing_prior_notice_last_time": {
+      "title": "缺少通知截止时间",
+      "description": "前一天预订必须设置 prior_notice_last_time。"
+    },
+    "missing_prior_notice_start_time": {
+      "title": "缺少通知开始时间",
+      "description": "设置了 prior_notice_start_day 时，必须设置 prior_notice_start_time。"
+    },
+    "missing_recommended_field": {
+      "title": "推荐字段为空",
+      "description": "某个推荐字段没有值。"
+    },
+    "missing_recommended_file": {
+      "title": "缺少推荐文件",
+      "description": "缺少规范推荐的文件。"
+    },
+    "missing_required_agency_id": {
+      "title": "缺少 agency_id",
+      "description": "有多个运营机构时，agency_id 是必填的。"
+    },
+    "missing_required_column": {
+      "title": "缺少必填列",
+      "description": "文件表头缺少必填列。"
+    },
+    "missing_required_element": {
+      "title": "缺少必填元素",
+      "description": "locations.geojson 缺少必填元素。"
+    },
+    "missing_required_field": {
+      "title": "必填字段为空",
+      "description": "某个必填字段没有值。"
+    },
+    "missing_required_file": {
+      "title": "缺少必填文件",
+      "description": "缺少必填文件。"
+    },
+    "missing_stop_name": {
+      "title": "站点没有名称",
+      "description": "location_type 为 0、1 或 2 时，stop_name 是必填的。"
+    },
+    "missing_stop_times_record": {
+      "title": "停靠时间过少的车次",
+      "description": "车次在位置组或位置中只有一条停靠时间，而需要两条。"
+    },
+    "missing_timepoint_value": {
+      "title": "缺少 timepoint 值",
+      "description": "某条停靠时间没有 timepoint 值。"
+    },
+    "missing_trip_edge": {
+      "title": "首站或末站没有时间",
+      "description": "车次的第一条或最后一条停靠时间既没有到达时间也没有出发时间。"
+    },
+    "mixed_case_recommended_field": {
+      "title": "文本只用了一种大小写",
+      "description": "面向乘客的文本字段应混用大写和小写字母。"
+    },
+    "more_than_one_entity": {
+      "title": "多于一行",
+      "description": "本应只有一行的文件有多行。"
+    },
+    "new_line_in_value": {
+      "title": "值中含有换行",
+      "description": "CSV 中的某个值含有换行。"
+    },
+    "non_ascii_or_non_printable_char": {
+      "title": "非 ASCII 或不可打印字符",
+      "description": "ID 中含有不是可打印 ASCII 的字符。"
+    },
+    "number_out_of_range": {
+      "title": "数值超出范围",
+      "description": "数值超出了该字段允许的范围。"
+    },
+    "overlapping_frequency": {
+      "title": "发车间隔重叠",
+      "description": "同一车次的发车间隔发生重叠。"
+    },
+    "pathway_dangling_generic_node": {
+      "title": "只有一条通道的通用节点",
+      "description": "在通道图中，通用节点只连接了一个位置。"
+    },
+    "pathway_loop": {
+      "title": "环形通道",
+      "description": "通道的起点和终点是同一个位置。"
+    },
+    "pathway_to_platform_with_boarding_areas": {
+      "title": "通往带候车区站台的通道",
+      "description": "通道的一端是带有候车区的站台。"
+    },
+    "pathway_to_stop_with_access_outside_of_station_pathways": {
+      "title": "通往车站通道之外站点的通道",
+      "description": "通道的一端是 stop_access=1 的站点，应当从车站之外到达。"
+    },
+    "pathway_to_wrong_location_type": {
+      "title": "通往错误位置类型的通道",
+      "description": "通道的一端是车站。"
+    },
+    "platform_without_parent_station": {
+      "title": "站台没有父车站",
+      "description": "站台没有设置 parent_station。"
+    },
+    "point_near_origin": {
+      "title": "靠近 (0, 0) 的点",
+      "description": "某个点离原点 (0, 0) 太近。"
+    },
+    "point_near_pole": {
+      "title": "靠近极点的点",
+      "description": "某个点离北极或南极太近。"
+    },
+    "prior_notice_last_day_after_start_day": {
+      "title": "通知截止日晚于开始日",
+      "description": "prior_notice_last_day 不能大于 prior_notice_start_day。"
+    },
+    "route_both_short_and_long_name_missing": {
+      "title": "线路没有名称",
+      "description": "线路既没有短名称也没有长名称。"
+    },
+    "route_color_contrast": {
+      "title": "颜色对比度不足",
+      "description": "线路颜色与文字颜色的对比度不够。"
+    },
+    "route_long_name_contains_short_name": {
+      "title": "长名称包含短名称",
+      "description": "线路的长名称重复了它的短名称。"
+    },
+    "route_networks_specified_in_more_than_one_file": {
+      "title": "路网被定义了两次",
+      "description": "线路的路网在多个文件中定义。"
+    },
+    "route_short_name_too_long": {
+      "title": "短名称过长",
+      "description": "线路的短名称超过 12 个字符。"
+    },
+    "same_name_and_description_for_route": {
+      "title": "线路名称与描述相同",
+      "description": "线路的描述与它的名称相同。"
+    },
+    "same_name_and_description_for_stop": {
+      "title": "站点名称与描述相同",
+      "description": "站点的描述与它的名称相同。"
+    },
+    "same_route_and_agency_url": {
+      "title": "线路与运营机构网址相同",
+      "description": "线路的网址与它的运营机构相同。"
+    },
+    "same_stop_and_agency_url": {
+      "title": "站点与运营机构网址相同",
+      "description": "站点的网址与某个运营机构相同。"
+    },
+    "same_stop_and_route_url": {
+      "title": "站点与线路网址相同",
+      "description": "站点的网址与某条线路相同。"
+    },
+    "service_extends_far_in_the_future": {
+      "title": "运营延伸到很远的未来",
+      "description": "某项运营的结束日期在两年以上之后。"
+    },
+    "service_has_no_active_day_of_the_week": {
+      "title": "运营没有任何有效的星期",
+      "description": "某项运营在一周的任何一天都无效。"
+    },
+    "service_window_outside_feed_period": {
+      "title": "运营超出数据包期间",
+      "description": "运营期没有被数据包的有效期覆盖。"
+    },
+    "single_shape_point": {
+      "title": "只有一个点的线形",
+      "description": "shapes.txt 中的线形只有一个点。"
+    },
+    "start_and_end_range_equal": {
+      "title": "开始等于结束",
+      "description": "两个日期或时间字段相同。"
+    },
+    "start_and_end_range_out_of_order": {
+      "title": "结束早于开始",
+      "description": "两个日期或时间字段的顺序颠倒。"
+    },
+    "station_with_parent_station": {
+      "title": "有父车站的车站",
+      "description": "车站设置了 parent_station，而车站不能有父车站。"
+    },
+    "stop_access_specified_for_incorrect_location": {
+      "title": "在错误位置设置了出入口",
+      "description": "不是站点的位置设置了 stop_access。"
+    },
+    "stop_access_specified_for_stop_with_no_parent_station": {
+      "title": "没有父车站却设置了出入口",
+      "description": "没有父车站的站点设置了 stop_access。"
+    },
+    "stop_time_timepoint_without_times": {
+      "title": "时间点没有时间",
+      "description": "时间点的停靠时间既没有到达时间也没有出发时间。"
+    },
+    "stop_time_with_arrival_before_previous_departure_time": {
+      "title": "到达早于上一站出发",
+      "description": "某条停靠时间早于上一站出发时间到达。"
+    },
+    "stop_time_with_only_arrival_or_departure_time": {
+      "title": "只有到达或出发时间",
+      "description": "某条停靠时间只有到达时间和出发时间中的一个。"
+    },
+    "stop_without_location": {
+      "title": "站点没有坐标",
+      "description": "站点、车站或出入口缺少 stop_lat 或 stop_lon。"
+    },
+    "stop_without_stop_time": {
+      "title": "没有任何车次使用的站点",
+      "description": "stops.txt 中的站点没有出现在任何停靠时间中。"
+    },
+    "stop_without_zone_id": {
+      "title": "站点没有区域",
+      "description": "没有 zone_id 的站点位于有按区域计价规则的线路上。"
+    },
+    "timeframe_only_start_or_end_time_specified": {
+      "title": "时间段只有一个边界",
+      "description": "timeframes.txt 中的某行只有开始时间或只有结束时间。"
+    },
+    "timeframe_overlap": {
+      "title": "时间段重叠",
+      "description": "timeframe_group_id 和 service_id 相同的两个时间段发生重叠。"
+    },
+    "timeframe_start_or_end_time_greater_than_twenty_four_hours": {
+      "title": "时间段超过 24 小时",
+      "description": "timeframes.txt 中的某个时间晚于 24:00:00。"
+    },
+    "transfer_distance_above_2_km": {
+      "title": "换乘超过 2 公里",
+      "description": "站点之间的换乘距离超过 2 公里。"
+    },
+    "transfer_distance_too_large": {
+      "title": "换乘超过 10 公里",
+      "description": "站点之间的换乘距离超过 10 公里。"
+    },
+    "transfer_with_invalid_stop_location_type": {
+      "title": "在无效位置之间换乘",
+      "description": "换乘指向的位置既不是站点也不是车站。"
+    },
+    "transfer_with_invalid_trip_and_route": {
+      "title": "车次与线路不匹配的换乘",
+      "description": "换乘指向的车次不属于所指定的线路。"
+    },
+    "transfer_with_invalid_trip_and_stop": {
+      "title": "车次不在该站停靠的换乘",
+      "description": "换乘指向的站点不在该车次的停靠范围内。"
+    },
+    "transfer_with_suspicious_mid_trip_in_seat": {
+      "title": "可疑的原座换乘",
+      "description": "原座换乘指向的站点不在车次中应有的位置。"
+    },
+    "translation_foreign_key_violation": {
+      "title": "翻译指向不存在的行",
+      "description": "翻译指向的记录在表中不存在。"
+    },
+    "translation_unexpected_value": {
+      "title": "翻译含有意外的值",
+      "description": "translations 某行的字段有值，但应当为空。"
+    },
+    "translation_unknown_table_name": {
+      "title": "翻译指向未知的表",
+      "description": "翻译指向了未知的 GTFS 表。"
+    },
+    "trip_coverage_not_active_for_next7_days": {
+      "title": "未来 7 天没有车次",
+      "description": "车次数据应至少在未来 7 天内有效。"
+    },
+    "trip_distance_exceeds_shape_distance": {
+      "title": "车次比线形更长",
+      "description": "最后一站离线形的最后一个点 11.1 米或更远。"
+    },
+    "trip_distance_exceeds_shape_distance_below_threshold": {
+      "title": "车次略长于线形",
+      "description": "最后一站离线形的最后一个点不到 11.1 米，但没有重合。"
+    },
+    "trip_headsign_matches_intermediate_stop": {
+      "title": "终点标识是中途站名",
+      "description": "车次的终点标识与一个不是末站的站点名称相同。"
+    },
+    "trip_with_shape_dist_traveled_but_no_shape_distances": {
+      "title": "有停靠距离但线形没有距离",
+      "description": "车次在 stop_times.txt 中有距离，但其线形并非每个点都有距离。"
+    },
+    "unexpected_enum_value": {
+      "title": "意外的值",
+      "description": "某个字段的值不在规范定义的范围内。"
+    },
+    "unknown_column": {
+      "title": "未知列",
+      "description": "文件中有规范未定义的列。"
+    },
+    "unknown_file": {
+      "title": "未知文件",
+      "description": "数据包中有规范未定义的文件。"
+    },
+    "unsorted_stop_times": {
+      "title": "停靠时间顺序混乱",
+      "description": "车次的停靠时间在文件中没有按 stop_sequence 排序。"
+    },
+    "unsupported_feature_type": {
+      "title": "不支持的要素类型",
+      "description": "locations.geojson 使用了不支持的要素类型。"
+    },
+    "unsupported_geo_json_type": {
+      "title": "不支持的 GeoJSON 类型",
+      "description": "locations.geojson 使用了不支持的 GeoJSON 类型。"
+    },
+    "unsupported_geometry_type": {
+      "title": "不支持的几何类型",
+      "description": "locations.geojson 中的要素有不支持的几何类型。"
+    },
+    "unusable_trip": {
+      "title": "只有一个站点的车次",
+      "description": "车次至少要有两个站点才可用。"
+    },
+    "unused_shape": {
+      "title": "未使用的线形",
+      "description": "trips.txt 中没有任何车次使用该线形。"
+    },
+    "unused_station": {
+      "title": "未使用的车站",
+      "description": "车站没有任何有车次停靠的站点。"
+    },
+    "unused_trip": {
+      "title": "没有停靠时间的车次",
+      "description": "车次没有任何停靠时间。"
+    },
+    "wrong_parent_location_type": {
+      "title": "父位置类型错误",
+      "description": "位置的父位置不是应有的类型。"
+    }
+  },
+  "validationReport": {
+    "subtitle": "按 MobilityData GTFS 验证器规则在浏览器中计算的检查，以及 Google Transit 的检查。",
+    "typesLabel": "通知类型",
+    "casesLabel": "数量",
+    "filterSeverity": "严重程度",
+    "severityAll": "全部",
+    "filterFile": "文件",
+    "allFiles": "所有文件",
+    "examples": "示例",
+    "showMore": "显示更多",
+    "showFewer": "显示更少",
+    "docs": "文档",
+    "exportJson": "导出 JSON",
+    "exportDone": "报告已导出",
+    "exportFailed": "无法导出报告",
+    "googleTitle": "Google Transit 检查",
+    "googleHint": "来自 Google 静态验证的检查。它们与上面的通知是各自独立的一组。",
+    "noMatch": "没有符合这些筛选条件的通知",
+    "row": "第 {row} 行",
+    "notComputed": "GTFS Manager 不计算的 MobilityData 验证器通知：{count} 条。",
+    "rules": "MobilityData 验证器的规则，版本 {version}。",
+    "failedRules": "有些检查无法运行：{rules}。",
+    "codeLabel": "代码"
   }
 }

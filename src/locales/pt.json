@@ -1427,5 +1427,671 @@
       "showZones": "Mostrar as zonas flex",
       "hideZones": "Ocultar as zonas flex"
     }
+  },
+  "notices": {
+    "attribution_without_role": {
+      "title": "Atribuição sem função",
+      "description": "Uma atribuição não indica se a organização é produtora, operadora ou autoridade."
+    },
+    "bidirectional_exit_gate": {
+      "title": "Porta de saída bidirecional",
+      "description": "Um percurso com modo 7 (porta de saída) é bidirecional."
+    },
+    "big_gap_in_service": {
+      "title": "Grande intervalo de serviço",
+      "description": "Um serviço tem um intervalo de mais de 13 dias entre duas datas com serviço."
+    },
+    "block_trips_with_overlapping_stop_times": {
+      "title": "Viagens de um bloco sobrepostas",
+      "description": "Duas viagens com o mesmo block_id têm horas de passagem que se sobrepõem."
+    },
+    "csv_parsing_failed": {
+      "title": "Não foi possível ler o CSV",
+      "description": "A leitura de um ficheiro CSV falhou."
+    },
+    "decreasing_or_equal_stop_time_distance": {
+      "title": "Distâncias de passagem que não crescem",
+      "description": "O shape_dist_traveled de uma hora de passagem não é maior do que o anterior."
+    },
+    "decreasing_shape_distance": {
+      "title": "Distâncias do traçado que diminuem",
+      "description": "O shape_dist_traveled de um ponto do traçado é menor do que o do ponto anterior."
+    },
+    "duplicate_fare_media": {
+      "title": "Suporte tarifário duplicado",
+      "description": "Dois suportes tarifários distintos têm o mesmo nome e tipo."
+    },
+    "duplicate_geo_json_key": {
+      "title": "Chave repetida em locations.geojson",
+      "description": "Uma chave de locations.geojson está repetida."
+    },
+    "duplicate_geography_id": {
+      "title": "ID geográfico usado duas vezes",
+      "description": "O mesmo ID geográfico é usado em mais de um ficheiro."
+    },
+    "duplicate_key": {
+      "title": "Chave duplicada",
+      "description": "Duas linhas de um ficheiro têm a mesma chave."
+    },
+    "duplicate_route_name": {
+      "title": "Nome de linha duplicado",
+      "description": "Duas linhas distintas têm o mesmo nome curto, o mesmo nome longo ou a mesma combinação."
+    },
+    "duplicated_column": {
+      "title": "Coluna repetida",
+      "description": "O nome de uma coluna aparece mais de uma vez num ficheiro."
+    },
+    "empty_column_name": {
+      "title": "Coluna sem nome",
+      "description": "Uma coluna de um ficheiro tem o nome vazio."
+    },
+    "empty_file": {
+      "title": "Ficheiro vazio",
+      "description": "Um ficheiro não tem qualquer conteúdo."
+    },
+    "empty_row": {
+      "title": "Linha vazia",
+      "description": "Uma linha de um ficheiro só tem espaços."
+    },
+    "equal_shape_distance_diff_coordinates": {
+      "title": "Mesma distância em pontos diferentes",
+      "description": "Dois pontos consecutivos do traçado têm a mesma distância mas estão a mais de 1,11 m."
+    },
+    "equal_shape_distance_diff_coordinates_distance_below_threshold": {
+      "title": "Mesma distância em pontos próximos",
+      "description": "Dois pontos consecutivos do traçado têm a mesma distância e estão a menos de 1,11 m, mas não no mesmo sítio."
+    },
+    "equal_shape_distance_same_coordinates": {
+      "title": "Mesma distância no mesmo ponto",
+      "description": "Dois pontos consecutivos do traçado têm a mesma distância e as mesmas coordenadas."
+    },
+    "expired_calendar": {
+      "title": "Calendário caducado",
+      "description": "Um serviço tem um intervalo de datas que já terminou."
+    },
+    "fare_product_with_multiple_default_rider_categories": {
+      "title": "Várias categorias de passageiro por defeito",
+      "description": "Um produto tarifário tem mais de uma categoria de passageiro marcada como predefinida."
+    },
+    "fare_transfer_rule_duration_limit_type_without_duration_limit": {
+      "title": "Tipo de limite de duração sem limite",
+      "description": "Uma regra de transbordo define duration_limit_type mas não duration_limit."
+    },
+    "fare_transfer_rule_duration_limit_without_type": {
+      "title": "Limite de duração sem tipo",
+      "description": "Uma regra de transbordo define duration_limit mas não duration_limit_type."
+    },
+    "fare_transfer_rule_invalid_transfer_count": {
+      "title": "Número de transbordos inválido",
+      "description": "O transfer_count de uma regra de transbordo tem um valor inválido."
+    },
+    "fare_transfer_rule_with_forbidden_transfer_count": {
+      "title": "Número de transbordos não permitido",
+      "description": "Uma regra com from_leg_group_id diferente de to_leg_group_id tem transfer_count."
+    },
+    "fare_transfer_rule_without_transfer_count": {
+      "title": "Falta o número de transbordos",
+      "description": "Uma regra com from_leg_group_id igual a to_leg_group_id não tem transfer_count."
+    },
+    "fast_travel_between_consecutive_stops": {
+      "title": "Demasiado rápido entre paragens consecutivas",
+      "description": "O veículo anda depressa de mais entre duas paragens consecutivas."
+    },
+    "feed_expiration_date30_days": {
+      "title": "O feed caduca em 30 dias",
+      "description": "O feed deveria cobrir pelo menos os próximos 30 dias de serviço."
+    },
+    "feed_expiration_date7_days": {
+      "title": "O feed caduca em 7 dias",
+      "description": "O feed deveria ser válido pelo menos nos próximos 7 dias."
+    },
+    "feed_info_lang_and_agency_lang_mismatch": {
+      "title": "Idioma do feed e do operador diferentes",
+      "description": "O idioma do feed não coincide com o de um operador."
+    },
+    "feed_valid_beyond_total_service_window": {
+      "title": "Feed válido para além do serviço",
+      "description": "O feed é válido 14 dias para além do seu período total de serviço."
+    },
+    "forbidden_arrival_or_departure_time": {
+      "title": "Hora não permitida",
+      "description": "Há hora de chegada ou de partida juntamente com janelas de recolha ou largada."
+    },
+    "forbidden_continuous_pickup_drop_off": {
+      "title": "Recolha ou largada contínua não permitida",
+      "description": "A recolha ou largada contínua é incompatível com uma janela de recolha ou largada."
+    },
+    "forbidden_drop_off_type": {
+      "title": "Tipo de largada não permitido",
+      "description": "As janelas de recolha ou largada não são permitidas com drop_off_type 0."
+    },
+    "forbidden_geography_id": {
+      "title": "ID geográfico não permitido",
+      "description": "Uma hora de passagem tem mais de um ID geográfico definido."
+    },
+    "forbidden_pickup_type": {
+      "title": "Tipo de recolha não permitido",
+      "description": "As janelas de recolha ou largada não são permitidas com pickup_type 0 ou 3."
+    },
+    "forbidden_prior_day_booking_field_value": {
+      "title": "Campo de reserva na véspera não permitido",
+      "description": "Uma regra de reserva na véspera tem um campo que não lhe pertence."
+    },
+    "forbidden_prior_notice_start_day": {
+      "title": "Dia de início do aviso prévio não permitido",
+      "description": "prior_notice_start_day não é permitido quando prior_notice_duration_max está definido."
+    },
+    "forbidden_prior_notice_start_time": {
+      "title": "Hora de início do aviso prévio não permitida",
+      "description": "prior_notice_start_time não é permitido sem prior_notice_start_day."
+    },
+    "forbidden_real_time_booking_field_value": {
+      "title": "Campo de reserva em tempo real não permitido",
+      "description": "Uma regra de reserva em tempo real tem um campo que não lhe pertence."
+    },
+    "forbidden_same_day_booking_field_value": {
+      "title": "Campo de reserva no mesmo dia não permitido",
+      "description": "Uma regra de reserva no mesmo dia tem um campo que não lhe pertence."
+    },
+    "forbidden_shape_dist_traveled": {
+      "title": "Distância do traçado não permitida",
+      "description": "Uma hora de passagem tem shape_dist_traveled sem stop_id."
+    },
+    "foreign_key_violation": {
+      "title": "Referência a uma linha inexistente",
+      "description": "Um campo aponta para um ID que não existe no ficheiro referenciado."
+    },
+    "future_calendar": {
+      "title": "Calendário que começa no futuro",
+      "description": "Todos os serviços do feed começam depois de hoje: nenhum cobre hoje."
+    },
+    "future_feed": {
+      "title": "Feed que começa no futuro",
+      "description": "O feed só cobre datas futuras."
+    },
+    "geo_json_unknown_element": {
+      "title": "Elemento desconhecido em locations.geojson",
+      "description": "locations.geojson tem um elemento que a especificação não define."
+    },
+    "inconsistent_agency_lang": {
+      "title": "Operadores com idiomas diferentes",
+      "description": "Os operadores do feed declaram idiomas diferentes."
+    },
+    "inconsistent_agency_timezone": {
+      "title": "Operadores com fusos horários diferentes",
+      "description": "Os operadores do feed declaram fusos horários diferentes."
+    },
+    "inconsistent_route_type_for_block_id": {
+      "title": "Bloco com vários tipos de linha",
+      "description": "As viagens de um bloco deveriam ter o mesmo modo de linha."
+    },
+    "inconsistent_route_type_for_in_seat_transfer": {
+      "title": "Transbordo no lugar entre tipos de linha",
+      "description": "Um transbordo no lugar deveria ser dentro do mesmo modo de linha."
+    },
+    "invalid_character": {
+      "title": "Carácter inválido",
+      "description": "Um valor contém um carácter inválido, como o carácter de substituição."
+    },
+    "invalid_color": {
+      "title": "Cor inválida",
+      "description": "Um campo contém uma cor inválida."
+    },
+    "invalid_currency": {
+      "title": "Código de moeda inválido",
+      "description": "Um campo contém um código de moeda errado."
+    },
+    "invalid_currency_amount": {
+      "title": "Montante inválido",
+      "description": "Um montante não corresponde ao formato da sua moeda."
+    },
+    "invalid_date": {
+      "title": "Data inválida",
+      "description": "Um campo não pode ser lido como data."
+    },
+    "invalid_email": {
+      "title": "Endereço de e-mail inválido",
+      "description": "Um campo contém um endereço de e-mail mal formado."
+    },
+    "invalid_float": {
+      "title": "Número decimal inválido",
+      "description": "Um campo não pode ser lido como número decimal."
+    },
+    "invalid_integer": {
+      "title": "Inteiro inválido",
+      "description": "Um campo não pode ser lido como inteiro."
+    },
+    "invalid_language_code": {
+      "title": "Código de idioma inválido",
+      "description": "Um campo contém um código de idioma errado."
+    },
+    "invalid_pickup_drop_off_window": {
+      "title": "Janela de recolha ou largada inválida",
+      "description": "A janela de recolha ou largada em stop_times.txt não é válida."
+    },
+    "invalid_prior_notice_duration_min": {
+      "title": "Aviso prévio mínimo inválido",
+      "description": "Uma regra de reserva tem um prior_notice_duration_min inválido."
+    },
+    "invalid_row_length": {
+      "title": "Linha com comprimento errado",
+      "description": "Uma linha tem mais ou menos valores do que colunas tem o cabeçalho."
+    },
+    "invalid_time": {
+      "title": "Hora inválida",
+      "description": "Um campo não pode ser lido como hora."
+    },
+    "invalid_timezone": {
+      "title": "Fuso horário inválido",
+      "description": "Um campo não pode ser lido como fuso horário."
+    },
+    "invalid_url": {
+      "title": "URL inválido",
+      "description": "Um campo contém um URL mal formado."
+    },
+    "leading_or_trailing_whitespaces": {
+      "title": "Espaços no início ou no fim",
+      "description": "Um valor do CSV começa ou acaba com espaços."
+    },
+    "location_with_unexpected_stop_time": {
+      "title": "Hora de passagem de um local que não é paragem",
+      "description": "Uma hora de passagem aponta para um local de stops.txt que não é uma paragem."
+    },
+    "location_without_parent_station": {
+      "title": "Local sem estação-mãe",
+      "description": "Um local que deve ter parent_station não o tem."
+    },
+    "malformed_json": {
+      "title": "JSON mal formado",
+      "description": "Um ficheiro JSON está mal formado."
+    },
+    "missing_bike_allowance": {
+      "title": "Falta a permissão para bicicletas",
+      "description": "As viagens de ferry deveriam indicar se admitem bicicletas."
+    },
+    "missing_calendar_and_calendar_date_files": {
+      "title": "Sem ficheiros de calendário",
+      "description": "Faltam calendar.txt e calendar_dates.txt."
+    },
+    "missing_feed_contact_email_and_url": {
+      "title": "Sem contacto do feed",
+      "description": "As boas práticas pedem pelo menos feed_contact_email ou feed_contact_url."
+    },
+    "missing_feed_info_date": {
+      "title": "Faltam datas do feed",
+      "description": "Só está indicado feed_start_date ou feed_end_date, não ambos."
+    },
+    "missing_level_id": {
+      "title": "Falta o nível",
+      "description": "O level_id de uma paragem é obrigatório neste caso."
+    },
+    "missing_pickup_drop_off_booking_rule_id": {
+      "title": "Falta a regra de reserva",
+      "description": "pickup_booking_rule_id é recomendado com pickup_type=2 e drop_off_booking_rule_id com drop_off_type=2."
+    },
+    "missing_pickup_or_drop_off_window": {
+      "title": "Janela incompleta",
+      "description": "Falta o início ou o fim da janela de recolha ou largada em stop_times.txt."
+    },
+    "missing_prior_notice_duration_min": {
+      "title": "Falta o aviso prévio mínimo",
+      "description": "prior_notice_duration_min é obrigatório para reservas no mesmo dia."
+    },
+    "missing_prior_notice_last_day": {
+      "title": "Falta o último dia de aviso",
+      "description": "prior_notice_last_day é obrigatório para reservas na véspera."
+    },
+    "missing_prior_notice_last_time": {
+      "title": "Falta a última hora de aviso",
+      "description": "prior_notice_last_time é obrigatório para reservas na véspera."
+    },
+    "missing_prior_notice_start_time": {
+      "title": "Falta a hora de início do aviso",
+      "description": "prior_notice_start_time é obrigatório quando prior_notice_start_day está definido."
+    },
+    "missing_recommended_field": {
+      "title": "Campo recomendado vazio",
+      "description": "Um campo recomendado não tem valor."
+    },
+    "missing_recommended_file": {
+      "title": "Falta um ficheiro recomendado",
+      "description": "Falta um ficheiro que a especificação recomenda."
+    },
+    "missing_required_agency_id": {
+      "title": "Falta agency_id",
+      "description": "Com vários operadores, agency_id é obrigatório."
+    },
+    "missing_required_column": {
+      "title": "Falta uma coluna obrigatória",
+      "description": "Falta uma coluna obrigatória no cabeçalho de um ficheiro."
+    },
+    "missing_required_element": {
+      "title": "Falta um elemento obrigatório",
+      "description": "Falta um elemento obrigatório em locations.geojson."
+    },
+    "missing_required_field": {
+      "title": "Campo obrigatório vazio",
+      "description": "Um campo obrigatório não tem valor."
+    },
+    "missing_required_file": {
+      "title": "Falta um ficheiro obrigatório",
+      "description": "Falta um ficheiro obrigatório."
+    },
+    "missing_stop_name": {
+      "title": "Paragem sem nome",
+      "description": "stop_name é obrigatório para location_type 0, 1 ou 2."
+    },
+    "missing_stop_times_record": {
+      "title": "Viagem com poucas horas de passagem",
+      "description": "Uma viagem tem uma única hora de passagem num grupo de locais ou local onde são precisas duas."
+    },
+    "missing_timepoint_value": {
+      "title": "Falta o valor de timepoint",
+      "description": "Uma hora de passagem não tem o valor de timepoint."
+    },
+    "missing_trip_edge": {
+      "title": "Primeira ou última paragem sem hora",
+      "description": "A primeira ou a última hora de passagem de uma viagem não tem hora de chegada nem de partida."
+    },
+    "mixed_case_recommended_field": {
+      "title": "Texto num só tipo de letra",
+      "description": "Um campo de texto para o público deveria misturar maiúsculas e minúsculas."
+    },
+    "more_than_one_entity": {
+      "title": "Mais de uma linha",
+      "description": "Um ficheiro que deve ter uma só linha tem várias."
+    },
+    "new_line_in_value": {
+      "title": "Mudança de linha num valor",
+      "description": "Um valor do CSV contém uma mudança de linha."
+    },
+    "non_ascii_or_non_printable_char": {
+      "title": "Carácter não ASCII ou não imprimível",
+      "description": "Um ID contém um carácter que não é ASCII imprimível."
+    },
+    "number_out_of_range": {
+      "title": "Número fora do intervalo",
+      "description": "Um número está fora do intervalo que o seu campo permite."
+    },
+    "overlapping_frequency": {
+      "title": "Frequências sobrepostas",
+      "description": "As frequências de uma viagem sobrepõem-se."
+    },
+    "pathway_dangling_generic_node": {
+      "title": "Nó genérico com um só percurso",
+      "description": "Um nó genérico tem apenas um local ligado no grafo de percursos."
+    },
+    "pathway_loop": {
+      "title": "Percurso circular",
+      "description": "Um percurso começa e acaba no mesmo local."
+    },
+    "pathway_to_platform_with_boarding_areas": {
+      "title": "Percurso para uma plataforma com zonas de embarque",
+      "description": "Uma extremidade de um percurso é uma plataforma que tem zonas de embarque."
+    },
+    "pathway_to_stop_with_access_outside_of_station_pathways": {
+      "title": "Percurso para uma paragem fora dos percursos da estação",
+      "description": "Uma extremidade de um percurso é uma paragem com stop_access=1, acessível fora da estação."
+    },
+    "pathway_to_wrong_location_type": {
+      "title": "Percurso para um tipo de local errado",
+      "description": "Uma extremidade de um percurso é uma estação."
+    },
+    "platform_without_parent_station": {
+      "title": "Plataforma sem estação-mãe",
+      "description": "Uma plataforma não tem parent_station."
+    },
+    "point_near_origin": {
+      "title": "Ponto perto de (0, 0)",
+      "description": "Um ponto está demasiado perto da origem (0, 0)."
+    },
+    "point_near_pole": {
+      "title": "Ponto perto de um polo",
+      "description": "Um ponto está demasiado perto do polo Norte ou do polo Sul."
+    },
+    "prior_notice_last_day_after_start_day": {
+      "title": "Último dia de aviso depois do início",
+      "description": "prior_notice_last_day não pode ser maior do que prior_notice_start_day."
+    },
+    "route_both_short_and_long_name_missing": {
+      "title": "Linha sem nome",
+      "description": "Uma linha não tem nome curto nem nome longo."
+    },
+    "route_color_contrast": {
+      "title": "Pouco contraste de cor",
+      "description": "A cor da linha e a do texto não têm contraste suficiente."
+    },
+    "route_long_name_contains_short_name": {
+      "title": "O nome longo contém o curto",
+      "description": "O nome longo de uma linha repete o seu nome curto."
+    },
+    "route_networks_specified_in_more_than_one_file": {
+      "title": "Redes definidas duas vezes",
+      "description": "As redes das linhas são definidas em mais de um ficheiro."
+    },
+    "route_short_name_too_long": {
+      "title": "Nome curto demasiado longo",
+      "description": "O nome curto de uma linha tem mais de 12 caracteres."
+    },
+    "same_name_and_description_for_route": {
+      "title": "Nome da linha igual à descrição",
+      "description": "A descrição de uma linha é igual ao seu nome."
+    },
+    "same_name_and_description_for_stop": {
+      "title": "Nome da paragem igual à descrição",
+      "description": "A descrição de uma paragem é igual ao seu nome."
+    },
+    "same_route_and_agency_url": {
+      "title": "Linha e operador com o mesmo URL",
+      "description": "Uma linha tem o mesmo URL do seu operador."
+    },
+    "same_stop_and_agency_url": {
+      "title": "Paragem e operador com o mesmo URL",
+      "description": "Uma paragem tem o mesmo URL de um operador."
+    },
+    "same_stop_and_route_url": {
+      "title": "Paragem e linha com o mesmo URL",
+      "description": "Uma paragem tem o mesmo URL de uma linha."
+    },
+    "service_extends_far_in_the_future": {
+      "title": "Serviço muito longe no futuro",
+      "description": "A data final de um serviço está a mais de 2 anos de distância."
+    },
+    "service_has_no_active_day_of_the_week": {
+      "title": "Serviço sem nenhum dia ativo",
+      "description": "Um serviço não é válido em nenhum dia da semana."
+    },
+    "service_window_outside_feed_period": {
+      "title": "Serviço fora do período do feed",
+      "description": "O período de serviço não é coberto pelo período de validade do feed."
+    },
+    "single_shape_point": {
+      "title": "Traçado com um só ponto",
+      "description": "Um traçado de shapes.txt tem um só ponto."
+    },
+    "start_and_end_range_equal": {
+      "title": "Início igual ao fim",
+      "description": "Dois campos de data ou de hora são iguais."
+    },
+    "start_and_end_range_out_of_order": {
+      "title": "Fim antes do início",
+      "description": "Dois campos de data ou de hora estão em ordem inversa."
+    },
+    "station_with_parent_station": {
+      "title": "Estação com estação-mãe",
+      "description": "Uma estação tem parent_station, mas não pode ter."
+    },
+    "stop_access_specified_for_incorrect_location": {
+      "title": "Acesso definido num local incorreto",
+      "description": "Um local que não é uma paragem tem stop_access."
+    },
+    "stop_access_specified_for_stop_with_no_parent_station": {
+      "title": "Acesso definido sem estação-mãe",
+      "description": "Uma paragem sem estação-mãe tem stop_access."
+    },
+    "stop_time_timepoint_without_times": {
+      "title": "Ponto de controlo sem horas",
+      "description": "Uma hora de passagem de ponto de controlo não tem hora de chegada nem de partida."
+    },
+    "stop_time_with_arrival_before_previous_departure_time": {
+      "title": "Chegada antes da partida anterior",
+      "description": "Uma hora de passagem chega antes de a paragem anterior partir."
+    },
+    "stop_time_with_only_arrival_or_departure_time": {
+      "title": "Só hora de chegada ou de partida",
+      "description": "Uma hora de passagem tem uma das duas horas mas não a outra."
+    },
+    "stop_without_location": {
+      "title": "Paragem sem coordenadas",
+      "description": "Falta stop_lat ou stop_lon numa paragem, estação ou entrada."
+    },
+    "stop_without_stop_time": {
+      "title": "Paragem que nenhuma viagem usa",
+      "description": "Uma paragem de stops.txt não aparece em nenhuma hora de passagem."
+    },
+    "stop_without_zone_id": {
+      "title": "Paragem sem zona",
+      "description": "Uma paragem sem zone_id está numa linha com uma regra tarifária por zonas."
+    },
+    "timeframe_only_start_or_end_time_specified": {
+      "title": "Faixa com um só limite",
+      "description": "Uma linha de timeframes.txt tem só a hora de início ou só a de fim."
+    },
+    "timeframe_overlap": {
+      "title": "Faixas sobrepostas",
+      "description": "Duas faixas com o mesmo timeframe_group_id e service_id sobrepõem-se."
+    },
+    "timeframe_start_or_end_time_greater_than_twenty_four_hours": {
+      "title": "Faixa depois das 24 horas",
+      "description": "Uma hora de timeframes.txt é posterior a 24:00:00."
+    },
+    "transfer_distance_above_2_km": {
+      "title": "Transbordo de mais de 2 km",
+      "description": "A distância de um transbordo entre paragens é superior a 2 km."
+    },
+    "transfer_distance_too_large": {
+      "title": "Transbordo de mais de 10 km",
+      "description": "A distância de um transbordo entre paragens é superior a 10 km."
+    },
+    "transfer_with_invalid_stop_location_type": {
+      "title": "Transbordo entre locais inválidos",
+      "description": "Um transbordo aponta para um local que não é paragem nem estação."
+    },
+    "transfer_with_invalid_trip_and_route": {
+      "title": "Transbordo com viagem e linha que não coincidem",
+      "description": "Um transbordo aponta para uma viagem que não pertence à linha indicada."
+    },
+    "transfer_with_invalid_trip_and_stop": {
+      "title": "Transbordo com uma viagem que não pára aí",
+      "description": "Um transbordo aponta para uma paragem que a viagem não serve."
+    },
+    "transfer_with_suspicious_mid_trip_in_seat": {
+      "title": "Transbordo no lugar suspeito",
+      "description": "Um transbordo no lugar aponta para uma paragem que não está na posição esperada da viagem."
+    },
+    "translation_foreign_key_violation": {
+      "title": "Tradução de uma linha inexistente",
+      "description": "Uma tradução aponta para um registo que não existe na tabela."
+    },
+    "translation_unexpected_value": {
+      "title": "Tradução com um valor inesperado",
+      "description": "Um campo de uma linha de translations tem valor e deveria estar vazio."
+    },
+    "translation_unknown_table_name": {
+      "title": "Tradução de uma tabela desconhecida",
+      "description": "Uma tradução aponta para uma tabela GTFS desconhecida."
+    },
+    "trip_coverage_not_active_for_next7_days": {
+      "title": "Sem viagens nos próximos 7 dias",
+      "description": "Os dados de viagens deveriam ser válidos pelo menos sete dias."
+    },
+    "trip_distance_exceeds_shape_distance": {
+      "title": "Viagem mais longa do que o traçado",
+      "description": "A última paragem está a 11,1 m ou mais do último ponto do traçado."
+    },
+    "trip_distance_exceeds_shape_distance_below_threshold": {
+      "title": "Viagem um pouco mais longa do que o traçado",
+      "description": "A última paragem está a menos de 11,1 m do último ponto do traçado, mas não em cima."
+    },
+    "trip_headsign_matches_intermediate_stop": {
+      "title": "Destino com o nome de uma paragem intermédia",
+      "description": "O destino de uma viagem coincide com uma paragem que não é a última."
+    },
+    "trip_with_shape_dist_traveled_but_no_shape_distances": {
+      "title": "Distâncias de passagem sem distâncias do traçado",
+      "description": "Uma viagem tem distâncias em stop_times.txt mas o seu traçado não as tem em todos os pontos."
+    },
+    "unexpected_enum_value": {
+      "title": "Valor inesperado",
+      "description": "Um campo tem um valor que a especificação não define."
+    },
+    "unknown_column": {
+      "title": "Coluna desconhecida",
+      "description": "Um ficheiro tem uma coluna que a especificação não define."
+    },
+    "unknown_file": {
+      "title": "Ficheiro desconhecido",
+      "description": "O feed tem um ficheiro que a especificação não define."
+    },
+    "unsorted_stop_times": {
+      "title": "Horas de passagem desordenadas",
+      "description": "As horas de passagem de uma viagem não estão ordenadas por stop_sequence no ficheiro."
+    },
+    "unsupported_feature_type": {
+      "title": "Tipo de elemento não suportado",
+      "description": "locations.geojson usa um tipo de elemento que não é suportado."
+    },
+    "unsupported_geo_json_type": {
+      "title": "Tipo GeoJSON não suportado",
+      "description": "locations.geojson usa um tipo GeoJSON que não é suportado."
+    },
+    "unsupported_geometry_type": {
+      "title": "Tipo de geometria não suportado",
+      "description": "Um elemento de locations.geojson tem uma geometria que não é suportada."
+    },
+    "unusable_trip": {
+      "title": "Viagem com uma só paragem",
+      "description": "Uma viagem tem de ter mais de uma paragem para ser útil."
+    },
+    "unused_shape": {
+      "title": "Traçado sem uso",
+      "description": "Nenhuma viagem de trips.txt usa o traçado."
+    },
+    "unused_station": {
+      "title": "Estação sem uso",
+      "description": "Uma estação não tem nenhuma paragem servida por viagens."
+    },
+    "unused_trip": {
+      "title": "Viagem sem horas de passagem",
+      "description": "Uma viagem não tem nenhuma hora de passagem."
+    },
+    "wrong_parent_location_type": {
+      "title": "Mãe de um tipo incorreto",
+      "description": "A mãe de um local não é do tipo que deveria ser."
+    }
+  },
+  "validationReport": {
+    "subtitle": "Verificações das regras do validador GTFS da MobilityData, calculadas no navegador, e verificações do Google Transit.",
+    "typesLabel": "Tipos de aviso",
+    "casesLabel": "Casos",
+    "filterSeverity": "Gravidade",
+    "severityAll": "Todos",
+    "filterFile": "Ficheiro",
+    "allFiles": "Todos os ficheiros",
+    "examples": "Exemplos",
+    "showMore": "Mostrar mais",
+    "showFewer": "Mostrar menos",
+    "docs": "Documentação",
+    "exportJson": "Exportar JSON",
+    "exportDone": "Relatório exportado",
+    "exportFailed": "Não foi possível exportar o relatório",
+    "googleTitle": "Verificações do Google Transit",
+    "googleHint": "Verificações da validação estática da Google. São um conjunto à parte dos avisos acima.",
+    "noMatch": "Nenhum aviso corresponde a estes filtros",
+    "row": "Linha {row}",
+    "notComputed": "Avisos do validador da MobilityData que o GTFS Manager não calcula: {count}.",
+    "rules": "Regras do validador da MobilityData, versão {version}.",
+    "failedRules": "Algumas verificações não puderam ser executadas: {rules}.",
+    "codeLabel": "Código"
   }
 }

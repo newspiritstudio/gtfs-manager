@@ -1392,5 +1392,671 @@
       "showZones": "フレックスゾーンを表示",
       "hideZones": "フレックスゾーンを非表示"
     }
+  },
+  "notices": {
+    "attribution_without_role": {
+      "title": "役割のない帰属",
+      "description": "帰属情報に、組織が制作者・運行者・当局のいずれかを示す指定がありません。"
+    },
+    "bidirectional_exit_gate": {
+      "title": "双方向の出口ゲート",
+      "description": "モード 7（出口ゲート）の通路が双方向になっています。"
+    },
+    "big_gap_in_service": {
+      "title": "運行の大きな空白",
+      "description": "運行日と運行日の間に 13 日を超える空白があります。"
+    },
+    "block_trips_with_overlapping_stop_times": {
+      "title": "ブロック内の便が時間的に重なっている",
+      "description": "同じ block_id の 2 つの便で停車時刻が重なっています。"
+    },
+    "csv_parsing_failed": {
+      "title": "CSV を読み取れない",
+      "description": "CSV ファイルの読み取りに失敗しました。"
+    },
+    "decreasing_or_equal_stop_time_distance": {
+      "title": "停車時刻の距離が増えない",
+      "description": "停車時刻の shape_dist_traveled が前の値より大きくありません。"
+    },
+    "decreasing_shape_distance": {
+      "title": "シェイプの距離が減少している",
+      "description": "シェイプの点の shape_dist_traveled が前の点より小さくなっています。"
+    },
+    "duplicate_fare_media": {
+      "title": "運賃媒体の重複",
+      "description": "名前と種類が同じ運賃媒体が 2 つあります。"
+    },
+    "duplicate_geo_json_key": {
+      "title": "locations.geojson のキーの重複",
+      "description": "locations.geojson のキーが重複しています。"
+    },
+    "duplicate_geography_id": {
+      "title": "地理 ID の二重使用",
+      "description": "同じ地理 ID が複数のファイルで使われています。"
+    },
+    "duplicate_key": {
+      "title": "キーの重複",
+      "description": "ファイルの 2 つの行が同じキーを持っています。"
+    },
+    "duplicate_route_name": {
+      "title": "路線名の重複",
+      "description": "別々の 2 つの路線が、同じ短い名前、同じ長い名前、または同じ組み合わせを持っています。"
+    },
+    "duplicated_column": {
+      "title": "列の重複",
+      "description": "同じ列名がファイル内に複数あります。"
+    },
+    "empty_column_name": {
+      "title": "名前のない列",
+      "description": "ファイルに名前が空の列があります。"
+    },
+    "empty_file": {
+      "title": "空のファイル",
+      "description": "ファイルに内容がありません。"
+    },
+    "empty_row": {
+      "title": "空の行",
+      "description": "ファイルの行がスペースだけです。"
+    },
+    "equal_shape_distance_diff_coordinates": {
+      "title": "異なる点で同じ距離",
+      "description": "シェイプの連続する 2 点が同じ距離ですが、1.11 m を超えて離れています。"
+    },
+    "equal_shape_distance_diff_coordinates_distance_below_threshold": {
+      "title": "近い点で同じ距離",
+      "description": "シェイプの連続する 2 点が同じ距離で、1.11 m 未満ですが同じ場所ではありません。"
+    },
+    "equal_shape_distance_same_coordinates": {
+      "title": "同じ点で同じ距離",
+      "description": "シェイプの連続する 2 点が同じ距離と同じ座標を持っています。"
+    },
+    "expired_calendar": {
+      "title": "期限切れのカレンダー",
+      "description": "すでに終了した日付範囲の運行パターンがあります。"
+    },
+    "fare_product_with_multiple_default_rider_categories": {
+      "title": "既定の乗客区分が複数",
+      "description": "運賃商品に、既定とされた乗客区分が複数あります。"
+    },
+    "fare_transfer_rule_duration_limit_type_without_duration_limit": {
+      "title": "上限のない所要時間上限タイプ",
+      "description": "乗り換えルールに duration_limit_type はありますが duration_limit がありません。"
+    },
+    "fare_transfer_rule_duration_limit_without_type": {
+      "title": "タイプのない所要時間上限",
+      "description": "乗り換えルールに duration_limit はありますが duration_limit_type がありません。"
+    },
+    "fare_transfer_rule_invalid_transfer_count": {
+      "title": "無効な乗り換え回数",
+      "description": "乗り換えルールの transfer_count の値が無効です。"
+    },
+    "fare_transfer_rule_with_forbidden_transfer_count": {
+      "title": "許可されない乗り換え回数",
+      "description": "from_leg_group_id と to_leg_group_id が異なるルールに transfer_count があります。"
+    },
+    "fare_transfer_rule_without_transfer_count": {
+      "title": "乗り換え回数がない",
+      "description": "from_leg_group_id と to_leg_group_id が同じルールに transfer_count がありません。"
+    },
+    "fast_travel_between_consecutive_stops": {
+      "title": "連続する停留所間で速すぎる",
+      "description": "車両が連続する 2 つの停留所の間を速すぎる速度で移動しています。"
+    },
+    "feed_expiration_date30_days": {
+      "title": "フィードが 30 日以内に失効",
+      "description": "フィードは少なくとも今後 30 日間の運行を含むべきです。"
+    },
+    "feed_expiration_date7_days": {
+      "title": "フィードが 7 日以内に失効",
+      "description": "フィードは少なくとも今後 7 日間は有効であるべきです。"
+    },
+    "feed_info_lang_and_agency_lang_mismatch": {
+      "title": "フィードと事業者の言語が不一致",
+      "description": "フィードの言語が事業者の言語と一致しません。"
+    },
+    "feed_valid_beyond_total_service_window": {
+      "title": "運行期間を超えて有効なフィード",
+      "description": "フィードが運行期間全体を 14 日超えて有効です。"
+    },
+    "forbidden_arrival_or_departure_time": {
+      "title": "許可されない時刻",
+      "description": "乗降ウィンドウと一緒に到着時刻または出発時刻が指定されています。"
+    },
+    "forbidden_continuous_pickup_drop_off": {
+      "title": "連続乗降は許可されない",
+      "description": "連続乗降が乗降ウィンドウと併用されています。"
+    },
+    "forbidden_drop_off_type": {
+      "title": "降車タイプが許可されない",
+      "description": "drop_off_type が 0 のとき、乗降ウィンドウは使えません。"
+    },
+    "forbidden_geography_id": {
+      "title": "地理 ID が許可されない",
+      "description": "停車時刻に地理 ID が複数指定されています。"
+    },
+    "forbidden_pickup_type": {
+      "title": "乗車タイプが許可されない",
+      "description": "pickup_type が 0 または 3 のとき、乗降ウィンドウは使えません。"
+    },
+    "forbidden_prior_day_booking_field_value": {
+      "title": "前日予約で許可されないフィールド",
+      "description": "前日予約のルールに、該当しないフィールドがあります。"
+    },
+    "forbidden_prior_notice_start_day": {
+      "title": "事前通知の開始日が許可されない",
+      "description": "prior_notice_duration_max があるとき、prior_notice_start_day は使えません。"
+    },
+    "forbidden_prior_notice_start_time": {
+      "title": "事前通知の開始時刻が許可されない",
+      "description": "prior_notice_start_day がないとき、prior_notice_start_time は使えません。"
+    },
+    "forbidden_real_time_booking_field_value": {
+      "title": "リアルタイム予約で許可されないフィールド",
+      "description": "リアルタイム予約のルールに、該当しないフィールドがあります。"
+    },
+    "forbidden_same_day_booking_field_value": {
+      "title": "当日予約で許可されないフィールド",
+      "description": "当日予約のルールに、該当しないフィールドがあります。"
+    },
+    "forbidden_shape_dist_traveled": {
+      "title": "シェイプ距離が許可されない",
+      "description": "stop_id のない停車時刻に shape_dist_traveled があります。"
+    },
+    "foreign_key_violation": {
+      "title": "存在しない行への参照",
+      "description": "フィールドが、参照先のファイルに存在しない ID を指しています。"
+    },
+    "future_calendar": {
+      "title": "将来から始まるカレンダー",
+      "description": "フィードのすべての運行が今日より後に始まり、今日をカバーするものがありません。"
+    },
+    "future_feed": {
+      "title": "将来から始まるフィード",
+      "description": "フィードが将来の日付だけをカバーしています。"
+    },
+    "geo_json_unknown_element": {
+      "title": "locations.geojson の未知の要素",
+      "description": "locations.geojson に仕様で定義されていない要素があります。"
+    },
+    "inconsistent_agency_lang": {
+      "title": "事業者間で異なる言語",
+      "description": "フィード内の事業者が異なる言語を宣言しています。"
+    },
+    "inconsistent_agency_timezone": {
+      "title": "事業者間で異なるタイムゾーン",
+      "description": "フィード内の事業者が異なるタイムゾーンを宣言しています。"
+    },
+    "inconsistent_route_type_for_block_id": {
+      "title": "ブロックに複数の路線種別",
+      "description": "ブロック内の便は同じ路線モードであるべきです。"
+    },
+    "inconsistent_route_type_for_in_seat_transfer": {
+      "title": "路線種別をまたぐ同席乗り換え",
+      "description": "同席乗り換えは同じ路線モードの中で行われるべきです。"
+    },
+    "invalid_character": {
+      "title": "無効な文字",
+      "description": "値に、置換文字などの無効な文字が含まれています。"
+    },
+    "invalid_color": {
+      "title": "無効な色",
+      "description": "フィールドに無効な色の値があります。"
+    },
+    "invalid_currency": {
+      "title": "無効な通貨コード",
+      "description": "フィールドに誤った通貨コードがあります。"
+    },
+    "invalid_currency_amount": {
+      "title": "無効な金額",
+      "description": "金額が、その通貨の形式に合っていません。"
+    },
+    "invalid_date": {
+      "title": "無効な日付",
+      "description": "フィールドを日付として読み取れません。"
+    },
+    "invalid_email": {
+      "title": "無効なメールアドレス",
+      "description": "フィールドのメールアドレスの形式が正しくありません。"
+    },
+    "invalid_float": {
+      "title": "無効な小数",
+      "description": "フィールドを小数として読み取れません。"
+    },
+    "invalid_integer": {
+      "title": "無効な整数",
+      "description": "フィールドを整数として読み取れません。"
+    },
+    "invalid_language_code": {
+      "title": "無効な言語コード",
+      "description": "フィールドに誤った言語コードがあります。"
+    },
+    "invalid_pickup_drop_off_window": {
+      "title": "無効な乗降ウィンドウ",
+      "description": "stop_times.txt の乗降ウィンドウが無効です。"
+    },
+    "invalid_prior_notice_duration_min": {
+      "title": "無効な最短事前通知",
+      "description": "予約ルールの prior_notice_duration_min が無効です。"
+    },
+    "invalid_row_length": {
+      "title": "長さが正しくない行",
+      "description": "行の値の数がヘッダーの列数と合っていません。"
+    },
+    "invalid_time": {
+      "title": "無効な時刻",
+      "description": "フィールドを時刻として読み取れません。"
+    },
+    "invalid_timezone": {
+      "title": "無効なタイムゾーン",
+      "description": "フィールドをタイムゾーンとして読み取れません。"
+    },
+    "invalid_url": {
+      "title": "無効な URL",
+      "description": "フィールドの URL の形式が正しくありません。"
+    },
+    "leading_or_trailing_whitespaces": {
+      "title": "前後の空白",
+      "description": "CSV の値が空白で始まるか、空白で終わっています。"
+    },
+    "location_with_unexpected_stop_time": {
+      "title": "停留所でない場所の停車時刻",
+      "description": "停車時刻が、stops.txt の停留所ではない場所を指しています。"
+    },
+    "location_without_parent_station": {
+      "title": "親駅のない場所",
+      "description": "parent_station が必要な場所に、それがありません。"
+    },
+    "malformed_json": {
+      "title": "形式が正しくない JSON",
+      "description": "JSON ファイルの形式が正しくありません。"
+    },
+    "missing_bike_allowance": {
+      "title": "自転車の可否がない",
+      "description": "フェリーの便には、自転車の可否を示すべきです。"
+    },
+    "missing_calendar_and_calendar_date_files": {
+      "title": "カレンダーファイルがない",
+      "description": "calendar.txt も calendar_dates.txt もありません。"
+    },
+    "missing_feed_contact_email_and_url": {
+      "title": "フィードの連絡先がない",
+      "description": "ベストプラクティスでは、feed_contact_email か feed_contact_url の少なくとも一方が求められます。"
+    },
+    "missing_feed_info_date": {
+      "title": "フィードの日付がない",
+      "description": "feed_start_date と feed_end_date の片方しか指定されていません。"
+    },
+    "missing_level_id": {
+      "title": "階層がない",
+      "description": "この場合、停留所の level_id は必須です。"
+    },
+    "missing_pickup_drop_off_booking_rule_id": {
+      "title": "予約ルールがない",
+      "description": "pickup_type=2 では pickup_booking_rule_id、drop_off_type=2 では drop_off_booking_rule_id が推奨されます。"
+    },
+    "missing_pickup_or_drop_off_window": {
+      "title": "ウィンドウが不完全",
+      "description": "stop_times.txt の乗降ウィンドウの開始か終了がありません。"
+    },
+    "missing_prior_notice_duration_min": {
+      "title": "最短事前通知がない",
+      "description": "当日予約では prior_notice_duration_min が必須です。"
+    },
+    "missing_prior_notice_last_day": {
+      "title": "事前通知の最終日がない",
+      "description": "前日予約では prior_notice_last_day が必須です。"
+    },
+    "missing_prior_notice_last_time": {
+      "title": "事前通知の最終時刻がない",
+      "description": "前日予約では prior_notice_last_time が必須です。"
+    },
+    "missing_prior_notice_start_time": {
+      "title": "事前通知の開始時刻がない",
+      "description": "prior_notice_start_day があるとき、prior_notice_start_time は必須です。"
+    },
+    "missing_recommended_field": {
+      "title": "推奨フィールドが空",
+      "description": "推奨されるフィールドに値がありません。"
+    },
+    "missing_recommended_file": {
+      "title": "推奨ファイルがない",
+      "description": "仕様で推奨されているファイルがありません。"
+    },
+    "missing_required_agency_id": {
+      "title": "agency_id がない",
+      "description": "事業者が複数あるときは agency_id が必須です。"
+    },
+    "missing_required_column": {
+      "title": "必須の列がない",
+      "description": "ファイルのヘッダーに必須の列がありません。"
+    },
+    "missing_required_element": {
+      "title": "必須の要素がない",
+      "description": "locations.geojson に必須の要素がありません。"
+    },
+    "missing_required_field": {
+      "title": "必須フィールドが空",
+      "description": "必須のフィールドに値がありません。"
+    },
+    "missing_required_file": {
+      "title": "必須ファイルがない",
+      "description": "必須のファイルがありません。"
+    },
+    "missing_stop_name": {
+      "title": "名前のない停留所",
+      "description": "location_type が 0、1、2 のとき stop_name は必須です。"
+    },
+    "missing_stop_times_record": {
+      "title": "停車時刻が少なすぎる便",
+      "description": "ロケーショングループまたはロケーションで 2 つ必要な停車時刻が 1 つしかありません。"
+    },
+    "missing_timepoint_value": {
+      "title": "timepoint の値がない",
+      "description": "停車時刻に timepoint の値がありません。"
+    },
+    "missing_trip_edge": {
+      "title": "最初または最後の停留所に時刻がない",
+      "description": "便の最初または最後の停車時刻に到着時刻も出発時刻もありません。"
+    },
+    "mixed_case_recommended_field": {
+      "title": "大文字小文字が一種類のテキスト",
+      "description": "利用者向けのテキストは、大文字と小文字を混ぜるべきです。"
+    },
+    "more_than_one_entity": {
+      "title": "複数の行",
+      "description": "1 行だけであるべきファイルに複数の行があります。"
+    },
+    "new_line_in_value": {
+      "title": "値の中の改行",
+      "description": "CSV の値に改行が含まれています。"
+    },
+    "non_ascii_or_non_printable_char": {
+      "title": "ASCII 外または印字不可の文字",
+      "description": "ID に、印字可能な ASCII ではない文字が含まれています。"
+    },
+    "number_out_of_range": {
+      "title": "範囲外の数値",
+      "description": "数値が、そのフィールドで許される範囲の外にあります。"
+    },
+    "overlapping_frequency": {
+      "title": "重なっている運行間隔",
+      "description": "便の運行間隔が重なっています。"
+    },
+    "pathway_dangling_generic_node": {
+      "title": "通路が 1 本だけの汎用ノード",
+      "description": "通路グラフで、汎用ノードにつながる場所が 1 つしかありません。"
+    },
+    "pathway_loop": {
+      "title": "ループする通路",
+      "description": "通路が同じ場所で始まり、同じ場所で終わっています。"
+    },
+    "pathway_to_platform_with_boarding_areas": {
+      "title": "乗車エリアのあるホームへの通路",
+      "description": "通路の端が、乗車エリアを持つホームです。"
+    },
+    "pathway_to_stop_with_access_outside_of_station_pathways": {
+      "title": "駅の通路外の停留所への通路",
+      "description": "通路の端が stop_access=1 の停留所で、駅の外から行けるはずの場所です。"
+    },
+    "pathway_to_wrong_location_type": {
+      "title": "誤った種類の場所への通路",
+      "description": "通路の端が駅になっています。"
+    },
+    "platform_without_parent_station": {
+      "title": "親駅のないホーム",
+      "description": "ホームに parent_station がありません。"
+    },
+    "point_near_origin": {
+      "title": "(0, 0) に近い点",
+      "description": "点が原点 (0, 0) に近すぎます。"
+    },
+    "point_near_pole": {
+      "title": "極に近い点",
+      "description": "点が北極または南極に近すぎます。"
+    },
+    "prior_notice_last_day_after_start_day": {
+      "title": "事前通知の最終日が開始日より後",
+      "description": "prior_notice_last_day は prior_notice_start_day より大きくできません。"
+    },
+    "route_both_short_and_long_name_missing": {
+      "title": "名前のない路線",
+      "description": "路線に短い名前も長い名前もありません。"
+    },
+    "route_color_contrast": {
+      "title": "色のコントラスト不足",
+      "description": "路線の色と文字色のコントラストが足りません。"
+    },
+    "route_long_name_contains_short_name": {
+      "title": "長い名前に短い名前が含まれる",
+      "description": "路線の長い名前が短い名前を繰り返しています。"
+    },
+    "route_networks_specified_in_more_than_one_file": {
+      "title": "ネットワークの二重定義",
+      "description": "路線のネットワークが複数のファイルで定義されています。"
+    },
+    "route_short_name_too_long": {
+      "title": "短い名前が長すぎる",
+      "description": "路線の短い名前が 12 文字を超えています。"
+    },
+    "same_name_and_description_for_route": {
+      "title": "路線名と説明が同じ",
+      "description": "路線の説明が名前と同じです。"
+    },
+    "same_name_and_description_for_stop": {
+      "title": "停留所名と説明が同じ",
+      "description": "停留所の説明が名前と同じです。"
+    },
+    "same_route_and_agency_url": {
+      "title": "路線と事業者が同じ URL",
+      "description": "路線が事業者と同じ URL を持っています。"
+    },
+    "same_stop_and_agency_url": {
+      "title": "停留所と事業者が同じ URL",
+      "description": "停留所が事業者と同じ URL を持っています。"
+    },
+    "same_stop_and_route_url": {
+      "title": "停留所と路線が同じ URL",
+      "description": "停留所が路線と同じ URL を持っています。"
+    },
+    "service_extends_far_in_the_future": {
+      "title": "遠い将来まで続く運行",
+      "description": "運行の終了日が 2 年以上先です。"
+    },
+    "service_has_no_active_day_of_the_week": {
+      "title": "有効な曜日のない運行",
+      "description": "運行がどの曜日にも有効になっていません。"
+    },
+    "service_window_outside_feed_period": {
+      "title": "フィード期間外の運行",
+      "description": "運行期間がフィードの有効期間でカバーされていません。"
+    },
+    "single_shape_point": {
+      "title": "点が 1 つのシェイプ",
+      "description": "shapes.txt のシェイプに点が 1 つしかありません。"
+    },
+    "start_and_end_range_equal": {
+      "title": "開始と終了が同じ",
+      "description": "2 つの日付または時刻のフィールドが同じです。"
+    },
+    "start_and_end_range_out_of_order": {
+      "title": "終了が開始より前",
+      "description": "2 つの日付または時刻のフィールドの順序が逆です。"
+    },
+    "station_with_parent_station": {
+      "title": "親駅を持つ駅",
+      "description": "駅に parent_station がありますが、駅には持てません。"
+    },
+    "stop_access_specified_for_incorrect_location": {
+      "title": "誤った場所に指定されたアクセス",
+      "description": "停留所ではない場所に stop_access があります。"
+    },
+    "stop_access_specified_for_stop_with_no_parent_station": {
+      "title": "親駅なしで指定されたアクセス",
+      "description": "親駅のない停留所に stop_access があります。"
+    },
+    "stop_time_timepoint_without_times": {
+      "title": "時刻のないタイムポイント",
+      "description": "タイムポイントの停車時刻に到着時刻も出発時刻もありません。"
+    },
+    "stop_time_with_arrival_before_previous_departure_time": {
+      "title": "前の出発より前の到着",
+      "description": "停車時刻が、前の停留所の出発より前に到着しています。"
+    },
+    "stop_time_with_only_arrival_or_departure_time": {
+      "title": "到着または出発時刻のみ",
+      "description": "停車時刻に、到着時刻と出発時刻の片方しかありません。"
+    },
+    "stop_without_location": {
+      "title": "座標のない停留所",
+      "description": "停留所・駅・出入口に stop_lat または stop_lon がありません。"
+    },
+    "stop_without_stop_time": {
+      "title": "どの便も使わない停留所",
+      "description": "stops.txt の停留所が、どの停車時刻にも現れません。"
+    },
+    "stop_without_zone_id": {
+      "title": "ゾーンのない停留所",
+      "description": "zone_id のない停留所が、ゾーン別運賃ルールのある路線にあります。"
+    },
+    "timeframe_only_start_or_end_time_specified": {
+      "title": "片方の限度だけの時間帯",
+      "description": "timeframes.txt の行に、開始時刻か終了時刻の片方しかありません。"
+    },
+    "timeframe_overlap": {
+      "title": "重なっている時間帯",
+      "description": "同じ timeframe_group_id と service_id の 2 つの時間帯が重なっています。"
+    },
+    "timeframe_start_or_end_time_greater_than_twenty_four_hours": {
+      "title": "24 時間を超える時間帯",
+      "description": "timeframes.txt の時刻が 24:00:00 より後です。"
+    },
+    "transfer_distance_above_2_km": {
+      "title": "2 km を超える乗り換え",
+      "description": "停留所間の乗り換え距離が 2 km を超えています。"
+    },
+    "transfer_distance_too_large": {
+      "title": "10 km を超える乗り換え",
+      "description": "停留所間の乗り換え距離が 10 km を超えています。"
+    },
+    "transfer_with_invalid_stop_location_type": {
+      "title": "無効な場所間の乗り換え",
+      "description": "乗り換えが、停留所でも駅でもない場所を指しています。"
+    },
+    "transfer_with_invalid_trip_and_route": {
+      "title": "便と路線が一致しない乗り換え",
+      "description": "乗り換えが、指定の路線に属さない便を指しています。"
+    },
+    "transfer_with_invalid_trip_and_stop": {
+      "title": "その停留所に停車しない便の乗り換え",
+      "description": "乗り換えが、その便が停車しない停留所を指しています。"
+    },
+    "transfer_with_suspicious_mid_trip_in_seat": {
+      "title": "不審な同席乗り換え",
+      "description": "同席乗り換えが、便の中で想定される位置にない停留所を指しています。"
+    },
+    "translation_foreign_key_violation": {
+      "title": "存在しない行の翻訳",
+      "description": "翻訳が、テーブルに存在しないレコードを指しています。"
+    },
+    "translation_unexpected_value": {
+      "title": "予期しない値のある翻訳",
+      "description": "translations の行のフィールドに値がありますが、空であるべきです。"
+    },
+    "translation_unknown_table_name": {
+      "title": "未知のテーブルの翻訳",
+      "description": "翻訳が、未知の GTFS テーブルを指しています。"
+    },
+    "trip_coverage_not_active_for_next7_days": {
+      "title": "今後 7 日間に便がない",
+      "description": "便のデータは少なくとも 7 日間は有効であるべきです。"
+    },
+    "trip_distance_exceeds_shape_distance": {
+      "title": "シェイプより長い便",
+      "description": "最後の停留所が、シェイプの最後の点から 11.1 m 以上離れています。"
+    },
+    "trip_distance_exceeds_shape_distance_below_threshold": {
+      "title": "シェイプよりわずかに長い便",
+      "description": "最後の停留所が、シェイプの最後の点から 11.1 m 未満ですが、重なってはいません。"
+    },
+    "trip_headsign_matches_intermediate_stop": {
+      "title": "途中の停留所名の行先",
+      "description": "便の行先が、最後ではない停留所の名前と一致しています。"
+    },
+    "trip_with_shape_dist_traveled_but_no_shape_distances": {
+      "title": "シェイプ距離のない停車距離",
+      "description": "便に stop_times.txt の距離はありますが、シェイプの全ての点に距離がありません。"
+    },
+    "unexpected_enum_value": {
+      "title": "予期しない値",
+      "description": "フィールドに、仕様で定義されていない値があります。"
+    },
+    "unknown_column": {
+      "title": "未知の列",
+      "description": "ファイルに、仕様で定義されていない列があります。"
+    },
+    "unknown_file": {
+      "title": "未知のファイル",
+      "description": "フィードに、仕様で定義されていないファイルがあります。"
+    },
+    "unsorted_stop_times": {
+      "title": "並んでいない停車時刻",
+      "description": "便の停車時刻が、ファイル内で stop_sequence の順に並んでいません。"
+    },
+    "unsupported_feature_type": {
+      "title": "未対応の要素タイプ",
+      "description": "locations.geojson に、対応していない要素タイプがあります。"
+    },
+    "unsupported_geo_json_type": {
+      "title": "未対応の GeoJSON タイプ",
+      "description": "locations.geojson に、対応していない GeoJSON タイプがあります。"
+    },
+    "unsupported_geometry_type": {
+      "title": "未対応のジオメトリタイプ",
+      "description": "locations.geojson の要素に、対応していないジオメトリがあります。"
+    },
+    "unusable_trip": {
+      "title": "停留所が 1 つだけの便",
+      "description": "便が使えるには、停留所が 2 つ以上必要です。"
+    },
+    "unused_shape": {
+      "title": "使われていないシェイプ",
+      "description": "trips.txt のどの便もこのシェイプを使っていません。"
+    },
+    "unused_station": {
+      "title": "使われていない駅",
+      "description": "駅に、便が停車する停留所がありません。"
+    },
+    "unused_trip": {
+      "title": "停車時刻のない便",
+      "description": "便に停車時刻がありません。"
+    },
+    "wrong_parent_location_type": {
+      "title": "親の種類が誤り",
+      "description": "場所の親が、本来あるべき種類ではありません。"
+    }
+  },
+  "validationReport": {
+    "subtitle": "MobilityData の GTFS バリデーターのルールによる検査（ブラウザー内で計算）と、Google Transit の検査です。",
+    "typesLabel": "通知の種類",
+    "casesLabel": "件数",
+    "filterSeverity": "重大度",
+    "severityAll": "すべて",
+    "filterFile": "ファイル",
+    "allFiles": "すべてのファイル",
+    "examples": "例",
+    "showMore": "もっと見る",
+    "showFewer": "表示を減らす",
+    "docs": "ドキュメント",
+    "exportJson": "JSON を書き出す",
+    "exportDone": "レポートを書き出しました",
+    "exportFailed": "レポートを書き出せませんでした",
+    "googleTitle": "Google Transit の検査",
+    "googleHint": "Google の静的検証による検査です。上の通知とは別のセットです。",
+    "noMatch": "この条件に合う通知はありません",
+    "row": "{row} 行目",
+    "notComputed": "GTFS Manager が計算しない MobilityData バリデーターの通知: {count} 件。",
+    "rules": "MobilityData バリデーターのルール、バージョン {version}。",
+    "failedRules": "実行できなかった検査があります: {rules}。",
+    "codeLabel": "コード"
   }
 }
