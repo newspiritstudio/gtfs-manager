@@ -12,6 +12,7 @@ import type {
 } from '@shared/contracts';
 import { haversineMeters, routeColors } from '@shared/gtfs-values';
 import { getSql, parseJson } from '../db/client';
+import { expandDayFrequencies, windowStarts, windowsOf } from './frequencies';
 import { getNetwork } from './network';
 import { activeServicesFragment, serviceDaysCte } from './service-days';
 
@@ -344,12 +345,16 @@ export async function getRouteDay(
         AND t.service_id IN (SELECT service_id FROM svc)
       ORDER BY t.trip_id, st.stop_sequence) x
     GROUP BY x.trip_id, x.route_id, x.headsign, x.direction_id`;
-  return rows
-    .map((r) => {
-      const times = parseJson<[string, number | null, number | null][]>(r.times) ?? [];
-      return { ...r, times, patternKey: times.map((t) => t[0]).join('>') };
-    })
-    .sort((a, b) => firstTime(a) - firstTime(b));
+  const trips = rows.map((r) => {
+    const times = parseJson<[string, number | null, number | null][]>(r.times) ?? [];
+    return { ...r, times, patternKey: times.map((t) => t[0]).join('>') };
+  });
+  // Frequency-based trips (frequencies.txt) are shown as the departures they stand for.
+  const windows = await windowsOf(
+    feedId,
+    trips.map((t) => t.tripId)
+  );
+  return expandDayFrequencies(trips, windows).sort((a, b) => firstTime(a) - firstTime(b));
 }
 
 function firstTime(trip: { times: [string, number | null, number | null][] }): number {
@@ -477,11 +482,36 @@ export async function getStopDepartures(
     WHERE st.feed_id = ${feedId} AND st.stop_id IN (SELECT stop_id FROM family)
       AND t.service_id IN (SELECT service_id FROM svc)
     ORDER BY coalesce(st.departure_time, st.arrival_time)`;
-  return rows.map((r) => ({
+  const departures = rows.map((r) => ({
     ...r,
     isLast: Boolean(r.isLast),
     ...routeColors(r.routeId, r.color, r.textColor),
   }));
+  // A frequency-based trip departs at every start of its windows, not once at its template time.
+  const windows = await windowsOf(feedId, [...new Set(departures.map((d) => d.tripId))]);
+  if (!windows.size) return departures;
+  const origins = await sql<{ tripId: string; t: number | null }[]>`
+    SELECT st.trip_id AS "tripId", coalesce(st.arrival_time, st.departure_time) AS t
+    FROM stop_times st
+    WHERE st.feed_id = ${feedId}
+      AND st.trip_id IN (SELECT value FROM json_each(${[...windows.keys()]}))
+      AND st.stop_sequence = (SELECT min(x.stop_sequence) FROM stop_times x
+                              WHERE x.feed_id = st.feed_id AND x.trip_id = st.trip_id)`;
+  const origin = new Map(origins.map((o) => [o.tripId, o.t]));
+  const expanded = departures.flatMap((d) => {
+    const list = windows.get(d.tripId);
+    const base = origin.get(d.tripId);
+    if (!list?.length) return [d];
+    if (base === null || base === undefined) return [];
+    return list.flatMap((w) =>
+      windowStarts(w, 3000).map((start) => ({
+        ...d,
+        arrival: d.arrival === null ? null : d.arrival + (start - base),
+        departure: d.departure === null ? null : d.departure + (start - base),
+      }))
+    );
+  });
+  return expanded.sort((a, b) => (a.departure ?? a.arrival ?? 0) - (b.departure ?? b.arrival ?? 0));
 }
 
 export interface TripDetail {

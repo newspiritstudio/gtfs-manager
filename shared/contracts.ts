@@ -224,6 +224,12 @@ export interface DayTrip {
   patternKey: string;
   /** [stop_id, arrival, departure] in seconds; null if the stop has no time. */
   times: [string, number | null, number | null][];
+  /**
+   * Set when the trip is one start of a frequency-based service (frequencies.txt): the template
+   * trip shifted to `start + n * headway`. `exact` is exact_times=1; otherwise the start is only
+   * approximate (the service runs "about every headway").
+   */
+  frequency?: { headwaySecs: number; exact: boolean };
 }
 
 export interface StopDeparture {
