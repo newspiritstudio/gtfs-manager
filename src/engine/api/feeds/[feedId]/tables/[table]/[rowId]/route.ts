@@ -1,6 +1,9 @@
 import { rowValuesSchema } from '@shared/contracts';
 import { isGtfsTable } from '@shared/gtfs-spec';
+import { guarded } from '@/engine/api/editing-http';
+import { deleteWithDependents, planDeletion } from '@/engine/gtfs/integrity';
 import { deleteRow, RowValidationError, updateRow } from '@/engine/gtfs/tables';
+import type { Sql } from '@/engine/db/sql';
 import { withHistory } from '@/engine/history/history';
 import { rowName, rowStep } from '@/engine/history/labels';
 import { jsonError, parseBody, requireFeed, type RouteContext } from '@/engine/api/http';
@@ -35,10 +38,36 @@ export async function PATCH(request: Request, { params }: RouteContext<Params>) 
   }
 }
 
-export async function DELETE(_request: Request, { params }: RouteContext<Params>) {
+/**
+ * Deletes the row. If other rows depend on it (a stop used by trips, a route with trips...) the
+ * answer is 409 with the plan (counts per table) until the request says what to do:
+ * `?mode=cascade` deletes the dependents too, `?mode=reassign&to=<id>` points them at another row.
+ */
+export async function DELETE(request: Request, { params }: RouteContext<Params>) {
   const r = await resolve(params);
   if (r.response) return r.response;
-  const step = rowStep('row.delete', r.table, await rowName(r.feedId, r.table, r.id));
-  await withHistory(r.feedId, step, () => deleteRow(r.feedId, r.table, r.id));
-  return new Response(null, { status: 204 });
+  const query = new URL(request.url).searchParams;
+  const seeds = [{ table: r.table, rowIds: [r.id] }];
+  return guarded(async () => {
+    const plan = await planDeletion(r.feedId, seeds);
+    const mode = query.get('mode');
+    if (
+      (plan.dependents.length || plan.detached.length) &&
+      mode !== 'cascade' &&
+      mode !== 'reassign'
+    )
+      return jsonError(409, 'hasDependents', plan);
+    const step = rowStep('row.delete', r.table, await rowName(r.feedId, r.table, r.id));
+    if (!plan.dependents.length && !plan.detached.length) {
+      await withHistory(r.feedId, step, () => deleteRow(r.feedId, r.table, r.id));
+    } else {
+      await withHistory(r.feedId, step, (sql: Sql) =>
+        deleteWithDependents(sql, r.feedId, seeds, {
+          mode: mode === 'reassign' ? 'reassign' : 'cascade',
+          reassignTo: query.get('to') ?? undefined,
+        })
+      );
+    }
+    return new Response(null, { status: 204 });
+  });
 }
