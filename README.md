@@ -24,27 +24,41 @@ Leaflet and SQLite WASM. Made by [New Spirit Studio](https://newspirit.studio).
 - **Explore**: an overview with key figures, the network map, a line gallery, a page per line
   (diagram, map, timetable, Marey diagram and calendar), stops with their departures for the day,
   trips, and the service calendar.
-- **Edit** any GTFS file, with field validation based on the specification.
+- **Every file of the current reference**: fares v1 and v2, pathways and levels, GTFS-Flex
+  (including `locations.geojson`), translations and attributions are imported, edited, validated
+  and exported. A fares page explains products, prices and rules; stations show their levels and
+  pathways; Flex zones appear on the map.
+- **Edit** any file in a spec-driven data editor, or a line the way a planner thinks: its patterns
+  (stop sequences), a keyboard-driven timetable grid, stops dragged on the map and shapes drawn
+  by hand. Frequency-based trips can be expanded into explicit trips. Deleting a row shows what
+  depends on it and lets you cascade or reassign.
+- **Undo and redo** every change, also after a reload, with a history page per feed. The app asks
+  the browser to keep its storage, marks feeds with changes not yet exported, works offline once
+  loaded and can be installed. Another tab can take the database over with one click.
+- **Compare two versions** of a feed: added, removed and changed agencies, lines, stops (and how far
+  they moved), trips, shapes and service per day, with a map and a CSV/JSON export.
 - **Generate trips** from a line, a list of stops and a frequency.
-- **Validate** the feed and **export** it back as a GTFS ZIP (extra columns are kept).
+- **Validate** the feed with the notices of the canonical
+  [MobilityData GTFS validator](https://github.com/MobilityData/gtfs-validator) (same codes and
+  severities, exportable as its `report.json`), plus Google's checks, and **export** it back as a
+  GTFS ZIP (extra columns are kept) or as GeoJSON.
+- **Print** timetables per line and per stop (the browser's Print / Save as PDF), and colour the
+  map by trips per hour or by the area within walking distance of a stop.
 - **GTFS Realtime**: live vehicles on the map, delays on stop departures and trips, service alerts,
   and a check of the realtime data against the schedule (see below).
 
 ## Validation
 
-The validator (`src/engine/gtfs/validate.ts`) runs SQL checks over the imported feed. Besides the
-specification's own (missing files, unknown references, times going backwards...), it includes
+Validation runs in the browser (`src/engine/gtfs/notices/`) as SQL over the imported feed, when a
+page needs it, and is cached until the feed changes. It reports the notices of the canonical
+[MobilityData GTFS Schedule validator](https://gtfs-validator.mobilitydata.org/rules.html) with the
+same codes, severities and fields, and exports them in its `report.json` format; the few notices it
+does not compute, and why, are listed in `shared/notices-skipped.ts`. CSV-level notices (row
+numbers, whitespace, unknown columns...) come from what the import saw.
+
 Google's
 [static errors and warnings](https://developers.google.com/transit/gtfs/guides/static-errors-warnings)
-with the same severity, and each issue shows Google's title (`src/engine/gtfs/rules-google.ts`).
-Routes whose `route_type` is valid but missing from Google's list of
-[supported extended route types](https://developers.google.com/transit/gtfs/reference/extended-route-types)
-get a warning. Where Google names a threshold it is used (headways over 30 minutes or of one minute
-or less, a first departure after 36:00, 24 hours between stop times, short names over six
-characters, colour contrast below 4.5:1). Checks whose threshold Google does not publish (stops too
-close or too far, trips too long, very short service...) and those over files the app keeps
-unmodelled (fares, pathways, translations, attributions) are not run yet. Import-level checks
-(missing required or unknown columns, unknown files, trimmed spaces) use the import report.
+are a separate section with Google's titles and severities (`src/engine/gtfs/rules-google.ts`).
 
 ## GTFS Realtime
 
