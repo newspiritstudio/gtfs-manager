@@ -30,6 +30,7 @@ import { formatDistance, formatGtfsDate } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
 import type { StopDetail } from '@/engine/gtfs/details';
+import StationStructureCard from './StationStructure';
 
 /** Remounted when the stop changes (e.g. from the nearby ones) so the filter and date are not carried over. */
 export default function StopDetailView(props: { feedId: string; detail: StopDetail }) {
@@ -301,6 +302,9 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
                 </div>
               </CardContent>
             </Card>
+          ) : null}
+          {detail.station ? (
+            <StationStructureCard feedId={feedId} structure={detail.station} />
           ) : null}
           {children.length ? (
             <Card>

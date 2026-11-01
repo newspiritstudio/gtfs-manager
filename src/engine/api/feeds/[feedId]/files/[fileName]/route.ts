@@ -13,7 +13,7 @@ export async function PUT(
   const { feedId, fileName: name } = await params;
   const { response } = await requireFeed(feedId);
   if (response) return response;
-  if (!/^[\w.-]+\.txt$/i.test(name)) return jsonError(400, 'invalidFileName');
+  if (!/^[\w.-]+\.(txt|geojson)$/i.test(name)) return jsonError(400, 'invalidFileName');
   if (!request.body) return jsonError(400, 'emptyBody');
   try {
     const report = await importGtfsFile(

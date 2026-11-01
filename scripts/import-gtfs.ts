@@ -49,7 +49,7 @@ async function main() {
 
   const info = await stat(source);
   if (info.isDirectory()) {
-    const files = (await readdir(source)).filter((f) => f.toLowerCase().endsWith('.txt')).sort();
+    const files = (await readdir(source)).filter((f) => /\.(txt|geojson)$/i.test(f)).sort();
     for (const file of files) {
       const report = await importGtfsFile(feedId, file, createReadStream(path.join(source, file)));
       await appendImportReport(feedId, report);
@@ -58,7 +58,7 @@ async function main() {
   } else {
     const zip = await JSZip.loadAsync(await readFile(source));
     for (const entry of Object.values(zip.files)) {
-      if (entry.dir || !entry.name.toLowerCase().endsWith('.txt')) continue;
+      if (entry.dir || !/\.(txt|geojson)$/i.test(entry.name)) continue;
       // A web stream over the entry's bytes: the same kind of source as the browser's.
       const bytes = await entry.async('uint8array');
       const stream = new ReadableStream<Uint8Array>({

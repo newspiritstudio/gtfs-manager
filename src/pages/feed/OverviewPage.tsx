@@ -30,6 +30,7 @@ import { both, useEngine } from '@/lib/engine';
 import { useI18n } from '@/lib/i18n/client';
 import { Link } from '@/lib/router';
 import { formatGtfsDate, formatNumber } from '@/lib/i18n/format';
+import { issueKey, issueTitle } from '@/lib/issueTitle';
 import { useDocumentHead } from '@/lib/seo';
 import { useFeedId } from './useFeedId';
 
@@ -272,7 +273,9 @@ function Overview({
             />
             <CardContent>
               <ul className="grid gap-2 sm:grid-cols-2">
-                {GTFS_TABLES.map((table) => {
+                {GTFS_TABLES.filter(
+                  (table) => stats.counts[table] > 0 || GTFS_SPEC[table].required
+                ).map((table) => {
                   const count = stats.counts[table];
                   const report = feed.importReport?.files.find((f) => f.table === table);
                   return (
@@ -371,10 +374,10 @@ function ValidationCard({
               .slice(0, 4)
               .map((issue) => (
                 <li
-                  key={issue.code}
+                  key={issueKey(issue)}
                   className="flex items-start justify-between gap-3 text-body-small"
                 >
-                  <span className="text-on-surface">{t(`validation.${issue.code}`)}</span>
+                  <span className="text-on-surface">{issueTitle(t, issue)}</span>
                   <span className="shrink-0 tabular-nums text-on-surface-variant">
                     {issue.count}
                   </span>

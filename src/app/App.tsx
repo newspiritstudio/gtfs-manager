@@ -29,6 +29,7 @@ const DataPage = lazy(() => import('@/pages/feed/DataPage'));
 const TablePage = lazy(() => import('@/pages/feed/TablePage'));
 const GeneratorPage = lazy(() => import('@/pages/feed/GeneratorPage'));
 const RealtimePage = lazy(() => import('@/pages/feed/RealtimePage'));
+const FaresPage = lazy(() => import('@/pages/feed/FaresPage'));
 const ValidationPage = lazy(() => import('@/pages/feed/ValidationPage'));
 
 function publicRoutes(prefix: string) {
@@ -74,6 +75,7 @@ function Pages() {
             <Route path="data/:table" element={<TablePage />} />
             <Route path="generator" element={<GeneratorPage />} />
             <Route path="realtime" element={<RealtimePage />} />
+            <Route path="fares" element={<FaresPage />} />
             <Route path="validation" element={<ValidationPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />

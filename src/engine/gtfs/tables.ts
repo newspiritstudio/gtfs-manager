@@ -4,7 +4,7 @@
  * the specification before touching the database.
  */
 import type { RowValues, TablePage } from '@shared/contracts';
-import { GTFS_SPEC, type GtfsTable } from '@shared/gtfs-spec';
+import { GTFS_SPEC, isNumericField, type GtfsTable } from '@shared/gtfs-spec';
 import { formatFieldValue, parseFieldValue } from '@shared/gtfs-values';
 import { getSql, ident, parseJson } from '../db/client';
 import { markStatsStale, notNullColumns } from './import';
@@ -50,9 +50,7 @@ export async function listRows(
   const where: string[] = ['feed_id = $1'];
   const query = stripNul(options.query ?? '').trim();
   if (query) {
-    const textFields = spec.fields.filter(
-      (f) => !['int', 'enum', 'time', 'float', 'lat', 'lon'].includes(f.type)
-    );
+    const textFields = spec.fields.filter((f) => !isNumericField(f.type) && f.type !== 'json');
     params.push(`%${query.replace(/[%_\\]/g, (c) => `\\${c}`)}%`);
     where.push(
       `(${textFields.map((f) => `${ident(f.name)} LIKE $${params.length} ESCAPE '\\'`).join(' OR ')})`
@@ -179,22 +177,26 @@ export async function deleteRow(feedId: string, table: GtfsTable, rowId: number)
   await markStatsStale(feedId);
 }
 
-/** Options for a field that points to another file (route_id, stop_id...). */
+/**
+ * Options for a field that points to another file (route_id, stop_id, zone_id...). `field` is the
+ * column the value comes from; it defaults to the file's key. `?q=` filters by value or name.
+ */
 export async function referenceOptions(
   feedId: string,
   table: GtfsTable,
-  query: string
+  query: string,
+  field?: string
 ): Promise<{ value: string; label: string }[]> {
   const spec = GTFS_SPEC[table];
-  const keyField = spec.key[0];
-  if (!keyField) return [];
+  const column = field ?? spec.key[0];
+  if (!column || !spec.fields.some((f) => f.name === column)) return [];
   const sql = getSql();
   const like = `%${stripNul(query).replace(/[%_\\]/g, (c) => `\\${c}`)}%`;
-  const label = spec.labelField !== keyField ? spec.labelField : keyField;
+  const label = column === spec.key[0] && spec.labelField !== column ? spec.labelField : column;
   const rows = await sql.unsafe<{ value: string; label: string | null }[]>(
-    `SELECT DISTINCT CAST(${ident(keyField)} AS TEXT) AS value, CAST(${ident(label)} AS TEXT) AS label
-     FROM ${ident(table)} WHERE feed_id = $1
-       AND (CAST(${ident(keyField)} AS TEXT) LIKE $2 ESCAPE '\\'
+    `SELECT DISTINCT CAST(${ident(column)} AS TEXT) AS value, CAST(${ident(label)} AS TEXT) AS label
+     FROM ${ident(table)} WHERE feed_id = $1 AND ${ident(column)} IS NOT NULL
+       AND (CAST(${ident(column)} AS TEXT) LIKE $2 ESCAPE '\\'
             OR coalesce(CAST(${ident(label)} AS TEXT), '') LIKE $2 ESCAPE '\\')
      ORDER BY value LIMIT 30`,
     [feedId, like]

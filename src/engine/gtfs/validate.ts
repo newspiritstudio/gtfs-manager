@@ -7,6 +7,7 @@ import { GOOGLE_SUPPORTED_ROUTE_TYPES, type GtfsTable } from '@shared/gtfs-spec'
 import { tidyRouteName } from '@shared/gtfs-values';
 import { getSql } from '../db/client';
 import { GOOGLE_RULES, type ValidationRule } from './rules-google';
+import { sampleSql, SPEC_RULES } from './rules-spec';
 
 const BASE_RULES: ValidationRule[] = [
   {
@@ -283,7 +284,7 @@ const BASE_RULES: ValidationRule[] = [
   },
 ];
 
-const RULES: ValidationRule[] = [...BASE_RULES, ...GOOGLE_RULES];
+const RULES: ValidationRule[] = [...BASE_RULES, ...GOOGLE_RULES, ...SPEC_RULES];
 
 /** The readable name of the examples that are route, stop or trip identifiers. */
 async function sampleNames(
@@ -318,7 +319,32 @@ async function sampleNames(
   return names.some(Boolean) ? names : undefined;
 }
 
-export const VALIDATION_CODES = RULES.map((r) => r.code);
+/** Every message code; the rules generated from the specification share a few (one per kind of check). */
+export const VALIDATION_CODES = [...new Set(RULES.map((r) => r.code))];
+
+/** What tells two rules apart: the code, and for the generated ones the file and field. */
+export const RULE_KEYS = RULES.map((r) => [r.code, r.table, r.field].join(':'));
+
+async function issueFor(
+  feedId: string,
+  rule: ValidationRule,
+  count: number,
+  found: (string | null)[]
+): Promise<ValidationIssue | null> {
+  if (count <= 0) return null;
+  const samples = found.filter((v): v is string => Boolean(v));
+  const names = await sampleNames(feedId, rule.table, samples);
+  return {
+    code: rule.code,
+    severity: rule.severity,
+    table: rule.table,
+    ...(rule.field ? { field: rule.field } : {}),
+    ...(rule.google ? { google: rule.google } : {}),
+    count,
+    samples,
+    ...(names ? { sampleNames: names } : {}),
+  };
+}
 
 async function runRule(feedId: string, rule: ValidationRule): Promise<ValidationIssue | null> {
   let count = 0;
@@ -339,25 +365,59 @@ async function runRule(feedId: string, rule: ValidationRule): Promise<Validation
     count = rows[0]?.n ?? 0;
     found = rows.map((r) => r.sample);
   }
-  if (count <= 0) return null;
-  const result = { count, samples: found };
-  const samples = result.samples.filter((v): v is string => Boolean(v));
-  const names = await sampleNames(feedId, rule.table, samples);
-  return {
-    code: rule.code,
-    severity: rule.severity,
-    table: rule.table,
-    ...(rule.google ? { google: rule.google } : {}),
-    count: result.count,
-    samples,
-    ...(names ? { sampleNames: names } : {}),
-  };
+  return issueFor(feedId, rule, count, found);
+}
+
+/**
+ * The rules with a `where` predicate over one table: one scan counts the violations of all of
+ * them (`count(*) FILTER`), and only the rules that found some read their examples.
+ */
+async function runTableRules(
+  feedId: string,
+  table: GtfsTable,
+  rules: ValidationRule[]
+): Promise<(ValidationIssue | null)[]> {
+  const sql = getSql();
+  const [counts] = await sql.unsafe<Record<string, number>[]>(
+    `SELECT ${rules.map((r, i) => `count(*) FILTER (WHERE ${r.where}) AS c${i}`).join(', ')}
+     FROM "${table}" t WHERE t.feed_id = $1`,
+    [feedId]
+  );
+  const issues: (ValidationIssue | null)[] = [];
+  for (const [i, rule] of rules.entries()) {
+    const count = counts?.[`c${i}`] ?? 0;
+    if (count <= 0) {
+      issues.push(null);
+      continue;
+    }
+    const examples = await sql.unsafe<{ sample: string | null }[]>(
+      `SELECT DISTINCT ${sampleSql(table)} AS sample FROM "${table}" t
+       WHERE t.feed_id = $1 AND (${rule.where}) ORDER BY sample LIMIT 5`,
+      [feedId]
+    );
+    issues.push(
+      await issueFor(
+        feedId,
+        rule,
+        count,
+        examples.map((r) => r.sample)
+      )
+    );
+  }
+  return issues;
 }
 
 export async function validateFeed(feedId: string): Promise<ValidationIssue[]> {
   // SQLite runs in this thread: one rule after another, with the loop free to breathe between them.
   const results: (ValidationIssue | null)[] = [];
-  for (const rule of RULES) results.push(await runRule(feedId, rule));
+  const byTable = new Map<GtfsTable, ValidationRule[]>();
+  for (const rule of RULES) {
+    if (rule.where && rule.table)
+      byTable.set(rule.table, [...(byTable.get(rule.table) ?? []), rule]);
+    else results.push(await runRule(feedId, rule));
+  }
+  for (const [table, rules] of byTable)
+    results.push(...(await runTableRules(feedId, table, rules)));
   const issues = results.filter((i): i is ValidationIssue => i !== null);
   const order: Record<ValidationSeverity, number> = { error: 0, warning: 1, info: 2 };
   return issues.sort((a, b) => order[a.severity] - order[b.severity] || b.count - a.count);

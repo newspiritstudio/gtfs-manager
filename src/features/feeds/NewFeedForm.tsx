@@ -16,7 +16,7 @@ import { useRouter } from '@/lib/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FileImportReport } from '@shared/contracts';
 import { catalogEntry, catalogZipUrl, type CatalogEntry } from '@shared/catalog';
-import { GTFS_TABLES, tableForFile } from '@shared/gtfs-spec';
+import { GTFS_SPEC, GTFS_TABLES, tableForFile } from '@shared/gtfs-spec';
 import Badge from '@/components/ui/Badge';
 import Button, { ButtonLink } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
@@ -42,7 +42,9 @@ type FileState =
   | { status: 'done'; report: FileImportReport }
   | { status: 'failed'; error: string };
 
-const ORDER = [...GTFS_TABLES.map((t) => `${t}.txt`)];
+const ORDER = GTFS_TABLES.map((t) => GTFS_SPEC[t].file);
+/** Files the engine reads: GTFS text files and `locations.geojson`. */
+const isFeedFile = (name: string) => /\.(txt|geojson)$/i.test(name) && !name.startsWith('.');
 
 function sortFiles(files: PickedFile[]): PickedFile[] {
   const rank = (name: string) => {
@@ -181,7 +183,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
         const picked: PickedFile[] = [];
         zip.forEach((path, entry) => {
           const base = path.split('/').pop() ?? '';
-          if (entry.dir || !/\.txt$/i.test(base) || base.startsWith('.')) return;
+          if (entry.dir || !isFeedFile(base)) return;
           picked.push({
             name: base,
             size:
@@ -232,7 +234,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
       void pickZip(zip);
       return;
     }
-    const txt = all.filter((f) => /\.txt$/i.test(f.name) && !f.name.startsWith('.'));
+    const txt = all.filter((f) => isFeedFile(f.name));
     const folder =
       (all[0] as File & { webkitRelativePath?: string })?.webkitRelativePath?.split('/')[0] ?? '';
     accept(

@@ -12,6 +12,8 @@ export interface NetworkMapProps {
   /** The visible lines; null means all. */
   visibleRouteIds?: Set<string> | null;
   showStops?: boolean;
+  /** Draws the flex zones (`data.zones`) under the lines. */
+  showZones?: boolean;
   /** Highlighted lines (the others fade out). */
   highlightRouteIds?: string[] | null;
   selectedStopId?: string | null;
@@ -34,6 +36,7 @@ export default function NetworkMap({
   label,
   visibleRouteIds = null,
   showStops = true,
+  showZones = true,
   highlightRouteIds = null,
   selectedStopId = null,
   onStopClick,
@@ -47,10 +50,12 @@ export default function NetworkMap({
   vehicleTooltip,
 }: NetworkMapProps) {
   const mapRef = useRef<L.Map | null>(null);
+  const zonesRef = useRef<L.LayerGroup | null>(null);
   const linesRef = useRef<L.LayerGroup | null>(null);
   const stopsRef = useRef<L.LayerGroup | null>(null);
   const vehiclesRef = useRef<L.LayerGroup | null>(null);
   // One renderer per layer and per map: a new one on every effect would leave a canvas at each zoom.
+  const zoneRendererRef = useRef<L.Canvas | null>(null);
   const lineRendererRef = useRef<L.Canvas | null>(null);
   const stopRendererRef = useRef<L.Canvas | null>(null);
   const vehicleRendererRef = useRef<L.Canvas | null>(null);
@@ -70,10 +75,12 @@ export default function NetworkMap({
 
   const onReady = (map: L.Map) => {
     mapRef.current = map;
+    zonesRef.current = L.layerGroup().addTo(map);
     linesRef.current = L.layerGroup().addTo(map);
     stopsRef.current = L.layerGroup().addTo(map);
     vehiclesRef.current = L.layerGroup().addTo(map);
     // Added up front so stops always sit above the lines, and vehicles above both.
+    zoneRendererRef.current = L.canvas({ padding: 0.5, tolerance: 2 }).addTo(map);
     lineRendererRef.current = L.canvas({ padding: 0.5, tolerance: 6 }).addTo(map);
     stopRendererRef.current = L.canvas({ padding: 0.5, tolerance: 4 }).addTo(map);
     vehicleRendererRef.current = L.canvas({ padding: 0.5, tolerance: 6 }).addTo(map);
@@ -84,6 +91,8 @@ export default function NetworkMap({
     setZoom(map.getZoom());
     return () => {
       mapRef.current = null;
+      zonesRef.current = null;
+      zoneRendererRef.current = null;
       linesRef.current = null;
       stopsRef.current = null;
       vehiclesRef.current = null;
@@ -92,6 +101,37 @@ export default function NetworkMap({
       vehicleRendererRef.current = null;
     };
   };
+
+  // Flex zones: a translucent area with an outline, under everything else.
+  useEffect(() => {
+    const group = zonesRef.current;
+    const renderer = zoneRendererRef.current;
+    if (!group || !renderer) return;
+    group.clearLayers();
+    if (!showZones || !data.zones?.length) return;
+    const palette = mapPalette();
+    for (const zone of data.zones) {
+      const layer = L.geoJSON(
+        { type: 'Feature', properties: {}, geometry: zone.geometry } as GeoJSON.Feature,
+        {
+          style: {
+            renderer,
+            color: palette.primary,
+            weight: 2,
+            dashArray: '6 4',
+            fillColor: palette.primary,
+            fillOpacity: 0.12,
+          },
+        }
+      ).addTo(group);
+      if (interactive) {
+        layer.bindTooltip(escapeHtml(zone.name ?? zone.locationId), {
+          sticky: true,
+          className: 'gtfs-map-tooltip',
+        });
+      }
+    }
+  }, [data.zones, showZones, theme, interactive]);
 
   // Lines: an outline in the surface colour underneath keeps them readable on any map.
   useEffect(() => {

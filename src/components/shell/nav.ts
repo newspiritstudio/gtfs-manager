@@ -8,6 +8,7 @@ import {
   MapPin,
   Radio,
   Route,
+  Ticket,
   ShieldCheck,
   Table2,
   WandSparkles,
@@ -20,6 +21,8 @@ export interface FeedNavItem {
   path: string;
   icon: LucideIcon;
   mobile?: boolean;
+  /** Shown only when the feed has fare files. */
+  requires?: 'fares';
 }
 
 export const FEED_NAV: FeedNavItem[] = [
@@ -28,6 +31,7 @@ export const FEED_NAV: FeedNavItem[] = [
   { key: 'routes', path: '/routes', icon: Route, mobile: true },
   { key: 'stops', path: '/stops', icon: MapPin, mobile: true },
   { key: 'calendar', path: '/calendar', icon: CalendarDays },
+  { key: 'fares', path: '/fares', icon: Ticket, requires: 'fares' },
   { key: 'validation', path: '/validation', icon: ShieldCheck },
   { key: 'realtime', path: '/realtime', icon: Radio },
   { key: 'data', path: '/data', icon: Table2 },

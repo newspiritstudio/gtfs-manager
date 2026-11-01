@@ -3,6 +3,7 @@
  * Changes go through the `/api` routes instead, which validate their input.
  */
 import { getRouteDetail, getServices, getStopDetail, getTripDetail } from './gtfs/details';
+import { feedHasFares, getFares } from './gtfs/fares';
 import { getFeed, importedCatalogFeeds, listFeedNames, listFeeds } from './gtfs/feeds';
 import { getNetwork } from './gtfs/network';
 import { ensureStats } from './gtfs/stats';
@@ -18,6 +19,8 @@ export const loaders = {
   getRouteDetail,
   getStopDetail,
   getTripDetail,
+  feedHasFares,
+  getFares,
 };
 
 export type Loaders = typeof loaders;

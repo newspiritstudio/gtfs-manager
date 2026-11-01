@@ -1,6 +1,7 @@
 import { motion as m } from 'motion/react';
 import { Link, usePathname } from '@/lib/router';
 import { useId } from 'react';
+import { useEngine } from '@/lib/engine';
 import { useI18n } from '@/lib/i18n/client';
 import { localizedPath, splitLocalePath } from '@/lib/i18n/paths';
 import { SPRING } from '@/lib/motion';
@@ -83,6 +84,7 @@ export function NavContent({ feeds, onNavigate }: { feeds: ShellFeed[]; onNaviga
   const feedId = feedIdFromPath(pathname);
   const currentFeed = feedId ? feeds.find((f) => f.id === feedId) : null;
   const activeItem = feedId ? activeFeedNav(pathname, feedId) : null;
+  const hasFares = useEngine('feedHasFares', feedId ?? '').data === true;
   const { path } = splitLocalePath(pathname);
 
   return (
@@ -96,7 +98,7 @@ export function NavContent({ feeds, onNavigate }: { feeds: ShellFeed[]; onNaviga
             {currentFeed.name}
           </p>
           <ul className="space-y-1">
-            {FEED_NAV.map((item) => (
+            {FEED_NAV.filter((item) => item.requires !== 'fares' || hasFares).map((item) => (
               <li key={item.key}>
                 <NavLink
                   href={`/feeds/${currentFeed.id}${item.path}`}

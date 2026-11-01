@@ -8,17 +8,28 @@
  * - `extra`: the columns the file carries that the specification does not know, as JSON. They are
  *   not lost: they are written back on export.
  *
+ * The schema grows by versions (`migrations.ts`): version 1 is the original eleven files, version 2
+ * the rest of the specification. A file or field says which version added it (`since` in the
+ * specification), and `versionStatements(version)` builds exactly what that version adds, so a
+ * new database and an upgraded one end up identical.
+ *
  * Times (`time`) are stored as seconds since midnight of the service day (they can go past
  * 24:00:00) and dates in GTFS format (YYYYMMDD), which sorts correctly as text. JSON columns hold
  * text; timestamps, ISO 8601 text; booleans, 0 or 1.
  */
-import { GTFS_SPEC, GTFS_TABLES, type GtfsFieldType, type GtfsTable } from '@shared/gtfs-spec';
+import {
+  GTFS_SPEC,
+  GTFS_TABLES,
+  type GtfsField,
+  type GtfsFieldType,
+  type GtfsTable,
+} from '@shared/gtfs-spec';
 
-/** Bump it when the schema changes: `migrate` runs every step after the stored one. */
-export const SCHEMA_VERSION = 1;
+/** Bump it when the schema changes (and add the step to `MIGRATIONS`). */
+export const SCHEMA_VERSION = 2;
 
-/** Columns that cannot be empty: the natural keys and what the queries rely on. */
-const NOT_NULL: Partial<Record<GtfsTable, readonly string[]>> = {
+/** Columns that cannot be empty in the original eleven tables: the natural keys and what the queries rely on. */
+const NOT_NULL_V1: Partial<Record<GtfsTable, readonly string[]>> = {
   stops: ['stop_id'],
   routes: ['route_id'],
   trips: ['route_id', 'service_id', 'trip_id'],
@@ -40,7 +51,29 @@ const NOT_NULL: Partial<Record<GtfsTable, readonly string[]>> = {
   frequencies: ['trip_id', 'start_time', 'end_time', 'headway_secs'],
 };
 
-const INDEXES: readonly string[] = [
+/**
+ * Version 2 lets a stop time point at a location group or a GeoJSON location instead of a stop:
+ * `stop_times.stop_id` can be empty from then on.
+ */
+const RELAXED_AT_2: Partial<Record<GtfsTable, readonly string[]>> = {
+  stop_times: ['stop_id'],
+};
+
+/** A table of version 2 or later cannot be stored without the required parts of its key. */
+function keyNotNull(table: GtfsTable): string[] {
+  const spec = GTFS_SPEC[table];
+  return spec.key.filter((k) => spec.fields.find((f) => f.name === k)?.required);
+}
+
+/** The NOT NULL columns of a table today (a row missing any cannot be stored). */
+export function notNullFor(table: GtfsTable): string[] {
+  const relaxed = new Set(RELAXED_AT_2[table] ?? []);
+  const base = GTFS_SPEC[table].since === 1 ? (NOT_NULL_V1[table] ?? []) : keyNotNull(table);
+  return base.filter((c) => !relaxed.has(c));
+}
+
+/** The indexes of the original tables, as version 1 created them. */
+const INDEXES_V1: readonly string[] = [
   `CREATE UNIQUE INDEX agency_key ON agency (feed_id, coalesce(agency_id, ''))`,
   `CREATE UNIQUE INDEX stops_key ON stops (feed_id, stop_id)`,
   `CREATE INDEX stops_parent ON stops (feed_id, parent_station)`,
@@ -61,15 +94,30 @@ const INDEXES: readonly string[] = [
   `CREATE UNIQUE INDEX extra_files_key ON extra_files (feed_id, file_name)`,
 ];
 
+/** Lookups of version 2 that the views rely on, besides the natural key of each new table. */
+const INDEXES_V2: readonly string[] = [
+  `CREATE INDEX pathways_from ON pathways (feed_id, from_stop_id)`,
+  `CREATE INDEX pathways_to ON pathways (feed_id, to_stop_id)`,
+  `CREATE INDEX stop_areas_stop ON stop_areas (feed_id, stop_id)`,
+  `CREATE INDEX stops_level ON stops (feed_id, level_id)`,
+  `CREATE INDEX stops_zone ON stops (feed_id, zone_id)`,
+];
+
 export function columnType(type: GtfsFieldType): 'INTEGER' | 'REAL' | 'TEXT' {
   if (type === 'int' || type === 'enum' || type === 'time') return 'INTEGER';
   if (type === 'float' || type === 'lat' || type === 'lon') return 'REAL';
   return 'TEXT';
 }
 
-function gtfsTable(table: GtfsTable): string {
-  const required = new Set(NOT_NULL[table] ?? []);
-  const columns = GTFS_SPEC[table].fields.map(
+/** The fields a version adds to a table: all of them in the version that creates it. */
+function fieldsOf(table: GtfsTable, version: number): GtfsField[] {
+  const spec = GTFS_SPEC[table];
+  return spec.fields.filter((f) => (f.since ?? spec.since) === version);
+}
+
+function createTable(table: GtfsTable, version: number): string {
+  const required = new Set(version === 1 ? (NOT_NULL_V1[table] ?? []) : notNullFor(table));
+  const columns = fieldsOf(table, version).map(
     (f) => `  ${f.name} ${columnType(f.type)}${required.has(f.name) ? ' NOT NULL' : ''}`
   );
   return `CREATE TABLE ${table} (
@@ -80,10 +128,15 @@ ${columns.join(',\n')},
 )`;
 }
 
-/** Every statement of the first version, in order. */
-export function schemaStatements(): string[] {
-  return [
-    `CREATE TABLE feeds (
+/** The unique index of a new table's natural key; an empty field counts as a value. */
+function keyIndex(table: GtfsTable): string {
+  const spec = GTFS_SPEC[table];
+  const required = new Set(notNullFor(table));
+  const columns = spec.key.map((k) => (required.has(k) ? k : `coalesce(${k}, '')`));
+  return `CREATE UNIQUE INDEX ${table}_key ON ${table} (feed_id, ${columns.join(', ')})`;
+}
+
+const FEEDS_TABLE = `CREATE TABLE feeds (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT,
@@ -95,14 +148,37 @@ export function schemaStatements(): string[] {
   stats_stale INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
-)`,
-    ...GTFS_TABLES.map(gtfsTable),
-    `CREATE TABLE extra_files (
+)`;
+
+const EXTRA_FILES_TABLE = `CREATE TABLE extra_files (
   id INTEGER PRIMARY KEY,
   feed_id TEXT NOT NULL REFERENCES feeds (id) ON DELETE CASCADE,
   file_name TEXT NOT NULL,
   content TEXT NOT NULL
-)`,
-    ...INDEXES,
-  ];
+)`;
+
+/**
+ * What a schema version adds, in order: new tables, new columns of tables that already existed,
+ * and indexes. (Relaxing a constraint, which SQLite cannot do with a statement, is a step of the
+ * migration itself.)
+ */
+export function versionStatements(version: number): string[] {
+  const created = GTFS_TABLES.filter((t) => GTFS_SPEC[t].since === version);
+  const altered = GTFS_TABLES.filter(
+    (t) => GTFS_SPEC[t].since < version && fieldsOf(t, version).length
+  );
+  const statements: string[] = [];
+  if (version === 1) statements.push(FEEDS_TABLE);
+  statements.push(...created.map((t) => createTable(t, version)));
+  if (version === 1) statements.push(EXTRA_FILES_TABLE);
+  for (const table of altered) {
+    for (const f of fieldsOf(table, version)) {
+      statements.push(`ALTER TABLE ${table} ADD COLUMN ${f.name} ${columnType(f.type)}`);
+    }
+  }
+  if (version === 1) statements.push(...INDEXES_V1);
+  if (version === 2) {
+    statements.push(...created.filter((t) => GTFS_SPEC[t].key.length).map(keyIndex), ...INDEXES_V2);
+  }
+  return statements;
 }

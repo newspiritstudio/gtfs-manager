@@ -21,7 +21,8 @@
     "skipToContent": "Skip to content",
     "catalog": "Catalogue",
     "home": "Home",
-    "realtime": "Realtime"
+    "realtime": "Realtime",
+    "fares": "Fares"
   },
   "theme": {
     "switch": "Theme: {theme}",
@@ -330,7 +331,28 @@
     "shapes": "Shapes",
     "frequencies": "Frequencies",
     "transfers": "Transfers",
-    "feed_info": "Feed info"
+    "feed_info": "Feed info",
+    "fare_attributes": "Fare attributes",
+    "fare_rules": "Fare rules",
+    "timeframes": "Timeframes",
+    "rider_categories": "Rider categories",
+    "fare_media": "Fare media",
+    "fare_products": "Fare products",
+    "fare_leg_rules": "Fare leg rules",
+    "fare_leg_join_rules": "Fare leg join rules",
+    "fare_transfer_rules": "Fare transfer rules",
+    "areas": "Areas",
+    "stop_areas": "Stop areas",
+    "networks": "Networks",
+    "route_networks": "Route networks",
+    "pathways": "Pathways",
+    "levels": "Levels",
+    "location_groups": "Location groups",
+    "location_group_stops": "Location group stops",
+    "locations": "Flex zones (GeoJSON)",
+    "booking_rules": "Booking rules",
+    "translations": "Translations",
+    "attributions": "Attributions"
   },
   "validation": {
     "subtitle": "GTFS specification and Google Transit validation checks across the whole feed.",
@@ -435,7 +457,23 @@
     "transferRouteTripMismatch": "Transfers whose trip is not on the given route",
     "transferDuplicate": "Duplicate transfers",
     "transferMinTimeWrongType": "Minimum transfer time on a type that does not use it",
-    "transferFrequencyTrip": "Transfers with approximate frequency-based trips"
+    "transferFrequencyTrip": "Transfers with approximate frequency-based trips",
+    "specRequired": "{file}: rows without “{field}”",
+    "specConditionRequired": "{file}: rows where “{field}” is required but empty",
+    "specConditionForbidden": "{file}: rows where “{field}” must be empty",
+    "specInvalidEnum": "{file}: “{field}” with an invalid value",
+    "specInvalidSign": "{file}: “{field}” with a number outside the allowed range",
+    "specUnknownReference": "{file}: “{field}” pointing to an ID that does not exist",
+    "specDuplicateKey": "{file}: duplicate rows (same primary key)",
+    "specInvalidCurrency": "{file}: “{field}” with a currency code that is not ISO 4217",
+    "specTimeOfDay": "{file}: times later than 24:00:00",
+    "specInvalidGeometry": "{file}: “{field}” with a geometry that is not a valid polygon",
+    "specNetworkConflict": "{file}: “{field}” while the feed has networks.txt or route_networks.txt",
+    "specLevelsRequired": "pathways.txt has elevators but {file} is missing",
+    "specIdNamespace": "IDs repeated across stops, location groups and flex zones",
+    "specAttributionTarget": "Attributions with more than one target (agency, route or trip)",
+    "specAttributionRole": "Attributions with no role (producer, operator or authority)",
+    "specSingleRow": "{file} has more than one row"
   },
   "data": {
     "subtitle": "Edit any feed file, row by row.",
@@ -615,7 +653,100 @@
     "feed_end_date": "Valid until",
     "feed_version": "Version",
     "feed_contact_email": "Contact email",
-    "feed_contact_url": "Contact URL"
+    "feed_contact_url": "Contact URL",
+    "cemv_support": "Contactless EMV support",
+    "stop_access": "Access from the street",
+    "cars_allowed": "Cars allowed",
+    "safe_duration_factor": "Safe duration factor",
+    "safe_duration_offset": "Safe duration offset (min)",
+    "location_group_id": "Location group",
+    "location_id": "Zone",
+    "start_pickup_drop_off_window": "Pickup/drop-off window start",
+    "end_pickup_drop_off_window": "Pickup/drop-off window end",
+    "pickup_booking_rule_id": "Pickup booking rule",
+    "drop_off_booking_rule_id": "Drop-off booking rule",
+    "fare_id": "Fare ID",
+    "price": "Price",
+    "currency_type": "Currency",
+    "payment_method": "Payment method",
+    "transfers": "Transfers allowed",
+    "transfer_duration": "Transfer duration",
+    "origin_id": "Origin zone",
+    "destination_id": "Destination zone",
+    "contains_id": "Zone passed through",
+    "timeframe_group_id": "Timeframe group",
+    "rider_category_id": "Rider category",
+    "rider_category_name": "Category name",
+    "is_default_fare_category": "Default category",
+    "eligibility_url": "Eligibility URL",
+    "fare_media_id": "Fare media",
+    "fare_media_name": "Media name",
+    "fare_media_type": "Media type",
+    "fare_product_id": "Fare product",
+    "fare_product_name": "Product name",
+    "amount": "Amount",
+    "currency": "Currency",
+    "leg_group_id": "Leg group",
+    "from_area_id": "From area",
+    "to_area_id": "To area",
+    "from_timeframe_group_id": "Origin timeframe group",
+    "to_timeframe_group_id": "Destination timeframe group",
+    "rule_priority": "Priority",
+    "from_network_id": "From network",
+    "to_network_id": "To network",
+    "from_leg_group_id": "From leg group",
+    "to_leg_group_id": "To leg group",
+    "transfer_count": "Transfer count",
+    "duration_limit": "Duration limit",
+    "duration_limit_type": "Duration limit type",
+    "fare_transfer_type": "Transfer cost",
+    "area_id": "Area",
+    "area_name": "Area name",
+    "network_name": "Network name",
+    "pathway_id": "Pathway ID",
+    "pathway_mode": "Pathway mode",
+    "is_bidirectional": "Direction",
+    "length": "Length (m)",
+    "traversal_time": "Traversal time (s)",
+    "stair_count": "Stair count",
+    "max_slope": "Maximum slope",
+    "min_width": "Minimum width (m)",
+    "signposted_as": "Signposted as",
+    "reversed_signposted_as": "Reversed signposted as",
+    "level_index": "Level index",
+    "level_name": "Level name",
+    "location_group_name": "Group name",
+    "geometry": "Geometry (GeoJSON)",
+    "booking_rule_id": "Booking rule",
+    "booking_type": "Booking type",
+    "prior_notice_duration_min": "Minimum notice (min)",
+    "prior_notice_duration_max": "Maximum notice (min)",
+    "prior_notice_last_day": "Last notice day",
+    "prior_notice_last_time": "Last notice time",
+    "prior_notice_start_day": "Notice start day",
+    "prior_notice_start_time": "Notice start time",
+    "prior_notice_service_id": "Notice service",
+    "message": "Message",
+    "pickup_message": "Pickup message",
+    "drop_off_message": "Drop-off message",
+    "phone_number": "Phone number",
+    "info_url": "Info URL",
+    "booking_url": "Booking URL",
+    "table_name": "File",
+    "field_name": "Field",
+    "language": "Language",
+    "translation": "Translation",
+    "record_id": "Record ID",
+    "record_sub_id": "Record sub-ID",
+    "field_value": "Original value",
+    "attribution_id": "Attribution ID",
+    "organization_name": "Organization",
+    "is_producer": "Data producer",
+    "is_operator": "Service operator",
+    "is_authority": "Authority",
+    "attribution_url": "Organization URL",
+    "attribution_email": "Organization email",
+    "attribution_phone": "Organization phone"
   },
   "enums": {
     "location_type": {
@@ -715,6 +846,81 @@
     "sunday": {
       "0": "0 · No service",
       "1": "1 · Service"
+    },
+    "cemv_support": {
+      "0": "0 · No information",
+      "1": "1 · Contactless supported",
+      "2": "2 · Not supported"
+    },
+    "stop_access": {
+      "0": "0 · Through the station",
+      "1": "1 · Directly from the street"
+    },
+    "cars_allowed": {
+      "0": "0 · No information",
+      "1": "1 · Cars allowed",
+      "2": "2 · Cars not allowed"
+    },
+    "payment_method": {
+      "0": "0 · On board",
+      "1": "1 · Before boarding"
+    },
+    "transfers": {
+      "0": "0 · None",
+      "1": "1 · Once",
+      "2": "2 · Twice"
+    },
+    "is_default_fare_category": {
+      "0": "0 · No",
+      "1": "1 · Yes"
+    },
+    "fare_media_type": {
+      "0": "0 · None",
+      "1": "1 · Paper ticket",
+      "2": "2 · Transit card",
+      "3": "3 · cEMV (contactless bank card)",
+      "4": "4 · Mobile app"
+    },
+    "duration_limit_type": {
+      "0": "0 · First departure to last arrival",
+      "1": "1 · First departure to last departure",
+      "2": "2 · First arrival to last departure",
+      "3": "3 · First arrival to last arrival"
+    },
+    "fare_transfer_type": {
+      "0": "0 · From leg + transfer (A + AB)",
+      "1": "1 · From leg + transfer + to leg (A + AB + B)",
+      "2": "2 · Transfer only (AB)"
+    },
+    "pathway_mode": {
+      "1": "1 · Walkway",
+      "2": "2 · Stairs",
+      "3": "3 · Moving sidewalk",
+      "4": "4 · Escalator",
+      "5": "5 · Elevator",
+      "6": "6 · Fare gate",
+      "7": "7 · Exit gate"
+    },
+    "is_bidirectional": {
+      "0": "0 · One way",
+      "1": "1 · Both ways"
+    },
+    "booking_type": {
+      "0": "0 · Real time",
+      "1": "1 · Same day, with advance notice",
+      "2": "2 · Prior days"
+    },
+    "is_producer": {
+      "0": "0 · No",
+      "1": "1 · Yes"
+    },
+    "is_operator": {
+      "0": "0 · No",
+      "1": "1 · Yes"
+    },
+    "is_authority": {
+      "0": "0 · No",
+      "1": "1 · Yes"
     }
   },
   "seo": {
@@ -945,6 +1151,57 @@
     "liveVehicles": {
       "one": "{count} live vehicle",
       "other": "{count} live vehicles"
+    }
+  },
+  "spec": {
+    "groups": {
+      "core": "Core data",
+      "fares": "Fares",
+      "stations": "Stations and accessibility",
+      "flex": "Demand-responsive transit (flex)",
+      "other": "Other"
+    },
+    "groupHints": {
+      "core": "Agencies, routes, stops, trips, schedules and calendar.",
+      "fares": "Prices, products, leg and transfer rules, and rider categories.",
+      "stations": "Levels and pathways inside stations.",
+      "flex": "Zones, location groups and booking rules of on-demand service.",
+      "other": "Translations, attributions and other optional files."
+    },
+    "jsonHint": "Enter valid JSON.",
+    "station": {
+      "title": "Station structure",
+      "summary": "{nodes} locations, {pathways} pathways and {levels} levels",
+      "noLevel": "No level",
+      "pathways": "Pathways",
+      "stairs": {
+        "one": "{count} step",
+        "other": "{count} steps"
+      }
+    },
+    "fares": {
+      "subtitle": "Fares as the feed files describe them (read only).",
+      "emptyTitle": "This feed has no fares",
+      "emptyDescription": "The fare files (fare_attributes.txt, fare_products.txt...) are missing or empty.",
+      "versionOne": "Fares v1",
+      "versionTwo": "Fares v2",
+      "products": "Products",
+      "legRules": "Leg prices",
+      "legRulesHint": "Each rule links a leg (network, origin and destination areas, timeframes) to the product that covers it; higher priority rules apply first.",
+      "joinRules": "Leg joins",
+      "transferRules": "Transfers",
+      "riderCategories": "Rider categories",
+      "media": "Fare media",
+      "timeframes": "Timeframes",
+      "attributes": "Fares (v1)",
+      "rules": "Fare rules (v1)",
+      "rulesHint": "A fare applies when a row matches the route or the origin, destination and passed-through zones.",
+      "truncated": "Showing {shown} of {total}",
+      "unlimited": "Unlimited"
+    },
+    "map": {
+      "showZones": "Show flex zones",
+      "hideZones": "Hide flex zones"
     }
   }
 }

@@ -3,7 +3,13 @@
  * feed has no shapes), stops with the routes that serve them, and the traffic volume. Computed once
  * per feed version and kept in process memory.
  */
-import type { NetworkData, NetworkLine, NetworkRoute, NetworkStop } from '@shared/contracts';
+import type {
+  NetworkData,
+  NetworkLine,
+  NetworkRoute,
+  NetworkStop,
+  NetworkZone,
+} from '@shared/contracts';
 import { routeColors, tidyRouteName } from '@shared/gtfs-values';
 import { getSql, parseJson } from '../db/client';
 
@@ -239,7 +245,7 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
   }));
 
   const valid = stops.filter((s) => !(Math.abs(s.lat) < 0.01 && Math.abs(s.lon) < 0.01));
-  const bbox: NetworkData['bbox'] = valid.length
+  let bbox: NetworkData['bbox'] = valid.length
     ? [
         Math.min(...valid.map((s) => s.lat)),
         Math.min(...valid.map((s) => s.lon)),
@@ -248,5 +254,60 @@ async function buildNetwork(feedId: string): Promise<NetworkData> {
       ]
     : null;
 
-  return { routes, lines, stops, bbox };
+  const zones = await loadZones(feedId);
+  if (zones.length) {
+    const zoneBox = zonesBbox(zones);
+    if (zoneBox) {
+      bbox = bbox
+        ? [
+            Math.min(bbox[0], zoneBox[0]),
+            Math.min(bbox[1], zoneBox[1]),
+            Math.max(bbox[2], zoneBox[2]),
+            Math.max(bbox[3], zoneBox[3]),
+          ]
+        : zoneBox;
+    }
+  }
+
+  return zones.length ? { routes, lines, stops, bbox, zones } : { routes, lines, stops, bbox };
+}
+
+/** The flex zones of `locations.geojson`; geometries that are not areas are left out. */
+async function loadZones(feedId: string): Promise<NetworkZone[]> {
+  const rows = await getSql()<
+    { locationId: string; name: string | null; geometry: string | null }[]
+  >`
+    SELECT location_id AS "locationId", stop_name AS name, geometry
+    FROM locations WHERE feed_id = ${feedId} ORDER BY id`;
+  const zones: NetworkZone[] = [];
+  for (const row of rows) {
+    const geometry = parseJson<NetworkZone['geometry']>(row.geometry);
+    if (geometry && (geometry.type === 'Polygon' || geometry.type === 'MultiPolygon')) {
+      zones.push({ locationId: row.locationId, name: row.name, geometry });
+    }
+  }
+  return zones;
+}
+
+/** [south, west, north, east] of every coordinate of the zones. */
+export function zonesBbox(zones: NetworkZone[]): [number, number, number, number] | null {
+  let box: [number, number, number, number] | null = null;
+  const visit = (node: unknown) => {
+    if (!Array.isArray(node)) return;
+    if (typeof node[0] === 'number' && typeof node[1] === 'number') {
+      const [lon, lat] = node as number[];
+      box = box
+        ? [
+            Math.min(box[0], lat),
+            Math.min(box[1], lon),
+            Math.max(box[2], lat),
+            Math.max(box[3], lon),
+          ]
+        : [lat, lon, lat, lon];
+      return;
+    }
+    for (const child of node) visit(child);
+  };
+  for (const zone of zones) visit(zone.geometry.coordinates);
+  return box;
 }
