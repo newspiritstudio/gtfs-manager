@@ -4,11 +4,11 @@
  * and then removes it with its dependents, or points the dependents at another row first
  * (`deleteWithDependents`).
  *
- * The references come from the specification (`GTFS_SPEC`: a field with `ref` points at the key
- * of another file), so a file the specification gains later is covered without touching this.
- * Two references the specification cannot say with one `ref` are added here: a trip's
- * `service_id` (it points at calendar or calendar_dates) and `shape_id` (the key of shapes is
- * the pair shape_id + sequence).
+ * The references come from the specification (`GTFS_SPEC`: a field with `refs` points at the key
+ * of one or several files, e.g. a trip's `service_id` is in calendar or calendar_dates), so a file
+ * the specification gains later is covered without touching this. Optional links (a stop's
+ * parent station, a trip's shape) are cleared instead of deleting the row; translations, which
+ * point at a record by name and id, are removed with their record.
  *
  * The search works with conditions on each table (`id IN (...)`, `field IN (keys)`) instead of
  * lists of rows, so deleting a route with half a million stop times never loads them.
@@ -38,64 +38,54 @@ interface Reference {
   detach: boolean;
 }
 
-/** References the specification does not express with one `ref`. */
-const EXTRA_REFERENCES: { table: GtfsTable; field: string; target: GtfsTable }[] = [
-  { table: 'trips', field: 'service_id', target: 'calendar' },
-  { table: 'trips', field: 'shape_id', target: 'shapes' },
-];
-
-/** Files that define the same key together: a service is in calendar and/or calendar_dates. */
-const KEY_GROUPS: GtfsTable[][] = [['calendar', 'calendar_dates']];
-
 /** Optional references where the dependent row stays and just loses the link. */
-const DETACH = new Set(['trips.shape_id', 'stops.parent_station']);
+const DETACH = new Set([
+  'trips.shape_id',
+  'stops.parent_station',
+  'stops.level_id',
+  'stop_times.pickup_booking_rule_id',
+  'stop_times.drop_off_booking_rule_id',
+  'booking_rules.prior_notice_service_id',
+]);
 
 /** Rows whose key cannot be replaced by another one (a trip's stop times are its own). */
 const NO_REASSIGN = new Set<GtfsTable>(['trips']);
 
-function refList(raw: unknown): { table: string; field?: string }[] {
-  const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
-  return list
-    .map((r) => (typeof r === 'string' ? { table: r } : (r as { table?: string; field?: string })))
-    .filter((r): r is { table: string; field?: string } => typeof r?.table === 'string');
-}
+/** Files that define the same key together: a service is in calendar and/or calendar_dates. */
+const KEY_GROUPS: GtfsTable[][] = [['calendar', 'calendar_dates']];
 
 function groupOf(table: GtfsTable): GtfsTable[] {
   return KEY_GROUPS.find((g) => g.includes(table)) ?? [table];
 }
 
-/** Every reference between the files, read from the specification (and the extras above). */
+/** Every reference between the files, read from the specification . */
 export function referencesFromSpec(): Reference[] {
   const refs = new Map<string, Reference>();
   const add = (table: GtfsTable, field: string, target: string, key?: string) => {
     if (!isGtfsTable(target) || !(target in GTFS_SPEC)) return;
     const targetKey = key ?? GTFS_SPEC[target].key[0];
     if (!targetKey) return;
-    const targets = groupOf(target).filter((t) =>
-      GTFS_SPEC[t].fields.some((f) => f.name === targetKey)
-    );
     const id = `${table}.${field}`;
     const hit = refs.get(id);
+    // A field may point at several tables (service_id: calendar or calendar_dates).
     if (hit) {
-      for (const t of targets) if (!hit.targets.includes(t)) hit.targets.push(t);
+      if (hit.targetKey === targetKey && !hit.targets.includes(target)) hit.targets.push(target);
       return;
     }
-    refs.set(id, { table, field, targets: [...targets], targetKey, detach: DETACH.has(id) });
+    refs.set(id, { table, field, targets: [target], targetKey, detach: DETACH.has(id) });
   };
   for (const table of GTFS_TABLES) {
-    const spec = GTFS_SPEC[table];
-    if (!spec) continue;
-    for (const field of spec.fields) {
-      for (const ref of refList((field as { ref?: unknown }).ref))
-        add(table, field.name, ref.table, ref.field);
-    }
+    for (const field of GTFS_SPEC[table].fields)
+      for (const ref of field.refs ?? []) add(table, field.name, ref.table, ref.field);
   }
-  for (const extra of EXTRA_REFERENCES) add(extra.table, extra.field, extra.target);
   return [...refs.values()];
 }
 
 type Condition =
-  { kind: 'ids'; ids: number[] } | { kind: 'values'; field: string; values: string[] };
+  | { kind: 'ids'; ids: number[] }
+  | { kind: 'values'; field: string; values: string[] }
+  /** Translations of the records of one table (`table_name` + `record_id`). */
+  | { kind: 'translations'; table: string; values: string[] };
 
 function whereOf(conditions: Condition[]): { text: string; params: string[] } {
   if (!conditions.length) return { text: '0', params: [] };
@@ -104,7 +94,9 @@ function whereOf(conditions: Condition[]): { text: string; params: string[] } {
       .map((c) =>
         c.kind === 'ids'
           ? 'id IN (SELECT value FROM json_each(?))'
-          : `${ident(c.field)} IN (SELECT value FROM json_each(?))`
+          : c.kind === 'translations'
+            ? `(table_name = '${c.table.replace(/'/g, "''")}' AND record_id IN (SELECT value FROM json_each(?)))`
+            : `${ident(c.field)} IN (SELECT value FROM json_each(?))`
       )
       .join(' OR '),
     params: conditions.map((c) => JSON.stringify(c.kind === 'ids' ? c.ids : c.values)),
@@ -226,7 +218,30 @@ async function closure(sql: Sql, feedId: string, seeds: DeleteSeed[]): Promise<C
     }
     if (!changed) break;
   }
+  await addTranslations(sql, feedId, sets);
   return { seeds: seedSets, sets, detach, firstLevel };
+}
+
+/**
+ * Translations point at a record by table name and id, not through a foreign key: the ones of a
+ * removed record go with it (a trip's go for `trips` and, per stop time, `stop_times`).
+ */
+async function addTranslations(
+  sql: Sql,
+  feedId: string,
+  sets: Map<GtfsTable, Condition[]>
+): Promise<void> {
+  const found: Condition[] = [];
+  for (const [table, conditions] of [...sets]) {
+    if (table === 'translations' || table === 'stop_times') continue;
+    const spec = GTFS_SPEC[table];
+    if (spec.key.length !== 1) continue;
+    const keys = await keysOf(sql, feedId, table, spec.key[0], conditions);
+    if (!keys.length) continue;
+    found.push({ kind: 'translations', table, values: keys });
+    if (table === 'trips') found.push({ kind: 'translations', table: 'stop_times', values: keys });
+  }
+  if (found.length) sets.set('translations', [...(sets.get('translations') ?? []), ...found]);
 }
 
 async function count(
