@@ -21,7 +21,8 @@
     "skipToContent": "Vai al contenuto",
     "catalog": "Catalogo",
     "home": "Home",
-    "realtime": "Tempo reale"
+    "realtime": "Tempo reale",
+    "history": "Cronologia"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -945,6 +946,85 @@
     "liveVehicles": {
       "one": "{count} veicolo in diretta",
       "other": "{count} veicoli in diretta"
+    }
+  },
+  "safety": {
+    "undo": "Annulla",
+    "redo": "Ripristina",
+    "undone": "Annullato: {step}",
+    "redone": "Ripristinato: {step}",
+    "stale": "La cronologia è cambiata. Riprova.",
+    "unexported": "Modifiche non esportate",
+    "steps": {
+      "edit": "Modifica",
+      "row": {
+        "create": "Riga creata in {table}",
+        "createNamed": "«{name}» creato in {table}",
+        "update": "Riga modificata in {table}",
+        "updateNamed": "«{name}» modificato in {table}",
+        "delete": "Riga eliminata da {table}",
+        "deleteNamed": "«{name}» eliminato da {table}"
+      },
+      "feed": {
+        "update": "Dati del feed modificati"
+      },
+      "trips": {
+        "generate": "Create {trips} corse e {stopTimes} orari alle fermate"
+      }
+    },
+    "history": {
+      "title": "Cronologia",
+      "subtitle": "Ogni modifica viene salvata e può essere annullata, anche dopo aver chiuso la scheda.",
+      "sinceImport": "Modifiche dall'importazione",
+      "exportedAt": "Esportato {time}",
+      "noChanges": "Nessuna modifica da esportare",
+      "exportReminder": "Alcune modifiche non sono ancora state esportate. Esporta il feed per avere una copia fuori dal browser.",
+      "steps": "Passaggi",
+      "emptyTitle": "Ancora nessuna modifica",
+      "emptyDescription": "Quando modifichi righe o generi corse, le vedrai qui e potrai annullarle.",
+      "baseline": "Feed com'era all'inizio",
+      "baselineHint": "Punto di partenza della cronologia",
+      "pruned": {
+        "one": "{count} modifica precedente non può più essere annullata",
+        "other": "{count} modifiche precedenti non possono più essere annullate"
+      },
+      "current": "Attuale",
+      "undoneTag": "Annullato",
+      "goHere": "Torna qui",
+      "rows": {
+        "one": "{count} riga",
+        "other": "{count} righe"
+      },
+      "clear": "Cancella la cronologia",
+      "clearTitle": "Cancellare la cronologia?",
+      "clearConfirm": "Non potrai più annullare le modifiche fatte finora. I dati del feed non cambiano.",
+      "cleared": "Cronologia cancellata",
+      "restored": "Feed ripristinato"
+    },
+    "storage": {
+      "title": "Archiviazione del browser",
+      "usage": "{used} di {quota}",
+      "persistent": "Protetto dalla pulizia automatica",
+      "notPersistent": "Non protetto",
+      "notPersistentHint": "Quando lo spazio scarseggia, il browser può eliminare i feed. Chiedi la protezione o esportali.",
+      "protect": "Proteggi",
+      "granted": "Archiviazione protetta",
+      "denied": "Il browser non ha concesso la protezione. Riprova più tardi o esporta i feed.",
+      "memory": "In questo browser non si può salvare nulla: i feed andranno persi alla chiusura della scheda."
+    },
+    "tabs": {
+      "busyTitle": "I feed sono aperti in un'altra scheda",
+      "busyHint": "Solo una scheda alla volta può lavorare con i feed. Usa questa e l'altra si fermerà.",
+      "releasedTitle": "I feed sono stati aperti in un'altra scheda",
+      "releasedHint": "Questa scheda ha ceduto i feed. Usala qui per riaverli.",
+      "waiting": "In attesa che l'altra scheda li rilasci…",
+      "failed": "Impossibile ottenere i feed. Chiudi l'altra scheda e riprova.",
+      "useHere": "Usa qui"
+    },
+    "pwa": {
+      "updateAvailable": "Nuova versione disponibile",
+      "reload": "Ricarica",
+      "offlineReady": "L'app ora funziona offline"
     }
   }
 }

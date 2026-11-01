@@ -5,13 +5,21 @@ import { useI18n } from '@/lib/i18n/client';
 import { SPRING } from '@/lib/motion';
 
 type ToastTone = 'success' | 'error';
+/** A button in the toast (an "Undo"); the toast stays a little longer so it can be reached. */
+export interface ToastAction {
+  label: string;
+  onClick: () => void;
+}
 interface ToastItem {
   id: number;
   tone: ToastTone;
   message: string;
+  action?: ToastAction;
 }
 
-const ToastContext = createContext<(message: string, tone?: ToastTone) => void>(() => {});
+const ToastContext = createContext<
+  (message: string, tone?: ToastTone, action?: ToastAction) => void
+>(() => {});
 
 export function useToast() {
   return useContext(ToastContext);
@@ -26,13 +34,17 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     []
   );
   const show = useCallback(
-    (message: string, tone: ToastTone = 'success') => {
+    (message: string, tone: ToastTone = 'success', action?: ToastAction) => {
       const id = Date.now() + Math.random();
+      // A toast with an action replaces the previous one with an action: only the latest step
+      // can be undone from it.
       setItems((list) =>
-        list.some((t) => t.message === message) ? list : [...list, { id, tone, message }]
+        list.some((t) => t.message === message && !action)
+          ? list
+          : [...(action ? list.filter((t) => !t.action) : list), { id, tone, message, action }]
       );
       // An error is read more slowly than a confirmation: it stays twice as long.
-      setTimeout(() => dismiss(id), tone === 'error' ? 10000 : 5000);
+      setTimeout(() => dismiss(id), tone === 'error' ? 10000 : action ? 8000 : 5000);
     },
     [dismiss]
   );
@@ -60,6 +72,18 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 <CheckCircle2 className="size-5 shrink-0 text-success" />
               )}
               <span className="flex-1">{t.message}</span>
+              {t.action ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    t.action?.onClick();
+                    dismiss(t.id);
+                  }}
+                  className="inline-flex h-8 items-center rounded-full px-3 text-label-large text-primary state-layer"
+                >
+                  {t.action.label}
+                </button>
+              ) : null}
               <button
                 type="button"
                 aria-label={tr('common.close')}

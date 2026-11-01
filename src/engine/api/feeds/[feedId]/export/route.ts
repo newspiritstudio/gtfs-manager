@@ -1,4 +1,5 @@
 import { exportFeedZip } from '@/engine/gtfs/export';
+import { markExported } from '@/engine/history/history';
 import { requireFeed, type RouteContext } from '@/engine/api/http';
 
 export async function GET(request: Request, { params }: RouteContext<{ feedId: string }>) {
@@ -6,6 +7,7 @@ export async function GET(request: Request, { params }: RouteContext<{ feedId: s
   const { feed, response } = await requireFeed(feedId);
   if (response) return response;
   const zip = await exportFeedZip(feedId, request.signal);
+  await markExported(feedId);
   const slug =
     feed.name
       .normalize('NFD')

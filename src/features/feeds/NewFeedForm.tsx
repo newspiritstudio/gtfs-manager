@@ -26,6 +26,7 @@ import { useToast } from '@/components/ui/Toast';
 import { apiFetch, ApiError, uploadWithProgress } from '@/lib/api';
 import { downloadCatalogZip } from '@/lib/catalog';
 import { formatNumber } from '@/lib/i18n/format';
+import { requestPersistenceOnce } from '@/lib/storage';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
 
@@ -243,6 +244,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
 
   async function runImport() {
     if (!files.length || !name.trim()) return;
+    requestPersistenceOnce();
     setPhase('uploading');
     let feedId = createdFeed.current;
     if (!feedId) {
@@ -304,6 +306,7 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
 
   async function createBlank() {
     if (!name.trim()) return;
+    requestPersistenceOnce();
     setPhase('uploading');
     try {
       const { id } = await apiFetch<{ id: string }>('/api/feeds', {

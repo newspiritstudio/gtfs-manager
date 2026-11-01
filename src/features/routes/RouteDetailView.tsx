@@ -9,7 +9,7 @@ import {
   Table2,
   TrainFront,
 } from 'lucide-react';
-import { Link, useRouter } from '@/lib/router';
+import { Link, useRefreshKey, useRouter } from '@/lib/router';
 import { useEffect, useId, useMemo, useState, useSyncExternalStore } from 'react';
 import type { DayTrip, PatternStop, RouteVariant } from '@shared/contracts';
 import { transitModeForRouteType } from '@shared/gtfs-spec';
@@ -78,6 +78,8 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
   const [activeStop, setActiveStop] = useState<string | null>(null);
   const pattern = patterns.find((p) => p.key === patternKey) ?? patterns[0];
 
+  // Moves after an undo or redo, so the departures shown match the database.
+  const dataKey = useRefreshKey();
   useEffect(() => {
     if (!date) {
       setAllTrips([]);
@@ -98,7 +100,7 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
     return () => {
       alive = false;
     };
-  }, [feedId, route.routeId, date, attempt, variants.length]);
+  }, [feedId, route.routeId, date, attempt, variants.length, dataKey]);
   const trips = useMemo(
     () => allTrips?.filter((tr) => !tr.routeId || tr.routeId === route.routeId) ?? null,
     [allTrips, route.routeId]

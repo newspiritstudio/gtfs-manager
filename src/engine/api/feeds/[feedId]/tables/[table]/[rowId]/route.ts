@@ -1,6 +1,8 @@
 import { rowValuesSchema } from '@shared/contracts';
 import { isGtfsTable } from '@shared/gtfs-spec';
 import { deleteRow, RowValidationError, updateRow } from '@/engine/gtfs/tables';
+import { withHistory } from '@/engine/history/history';
+import { rowName, rowStep } from '@/engine/history/labels';
 import { jsonError, parseBody, requireFeed, type RouteContext } from '@/engine/api/http';
 
 type Params = { feedId: string; table: string; rowId: string };
@@ -22,7 +24,8 @@ export async function PATCH(request: Request, { params }: RouteContext<Params>) 
   const body = await parseBody(request, rowValuesSchema);
   if (body.response) return body.response;
   try {
-    await updateRow(r.feedId, r.table, r.id, body.data);
+    const step = rowStep('row.update', r.table, await rowName(r.feedId, r.table, r.id));
+    await withHistory(r.feedId, step, () => updateRow(r.feedId, r.table, r.id, body.data));
     return Response.json({ ok: true });
   } catch (error) {
     if (error instanceof RowValidationError) return jsonError(422, 'invalidRow', error.fields);
@@ -35,6 +38,7 @@ export async function PATCH(request: Request, { params }: RouteContext<Params>) 
 export async function DELETE(_request: Request, { params }: RouteContext<Params>) {
   const r = await resolve(params);
   if (r.response) return r.response;
-  await deleteRow(r.feedId, r.table, r.id);
+  const step = rowStep('row.delete', r.table, await rowName(r.feedId, r.table, r.id));
+  await withHistory(r.feedId, step, () => deleteRow(r.feedId, r.table, r.id));
   return new Response(null, { status: 204 });
 }

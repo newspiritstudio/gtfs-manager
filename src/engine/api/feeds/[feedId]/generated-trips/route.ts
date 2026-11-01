@@ -1,5 +1,6 @@
 import { tripGeneratorSchema } from '@shared/contracts';
 import { GeneratorError, generateTrips } from '@/engine/gtfs/generator';
+import { withHistory } from '@/engine/history/history';
 import { jsonError, parseBody, requireFeed, type RouteContext } from '@/engine/api/http';
 
 export async function POST(request: Request, { params }: RouteContext<{ feedId: string }>) {
@@ -9,7 +10,15 @@ export async function POST(request: Request, { params }: RouteContext<{ feedId: 
   const body = await parseBody(request, tripGeneratorSchema);
   if (body.response) return body.response;
   try {
-    return Response.json(await generateTrips(feedId, body.data), { status: 201 });
+    const result = await withHistory(
+      feedId,
+      (r) => ({
+        label: 'trips.generate',
+        params: { routeId: body.data.routeId, trips: r.trips, stopTimes: r.stopTimes },
+      }),
+      () => generateTrips(feedId, body.data)
+    );
+    return Response.json(result, { status: 201 });
   } catch (error) {
     if (error instanceof GeneratorError) return jsonError(422, error.code);
     throw error;

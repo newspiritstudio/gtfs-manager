@@ -2,12 +2,13 @@
  * The page's side of the engine (`src/engine/worker.ts`): one worker per tab, a `fetch` for the
  * local `/api/...` routes and `useEngine` for page data.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { LoaderName, Loaders } from '@/engine/loaders';
 import type { EngineReply, EngineRequest, EngineStorage } from '@/engine/protocol';
-import { useRefreshKey } from './router';
+import { announceStep } from './historyEvents';
+import { refreshData, useRefreshKey } from './router';
 
-type Pending = { resolve: (reply: EngineReply) => void };
+type Pending = { resolve: (reply: Exclude<EngineReply, { kind: 'event' }>) => void };
 
 let worker: Worker | null = null;
 let nextId = 1;
@@ -17,9 +18,17 @@ function engine(): Worker {
   if (worker) return worker;
   worker = new Worker(new URL('../engine/worker.ts', import.meta.url), { type: 'module' });
   worker.onmessage = ({ data }: MessageEvent<EngineReply>) => {
+    if (data.kind === 'event') return setStorage(data.storage);
     pending.get(data.id)?.resolve(data);
     pending.delete(data.id);
   };
+  // Let the files go now, not when the browser gets to stopping the worker: the page that
+  // replaces this one (a reload) opens the database right away.
+  addEventListener('pagehide', () => worker?.terminate());
+  // A page restored from the back/forward cache has no worker any more.
+  addEventListener('pageshow', (event) => {
+    if ((event as PageTransitionEvent).persisted) location.reload();
+  });
   return worker;
 }
 
@@ -29,7 +38,7 @@ type Message = EngineRequest extends infer R
     : never
   : never;
 
-function send(message: Message): Promise<EngineReply> {
+function send(message: Message): Promise<Exclude<EngineReply, { kind: 'event' }>> {
   const id = nextId++;
   return new Promise((resolve) => {
     pending.set(id, { resolve });
@@ -37,7 +46,7 @@ function send(message: Message): Promise<EngineReply> {
   });
 }
 
-function asError(reply: Extract<EngineReply, { kind: 'error' }>): Error {
+function asError(reply: { error: { name: string; message: string } }): Error {
   const error = new Error(reply.error.message);
   error.name = reply.error.name;
   return error;
@@ -58,7 +67,9 @@ export async function localFetch(url: string, init: RequestInit = {}): Promise<R
   });
   if (reply.kind === 'error') throw asError(reply);
   if (reply.kind !== 'response') throw new Error('Unexpected engine reply');
-  return new Response(reply.body, { status: reply.status, headers: reply.headers });
+  const response = new Response(reply.body, { status: reply.status, headers: reply.headers });
+  if (response.ok) announceStep(response.headers, url);
+  return response;
 }
 
 /** Calls one of the engine's read functions. */
@@ -72,27 +83,47 @@ export async function callEngine<N extends LoaderName>(
   return reply.value as Awaited<ReturnType<Loaders[N]>>;
 }
 
+/* Where the database lives (see `EngineStorage`): the worker reports every change. */
+let storageState: EngineStorage | null = null;
+const storageListeners = new Set<() => void>();
+
+function setStorage(storage: EngineStorage) {
+  const wasUnavailable = storageState === 'busy' || storageState === 'released';
+  storageState = storage;
+  storageListeners.forEach((listener) => listener());
+  // The database came back to this tab: what the pages loaded while it was away is stale.
+  if (wasUnavailable && (storage === 'opfs' || storage === 'memory')) refreshData();
+}
+
 /** Where the database lives (see `EngineStorage`); it waits for the database to open. */
 export async function engineStatus(): Promise<{ storage: EngineStorage }> {
   const reply = await send({ kind: 'status' });
   if (reply.kind === 'error') throw asError(reply);
-  return (reply as { value: { storage: EngineStorage } }).value;
+  const status = (reply as { value: { storage: EngineStorage } }).value;
+  if (storageState === null) setStorage(status.storage);
+  return status;
 }
 
-/** The database's storage once it has opened; `null` until then. */
+/** "Use here": asks the tab that holds the database to let go of it, and opens it here. */
+export async function takeOverDatabase(): Promise<void> {
+  const reply = await send({ kind: 'takeover' });
+  if (reply.kind === 'error') throw asError(reply);
+  setStorage((reply as { value: { storage: EngineStorage } }).value.storage);
+}
+
+/** The database's storage once it has opened; `null` until then. It follows tab handovers. */
 export function useEngineStorage(): EngineStorage | null {
-  const [storage, setStorage] = useState<EngineStorage | null>(null);
   useEffect(() => {
-    let alive = true;
-    engineStatus().then(
-      (status) => alive && setStorage(status.storage),
-      () => {}
-    );
-    return () => {
-      alive = false;
-    };
+    engineStatus().catch(() => {});
   }, []);
-  return storage;
+  return useSyncExternalStore(
+    (listener) => {
+      storageListeners.add(listener);
+      return () => storageListeners.delete(listener);
+    },
+    () => storageState,
+    () => null
+  );
 }
 
 export type EngineState<T> =

@@ -5,6 +5,7 @@ import { useI18n } from '@/lib/i18n/client';
 import { splitLocalePath } from '@/lib/i18n/paths';
 import { useCrumbLabel } from './CrumbLabel';
 import { activeFeedNav, feedIdFromPath } from './nav';
+import UndoRedoButtons from '@/features/safety/UndoRedoButtons';
 import ExportButton from './ExportButton';
 import { LanguageSelect, ThemeToggle } from './Preferences';
 import type { ShellFeed } from './SideNav';
@@ -87,6 +88,7 @@ export default function TopBar({ feeds }: { feeds: ShellFeed[] }) {
         </ol>
       </nav>
       <div className="flex items-center gap-1">
+        {feedId ? <UndoRedoButtons /> : null}
         {feedId ? <ExportButton feedId={feedId} /> : null}
         <LanguageSelect />
         <ThemeToggle />

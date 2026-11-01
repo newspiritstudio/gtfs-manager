@@ -21,7 +21,8 @@
     "skipToContent": "跳到正文",
     "catalog": "目录",
     "home": "首页",
-    "realtime": "实时"
+    "realtime": "实时",
+    "history": "历史记录"
   },
   "theme": {
     "switch": "主题：{theme}",
@@ -923,6 +924,83 @@
     },
     "liveVehicles": {
       "other": "{count} 辆实时车辆"
+    }
+  },
+  "safety": {
+    "undo": "撤销",
+    "redo": "重做",
+    "undone": "已撤销:{step}",
+    "redone": "已重做:{step}",
+    "stale": "历史记录已变化,请重试。",
+    "unexported": "未导出的更改",
+    "steps": {
+      "edit": "编辑",
+      "row": {
+        "create": "已在 {table} 中创建一行",
+        "createNamed": "已在 {table} 中创建“{name}”",
+        "update": "已修改 {table} 中的一行",
+        "updateNamed": "已修改 {table} 中的“{name}”",
+        "delete": "已从 {table} 中删除一行",
+        "deleteNamed": "已从 {table} 中删除“{name}”"
+      },
+      "feed": {
+        "update": "已修改数据源信息"
+      },
+      "trips": {
+        "generate": "已创建 {trips} 个车次和 {stopTimes} 条停靠时间"
+      }
+    },
+    "history": {
+      "title": "历史记录",
+      "subtitle": "你所做的每项更改都会保存,即使关闭标签页也可以撤销。",
+      "sinceImport": "导入后的更改",
+      "exportedAt": "{time}导出",
+      "noChanges": "没有待导出的更改",
+      "exportReminder": "有些更改尚未导出。请导出数据源,在浏览器之外保留一份副本。",
+      "steps": "步骤",
+      "emptyTitle": "还没有更改",
+      "emptyDescription": "编辑行或生成班次后,更改会显示在这里,并可撤销。",
+      "baseline": "最初的数据源",
+      "baselineHint": "历史记录的起点",
+      "pruned": {
+        "other": "更早的 {count} 项更改已无法撤销"
+      },
+      "current": "当前",
+      "undoneTag": "已撤销",
+      "goHere": "回到这里",
+      "rows": {
+        "other": "{count} 行"
+      },
+      "clear": "清除历史记录",
+      "clearTitle": "清除历史记录?",
+      "clearConfirm": "之前所做的更改将无法再撤销。数据源本身不会改变。",
+      "cleared": "历史记录已清除",
+      "restored": "数据源已恢复"
+    },
+    "storage": {
+      "title": "浏览器存储",
+      "usage": "已用 {used},共 {quota}",
+      "persistent": "已受保护,不会被自动清理",
+      "notPersistent": "未受保护",
+      "notPersistentHint": "存储空间不足时,浏览器可能会删除数据源。请申请保护或导出数据源。",
+      "protect": "申请保护",
+      "granted": "存储已受保护",
+      "denied": "浏览器未授予保护。请稍后重试,或导出数据源。",
+      "memory": "此浏览器无法保存数据:关闭标签页后数据源将丢失。"
+    },
+    "tabs": {
+      "busyTitle": "数据源已在另一个标签页中打开",
+      "busyHint": "同一时间只有一个标签页可以使用数据源。在此处使用后,另一个标签页将停止。",
+      "releasedTitle": "数据源已在另一个标签页中打开",
+      "releasedHint": "此标签页已让出数据源。在此处使用即可取回。",
+      "waiting": "正在等待另一个标签页释放…",
+      "failed": "无法获取数据源。请关闭另一个标签页后重试。",
+      "useHere": "在此使用"
+    },
+    "pwa": {
+      "updateAvailable": "有新版本可用",
+      "reload": "重新加载",
+      "offlineReady": "应用现已可离线使用"
     }
   }
 }

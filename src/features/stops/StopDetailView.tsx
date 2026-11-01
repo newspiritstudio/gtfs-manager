@@ -7,7 +7,7 @@ import {
   MapPin,
   Navigation,
 } from 'lucide-react';
-import { Link, useRouter } from '@/lib/router';
+import { Link, useRefreshKey, useRouter } from '@/lib/router';
 import { useEffect, useMemo, useState } from 'react';
 import type { StopDeparture } from '@shared/contracts';
 import { formatClock } from '@shared/gtfs-values';
@@ -53,6 +53,8 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
     [stop.stopId, children]
   );
 
+  // Moves after an undo or redo, so the departures shown match the database.
+  const dataKey = useRefreshKey();
   useEffect(() => {
     if (!date) {
       setDepartures([]);
@@ -73,7 +75,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
     return () => {
       alive = false;
     };
-  }, [feedId, stop.stopId, date, attempt]);
+  }, [feedId, stop.stopId, date, attempt, dataKey]);
 
   const groupOf = useMemo(() => {
     const m = new Map<string, string>();

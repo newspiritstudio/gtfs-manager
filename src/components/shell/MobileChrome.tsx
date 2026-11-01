@@ -6,6 +6,7 @@ import IconButton from '@/components/ui/IconButton';
 import { useI18n } from '@/lib/i18n/client';
 import { SPRING } from '@/lib/motion';
 import { cn } from '@/lib/utils';
+import UndoRedoButtons from '@/features/safety/UndoRedoButtons';
 import ExportButton from './ExportButton';
 import BrandMark from './BrandMark';
 import StudioByline from './StudioByline';
@@ -70,6 +71,7 @@ export function MobileHeader({ feeds }: { feeds: ShellFeed[] }) {
             <StudioByline />
           </div>
         )}
+        {feedId ? <UndoRedoButtons /> : null}
         <ThemeToggle />
       </header>
       <AnimatePresence>

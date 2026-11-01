@@ -21,7 +21,8 @@
     "skipToContent": "Aller au contenu",
     "catalog": "Catalogue",
     "home": "Accueil",
-    "realtime": "Temps réel"
+    "realtime": "Temps réel",
+    "history": "Historique"
   },
   "theme": {
     "switch": "Thème : {theme}",
@@ -945,6 +946,85 @@
     "liveVehicles": {
       "one": "{count} véhicule en direct",
       "other": "{count} véhicules en direct"
+    }
+  },
+  "safety": {
+    "undo": "Annuler",
+    "redo": "Rétablir",
+    "undone": "Annulé : {step}",
+    "redone": "Rétabli : {step}",
+    "stale": "L'historique a changé. Réessayez.",
+    "unexported": "Modifications non exportées",
+    "steps": {
+      "edit": "Modification",
+      "row": {
+        "create": "Ligne créée dans {table}",
+        "createNamed": "« {name} » créé dans {table}",
+        "update": "Ligne modifiée dans {table}",
+        "updateNamed": "« {name} » modifié dans {table}",
+        "delete": "Ligne supprimée de {table}",
+        "deleteNamed": "« {name} » supprimé de {table}"
+      },
+      "feed": {
+        "update": "Informations du feed modifiées"
+      },
+      "trips": {
+        "generate": "{trips} courses et {stopTimes} horaires aux arrêts créés"
+      }
+    },
+    "history": {
+      "title": "Historique",
+      "subtitle": "Chaque modification est enregistrée et peut être annulée, même après la fermeture de l'onglet.",
+      "sinceImport": "Modifications depuis l'import",
+      "exportedAt": "Exporté {time}",
+      "noChanges": "Aucune modification à exporter",
+      "exportReminder": "Certaines modifications n'ont pas encore été exportées. Exportez le feed pour en garder une copie hors du navigateur.",
+      "steps": "Étapes",
+      "emptyTitle": "Aucune modification pour l'instant",
+      "emptyDescription": "Quand vous modifiez des lignes ou générez des courses, elles apparaissent ici et peuvent être annulées.",
+      "baseline": "Feed tel qu'il était au départ",
+      "baselineHint": "Point de départ de l'historique",
+      "pruned": {
+        "one": "{count} modification antérieure ne peut plus être annulée",
+        "other": "{count} modifications antérieures ne peuvent plus être annulées"
+      },
+      "current": "Actuel",
+      "undoneTag": "Annulé",
+      "goHere": "Revenir ici",
+      "rows": {
+        "one": "{count} ligne",
+        "other": "{count} lignes"
+      },
+      "clear": "Effacer l'historique",
+      "clearTitle": "Effacer l'historique ?",
+      "clearConfirm": "Vous ne pourrez plus annuler les modifications faites jusqu'ici. Les données du feed ne changent pas.",
+      "cleared": "Historique effacé",
+      "restored": "Feed restauré"
+    },
+    "storage": {
+      "title": "Stockage du navigateur",
+      "usage": "{used} sur {quota}",
+      "persistent": "Protégé contre le nettoyage automatique",
+      "notPersistent": "Non protégé",
+      "notPersistentHint": "Quand l'espace manque, le navigateur peut supprimer les feeds. Demandez la protection ou exportez-les.",
+      "protect": "Protéger",
+      "granted": "Stockage protégé",
+      "denied": "Le navigateur n'a pas accordé la protection. Réessayez plus tard ou exportez vos feeds.",
+      "memory": "Rien ne peut être enregistré dans ce navigateur : les feeds seront perdus à la fermeture de l'onglet."
+    },
+    "tabs": {
+      "busyTitle": "Vos feeds sont ouverts dans un autre onglet",
+      "busyHint": "Un seul onglet à la fois peut travailler avec les feeds. Utilisez celui-ci et l'autre s'arrêtera.",
+      "releasedTitle": "Vos feeds ont été ouverts dans un autre onglet",
+      "releasedHint": "Cet onglet a cédé les feeds. Utilisez-le ici pour les récupérer.",
+      "waiting": "En attente que l'autre onglet les libère…",
+      "failed": "Impossible de récupérer les feeds. Fermez l'autre onglet et réessayez.",
+      "useHere": "Utiliser ici"
+    },
+    "pwa": {
+      "updateAvailable": "Nouvelle version disponible",
+      "reload": "Recharger",
+      "offlineReady": "L'application fonctionne désormais hors connexion"
     }
   }
 }

@@ -1,6 +1,8 @@
 import { rowValuesSchema } from '@shared/contracts';
 import { isGtfsTable } from '@shared/gtfs-spec';
 import { createRow, listRows, RowValidationError } from '@/engine/gtfs/tables';
+import { withHistory } from '@/engine/history/history';
+import { nameFromValues, rowStep } from '@/engine/history/labels';
 import { intParam, jsonError, parseBody, requireFeed, type RouteContext } from '@/engine/api/http';
 
 type Params = { feedId: string; table: string };
@@ -33,7 +35,8 @@ export async function POST(request: Request, { params }: RouteContext<Params>) {
   const body = await parseBody(request, rowValuesSchema);
   if (body.response) return body.response;
   try {
-    const id = await createRow(feedId, table, body.data);
+    const step = rowStep('row.create', table, nameFromValues(table, body.data));
+    const id = await withHistory(feedId, step, () => createRow(feedId, table, body.data));
     return Response.json({ id }, { status: 201 });
   } catch (error) {
     if (error instanceof RowValidationError) return jsonError(422, 'invalidRow', error.fields);

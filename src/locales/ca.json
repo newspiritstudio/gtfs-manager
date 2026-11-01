@@ -21,7 +21,8 @@
     "skipToContent": "Salta al contingut",
     "catalog": "Catàleg",
     "home": "Inici",
-    "realtime": "Temps real"
+    "realtime": "Temps real",
+    "history": "Historial"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -945,6 +946,85 @@
     "liveVehicles": {
       "one": "{count} vehicle en directe",
       "other": "{count} vehicles en directe"
+    }
+  },
+  "safety": {
+    "undo": "Desfés",
+    "redo": "Refés",
+    "undone": "Desfet: {step}",
+    "redone": "Refet: {step}",
+    "stale": "L'historial ha canviat. Torna-ho a provar.",
+    "unexported": "Canvis sense exportar",
+    "steps": {
+      "edit": "Edició",
+      "row": {
+        "create": "Fila creada a {table}",
+        "createNamed": "Creada «{name}» a {table}",
+        "update": "Fila modificada a {table}",
+        "updateNamed": "Modificada «{name}» a {table}",
+        "delete": "Fila eliminada de {table}",
+        "deleteNamed": "Eliminada «{name}» de {table}"
+      },
+      "feed": {
+        "update": "Dades del feed modificades"
+      },
+      "trips": {
+        "generate": "S'han creat {trips} viatges i {stopTimes} hores de pas"
+      }
+    },
+    "history": {
+      "title": "Historial",
+      "subtitle": "Cada canvi que fas queda desat i es pot desfer, també després de tancar la pestanya.",
+      "sinceImport": "Canvis des de la importació",
+      "exportedAt": "Exportat {time}",
+      "noChanges": "Cap canvi pendent d'exportar",
+      "exportReminder": "Hi ha canvis que encara no has exportat. Exporta el feed per tenir-ne una còpia fora del navegador.",
+      "steps": "Passos",
+      "emptyTitle": "Encara no hi ha canvis",
+      "emptyDescription": "Quan editis files o generis viatges, els veuràs aquí i els podràs desfer.",
+      "baseline": "Feed tal com era al principi",
+      "baselineHint": "Punt de partida de l'historial",
+      "pruned": {
+        "one": "{count} canvi anterior ja no es pot desfer",
+        "other": "{count} canvis anteriors ja no es poden desfer"
+      },
+      "current": "Actual",
+      "undoneTag": "Desfet",
+      "goHere": "Torna aquí",
+      "rows": {
+        "one": "{count} fila",
+        "other": "{count} files"
+      },
+      "clear": "Esborra l'historial",
+      "clearTitle": "Esborrar l'historial?",
+      "clearConfirm": "Ja no podràs desfer els canvis fets fins ara. Les dades del feed no canvien.",
+      "cleared": "Historial esborrat",
+      "restored": "Feed restaurat"
+    },
+    "storage": {
+      "title": "Emmagatzematge del navegador",
+      "usage": "{used} de {quota}",
+      "persistent": "Protegit contra l'esborrat automàtic",
+      "notPersistent": "Sense protecció",
+      "notPersistentHint": "Si va just d'espai, el navegador pot esborrar els feeds. Demana'n la protecció o exporta'ls.",
+      "protect": "Protegeix",
+      "granted": "Emmagatzematge protegit",
+      "denied": "El navegador no ha concedit la protecció. Torna-ho a provar més tard o exporta els feeds.",
+      "memory": "No es pot desar al navegador: els feeds es perdran en tancar la pestanya."
+    },
+    "tabs": {
+      "busyTitle": "Els feeds estan oberts en una altra pestanya",
+      "busyHint": "Només una pestanya alhora pot treballar amb els feeds. Fes-la servir aquí i l'altra s'aturarà.",
+      "releasedTitle": "Els feeds s'han obert en una altra pestanya",
+      "releasedHint": "Aquesta pestanya ha cedit els feeds. Fes-la servir aquí per tornar-hi.",
+      "waiting": "Esperant que l'altra pestanya els alliberi…",
+      "failed": "No s'han pogut obtenir els feeds. Tanca l'altra pestanya i torna-ho a provar.",
+      "useHere": "Fes servir aquí"
+    },
+    "pwa": {
+      "updateAvailable": "Nova versió disponible",
+      "reload": "Recarrega",
+      "offlineReady": "L'aplicació ja funciona sense connexió"
     }
   }
 }

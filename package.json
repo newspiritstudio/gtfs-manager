@@ -26,7 +26,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build && tsx scripts/prerender.ts",
+    "build": "tsc --noEmit && vite build && tsx scripts/prerender.ts && tsx scripts/build-sw.ts",
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint . --max-warnings 0",

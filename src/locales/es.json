@@ -21,7 +21,8 @@
     "skipToContent": "Salta al contenido",
     "catalog": "Catálogo",
     "home": "Inicio",
-    "realtime": "Tiempo real"
+    "realtime": "Tiempo real",
+    "history": "Historial"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -945,6 +946,85 @@
     "liveVehicles": {
       "one": "{count} vehículo en directo",
       "other": "{count} vehículos en directo"
+    }
+  },
+  "safety": {
+    "undo": "Deshacer",
+    "redo": "Rehacer",
+    "undone": "Deshecho: {step}",
+    "redone": "Rehecho: {step}",
+    "stale": "El historial ha cambiado. Vuelve a intentarlo.",
+    "unexported": "Cambios sin exportar",
+    "steps": {
+      "edit": "Edición",
+      "row": {
+        "create": "Fila creada en {table}",
+        "createNamed": "Creada «{name}» en {table}",
+        "update": "Fila modificada en {table}",
+        "updateNamed": "Modificada «{name}» en {table}",
+        "delete": "Fila eliminada de {table}",
+        "deleteNamed": "Eliminada «{name}» de {table}"
+      },
+      "feed": {
+        "update": "Datos del feed modificados"
+      },
+      "trips": {
+        "generate": "Se han creado {trips} viajes y {stopTimes} horas de paso"
+      }
+    },
+    "history": {
+      "title": "Historial",
+      "subtitle": "Cada cambio que haces queda guardado y se puede deshacer, también después de cerrar la pestaña.",
+      "sinceImport": "Cambios desde la importación",
+      "exportedAt": "Exportado {time}",
+      "noChanges": "Ningún cambio pendiente de exportar",
+      "exportReminder": "Hay cambios que aún no has exportado. Exporta el feed para tener una copia fuera del navegador.",
+      "steps": "Pasos",
+      "emptyTitle": "Aún no hay cambios",
+      "emptyDescription": "Cuando edites filas o generes viajes, los verás aquí y podrás deshacerlos.",
+      "baseline": "Feed como estaba al principio",
+      "baselineHint": "Punto de partida del historial",
+      "pruned": {
+        "one": "{count} cambio anterior ya no se puede deshacer",
+        "other": "{count} cambios anteriores ya no se pueden deshacer"
+      },
+      "current": "Actual",
+      "undoneTag": "Deshecho",
+      "goHere": "Volver aquí",
+      "rows": {
+        "one": "{count} fila",
+        "other": "{count} filas"
+      },
+      "clear": "Borra el historial",
+      "clearTitle": "¿Borrar el historial?",
+      "clearConfirm": "Ya no podrás deshacer los cambios hechos hasta ahora. Los datos del feed no cambian.",
+      "cleared": "Historial borrado",
+      "restored": "Feed restaurado"
+    },
+    "storage": {
+      "title": "Almacenamiento del navegador",
+      "usage": "{used} de {quota}",
+      "persistent": "Protegido contra el borrado automático",
+      "notPersistent": "Sin protección",
+      "notPersistentHint": "Si va justo de espacio, el navegador puede borrar los feeds. Pide su protección o expórtalos.",
+      "protect": "Protege",
+      "granted": "Almacenamiento protegido",
+      "denied": "El navegador no ha concedido la protección. Vuelve a intentarlo más tarde o exporta los feeds.",
+      "memory": "No se puede guardar en el navegador: los feeds se perderán al cerrar la pestaña."
+    },
+    "tabs": {
+      "busyTitle": "Los feeds están abiertos en otra pestaña",
+      "busyHint": "Solo una pestaña a la vez puede trabajar con los feeds. Úsala aquí y la otra se detendrá.",
+      "releasedTitle": "Los feeds se han abierto en otra pestaña",
+      "releasedHint": "Esta pestaña ha cedido los feeds. Úsala aquí para volver a ellos.",
+      "waiting": "Esperando a que la otra pestaña los libere…",
+      "failed": "No se han podido obtener los feeds. Cierra la otra pestaña y vuelve a intentarlo.",
+      "useHere": "Usar aquí"
+    },
+    "pwa": {
+      "updateAvailable": "Nueva versión disponible",
+      "reload": "Recarga",
+      "offlineReady": "La aplicación ya funciona sin conexión"
     }
   }
 }

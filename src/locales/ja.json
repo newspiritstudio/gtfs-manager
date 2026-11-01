@@ -21,7 +21,8 @@
     "skipToContent": "本文へスキップ",
     "catalog": "カタログ",
     "home": "ホーム",
-    "realtime": "リアルタイム"
+    "realtime": "リアルタイム",
+    "history": "履歴"
   },
   "theme": {
     "switch": "テーマ：{theme}",
@@ -923,6 +924,83 @@
     },
     "liveVehicles": {
       "other": "リアルタイムの車両 {count} 台"
+    }
+  },
+  "safety": {
+    "undo": "元に戻す",
+    "redo": "やり直す",
+    "undone": "元に戻しました: {step}",
+    "redone": "やり直しました: {step}",
+    "stale": "履歴が変更されました。もう一度お試しください。",
+    "unexported": "未エクスポートの変更",
+    "steps": {
+      "edit": "編集",
+      "row": {
+        "create": "{table} に行を作成しました",
+        "createNamed": "{table} に「{name}」を作成しました",
+        "update": "{table} の行を変更しました",
+        "updateNamed": "{table} の「{name}」を変更しました",
+        "delete": "{table} の行を削除しました",
+        "deleteNamed": "{table} の「{name}」を削除しました"
+      },
+      "feed": {
+        "update": "フィード情報を変更しました"
+      },
+      "trips": {
+        "generate": "{trips} 便と停車時刻 {stopTimes} 件を作成しました"
+      }
+    },
+    "history": {
+      "title": "履歴",
+      "subtitle": "変更はすべて保存され、タブを閉じたあとでも元に戻せます。",
+      "sinceImport": "インポート後の変更",
+      "exportedAt": "{time}にエクスポート",
+      "noChanges": "エクスポートが必要な変更はありません",
+      "exportReminder": "まだエクスポートしていない変更があります。フィードをエクスポートして、ブラウザの外にコピーを保存してください。",
+      "steps": "ステップ",
+      "emptyTitle": "まだ変更はありません",
+      "emptyDescription": "行を編集したり便を生成したりすると、ここに表示され、元に戻せます。",
+      "baseline": "最初のフィード",
+      "baselineHint": "履歴の開始点",
+      "pruned": {
+        "other": "それ以前の {count} 件の変更は元に戻せません"
+      },
+      "current": "現在",
+      "undoneTag": "取り消し済み",
+      "goHere": "ここまで戻す",
+      "rows": {
+        "other": "{count} 行"
+      },
+      "clear": "履歴を消去",
+      "clearTitle": "履歴を消去しますか?",
+      "clearConfirm": "これまでの変更を元に戻せなくなります。フィードのデータは変わりません。",
+      "cleared": "履歴を消去しました",
+      "restored": "フィードを復元しました"
+    },
+    "storage": {
+      "title": "ブラウザのストレージ",
+      "usage": "{quota} 中 {used}",
+      "persistent": "自動削除から保護されています",
+      "notPersistent": "保護されていません",
+      "notPersistentHint": "空き容量が少ないと、ブラウザがフィードを削除することがあります。保護を要求するか、エクスポートしてください。",
+      "protect": "保護する",
+      "granted": "ストレージを保護しました",
+      "denied": "ブラウザが保護を許可しませんでした。後でもう一度試すか、フィードをエクスポートしてください。",
+      "memory": "このブラウザには保存できません。タブを閉じるとフィードは失われます。"
+    },
+    "tabs": {
+      "busyTitle": "フィードは別のタブで開かれています",
+      "busyHint": "フィードを扱えるのは一度に 1 つのタブだけです。このタブで使うと、もう一方は停止します。",
+      "releasedTitle": "フィードは別のタブで開かれました",
+      "releasedHint": "このタブはフィードを手放しました。ここで使うと、フィードを取り戻せます。",
+      "waiting": "もう一方のタブが解放するのを待っています…",
+      "failed": "フィードを取得できませんでした。もう一方のタブを閉じて、もう一度お試しください。",
+      "useHere": "ここで使う"
+    },
+    "pwa": {
+      "updateAvailable": "新しいバージョンがあります",
+      "reload": "再読み込み",
+      "offlineReady": "アプリがオフラインで使えるようになりました"
     }
   }
 }

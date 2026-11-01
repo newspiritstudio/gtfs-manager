@@ -21,7 +21,8 @@
     "skipToContent": "Saltar para o conteúdo",
     "catalog": "Catálogo",
     "home": "Início",
-    "realtime": "Tempo real"
+    "realtime": "Tempo real",
+    "history": "Histórico"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -945,6 +946,85 @@
     "liveVehicles": {
       "one": "{count} veículo em direto",
       "other": "{count} veículos em direto"
+    }
+  },
+  "safety": {
+    "undo": "Desfazer",
+    "redo": "Refazer",
+    "undone": "Desfeito: {step}",
+    "redone": "Refeito: {step}",
+    "stale": "O histórico mudou. Tente novamente.",
+    "unexported": "Alterações por exportar",
+    "steps": {
+      "edit": "Edição",
+      "row": {
+        "create": "Linha criada em {table}",
+        "createNamed": "«{name}» criado em {table}",
+        "update": "Linha alterada em {table}",
+        "updateNamed": "«{name}» alterado em {table}",
+        "delete": "Linha eliminada de {table}",
+        "deleteNamed": "«{name}» eliminado de {table}"
+      },
+      "feed": {
+        "update": "Dados do feed alterados"
+      },
+      "trips": {
+        "generate": "Criadas {trips} viagens e {stopTimes} horas de paragem"
+      }
+    },
+    "history": {
+      "title": "Histórico",
+      "subtitle": "Cada alteração fica guardada e pode ser desfeita, mesmo depois de fechar o separador.",
+      "sinceImport": "Alterações desde a importação",
+      "exportedAt": "Exportado {time}",
+      "noChanges": "Nenhuma alteração por exportar",
+      "exportReminder": "Há alterações que ainda não exportou. Exporte o feed para ter uma cópia fora do navegador.",
+      "steps": "Passos",
+      "emptyTitle": "Ainda não há alterações",
+      "emptyDescription": "Quando editar linhas ou gerar viagens, vai vê-las aqui e poderá desfazê-las.",
+      "baseline": "Feed como estava no início",
+      "baselineHint": "Ponto de partida do histórico",
+      "pruned": {
+        "one": "{count} alteração anterior já não pode ser desfeita",
+        "other": "{count} alterações anteriores já não podem ser desfeitas"
+      },
+      "current": "Atual",
+      "undoneTag": "Desfeito",
+      "goHere": "Voltar aqui",
+      "rows": {
+        "one": "{count} linha",
+        "other": "{count} linhas"
+      },
+      "clear": "Limpar o histórico",
+      "clearTitle": "Limpar o histórico?",
+      "clearConfirm": "Já não poderá desfazer as alterações feitas até agora. Os dados do feed não mudam.",
+      "cleared": "Histórico limpo",
+      "restored": "Feed restaurado"
+    },
+    "storage": {
+      "title": "Armazenamento do navegador",
+      "usage": "{used} de {quota}",
+      "persistent": "Protegido contra limpeza automática",
+      "notPersistent": "Sem proteção",
+      "notPersistentHint": "Quando o espaço escasseia, o navegador pode apagar os feeds. Peça a proteção ou exporte-os.",
+      "protect": "Proteger",
+      "granted": "Armazenamento protegido",
+      "denied": "O navegador não concedeu a proteção. Tente mais tarde ou exporte os feeds.",
+      "memory": "Não é possível guardar neste navegador: os feeds perdem-se ao fechar o separador."
+    },
+    "tabs": {
+      "busyTitle": "Os feeds estão abertos noutro separador",
+      "busyHint": "Só um separador de cada vez pode trabalhar com os feeds. Use este aqui e o outro para.",
+      "releasedTitle": "Os feeds foram abertos noutro separador",
+      "releasedHint": "Este separador cedeu os feeds. Use-o aqui para os recuperar.",
+      "waiting": "A aguardar que o outro separador os liberte…",
+      "failed": "Não foi possível obter os feeds. Feche o outro separador e tente novamente.",
+      "useHere": "Usar aqui"
+    },
+    "pwa": {
+      "updateAvailable": "Nova versão disponível",
+      "reload": "Recarregar",
+      "offlineReady": "A aplicação já funciona offline"
     }
   }
 }

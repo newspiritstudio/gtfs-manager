@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  Archive,
   CalendarRange,
   CheckCircle2,
   MapPin,
@@ -17,10 +18,13 @@ export default function FeedCard({
   feed,
   t,
   locale,
+  unexported = false,
 }: {
   feed: FeedSummary;
   t: Translate;
   locale: string;
+  /** Edited since the last export: its changes only exist in this browser. */
+  unexported?: boolean;
 }) {
   const stats = feed.stats;
   const colors = feed.routeColors;
@@ -53,6 +57,13 @@ export default function FeedCard({
             )
           ) : null}
         </div>
+        {unexported ? (
+          <div>
+            <Badge tone="warning" icon={<Archive />}>
+              {t('safety.unexported')}
+            </Badge>
+          </div>
+        ) : null}
         {colors.length ? (
           <div aria-hidden className="flex flex-wrap gap-1">
             {colors.map((c) => (

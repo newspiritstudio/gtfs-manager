@@ -21,7 +21,8 @@
     "skipToContent": "Skip to content",
     "catalog": "Catalogue",
     "home": "Home",
-    "realtime": "Realtime"
+    "realtime": "Realtime",
+    "history": "History"
   },
   "theme": {
     "switch": "Theme: {theme}",
@@ -945,6 +946,85 @@
     "liveVehicles": {
       "one": "{count} live vehicle",
       "other": "{count} live vehicles"
+    }
+  },
+  "safety": {
+    "undo": "Undo",
+    "redo": "Redo",
+    "undone": "Undone: {step}",
+    "redone": "Redone: {step}",
+    "stale": "The history has changed. Try again.",
+    "unexported": "Unexported changes",
+    "steps": {
+      "edit": "Edit",
+      "row": {
+        "create": "Row created in {table}",
+        "createNamed": "Created “{name}” in {table}",
+        "update": "Row changed in {table}",
+        "updateNamed": "Changed “{name}” in {table}",
+        "delete": "Row deleted from {table}",
+        "deleteNamed": "Deleted “{name}” from {table}"
+      },
+      "feed": {
+        "update": "Feed details changed"
+      },
+      "trips": {
+        "generate": "Created {trips} trips and {stopTimes} stop times"
+      }
+    },
+    "history": {
+      "title": "History",
+      "subtitle": "Every change you make is saved and can be undone, even after closing the tab.",
+      "sinceImport": "Changes since import",
+      "exportedAt": "Exported {time}",
+      "noChanges": "No changes waiting to be exported",
+      "exportReminder": "Some changes have not been exported yet. Export the feed to keep a copy outside the browser.",
+      "steps": "Steps",
+      "emptyTitle": "No changes yet",
+      "emptyDescription": "When you edit rows or generate trips, they appear here and can be undone.",
+      "baseline": "Feed as it was at the start",
+      "baselineHint": "Starting point of the history",
+      "pruned": {
+        "one": "{count} earlier change can no longer be undone",
+        "other": "{count} earlier changes can no longer be undone"
+      },
+      "current": "Current",
+      "undoneTag": "Undone",
+      "goHere": "Go back to here",
+      "rows": {
+        "one": "{count} row",
+        "other": "{count} rows"
+      },
+      "clear": "Clear history",
+      "clearTitle": "Clear the history?",
+      "clearConfirm": "You will no longer be able to undo the changes made so far. The feed data does not change.",
+      "cleared": "History cleared",
+      "restored": "Feed restored"
+    },
+    "storage": {
+      "title": "Browser storage",
+      "usage": "{used} of {quota}",
+      "persistent": "Protected from automatic cleanup",
+      "notPersistent": "Not protected",
+      "notPersistentHint": "When space runs low, the browser may delete feeds. Ask for protection or export them.",
+      "protect": "Protect",
+      "granted": "Storage protected",
+      "denied": "The browser did not grant protection. Try again later or export your feeds.",
+      "memory": "Nothing can be saved in this browser: feeds will be lost when the tab closes."
+    },
+    "tabs": {
+      "busyTitle": "Your feeds are open in another tab",
+      "busyHint": "Only one tab at a time can work with the feeds. Use it here and the other one will stop.",
+      "releasedTitle": "Your feeds were opened in another tab",
+      "releasedHint": "This tab gave up the feeds. Use it here to get them back.",
+      "waiting": "Waiting for the other tab to let go…",
+      "failed": "The feeds could not be taken over. Close the other tab and try again.",
+      "useHere": "Use here"
+    },
+    "pwa": {
+      "updateAvailable": "New version available",
+      "reload": "Reload",
+      "offlineReady": "The app now works offline"
     }
   }
 }

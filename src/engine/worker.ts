@@ -9,20 +9,29 @@
  * Everything heavy (imports of millions of rows, validation, the ZIP) runs here, off the page.
  */
 import { setDriver } from './db/client';
-import { DatabaseBusyError, openBrowserDriver } from './db/opfs-driver';
+import { BrowserDatabase, DatabaseBusyError } from './db/opfs-driver';
 import { handle } from './api/router';
 import { loaders, type LoaderName } from './loaders';
-import type { EngineReply, EngineRequest, EngineStorage } from './protocol';
+import type { EngineReply, EngineRequest } from './protocol';
 
 declare const self: DedicatedWorkerGlobalScope;
 
-const ready: Promise<EngineStorage> = openBrowserDriver().then(
-  ({ driver, storage }) => {
-    setDriver(driver);
-    return storage;
-  },
-  () => 'busy'
-);
+const database = new BrowserDatabase();
+
+/** Sets the engine up on the database once it is open (also after a "Use here"). */
+function mounted() {
+  if (database.driver) setDriver(database.driver);
+}
+
+const ready: Promise<void> = database.open().then(mounted, (error) => {
+  // The page shows "unavailable" (requests fail with DatabaseBusy) rather than an empty app.
+  console.error('The database could not be opened', error);
+});
+// The page learns of every change (another tab asked for the database, or gave it back).
+database.onState((state) => {
+  if (state === 'opening') return;
+  reply({ kind: 'event', name: 'storage', storage: state });
+});
 
 function reply(message: EngineReply, transfer: Transferable[] = []) {
   self.postMessage(message, transfer);
@@ -45,6 +54,13 @@ function serialised<T>(task: () => Promise<T>): Promise<T> {
   return run;
 }
 
+// Another tab asked for the database: what is being written finishes first.
+database.beforeRelease = () =>
+  writes.then(
+    () => {},
+    () => {}
+  );
+
 self.onmessage = ({ data }: MessageEvent<EngineRequest>) => {
   const isWrite = data.kind === 'fetch' && data.method !== 'GET' && data.method !== 'HEAD';
   void (isWrite ? serialised(() => answer(data)) : answer(data));
@@ -52,10 +68,18 @@ self.onmessage = ({ data }: MessageEvent<EngineRequest>) => {
 
 async function answer(data: EngineRequest) {
   try {
-    const storage = await ready;
+    if (data.kind === 'takeover') {
+      await ready;
+      await database.takeOver();
+      mounted();
+      reply({ id: data.id, kind: 'result', value: { storage: database.state } });
+      return;
+    }
+    await ready;
     if (data.kind === 'status') {
+      const storage = database.state === 'opening' ? 'busy' : database.state;
       reply({ id: data.id, kind: 'result', value: { storage } });
-    } else if (storage === 'busy') {
+    } else if (database.state !== 'opfs' && database.state !== 'memory') {
       throw new DatabaseBusyError();
     } else if (data.kind === 'call') {
       const loader = loaders[data.name as LoaderName] as (...args: unknown[]) => unknown;

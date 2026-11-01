@@ -4,6 +4,7 @@ import EmptyState from '@/components/ui/EmptyState';
 import PageHeader from '@/components/ui/PageHeader';
 import { GallerySkeleton } from '@/components/skeletons/PageSkeletons';
 import FeedCard from '@/features/feeds/FeedCard';
+import StoragePanel from '@/features/safety/StoragePanel';
 import { useEngine } from '@/lib/engine';
 import { useI18n } from '@/lib/i18n/client';
 import { localizedPath } from '@/lib/i18n/paths';
@@ -12,7 +13,9 @@ import { useDocumentHead } from '@/lib/seo';
 export default function FeedsPage() {
   const { t, locale } = useI18n();
   useDocumentHead({ title: t('nav.feeds') });
-  const state = useEngine('listFeeds');
+  const feedsState = useEngine('listFeeds');
+  const safety = useEngine('getFeedsSafety');
+  const state = feedsState;
   if (state.status === 'loading') return <GallerySkeleton />;
   // The local database could not open (a browser without the storage it needs).
   const feeds = state.status === 'ready' ? state.data : null;
@@ -36,6 +39,7 @@ export default function FeedsPage() {
           ) : null
         }
       />
+      {feeds?.length ? <StoragePanel /> : null}
       {feeds === null ? (
         <EmptyState
           icon={<DatabaseZap />}
@@ -63,7 +67,13 @@ export default function FeedsPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {feeds.map((feed) => (
-            <FeedCard key={feed.id} feed={feed} t={t} locale={locale} />
+            <FeedCard
+              key={feed.id}
+              feed={feed}
+              t={t}
+              locale={locale}
+              unexported={safety.data?.[feed.id]?.modifiedSinceExport ?? false}
+            />
           ))}
         </div>
       )}

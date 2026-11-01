@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight, Pencil, Plus, Table2 } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from '@/lib/router';
+import { usePathname, useRefreshKey, useRouter, useSearchParams } from '@/lib/router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { TablePage, TableRow } from '@shared/contracts';
 import { GTFS_SPEC, type GtfsTable } from '@shared/gtfs-spec';
@@ -37,6 +37,8 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
   const [failed, setFailed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reloadKey, setReloadKey] = useState(0);
+  // Moves after an undo or redo, so the rows shown are the ones in the database.
+  const dataKey = useRefreshKey();
   const [editing, setEditing] = useState<{
     row: TableRow | null;
     values: Record<string, string>;
@@ -92,7 +94,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
         setLoading(false);
       });
     return () => controller.abort();
-  }, [feedId, table, page, debounced, reloadKey]);
+  }, [feedId, table, page, debounced, reloadKey, dataKey]);
 
   const columns = useMemo(() => {
     const rows = data?.rows ?? [];
@@ -136,10 +138,8 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
           method: 'PATCH',
           body,
         });
-        toast(t('data.saved'));
       } else {
         await apiFetch(`/api/feeds/${feedId}/tables/${table}`, { method: 'POST', body });
-        toast(t('data.created'));
       }
       setEditing(null);
       load();
@@ -166,7 +166,6 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
       await apiFetch(`/api/feeds/${feedId}/tables/${table}/${editing.row.id}`, {
         method: 'DELETE',
       });
-      toast(t('data.deleted'));
       setEditing(null);
       load();
       router.refresh();

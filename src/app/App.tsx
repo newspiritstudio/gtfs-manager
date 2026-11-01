@@ -8,6 +8,8 @@ import { ToastProvider } from '@/components/ui/Toast';
 import { useEngine, useEngineStorage } from '@/lib/engine';
 import { I18nProvider } from '@/lib/i18n/client';
 import LandingPage from '@/pages/public/LandingPage';
+import HistoryProvider from '@/features/safety/HistoryProvider';
+import UpdatePrompt from '@/features/safety/UpdatePrompt';
 import DatabaseBusyPage from './DatabaseBusyPage';
 import NotFoundPage from './NotFoundPage';
 import PageBoundary from './PageBoundary';
@@ -30,6 +32,7 @@ const TablePage = lazy(() => import('@/pages/feed/TablePage'));
 const GeneratorPage = lazy(() => import('@/pages/feed/GeneratorPage'));
 const RealtimePage = lazy(() => import('@/pages/feed/RealtimePage'));
 const ValidationPage = lazy(() => import('@/pages/feed/ValidationPage'));
+const HistoryPage = lazy(() => import('@/pages/feed/HistoryPage'));
 
 function publicRoutes(prefix: string) {
   return [
@@ -75,6 +78,7 @@ function Pages() {
             <Route path="generator" element={<GeneratorPage />} />
             <Route path="realtime" element={<RealtimePage />} />
             <Route path="validation" element={<ValidationPage />} />
+            <Route path="history" element={<HistoryPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -92,9 +96,16 @@ function Shell() {
   // The feed list of the sidebar; public pages render before the engine answers.
   const feeds = useEngine('listFeedNames').data ?? [];
   return (
-    <AppShell feeds={feeds}>
-      {storage === 'busy' && isWorkspace(pathname) ? <DatabaseBusyPage /> : <Pages />}
-    </AppShell>
+    <HistoryProvider>
+      <UpdatePrompt />
+      <AppShell feeds={feeds}>
+        {(storage === 'busy' || storage === 'released') && isWorkspace(pathname) ? (
+          <DatabaseBusyPage />
+        ) : (
+          <Pages />
+        )}
+      </AppShell>
+    </HistoryProvider>
   );
 }
 

@@ -144,27 +144,23 @@ export default function TripGenerator({
     if (!preview || !effectiveRouteId || !serviceId) return;
     setSaving(true);
     try {
-      const result = await apiFetch<{ trips: number; stopTimes: number }>(
-        `/api/feeds/${feedId}/generated-trips`,
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            routeId: effectiveRouteId,
-            serviceId,
-            directionId: direction === '' ? null : Number(direction),
-            headsign: effectiveHeadsign || null,
-            stopIds: stops.map((s) => s.stop.stopId),
-            travelMinutes: travel,
-            dwellMinutes: dwell,
-            firstDeparture: first,
-            lastDeparture: last,
-            headwayMinutes: headway,
-            tripIdPrefix: effectivePrefix,
-            createShape,
-          }),
-        }
-      );
-      toast(t('generator.generated', { trips: result.trips, stopTimes: result.stopTimes }));
+      await apiFetch<{ trips: number; stopTimes: number }>(`/api/feeds/${feedId}/generated-trips`, {
+        method: 'POST',
+        body: JSON.stringify({
+          routeId: effectiveRouteId,
+          serviceId,
+          directionId: direction === '' ? null : Number(direction),
+          headsign: effectiveHeadsign || null,
+          stopIds: stops.map((s) => s.stop.stopId),
+          travelMinutes: travel,
+          dwellMinutes: dwell,
+          firstDeparture: first,
+          lastDeparture: last,
+          headwayMinutes: headway,
+          tripIdPrefix: effectivePrefix,
+          createShape,
+        }),
+      });
       router.push(`/feeds/${feedId}/routes/${encodeURIComponent(effectiveRouteId)}`);
       router.refresh();
     } catch (error) {

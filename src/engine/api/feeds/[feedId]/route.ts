@@ -2,6 +2,7 @@ import { updateFeedSchema } from '@shared/contracts';
 import { deleteFeed, getFeed, updateFeed } from '@/engine/gtfs/feeds';
 import { jsonError, parseBody, requireFeed, type RouteContext } from '@/engine/api/http';
 import { clearNetworkCache } from '@/engine/gtfs/network';
+import { withHistory } from '@/engine/history/history';
 
 export async function GET(_request: Request, { params }: RouteContext<{ feedId: string }>) {
   const { feedId } = await params;
@@ -17,7 +18,7 @@ export async function PATCH(request: Request, { params }: RouteContext<{ feedId:
   if (response) return response;
   const body = await parseBody(request, updateFeedSchema);
   if (body.response) return body.response;
-  await updateFeed(feedId, body.data);
+  await withHistory(feedId, 'feed.update', () => updateFeed(feedId, body.data));
   return Response.json({ ok: true });
 }
 

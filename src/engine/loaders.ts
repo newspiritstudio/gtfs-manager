@@ -6,6 +6,7 @@ import { getRouteDetail, getServices, getStopDetail, getTripDetail } from './gtf
 import { getFeed, importedCatalogFeeds, listFeedNames, listFeeds } from './gtfs/feeds';
 import { getNetwork } from './gtfs/network';
 import { ensureStats } from './gtfs/stats';
+import { getFeedsSafety, getHistoryState } from './history/history';
 
 export const loaders = {
   listFeeds,
@@ -18,6 +19,8 @@ export const loaders = {
   getRouteDetail,
   getStopDetail,
   getTripDetail,
+  getHistoryState,
+  getFeedsSafety,
 };
 
 export type Loaders = typeof loaders;

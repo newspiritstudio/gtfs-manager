@@ -21,7 +21,8 @@
     "skipToContent": "Zum Inhalt springen",
     "catalog": "Katalog",
     "home": "Startseite",
-    "realtime": "Echtzeit"
+    "realtime": "Echtzeit",
+    "history": "Verlauf"
   },
   "theme": {
     "switch": "Darstellung: {theme}",
@@ -945,6 +946,85 @@
     "liveVehicles": {
       "one": "{count} Fahrzeug live",
       "other": "{count} Fahrzeuge live"
+    }
+  },
+  "safety": {
+    "undo": "Rückgängig",
+    "redo": "Wiederholen",
+    "undone": "Rückgängig gemacht: {step}",
+    "redone": "Wiederholt: {step}",
+    "stale": "Der Verlauf hat sich geändert. Versuche es erneut.",
+    "unexported": "Nicht exportierte Änderungen",
+    "steps": {
+      "edit": "Bearbeitung",
+      "row": {
+        "create": "Zeile in {table} erstellt",
+        "createNamed": "„{name}“ in {table} erstellt",
+        "update": "Zeile in {table} geändert",
+        "updateNamed": "„{name}“ in {table} geändert",
+        "delete": "Zeile aus {table} gelöscht",
+        "deleteNamed": "„{name}“ aus {table} gelöscht"
+      },
+      "feed": {
+        "update": "Feed-Angaben geändert"
+      },
+      "trips": {
+        "generate": "{trips} Fahrten und {stopTimes} Haltezeiten erstellt"
+      }
+    },
+    "history": {
+      "title": "Verlauf",
+      "subtitle": "Jede Änderung wird gespeichert und lässt sich rückgängig machen, auch nach dem Schließen des Tabs.",
+      "sinceImport": "Änderungen seit dem Import",
+      "exportedAt": "Exportiert {time}",
+      "noChanges": "Keine Änderungen zu exportieren",
+      "exportReminder": "Einige Änderungen wurden noch nicht exportiert. Exportiere den Feed, um eine Kopie außerhalb des Browsers zu behalten.",
+      "steps": "Schritte",
+      "emptyTitle": "Noch keine Änderungen",
+      "emptyDescription": "Wenn du Zeilen bearbeitest oder Fahrten erzeugst, erscheinen sie hier und lassen sich rückgängig machen.",
+      "baseline": "Feed wie zu Beginn",
+      "baselineHint": "Ausgangspunkt des Verlaufs",
+      "pruned": {
+        "one": "{count} frühere Änderung lässt sich nicht mehr rückgängig machen",
+        "other": "{count} frühere Änderungen lassen sich nicht mehr rückgängig machen"
+      },
+      "current": "Aktuell",
+      "undoneTag": "Rückgängig",
+      "goHere": "Hierher zurück",
+      "rows": {
+        "one": "{count} Zeile",
+        "other": "{count} Zeilen"
+      },
+      "clear": "Verlauf löschen",
+      "clearTitle": "Verlauf löschen?",
+      "clearConfirm": "Die bisherigen Änderungen lassen sich dann nicht mehr rückgängig machen. Die Feed-Daten bleiben unverändert.",
+      "cleared": "Verlauf gelöscht",
+      "restored": "Feed wiederhergestellt"
+    },
+    "storage": {
+      "title": "Browser-Speicher",
+      "usage": "{used} von {quota}",
+      "persistent": "Vor automatischer Bereinigung geschützt",
+      "notPersistent": "Nicht geschützt",
+      "notPersistentHint": "Bei knappem Speicher kann der Browser Feeds löschen. Fordere den Schutz an oder exportiere sie.",
+      "protect": "Schützen",
+      "granted": "Speicher geschützt",
+      "denied": "Der Browser hat den Schutz nicht gewährt. Versuche es später erneut oder exportiere deine Feeds.",
+      "memory": "In diesem Browser kann nichts gespeichert werden: Die Feeds gehen beim Schließen des Tabs verloren."
+    },
+    "tabs": {
+      "busyTitle": "Deine Feeds sind in einem anderen Tab geöffnet",
+      "busyHint": "Nur ein Tab zur Zeit kann mit den Feeds arbeiten. Nutze diesen hier, dann hält der andere an.",
+      "releasedTitle": "Deine Feeds wurden in einem anderen Tab geöffnet",
+      "releasedHint": "Dieser Tab hat die Feeds abgegeben. Nutze ihn hier, um sie zurückzuholen.",
+      "waiting": "Warten, bis der andere Tab sie freigibt…",
+      "failed": "Die Feeds konnten nicht übernommen werden. Schließe den anderen Tab und versuche es erneut.",
+      "useHere": "Hier verwenden"
+    },
+    "pwa": {
+      "updateAvailable": "Neue Version verfügbar",
+      "reload": "Neu laden",
+      "offlineReady": "Die App funktioniert jetzt offline"
     }
   }
 }
