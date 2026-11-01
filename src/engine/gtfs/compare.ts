@@ -417,8 +417,7 @@ async function computeComparison(baseId: string, otherId: string): Promise<Compa
   const sql = getSql();
   const [base, other] = [await feedRef(baseId), await feedRef(otherId)];
   if (!base || !other) return null;
-  // Temp tables stay in memory: the page's database file is not touched.
-  await sql.unsafe('PRAGMA temp_store = MEMORY');
+  // Temp tables stay in memory (`temp_store = MEMORY`, set when the database opens).
 
   const rows = Object.fromEntries(COMPARE_CATEGORIES.map((c) => [c, [] as CompareRow[]])) as Record<
     CompareCategory,

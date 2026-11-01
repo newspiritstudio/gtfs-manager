@@ -14,6 +14,9 @@ let current: Sql | null = null;
 /** Creates or upgrades the schema (`migrate`), then makes `driver` the database `getSql()` returns. */
 export function setDriver(driver: Driver): Sql {
   driver.exec('PRAGMA foreign_keys = ON');
+  // Temporary tables (the feed comparison) live in memory, never in the database file. Set once
+  // here: SQLite refuses to change it while another call holds a transaction.
+  driver.exec('PRAGMA temp_store = MEMORY');
   migrate(driver);
   current = createSql(driver);
   // The edit history's tables and triggers (idempotent: not a versioned migration).
