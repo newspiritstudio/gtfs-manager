@@ -209,13 +209,3 @@ async function summarize(ctx: NoticeContext): Promise<NoticeReportSummary> {
 }
 
 export { CANONICAL_VALIDATOR_VERSION };
-
-/** Saves the report as the feed's last validation. */
-export async function storeValidationReport(feedId: string, report: NoticeReport) {
-  const sql = getSql();
-  await sql.unsafe(`DELETE FROM validation_reports WHERE feed_id = $1`, [feedId]);
-  await sql.unsafe(`INSERT INTO validation_reports (feed_id, report) VALUES ($1, $2)`, [
-    feedId,
-    JSON.stringify(report),
-  ]);
-}

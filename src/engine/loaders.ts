@@ -3,13 +3,19 @@
  * Changes go through the `/api` routes instead, which validate their input.
  */
 import { compareList, compareMap, compareSummary } from './gtfs/compare';
-import { getRouteDetail, getServices, getStopDetail, getTripDetail } from './gtfs/details';
+import {
+  getRouteDetail,
+  getRouteHeader,
+  getServices,
+  getStopDetail,
+  getTripDetail,
+} from './gtfs/details';
 import { feedHasFares, getFares } from './gtfs/fares';
 import { getFeed, importedCatalogFeeds, listFeedNames, listFeeds } from './gtfs/feeds';
 import { getRoutePrint, getServiceMap, getStopPrint } from './gtfs/outputs';
 import { getNetwork } from './gtfs/network';
-import { ensureStats } from './gtfs/stats';
-import { getValidationReport } from './gtfs/notices/report';
+import { ensureStats, getTableCounts } from './gtfs/stats';
+import { ensureValidation } from './gtfs/notices/report';
 import { getFeedsSafety, getHistoryState } from './history/history';
 
 export const loaders = {
@@ -18,10 +24,12 @@ export const loaders = {
   getFeed,
   importedCatalogFeeds,
   ensureStats,
-  getValidationReport,
+  getTableCounts,
+  ensureValidation,
   getServices,
   getNetwork,
   getRouteDetail,
+  getRouteHeader,
   getStopDetail,
   getTripDetail,
   getHistoryState,

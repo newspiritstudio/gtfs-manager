@@ -2282,6 +2282,7 @@
     "exportJson": "Exporta el JSON",
     "exportDone": "Informe exportat",
     "exportFailed": "No s'ha pogut exportar l'informe",
+    "running": "Validant…",
     "googleTitle": "Comprovacions de Google Transit",
     "googleHint": "Comprovacions de la validació estàtica de Google. Són un conjunt a part dels avisos de dalt.",
     "noMatch": "Cap avís coincideix amb aquests filtres",

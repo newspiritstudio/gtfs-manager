@@ -31,7 +31,7 @@ import { SegmentedControl } from '@/components/ui/Tabs';
 import { useToast } from '@/components/ui/Toast';
 import Loaded from '@/components/shell/Loaded';
 import { ValidationSkeleton } from '@/components/skeletons/PageSkeletons';
-import { both, useEngine } from '@/lib/engine';
+import { useEngine } from '@/lib/engine';
 import { useI18n } from '@/lib/i18n/client';
 import { formatNumber } from '@/lib/i18n/format';
 import { Link } from '@/lib/router';
@@ -118,16 +118,22 @@ export default function ValidationPage() {
   const feedId = useFeedId();
   const { t } = useI18n();
   useDocumentHead({ title: t('nav.validation') });
-  const state = both(useEngine('ensureStats', feedId), useEngine('getValidationReport', feedId));
+  const result = useEngine('ensureValidation', feedId);
   const feed = useEngine('getFeed', feedId).data;
+  // A result of an older version of the feed (edited since) is not shown: it validates again.
+  const outOfDate =
+    result.status === 'ready' && !!feed && result.data?.feedVersion !== feed.updatedAt;
+  const state: typeof result = outOfDate
+    ? { status: 'loading', data: undefined, error: undefined }
+    : result;
   return (
     <Loaded state={state} skeleton={<ValidationSkeleton />}>
-      {([stats, report]) => (
+      {(validation) => (
         <ValidationReport
           feedId={feedId}
           feedName={feed?.name ?? 'gtfs'}
-          report={report}
-          google={stats?.validation.issues ?? []}
+          report={validation?.report ?? null}
+          google={validation?.issues ?? []}
         />
       )}
     </Loaded>

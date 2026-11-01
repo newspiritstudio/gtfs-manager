@@ -114,6 +114,10 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
   const [files, setFiles] = useState<PickedFile[]>([]);
   const [states, setStates] = useState<Record<string, FileState>>({});
   const [name, setName] = useState(catalog?.name ?? '');
+  /** The user edited the name: a suggestion from the file never touches it any more. */
+  const nameTyped = useRef(false);
+  /** The name in the field is the suggestion, not the user's: the first focus selects it. */
+  const nameSuggested = useRef(false);
   const [description, setDescription] = useState(
     catalog ? `${catalog.operator} · ${catalog.region}` : ''
   );
@@ -172,7 +176,15 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
       setFiles(sortFiles(picked));
       setStates({});
       createdFeed.current = null;
-      if (suggested) setName((current) => current || suggested.replace(/[_-]+/g, ' ').trim());
+      // A name the user typed always wins, even if they cleared it again; reading a big ZIP can
+      // take seconds, so the suggestion often arrives after they started typing.
+      if (suggested && !nameTyped.current) {
+        setName((current) => {
+          if (current) return current;
+          nameSuggested.current = true;
+          return suggested.replace(/[_-]+/g, ' ').trim();
+        });
+      }
     },
     [t, toast]
   );
@@ -360,7 +372,16 @@ export default function NewFeedForm({ catalog = null }: { catalog?: CatalogPick 
             <TextField
               label={t('feed.name')}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                nameTyped.current = true;
+                nameSuggested.current = false;
+                setName(e.target.value);
+              }}
+              onFocus={(e) => {
+                // Typing over a suggested name replaces it instead of appending to it.
+                if (nameSuggested.current) e.target.select();
+                nameSuggested.current = false;
+              }}
               required
               error={missing(name)}
               disabled={busy}

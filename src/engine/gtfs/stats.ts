@@ -7,9 +7,21 @@ import { GTFS_TABLES, type GtfsTable } from '@shared/gtfs-spec';
 import { referenceDateFrom } from '@shared/gtfs-values';
 import { getSql, ident, parseJson } from '../db/client';
 import { activeServicesFragment, serviceDaysCte } from './service-days';
-import { validateGoogleChecks } from './validate';
-import type { NoticeSeverity } from '@shared/notices';
-import { runNotices, storeValidationReport } from './notices';
+
+/** The row count of every table of the feed: a count by index, fast even on millions of rows. */
+export async function getTableCounts(feedId: string): Promise<Record<GtfsTable, number>> {
+  const sql = getSql();
+  const countRows = await Promise.all(
+    GTFS_TABLES.map(async (table) => {
+      const [row] = await sql.unsafe<{ n: number }[]>(
+        `SELECT count(*) AS n FROM ${ident(table)} WHERE feed_id = $1`,
+        [feedId]
+      );
+      return [table, row.n] as const;
+    })
+  );
+  return Object.fromEntries(countRows) as Record<GtfsTable, number>;
+}
 
 export async function computeStats(feedId: string): Promise<FeedStats> {
   const sql = getSql();
@@ -20,24 +32,13 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
   await sql.unsafe('PRAGMA analysis_limit = 1000');
   await sql.unsafe('ANALYZE');
 
-  // The heavy queries (validation, time distribution) run while the others do.
-  const issuesJob = validateGoogleChecks(feedId);
-  const noticesJob = runNotices(feedId);
+  // The validation is not part of the figures (see `ensureValidation`): it takes far longer.
   const spanJob = sql<{ first: number | null; last: number | null }[]>`
     SELECT min(coalesce(departure_time, arrival_time)) AS "first",
            max(coalesce(arrival_time, departure_time)) AS "last"
     FROM stop_times WHERE feed_id = ${feedId}`;
 
-  const countRows = await Promise.all(
-    GTFS_TABLES.map(async (table) => {
-      const [row] = await sql.unsafe<{ n: number }[]>(
-        `SELECT count(*) AS n FROM ${ident(table)} WHERE feed_id = $1`,
-        [feedId]
-      );
-      return [table, row.n] as const;
-    })
-  );
-  const counts = Object.fromEntries(countRows) as Record<GtfsTable, number>;
+  const counts = await getTableCounts(feedId);
 
   const extraFiles = (
     await sql<{ fileName: string }[]>`
@@ -132,10 +133,7 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
       ORDER BY departures DESC LIMIT 10`;
   }
 
-  const [[span], issues, report] = await Promise.all([spanJob, issuesJob, noticesJob]);
-  await storeValidationReport(feedId, report);
-  const bySeverity = (severity: NoticeSeverity) =>
-    report.notices.filter((g) => g.severity === severity).length;
+  const [span] = await spanJob;
 
   return {
     computedAt: new Date().toISOString(),
@@ -151,17 +149,6 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
       span && span.first !== null && span.last !== null
         ? { first: span.first, last: span.last }
         : null,
-    validation: {
-      errors: bySeverity('ERROR'),
-      warnings: bySeverity('WARNING'),
-      infos: bySeverity('INFO'),
-      issues,
-      groups: report.notices.map((g) => ({
-        code: g.code,
-        severity: g.severity,
-        total: g.totalNotices,
-      })),
-    },
   };
 }
 
@@ -179,8 +166,8 @@ export function ensureStats(feedId: string): Promise<FeedStats | null> {
   return job;
 }
 
-/** Raise it when the figures or the validation rules change, so stored figures are recomputed. */
-export const STATS_VERSION = 4;
+/** Raise it when the figures change, so stored figures are recomputed. */
+export const STATS_VERSION = 5;
 
 async function refreshStats(feedId: string): Promise<FeedStats | null> {
   const sql = getSql();

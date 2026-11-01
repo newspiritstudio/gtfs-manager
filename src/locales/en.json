@@ -2282,6 +2282,7 @@
     "exportJson": "Export JSON",
     "exportDone": "Report exported",
     "exportFailed": "Could not export the report",
+    "running": "Validating…",
     "googleTitle": "Google Transit checks",
     "googleHint": "Checks from Google's static validation. They are a separate set from the notices above.",
     "noMatch": "No notices match these filters",

@@ -4,6 +4,7 @@
  */
 import { z } from 'zod';
 import type { GtfsTable } from './gtfs-spec';
+import type { NoticeReport } from './notices';
 
 export type ValidationSeverity = 'error' | 'warning' | 'info';
 
@@ -78,16 +79,25 @@ export interface FeedStats {
   topStops: TopStop[];
   /** First departure and last arrival of the feed, in seconds. */
   serviceSpan: { first: number; last: number } | null;
-  validation: {
-    /** Notice codes found, by severity (canonical validator notices, `shared/notices.ts`). */
-    errors: number;
-    warnings: number;
-    infos: number;
-    /** The Google Transit checks (`validateGoogleChecks`), a separate set from the notices. */
-    issues: ValidationIssue[];
-    /** The canonical notice codes found, compact; the full report is `getValidationReport`. */
-    groups?: { code: string; severity: 'ERROR' | 'WARNING' | 'INFO'; total: number }[];
-  };
+}
+
+/**
+ * The validation of a feed at one version of it. It is computed apart from `FeedStats` (it takes
+ * tens of seconds on a big feed) and stored in `validation_reports`; `feedVersion` is the feed's
+ * `updated_at` when it ran, so any later edit makes it out of date.
+ */
+export interface FeedValidation {
+  feedVersion: string;
+  computedAt: string;
+  /** Notice codes found, by severity (canonical validator notices, `shared/notices.ts`). */
+  errors: number;
+  warnings: number;
+  infos: number;
+  /** The Google Transit checks (`validateGoogleChecks`), a separate set from the notices. */
+  issues: ValidationIssue[];
+  /** The canonical notice codes found, compact. */
+  groups: { code: string; severity: 'ERROR' | 'WARNING' | 'INFO'; total: number }[];
+  report: NoticeReport;
 }
 
 export interface FeedSummary {
@@ -99,6 +109,8 @@ export interface FeedSummary {
   createdAt: string;
   updatedAt: string;
   stats: FeedStats | null;
+  /** Errors of the stored validation, only if it is of the feed's current version. */
+  validationErrors: number | null;
   agencyNames: string[];
   routeColors: string[];
 }

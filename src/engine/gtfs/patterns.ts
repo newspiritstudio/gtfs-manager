@@ -3,8 +3,8 @@
  * the edits a planner makes on one (reorder, insert and remove stops, set the default times,
  * create, duplicate), applied to every trip of the pattern at once.
  *
- * A pattern has no table of its own: it is derived from `stop_times` with one query per route
- * and identified by a key hashed from its direction and stops. Every write runs on the `sql`
+ * A pattern has no table of its own: it is derived from `stop_times` with one grouped query
+ * per route and identified by a key hashed from its direction and stops. Every write runs on the `sql`
  * the caller gives (inside `withHistory`, so each action is one undoable step).
  */
 import type {
@@ -78,15 +78,20 @@ export async function routePatternGroups(
   feedId: string,
   routeId: string
 ): Promise<PatternGroup[]> {
+  // One pass over the stop times of the route's trips (the primary key gives them in trip and
+  // sequence order), concatenated per trip: a lookup per trip is slow on thousands of trips.
   const rows = await sql<(PatternTrip & { pattern: string | null })[]>`
     SELECT t.trip_id AS "tripId", t.service_id AS "serviceId", t.shape_id AS "shapeId",
            nullif(trim(t.trip_headsign), '') AS headsign, t.direction_id AS "directionId",
-           -- One trip at a time by its index: aggregating over all stop_times is slow.
-           (SELECT group_concat(stop_id, char(31)) FROM (
-              SELECT st.stop_id FROM stop_times st
-              WHERE st.feed_id = t.feed_id AND st.trip_id = t.trip_id
-              ORDER BY st.stop_sequence)) AS pattern
+           p.pattern AS pattern
     FROM trips t
+    LEFT JOIN (
+      SELECT trip_id, group_concat(stop_id, char(31)) AS pattern FROM (
+        SELECT st.trip_id, st.stop_id FROM stop_times st
+        WHERE st.feed_id = ${feedId}
+          AND st.trip_id IN (SELECT trip_id FROM trips WHERE feed_id = ${feedId} AND route_id = ${routeId})
+        ORDER BY st.trip_id, st.stop_sequence)
+      GROUP BY trip_id) p ON p.trip_id = t.trip_id
     WHERE t.feed_id = ${feedId} AND t.route_id = ${routeId}
     ORDER BY t.trip_id`;
   const groups = new Map<string, PatternGroup>();

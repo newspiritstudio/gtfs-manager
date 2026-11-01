@@ -12,8 +12,8 @@ export default function DataPage() {
   const feedId = useFeedId();
   const { t } = useI18n();
   useDocumentHead({ title: t('nav.data') });
-  // The list shows at once; the row counts arrive with the statistics.
-  const stats = useEngine('ensureStats', feedId).data;
+  // The list shows at once; the row counts arrive a moment later (they do not wait for the figures).
+  const counts = useEngine('getTableCounts', feedId).data;
   return (
     <div className="mx-auto max-w-7xl">
       <PageHeader title={t('nav.data')} subtitle={t('data.subtitle')} />
@@ -28,7 +28,7 @@ export default function DataPage() {
             </p>
             <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {tablesInGroup(group).map((table) => {
-                const count = stats?.counts[table] ?? 0;
+                const count = counts?.[table] ?? 0;
                 const spec = GTFS_SPEC[table];
                 return (
                   <li key={table}>

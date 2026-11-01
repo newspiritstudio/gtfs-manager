@@ -12,7 +12,7 @@ export default function RouteEditPage() {
   const feedId = useFeedId();
   const { t } = useI18n();
   const { routeId = '' } = useParams();
-  const detail = useEngine('getRouteDetail', feedId, routeId);
+  const detail = useEngine('getRouteHeader', feedId, routeId);
   const name = detail.data
     ? detail.data.route.shortName || detail.data.route.longName || routeId
     : routeId;

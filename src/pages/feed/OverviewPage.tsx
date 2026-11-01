@@ -6,6 +6,7 @@ import {
   FileText,
   GitCompareArrows,
   Info,
+  Loader2,
   Map as MapIcon,
   MapPin,
   Route,
@@ -191,7 +192,7 @@ function Overview({
             </CardContent>
           </Card>
           <div className="space-y-4">
-            <ValidationCard feedId={feedId} stats={stats} t={t} />
+            <ValidationCard feedId={feedId} feedVersion={feed.updatedAt} t={t} />
             <Card>
               <CardHeader title={t('overview.modes')} icon={<TrainFront />} />
               <CardContent>
@@ -335,14 +336,19 @@ function Overview({
 
 function ValidationCard({
   feedId,
-  stats,
+  feedVersion,
   t,
 }: {
   feedId: string;
-  stats: FeedStats;
+  feedVersion: string;
   t: (key: string, vars?: Record<string, string | number>) => string;
 }) {
-  const { errors, warnings, infos } = stats.validation;
+  // Validating a big feed takes tens of seconds: the card has its own loading state, and a
+  // result of an older version of the feed (an edit since) counts as not loaded yet.
+  const state = useEngine('ensureValidation', feedId);
+  const validation =
+    state.status === 'ready' && state.data?.feedVersion === feedVersion ? state.data : null;
+  const { errors, warnings, infos } = validation ?? { errors: 0, warnings: 0, infos: 0 };
   return (
     <Card>
       <CardHeader
@@ -355,45 +361,61 @@ function ValidationCard({
         }
       />
       <CardContent>
-        <div className="grid grid-cols-3 gap-2">
-          <div className="rounded-md bg-critical-container px-3 py-2 text-critical">
-            <AlertTriangle className="size-4" />
-            <p className="mt-1 text-title-large tabular-nums">{errors}</p>
-            <p className="text-label-small">{t('severity.error')}</p>
-          </div>
-          <div className="rounded-md bg-warning-container px-3 py-2 text-warning">
-            <AlertTriangle className="size-4" />
-            <p className="mt-1 text-title-large tabular-nums">{warnings}</p>
-            <p className="text-label-small">{t('severity.warning')}</p>
-          </div>
-          <div className="rounded-md bg-info-container px-3 py-2 text-info">
-            <Info className="size-4" />
-            <p className="mt-1 text-title-large tabular-nums">{infos}</p>
-            <p className="text-label-small">{t('severity.info')}</p>
-          </div>
-        </div>
-        {errors + warnings === 0 ? (
-          <p className="mt-3 flex items-center gap-2 text-body-medium text-success">
-            <CheckCircle2 className="size-5" />
-            {t('validation.allGood')}
-          </p>
+        {!validation ? (
+          state.status === 'error' ? (
+            <p className="text-body-medium text-on-surface-variant">—</p>
+          ) : (
+            <p
+              role="status"
+              className="flex items-center gap-2 text-body-medium text-on-surface-variant"
+            >
+              <Loader2 className="size-5 animate-spin" />
+              {t('validationReport.running')}
+            </p>
+          )
         ) : (
-          <ul className="mt-3 space-y-1">
-            {(stats.validation.groups ?? [])
-              .filter((g) => g.severity !== 'INFO')
-              .slice(0, 4)
-              .map((group) => (
-                <li
-                  key={group.code}
-                  className="flex items-start justify-between gap-3 text-body-small"
-                >
-                  <span className="text-on-surface">{t(`notices.${group.code}.title`)}</span>
-                  <span className="shrink-0 tabular-nums text-on-surface-variant">
-                    {group.total}
-                  </span>
-                </li>
-              ))}
-          </ul>
+          <>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="rounded-md bg-critical-container px-3 py-2 text-critical">
+                <AlertTriangle className="size-4" />
+                <p className="mt-1 text-title-large tabular-nums">{errors}</p>
+                <p className="text-label-small">{t('severity.error')}</p>
+              </div>
+              <div className="rounded-md bg-warning-container px-3 py-2 text-warning">
+                <AlertTriangle className="size-4" />
+                <p className="mt-1 text-title-large tabular-nums">{warnings}</p>
+                <p className="text-label-small">{t('severity.warning')}</p>
+              </div>
+              <div className="rounded-md bg-info-container px-3 py-2 text-info">
+                <Info className="size-4" />
+                <p className="mt-1 text-title-large tabular-nums">{infos}</p>
+                <p className="text-label-small">{t('severity.info')}</p>
+              </div>
+            </div>
+            {errors + warnings === 0 ? (
+              <p className="mt-3 flex items-center gap-2 text-body-medium text-success">
+                <CheckCircle2 className="size-5" />
+                {t('validation.allGood')}
+              </p>
+            ) : (
+              <ul className="mt-3 space-y-1">
+                {validation.groups
+                  .filter((g) => g.severity !== 'INFO')
+                  .slice(0, 4)
+                  .map((group) => (
+                    <li
+                      key={group.code}
+                      className="flex items-start justify-between gap-3 text-body-small"
+                    >
+                      <span className="text-on-surface">{t(`notices.${group.code}.title`)}</span>
+                      <span className="shrink-0 tabular-nums text-on-surface-variant">
+                        {group.total}
+                      </span>
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </>
         )}
       </CardContent>
     </Card>

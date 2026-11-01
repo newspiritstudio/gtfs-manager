@@ -10,7 +10,7 @@ import type {
   RouteVariant,
   StopDeparture,
 } from '@shared/contracts';
-import { haversineMeters, routeColors } from '@shared/gtfs-values';
+import { haversineMeters, routeColors, tidyRouteName } from '@shared/gtfs-values';
 import { getSql, parseJson } from '../db/client';
 import { expandDayFrequencies, windowStarts, windowsOf } from './frequencies';
 import { getNetwork } from './network';
@@ -74,6 +74,38 @@ export async function getVariantIds(feedId: string, routeId: string): Promise<st
   return [routeId, ...siblingRoutes(network.routes, base).map((r) => r.routeId)];
 }
 
+/**
+ * The name and colors of a route, without the network behind `getRouteDetail` (which takes
+ * seconds to build on a big feed): enough for the route editor, which loads its own patterns.
+ */
+export async function getRouteHeader(
+  feedId: string,
+  routeId: string
+): Promise<{
+  route: Pick<NetworkRoute, 'routeId' | 'shortName' | 'longName' | 'color' | 'textColor'>;
+} | null> {
+  const [row] = await getSql()<
+    {
+      shortName: string | null;
+      longName: string | null;
+      color: string | null;
+      textColor: string | null;
+    }[]
+  >`
+    SELECT route_short_name AS "shortName", route_long_name AS "longName",
+           route_color AS color, route_text_color AS "textColor"
+    FROM routes WHERE feed_id = ${feedId} AND route_id = ${routeId}`;
+  if (!row) return null;
+  return {
+    route: {
+      routeId,
+      shortName: tidyRouteName(row.shortName),
+      longName: tidyRouteName(row.longName),
+      ...routeColors(routeId, row.color, row.textColor),
+    },
+  };
+}
+
 export async function getRouteDetail(feedId: string, routeId: string): Promise<RouteDetail | null> {
   const sql = getSql();
   const network = await getNetwork(feedId);
@@ -110,13 +142,18 @@ export async function getRouteDetail(feedId: string, routeId: string): Promise<R
   const allPatternRows = await sql<PatternRow[]>`
     WITH seq AS (
       SELECT t.route_id, t.direction_id, nullif(trim(t.trip_headsign), '') AS hs,
-             -- One trip at a time by its index: aggregating over the whole stop_times is slow
-             -- (1.9 M rows on Renfe Rodalies).
-             (SELECT group_concat(stop_id, '>') FROM (
-                SELECT st.stop_id FROM stop_times st
-                WHERE st.feed_id = t.feed_id AND st.trip_id = t.trip_id
-                ORDER BY st.stop_sequence)) AS pattern
+             p.pattern AS pattern
       FROM trips t
+      -- One pass over the stop times of those trips (the primary key gives them in order):
+      -- a lookup per trip is slow on thousands of trips (1.9 M stop_times on Renfe).
+      LEFT JOIN (
+        SELECT trip_id, group_concat(stop_id, '>') AS pattern FROM (
+          SELECT st.trip_id, st.stop_id FROM stop_times st
+          WHERE st.feed_id = ${feedId} AND st.trip_id IN (
+            SELECT trip_id FROM trips
+            WHERE feed_id = ${feedId} AND route_id IN (SELECT value FROM json_each(${variantIds})))
+          ORDER BY st.trip_id, st.stop_sequence)
+        GROUP BY trip_id) p ON p.trip_id = t.trip_id
       WHERE t.feed_id = ${feedId} AND t.route_id IN (SELECT value FROM json_each(${variantIds}))
     ),
     counted AS (

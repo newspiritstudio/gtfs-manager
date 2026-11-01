@@ -17,6 +17,7 @@ import { nodeDriver } from '../src/engine/db/node-driver';
 import { appendImportReport, createFeed, finishImport } from '../src/engine/gtfs/feeds';
 import { importGtfsFile } from '../src/engine/gtfs/import';
 import { ensureStats } from '../src/engine/gtfs/stats';
+import { ensureValidation } from '../src/engine/gtfs/notices/report';
 
 export const DEFAULT_DB = 'tmp/gtfs.sqlite3';
 
@@ -74,10 +75,13 @@ async function main() {
   }
   await finishImport(feedId);
   const started = Date.now();
-  const stats = await ensureStats(feedId);
+  await ensureStats(feedId);
+  console.log(`Stats in ${Date.now() - started} ms`);
+  const validationStarted = Date.now();
+  const validation = await ensureValidation(feedId);
   console.log(
-    `Stats in ${Date.now() - started} ms: ${stats?.validation.errors ?? 0} errors, ${
-      stats?.validation.warnings ?? 0
+    `Validation in ${Date.now() - validationStarted} ms: ${validation?.errors ?? 0} errors, ${
+      validation?.warnings ?? 0
     } warnings`
   );
   void getSql();

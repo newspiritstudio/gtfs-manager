@@ -2239,6 +2239,7 @@
     "exportJson": "JSON を書き出す",
     "exportDone": "レポートを書き出しました",
     "exportFailed": "レポートを書き出せませんでした",
+    "running": "検証中…",
     "googleTitle": "Google Transit の検査",
     "googleHint": "Google の静的検証による検査です。上の通知とは別のセットです。",
     "noMatch": "この条件に合う通知はありません",

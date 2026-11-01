@@ -16,6 +16,7 @@ interface FeedRow {
   importReport: string | null;
   agencyNames: string | null;
   routeColors: string | null;
+  validationErrors: number | null;
 }
 
 const now = () => new Date().toISOString();
@@ -30,6 +31,7 @@ function toSummary(row: FeedRow): FeedSummary {
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
     stats: parseJson<FeedStats>(row.stats),
+    validationErrors: row.validationErrors,
     agencyNames: parseJson<string[]>(row.agencyNames) ?? [],
     routeColors: parseJson<string[]>(row.routeColors) ?? [],
   };
@@ -38,6 +40,9 @@ function toSummary(row: FeedRow): FeedSummary {
 const SELECT_FEED = `
   SELECT f.id, f.name, f.description, f.origin, f.catalog_id AS "catalogId", f.created_at AS "createdAt",
          f.updated_at AS "updatedAt", f.stats, f.import_report AS "importReport",
+         (SELECT CASE WHEN json_extract(v.report, '$.feedVersion') = f.updated_at
+                      THEN json_extract(v.report, '$.errors') END
+            FROM validation_reports v WHERE v.feed_id = f.id) AS "validationErrors",
          (SELECT json_group_array(n) FROM (
             SELECT DISTINCT agency_name AS n FROM agency a
             WHERE a.feed_id = f.id AND agency_name IS NOT NULL ORDER BY n)) AS "agencyNames",

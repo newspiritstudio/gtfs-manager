@@ -2282,6 +2282,7 @@
     "exportJson": "Exportar JSON",
     "exportDone": "Relatório exportado",
     "exportFailed": "Não foi possível exportar o relatório",
+    "running": "A validar…",
     "googleTitle": "Verificações do Google Transit",
     "googleHint": "Verificações da validação estática da Google. São um conjunto à parte dos avisos acima.",
     "noMatch": "Nenhum aviso corresponde a estes filtros",

@@ -12,7 +12,8 @@ import {
   appendImportReport,
 } from './feeds';
 import { importGtfsFile } from './import';
-import { computeStats, ensureStats, STATS_VERSION } from './stats';
+import { ensureValidation } from './notices/report';
+import { computeStats, ensureStats, getTableCounts, STATS_VERSION } from './stats';
 import { createRow, deleteRow, listRows, updateRow, RowValidationError } from './tables';
 
 beforeEach(async () => {
@@ -76,9 +77,27 @@ describe('stats', () => {
     expect(stats.routeTypes.find((r) => r.routeType === 1)?.trips).toBe(3);
     expect(stats.departuresByHour).toHaveLength(30);
     expect(stats.topStops[0].stopId).toBe('S2');
+    expect(await getTableCounts(SAMPLE_FEED)).toEqual(stats.counts);
     const cached = await ensureStats(SAMPLE_FEED);
     expect(cached?.version).toBe(STATS_VERSION);
     expect((await ensureStats(SAMPLE_FEED))?.computedAt).toBe(cached?.computedAt);
+  });
+});
+
+describe('validation', () => {
+  it('is computed apart from the figures, stored and valid for one version of the feed', async () => {
+    const stats = await computeStats(SAMPLE_FEED);
+    expect(stats).not.toHaveProperty('validation');
+    const first = await ensureValidation(SAMPLE_FEED);
+    expect(first?.report.notices).toBeDefined();
+    expect((await ensureValidation(SAMPLE_FEED))?.computedAt).toBe(first?.computedAt);
+    expect((await getFeed(SAMPLE_FEED))?.validationErrors).toBe(first?.errors);
+    const sql = getSql();
+    await sql`UPDATE feeds SET updated_at = ${'2099-01-01T00:00:00.000Z'} WHERE id = ${SAMPLE_FEED}`;
+    expect((await getFeed(SAMPLE_FEED))?.validationErrors).toBeNull();
+    const again = await ensureValidation(SAMPLE_FEED);
+    expect(again?.feedVersion).toBe('2099-01-01T00:00:00.000Z');
+    expect(await ensureValidation('00000000-0000-4000-8000-000000000000')).toBeNull();
   });
 });
 

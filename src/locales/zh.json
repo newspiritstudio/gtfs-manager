@@ -2239,6 +2239,7 @@
     "exportJson": "导出 JSON",
     "exportDone": "报告已导出",
     "exportFailed": "无法导出报告",
+    "running": "正在验证…",
     "googleTitle": "Google Transit 检查",
     "googleHint": "来自 Google 静态验证的检查。它们与上面的通知是各自独立的一组。",
     "noMatch": "没有符合这些筛选条件的通知",

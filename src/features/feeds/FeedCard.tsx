@@ -28,7 +28,7 @@ export default function FeedCard({
 }) {
   const stats = feed.stats;
   const colors = feed.routeColors;
-  const errors = stats?.validation.errors ?? 0;
+  const errors = feed.validationErrors;
   return (
     <Link
       href={`/feeds/${feed.id}`}
@@ -45,7 +45,7 @@ export default function FeedCard({
               {feed.agencyNames.length ? feed.agencyNames.join(' · ') : t('feeds.noAgency')}
             </p>
           </div>
-          {stats ? (
+          {errors !== null ? (
             errors ? (
               <Badge tone="critical" icon={<AlertTriangle />}>
                 {t('units.errors', { count: errors })}
