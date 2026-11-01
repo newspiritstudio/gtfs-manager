@@ -78,7 +78,16 @@ export interface FeedStats {
   topStops: TopStop[];
   /** First departure and last arrival of the feed, in seconds. */
   serviceSpan: { first: number; last: number } | null;
-  validation: { errors: number; warnings: number; infos: number; issues: ValidationIssue[] };
+  validation: {
+    /** Notice codes found, by severity (canonical validator notices, `shared/notices.ts`). */
+    errors: number;
+    warnings: number;
+    infos: number;
+    /** The Google Transit checks (`validateGoogleChecks`), a separate set from the notices. */
+    issues: ValidationIssue[];
+    /** The canonical notice codes found, compact; the full report is `getValidationReport`. */
+    groups?: { code: string; severity: 'ERROR' | 'WARNING' | 'INFO'; total: number }[];
+  };
 }
 
 export interface FeedSummary {

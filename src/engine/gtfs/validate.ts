@@ -409,11 +409,22 @@ async function runTableRules(
   return issues;
 }
 
-export async function validateFeed(feedId: string): Promise<ValidationIssue[]> {
+/**
+ * The Google Transit checks only: the rules that name a check of Google's static validation. The
+ * rest of the legacy rules are superseded by the canonical notices (`./notices`), which the
+ * validation page and the summary show; these stay as their own clearly labelled set.
+ */
+export const validateGoogleChecks = (feedId: string) =>
+  validateFeed(feedId, (rule) => Boolean(rule.google));
+
+export async function validateFeed(
+  feedId: string,
+  only: (rule: ValidationRule) => boolean = () => true
+): Promise<ValidationIssue[]> {
   // SQLite runs in this thread: one rule after another, with the loop free to breathe between them.
   const results: (ValidationIssue | null)[] = [];
   const byTable = new Map<GtfsTable, ValidationRule[]>();
-  for (const rule of RULES) {
+  for (const rule of RULES.filter(only)) {
     if (rule.where && rule.table)
       byTable.set(rule.table, [...(byTable.get(rule.table) ?? []), rule]);
     else results.push(await runRule(feedId, rule));

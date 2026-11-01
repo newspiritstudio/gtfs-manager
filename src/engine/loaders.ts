@@ -9,6 +9,7 @@ import { getFeed, importedCatalogFeeds, listFeedNames, listFeeds } from './gtfs/
 import { getRoutePrint, getServiceMap, getStopPrint } from './gtfs/outputs';
 import { getNetwork } from './gtfs/network';
 import { ensureStats } from './gtfs/stats';
+import { getValidationReport } from './gtfs/notices/report';
 import { getFeedsSafety, getHistoryState } from './history/history';
 
 export const loaders = {
@@ -17,6 +18,7 @@ export const loaders = {
   getFeed,
   importedCatalogFeeds,
   ensureStats,
+  getValidationReport,
   getServices,
   getNetwork,
   getRouteDetail,

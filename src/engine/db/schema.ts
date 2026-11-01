@@ -9,7 +9,8 @@
  *   not lost: they are written back on export.
  *
  * The schema grows by versions (`migrations.ts`): version 1 is the original eleven files, version 2
- * the rest of the specification. A file or field says which version added it (`since` in the
+ * the rest of the specification, version 3 the validation notices (`import_notices`,
+ * `validation_reports`). A file or field says which version added it (`since` in the
  * specification), and `versionStatements(version)` builds exactly what that version adds, so a
  * new database and an upgraded one end up identical.
  *
@@ -26,7 +27,7 @@ import {
 } from '@shared/gtfs-spec';
 
 /** Bump it when the schema changes (and add the step to `MIGRATIONS`). */
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 /** Columns that cannot be empty in the original eleven tables: the natural keys and what the queries rely on. */
 const NOT_NULL_V1: Partial<Record<GtfsTable, readonly string[]>> = {
@@ -158,6 +159,26 @@ const EXTRA_FILES_TABLE = `CREATE TABLE extra_files (
 )`;
 
 /**
+ * What the import found in the files that the rows no longer show (a value that could not be
+ * read, a repeated key, a malformed row...): one row per notice code and file, with the count and
+ * up to 100 examples as JSON. Validation reads it together with what it computes from the rows.
+ */
+const IMPORT_NOTICES_TABLE = `CREATE TABLE import_notices (
+  id INTEGER PRIMARY KEY,
+  feed_id TEXT NOT NULL REFERENCES feeds (id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  filename TEXT NOT NULL,
+  total INTEGER NOT NULL,
+  samples TEXT NOT NULL
+)`;
+
+/** The last validation of a feed, as JSON (`NoticeReport`): the full report, with its examples. */
+const VALIDATION_REPORTS_TABLE = `CREATE TABLE validation_reports (
+  feed_id TEXT PRIMARY KEY REFERENCES feeds (id) ON DELETE CASCADE,
+  report TEXT NOT NULL
+)`;
+
+/**
  * What a schema version adds, in order: new tables, new columns of tables that already existed,
  * and indexes. (Relaxing a constraint, which SQLite cannot do with a statement, is a step of the
  * migration itself.)
@@ -179,6 +200,13 @@ export function versionStatements(version: number): string[] {
   if (version === 1) statements.push(...INDEXES_V1);
   if (version === 2) {
     statements.push(...created.filter((t) => GTFS_SPEC[t].key.length).map(keyIndex), ...INDEXES_V2);
+  }
+  if (version === 3) {
+    statements.push(
+      IMPORT_NOTICES_TABLE,
+      `CREATE UNIQUE INDEX import_notices_key ON import_notices (feed_id, code, filename)`,
+      VALIDATION_REPORTS_TABLE
+    );
   }
   return statements;
 }

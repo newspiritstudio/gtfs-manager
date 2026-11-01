@@ -39,7 +39,7 @@ describe('schema migrations', () => {
     const [{ user_version: version }] = driver.query('PRAGMA user_version', []) as {
       user_version: number;
     }[];
-    expect(version).toBe(2);
+    expect(version).toBe(3);
     expect(names(driver, 'table')).toEqual(
       expect.arrayContaining([
         'fare_products',

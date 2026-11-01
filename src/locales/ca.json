@@ -1624,5 +1624,671 @@
       "negativeTime": "Cap hora pot quedar abans de les 00:00.",
       "tooMany": "Hi hauria massa viatges."
     }
+  },
+  "notices": {
+    "attribution_without_role": {
+      "title": "Atribució sense rol",
+      "description": "Una atribució no diu si l'organització és productora, operadora o autoritat."
+    },
+    "bidirectional_exit_gate": {
+      "title": "Porta de sortida bidireccional",
+      "description": "Un itinerari amb mode 7 (porta de sortida) és bidireccional."
+    },
+    "big_gap_in_service": {
+      "title": "Gran buit de servei",
+      "description": "Un servei té un buit de més de 13 dies entre dues dates amb servei."
+    },
+    "block_trips_with_overlapping_stop_times": {
+      "title": "Viatges d'un bloc que se solapen",
+      "description": "Dos viatges amb el mateix block_id tenen hores de pas que se solapen."
+    },
+    "csv_parsing_failed": {
+      "title": "No s'ha pogut llegir el CSV",
+      "description": "Ha fallat la lectura d'un fitxer CSV."
+    },
+    "decreasing_or_equal_stop_time_distance": {
+      "title": "Distàncies de pas que no creixen",
+      "description": "El shape_dist_traveled d'una hora de pas no és més gran que l'anterior."
+    },
+    "decreasing_shape_distance": {
+      "title": "Distàncies del traçat que decreixen",
+      "description": "El shape_dist_traveled d'un punt del traçat és més petit que el del punt anterior."
+    },
+    "duplicate_fare_media": {
+      "title": "Suport de tarifa duplicat",
+      "description": "Dos suports de tarifa diferents tenen el mateix nom i tipus."
+    },
+    "duplicate_geo_json_key": {
+      "title": "Clau repetida a locations.geojson",
+      "description": "Una clau de locations.geojson està repetida."
+    },
+    "duplicate_geography_id": {
+      "title": "ID geogràfic usat dues vegades",
+      "description": "El mateix ID geogràfic s'usa en més d'un fitxer."
+    },
+    "duplicate_key": {
+      "title": "Clau duplicada",
+      "description": "Dues files d'un fitxer tenen la mateixa clau."
+    },
+    "duplicate_route_name": {
+      "title": "Nom de línia duplicat",
+      "description": "Dues línies diferents tenen el mateix nom curt, el mateix nom llarg o la mateixa combinació."
+    },
+    "duplicated_column": {
+      "title": "Columna repetida",
+      "description": "El nom d'una columna apareix més d'una vegada en un fitxer."
+    },
+    "empty_column_name": {
+      "title": "Columna sense nom",
+      "description": "Una columna d'un fitxer té el nom buit."
+    },
+    "empty_file": {
+      "title": "Fitxer buit",
+      "description": "Un fitxer no té cap contingut."
+    },
+    "empty_row": {
+      "title": "Fila buida",
+      "description": "Una fila d'un fitxer només té espais."
+    },
+    "equal_shape_distance_diff_coordinates": {
+      "title": "Mateixa distància en punts diferents",
+      "description": "Dos punts consecutius del traçat tenen la mateixa distància però estan a més d'1,11 m."
+    },
+    "equal_shape_distance_diff_coordinates_distance_below_threshold": {
+      "title": "Mateixa distància en punts propers",
+      "description": "Dos punts consecutius del traçat tenen la mateixa distància i estan a menys d'1,11 m però no al mateix lloc."
+    },
+    "equal_shape_distance_same_coordinates": {
+      "title": "Mateixa distància al mateix punt",
+      "description": "Dos punts consecutius del traçat tenen la mateixa distància i les mateixes coordenades."
+    },
+    "expired_calendar": {
+      "title": "Calendari caducat",
+      "description": "Un servei té un interval de dates que ja ha acabat."
+    },
+    "fare_product_with_multiple_default_rider_categories": {
+      "title": "Diverses categories de viatger per defecte",
+      "description": "Un producte tarifari té més d'una categoria de viatger marcada com a per defecte."
+    },
+    "fare_transfer_rule_duration_limit_type_without_duration_limit": {
+      "title": "Tipus de límit de durada sense límit",
+      "description": "Una regla de transbord defineix duration_limit_type però no duration_limit."
+    },
+    "fare_transfer_rule_duration_limit_without_type": {
+      "title": "Límit de durada sense tipus",
+      "description": "Una regla de transbord defineix duration_limit però no duration_limit_type."
+    },
+    "fare_transfer_rule_invalid_transfer_count": {
+      "title": "Nombre de transbords invàlid",
+      "description": "El transfer_count d'una regla de transbord té un valor invàlid."
+    },
+    "fare_transfer_rule_with_forbidden_transfer_count": {
+      "title": "Nombre de transbords no permès",
+      "description": "Una regla amb from_leg_group_id diferent de to_leg_group_id té transfer_count."
+    },
+    "fare_transfer_rule_without_transfer_count": {
+      "title": "Falta el nombre de transbords",
+      "description": "Una regla amb from_leg_group_id igual a to_leg_group_id no té transfer_count."
+    },
+    "fast_travel_between_consecutive_stops": {
+      "title": "Massa ràpid entre parades consecutives",
+      "description": "El vehicle va massa de pressa entre dues parades consecutives."
+    },
+    "feed_expiration_date30_days": {
+      "title": "El feed caduca en 30 dies",
+      "description": "El feed hauria de cobrir almenys els propers 30 dies de servei."
+    },
+    "feed_expiration_date7_days": {
+      "title": "El feed caduca en 7 dies",
+      "description": "El feed hauria de ser vàlid almenys els propers 7 dies."
+    },
+    "feed_info_lang_and_agency_lang_mismatch": {
+      "title": "Idioma del feed i de l'operador diferents",
+      "description": "L'idioma del feed no coincideix amb el d'un operador."
+    },
+    "feed_valid_beyond_total_service_window": {
+      "title": "Feed vàlid més enllà del servei",
+      "description": "El feed és vàlid 14 dies més enllà del seu període total de servei."
+    },
+    "forbidden_arrival_or_departure_time": {
+      "title": "Hora no permesa",
+      "description": "Hi ha hora d'arribada o de sortida juntament amb finestres de recollida o baixada."
+    },
+    "forbidden_continuous_pickup_drop_off": {
+      "title": "Recollida o baixada contínua no permesa",
+      "description": "La recollida o baixada contínua és incompatible amb una finestra de recollida o baixada."
+    },
+    "forbidden_drop_off_type": {
+      "title": "Tipus de baixada no permès",
+      "description": "Les finestres de recollida o baixada no es poden usar amb drop_off_type 0."
+    },
+    "forbidden_geography_id": {
+      "title": "ID geogràfic no permès",
+      "description": "Una hora de pas té més d'un ID geogràfic definit."
+    },
+    "forbidden_pickup_type": {
+      "title": "Tipus de recollida no permès",
+      "description": "Les finestres de recollida o baixada no es poden usar amb pickup_type 0 o 3."
+    },
+    "forbidden_prior_day_booking_field_value": {
+      "title": "Camp de reserva el dia abans no permès",
+      "description": "Una regla de reserva el dia abans té un camp que no li correspon."
+    },
+    "forbidden_prior_notice_start_day": {
+      "title": "Dia d'inici d'avís previ no permès",
+      "description": "prior_notice_start_day no es pot usar amb prior_notice_duration_max."
+    },
+    "forbidden_prior_notice_start_time": {
+      "title": "Hora d'inici d'avís previ no permesa",
+      "description": "prior_notice_start_time no es pot usar sense prior_notice_start_day."
+    },
+    "forbidden_real_time_booking_field_value": {
+      "title": "Camp de reserva en temps real no permès",
+      "description": "Una regla de reserva en temps real té un camp que no li correspon."
+    },
+    "forbidden_same_day_booking_field_value": {
+      "title": "Camp de reserva el mateix dia no permès",
+      "description": "Una regla de reserva el mateix dia té un camp que no li correspon."
+    },
+    "forbidden_shape_dist_traveled": {
+      "title": "Distància del traçat no permesa",
+      "description": "Una hora de pas té shape_dist_traveled sense stop_id."
+    },
+    "foreign_key_violation": {
+      "title": "Referència a una fila inexistent",
+      "description": "Un camp apunta a un ID que no existeix al fitxer referenciat."
+    },
+    "future_calendar": {
+      "title": "Calendari que comença en el futur",
+      "description": "Tots els serveis del feed comencen després d'avui: cap no cobreix avui."
+    },
+    "future_feed": {
+      "title": "Feed que comença en el futur",
+      "description": "El feed només cobreix dates futures."
+    },
+    "geo_json_unknown_element": {
+      "title": "Element desconegut a locations.geojson",
+      "description": "locations.geojson té un element que l'especificació no defineix."
+    },
+    "inconsistent_agency_lang": {
+      "title": "Operadors amb idiomes diferents",
+      "description": "Els operadors del feed declaren idiomes diferents."
+    },
+    "inconsistent_agency_timezone": {
+      "title": "Operadors amb zones horàries diferents",
+      "description": "Els operadors del feed declaren zones horàries diferents."
+    },
+    "inconsistent_route_type_for_block_id": {
+      "title": "Bloc amb diversos tipus de línia",
+      "description": "Els viatges d'un bloc haurien de ser del mateix mode de línia."
+    },
+    "inconsistent_route_type_for_in_seat_transfer": {
+      "title": "Transbord al seient entre tipus de línia",
+      "description": "Un transbord al seient hauria de ser dins del mateix mode de línia."
+    },
+    "invalid_character": {
+      "title": "Caràcter invàlid",
+      "description": "Un valor conté un caràcter invàlid, com el caràcter de substitució."
+    },
+    "invalid_color": {
+      "title": "Color invàlid",
+      "description": "Un camp conté un color invàlid."
+    },
+    "invalid_currency": {
+      "title": "Codi de moneda invàlid",
+      "description": "Un camp conté un codi de moneda erroni."
+    },
+    "invalid_currency_amount": {
+      "title": "Import invàlid",
+      "description": "Un import no encaixa amb el format de la seva moneda."
+    },
+    "invalid_date": {
+      "title": "Data invàlida",
+      "description": "Un camp no es pot llegir com a data."
+    },
+    "invalid_email": {
+      "title": "Adreça electrònica invàlida",
+      "description": "Un camp conté una adreça electrònica mal escrita."
+    },
+    "invalid_float": {
+      "title": "Número decimal invàlid",
+      "description": "Un camp no es pot llegir com a número decimal."
+    },
+    "invalid_integer": {
+      "title": "Enter invàlid",
+      "description": "Un camp no es pot llegir com a enter."
+    },
+    "invalid_language_code": {
+      "title": "Codi d'idioma invàlid",
+      "description": "Un camp conté un codi d'idioma erroni."
+    },
+    "invalid_pickup_drop_off_window": {
+      "title": "Finestra de recollida o baixada invàlida",
+      "description": "La finestra de recollida o baixada de stop_times.txt no és vàlida."
+    },
+    "invalid_prior_notice_duration_min": {
+      "title": "Avís previ mínim invàlid",
+      "description": "Una regla de reserva té un prior_notice_duration_min invàlid."
+    },
+    "invalid_row_length": {
+      "title": "Fila de llargada incorrecta",
+      "description": "Una fila té més o menys valors que columnes té la capçalera."
+    },
+    "invalid_time": {
+      "title": "Hora invàlida",
+      "description": "Un camp no es pot llegir com a hora."
+    },
+    "invalid_timezone": {
+      "title": "Zona horària invàlida",
+      "description": "Un camp no es pot llegir com a zona horària."
+    },
+    "invalid_url": {
+      "title": "URL invàlida",
+      "description": "Un camp conté una URL mal escrita."
+    },
+    "leading_or_trailing_whitespaces": {
+      "title": "Espais al principi o al final",
+      "description": "Un valor del CSV comença o acaba amb espais."
+    },
+    "location_with_unexpected_stop_time": {
+      "title": "Hora de pas d'una ubicació que no és parada",
+      "description": "Una hora de pas apunta a una ubicació de stops.txt que no és una parada."
+    },
+    "location_without_parent_station": {
+      "title": "Ubicació sense estació mare",
+      "description": "Una ubicació que ha de tenir parent_station no la té."
+    },
+    "malformed_json": {
+      "title": "JSON mal format",
+      "description": "Un fitxer JSON està mal format."
+    },
+    "missing_bike_allowance": {
+      "title": "Falta permís per a bicicletes",
+      "description": "Els viatges de ferri haurien d'indicar si admeten bicicletes."
+    },
+    "missing_calendar_and_calendar_date_files": {
+      "title": "Sense fitxers de calendari",
+      "description": "Falten calendar.txt i calendar_dates.txt."
+    },
+    "missing_feed_contact_email_and_url": {
+      "title": "Sense contacte del feed",
+      "description": "Les bones pràctiques demanen almenys un feed_contact_email o feed_contact_url."
+    },
+    "missing_feed_info_date": {
+      "title": "Falten dates del feed",
+      "description": "Només hi ha feed_start_date o feed_end_date, però no les dues."
+    },
+    "missing_level_id": {
+      "title": "Falta el nivell",
+      "description": "El level_id d'una parada és obligatori en aquest cas."
+    },
+    "missing_pickup_drop_off_booking_rule_id": {
+      "title": "Falta la regla de reserva",
+      "description": "Es recomana pickup_booking_rule_id amb pickup_type=2 i drop_off_booking_rule_id amb drop_off_type=2."
+    },
+    "missing_pickup_or_drop_off_window": {
+      "title": "Falta una finestra",
+      "description": "Falta l'inici o el final de la finestra de recollida o baixada a stop_times.txt."
+    },
+    "missing_prior_notice_duration_min": {
+      "title": "Falta l'avís previ mínim",
+      "description": "prior_notice_duration_min és obligatori per a les reserves el mateix dia."
+    },
+    "missing_prior_notice_last_day": {
+      "title": "Falta l'últim dia d'avís",
+      "description": "prior_notice_last_day és obligatori per a les reserves el dia abans."
+    },
+    "missing_prior_notice_last_time": {
+      "title": "Falta l'última hora d'avís",
+      "description": "prior_notice_last_time és obligatori per a les reserves el dia abans."
+    },
+    "missing_prior_notice_start_time": {
+      "title": "Falta l'hora d'inici de l'avís",
+      "description": "prior_notice_start_time és obligatori quan hi ha prior_notice_start_day."
+    },
+    "missing_recommended_field": {
+      "title": "Camp recomanat buit",
+      "description": "Un camp recomanat no té valor."
+    },
+    "missing_recommended_file": {
+      "title": "Falta un fitxer recomanat",
+      "description": "Falta un fitxer que l'especificació recomana."
+    },
+    "missing_required_agency_id": {
+      "title": "Falta agency_id",
+      "description": "Amb diversos operadors, agency_id és obligatori."
+    },
+    "missing_required_column": {
+      "title": "Falta una columna obligatòria",
+      "description": "Falta una columna obligatòria a la capçalera d'un fitxer."
+    },
+    "missing_required_element": {
+      "title": "Falta un element obligatori",
+      "description": "Falta un element obligatori a locations.geojson."
+    },
+    "missing_required_field": {
+      "title": "Camp obligatori buit",
+      "description": "Un camp obligatori no té valor."
+    },
+    "missing_required_file": {
+      "title": "Falta un fitxer obligatori",
+      "description": "Falta un fitxer obligatori."
+    },
+    "missing_stop_name": {
+      "title": "Parada sense nom",
+      "description": "stop_name és obligatori per a location_type 0, 1 o 2."
+    },
+    "missing_stop_times_record": {
+      "title": "Viatge amb massa poques hores de pas",
+      "description": "Un viatge té una sola hora de pas en un grup d'ubicacions o ubicació on en calen dues."
+    },
+    "missing_timepoint_value": {
+      "title": "Falta el valor de timepoint",
+      "description": "Una hora de pas no té el valor de timepoint."
+    },
+    "missing_trip_edge": {
+      "title": "Primera o última parada sense hora",
+      "description": "La primera o l'última hora de pas d'un viatge no té hora d'arribada ni de sortida."
+    },
+    "mixed_case_recommended_field": {
+      "title": "Text en un sol tipus de lletra",
+      "description": "Un camp de text per al públic hauria de barrejar majúscules i minúscules."
+    },
+    "more_than_one_entity": {
+      "title": "Més d'una fila",
+      "description": "Un fitxer que ha de tenir una sola fila en té diverses."
+    },
+    "new_line_in_value": {
+      "title": "Salt de línia en un valor",
+      "description": "Un valor del CSV conté un salt de línia."
+    },
+    "non_ascii_or_non_printable_char": {
+      "title": "Caràcter no ASCII o no imprimible",
+      "description": "Un ID conté un caràcter que no és ASCII imprimible."
+    },
+    "number_out_of_range": {
+      "title": "Número fora de rang",
+      "description": "Un número és fora del rang que permet el seu camp."
+    },
+    "overlapping_frequency": {
+      "title": "Freqüències que se solapen",
+      "description": "Les freqüències d'un viatge se solapen."
+    },
+    "pathway_dangling_generic_node": {
+      "title": "Node genèric amb un sol itinerari",
+      "description": "Un node genèric només té una ubicació connectada al graf d'itineraris."
+    },
+    "pathway_loop": {
+      "title": "Itinerari circular",
+      "description": "Un itinerari comença i acaba a la mateixa ubicació."
+    },
+    "pathway_to_platform_with_boarding_areas": {
+      "title": "Itinerari a una andana amb zones d'embarcament",
+      "description": "Un extrem d'un itinerari és un andana que té zones d'embarcament."
+    },
+    "pathway_to_stop_with_access_outside_of_station_pathways": {
+      "title": "Itinerari a una parada fora dels itineraris de l'estació",
+      "description": "Un extrem d'un itinerari és una parada amb stop_access=1, que s'hi ha d'arribar fora de l'estació."
+    },
+    "pathway_to_wrong_location_type": {
+      "title": "Itinerari a un tipus d'ubicació incorrecte",
+      "description": "Un extrem d'un itinerari és una estació."
+    },
+    "platform_without_parent_station": {
+      "title": "Andana sense estació mare",
+      "description": "Una andana no té parent_station."
+    },
+    "point_near_origin": {
+      "title": "Punt proper a (0, 0)",
+      "description": "Un punt és massa a prop de l'origen (0, 0)."
+    },
+    "point_near_pole": {
+      "title": "Punt proper a un pol",
+      "description": "Un punt és massa a prop del pol nord o del pol sud."
+    },
+    "prior_notice_last_day_after_start_day": {
+      "title": "Últim dia d'avís posterior a l'inici",
+      "description": "prior_notice_last_day no pot ser més gran que prior_notice_start_day."
+    },
+    "route_both_short_and_long_name_missing": {
+      "title": "Línia sense nom",
+      "description": "Una línia no té ni nom curt ni nom llarg."
+    },
+    "route_color_contrast": {
+      "title": "Poc contrast de color",
+      "description": "El color de la línia i el del text no tenen prou contrast."
+    },
+    "route_long_name_contains_short_name": {
+      "title": "El nom llarg conté el curt",
+      "description": "El nom llarg d'una línia repeteix el seu nom curt."
+    },
+    "route_networks_specified_in_more_than_one_file": {
+      "title": "Xarxes definides dues vegades",
+      "description": "Les xarxes de les línies es defineixen en més d'un fitxer."
+    },
+    "route_short_name_too_long": {
+      "title": "Nom curt massa llarg",
+      "description": "El nom curt d'una línia té més de 12 caràcters."
+    },
+    "same_name_and_description_for_route": {
+      "title": "Nom de línia igual a la descripció",
+      "description": "La descripció d'una línia és igual al seu nom."
+    },
+    "same_name_and_description_for_stop": {
+      "title": "Nom de parada igual a la descripció",
+      "description": "La descripció d'una parada és igual al seu nom."
+    },
+    "same_route_and_agency_url": {
+      "title": "Línia i operador amb la mateixa URL",
+      "description": "Una línia té la mateixa URL que el seu operador."
+    },
+    "same_stop_and_agency_url": {
+      "title": "Parada i operador amb la mateixa URL",
+      "description": "Una parada té la mateixa URL que un operador."
+    },
+    "same_stop_and_route_url": {
+      "title": "Parada i línia amb la mateixa URL",
+      "description": "Una parada té la mateixa URL que una línia."
+    },
+    "service_extends_far_in_the_future": {
+      "title": "Servei molt lluny en el futur",
+      "description": "La data final d'un servei és a més de 2 anys vista."
+    },
+    "service_has_no_active_day_of_the_week": {
+      "title": "Servei sense cap dia actiu",
+      "description": "Un servei no és vàlid cap dia de la setmana."
+    },
+    "service_window_outside_feed_period": {
+      "title": "Servei fora del període del feed",
+      "description": "El període de servei no queda cobert pel període de validesa del feed."
+    },
+    "single_shape_point": {
+      "title": "Traçat d'un sol punt",
+      "description": "Un traçat de shapes.txt té un sol punt."
+    },
+    "start_and_end_range_equal": {
+      "title": "Inici igual al final",
+      "description": "Dos camps de data o d'hora són iguals."
+    },
+    "start_and_end_range_out_of_order": {
+      "title": "Final abans de l'inici",
+      "description": "Dos camps de data o d'hora estan en ordre invers."
+    },
+    "station_with_parent_station": {
+      "title": "Estació amb estació mare",
+      "description": "Una estació té parent_station, i no en pot tenir."
+    },
+    "stop_access_specified_for_incorrect_location": {
+      "title": "Accés definit en una ubicació incorrecta",
+      "description": "Una ubicació que no és una parada té stop_access."
+    },
+    "stop_access_specified_for_stop_with_no_parent_station": {
+      "title": "Accés definit sense estació mare",
+      "description": "Una parada sense estació mare té stop_access."
+    },
+    "stop_time_timepoint_without_times": {
+      "title": "Punt de control sense hores",
+      "description": "Una hora de pas de punt de control no té hora d'arribada ni de sortida."
+    },
+    "stop_time_with_arrival_before_previous_departure_time": {
+      "title": "Arribada abans de la sortida anterior",
+      "description": "Una hora de pas arriba abans que surti la parada anterior."
+    },
+    "stop_time_with_only_arrival_or_departure_time": {
+      "title": "Només hora d'arribada o de sortida",
+      "description": "Una hora de pas té una de les dues hores però no l'altra."
+    },
+    "stop_without_location": {
+      "title": "Parada sense coordenades",
+      "description": "Falta stop_lat o stop_lon en una parada, estació o entrada."
+    },
+    "stop_without_stop_time": {
+      "title": "Parada que cap viatge no fa servir",
+      "description": "Una parada de stops.txt no apareix a cap hora de pas."
+    },
+    "stop_without_zone_id": {
+      "title": "Parada sense zona",
+      "description": "Una parada sense zone_id és en una línia amb una regla tarifària per zones."
+    },
+    "timeframe_only_start_or_end_time_specified": {
+      "title": "Franja amb un sol límit",
+      "description": "Una fila de timeframes.txt té només l'hora d'inici o només la de final."
+    },
+    "timeframe_overlap": {
+      "title": "Franges que se solapen",
+      "description": "Dues franges amb el mateix timeframe_group_id i service_id se solapen."
+    },
+    "timeframe_start_or_end_time_greater_than_twenty_four_hours": {
+      "title": "Franja passades les 24 hores",
+      "description": "Una hora de timeframes.txt és posterior a 24:00:00."
+    },
+    "transfer_distance_above_2_km": {
+      "title": "Transbord de més de 2 km",
+      "description": "La distància d'un transbord entre parades és de més de 2 km."
+    },
+    "transfer_distance_too_large": {
+      "title": "Transbord de més de 10 km",
+      "description": "La distància d'un transbord entre parades és de més de 10 km."
+    },
+    "transfer_with_invalid_stop_location_type": {
+      "title": "Transbord entre ubicacions invàlides",
+      "description": "Un transbord apunta a una ubicació que no és ni parada ni estació."
+    },
+    "transfer_with_invalid_trip_and_route": {
+      "title": "Transbord amb viatge i línia que no concorden",
+      "description": "Un transbord apunta a un viatge que no és de la línia indicada."
+    },
+    "transfer_with_invalid_trip_and_stop": {
+      "title": "Transbord amb un viatge que no hi para",
+      "description": "Un transbord apunta a una parada que el viatge no fa."
+    },
+    "transfer_with_suspicious_mid_trip_in_seat": {
+      "title": "Transbord al seient sospitós",
+      "description": "Un transbord al seient apunta a una parada que no és on toca dins del viatge."
+    },
+    "translation_foreign_key_violation": {
+      "title": "Traducció d'una fila inexistent",
+      "description": "Una traducció apunta a un registre que no existeix a la taula."
+    },
+    "translation_unexpected_value": {
+      "title": "Traducció amb un valor inesperat",
+      "description": "Un camp d'una fila de translations té valor i hauria d'estar buit."
+    },
+    "translation_unknown_table_name": {
+      "title": "Traducció d'una taula desconeguda",
+      "description": "Una traducció apunta a una taula GTFS desconeguda."
+    },
+    "trip_coverage_not_active_for_next7_days": {
+      "title": "Sense viatges en els propers 7 dies",
+      "description": "Les dades de viatges haurien de ser vàlides almenys set dies."
+    },
+    "trip_distance_exceeds_shape_distance": {
+      "title": "Viatge més llarg que el traçat",
+      "description": "L'última parada és a 11,1 m o més de l'últim punt del traçat."
+    },
+    "trip_distance_exceeds_shape_distance_below_threshold": {
+      "title": "Viatge una mica més llarg que el traçat",
+      "description": "L'última parada és a menys d'11,1 m de l'últim punt del traçat, però no a sobre."
+    },
+    "trip_headsign_matches_intermediate_stop": {
+      "title": "Destinació amb el nom d'una parada intermèdia",
+      "description": "La destinació d'un viatge coincideix amb una parada que no és l'última."
+    },
+    "trip_with_shape_dist_traveled_but_no_shape_distances": {
+      "title": "Distàncies de pas sense distàncies de traçat",
+      "description": "Un viatge té distàncies a stop_times.txt però el seu traçat no en té a tots els punts."
+    },
+    "unexpected_enum_value": {
+      "title": "Valor inesperat",
+      "description": "Un camp té un valor que l'especificació no defineix."
+    },
+    "unknown_column": {
+      "title": "Columna desconeguda",
+      "description": "Un fitxer té una columna que l'especificació no defineix."
+    },
+    "unknown_file": {
+      "title": "Fitxer desconegut",
+      "description": "El feed té un fitxer que l'especificació no defineix."
+    },
+    "unsorted_stop_times": {
+      "title": "Hores de pas desordenades",
+      "description": "Les hores de pas d'un viatge no estan ordenades per stop_sequence al fitxer."
+    },
+    "unsupported_feature_type": {
+      "title": "Tipus d'element no admès",
+      "description": "locations.geojson usa un tipus d'element que no s'admet."
+    },
+    "unsupported_geo_json_type": {
+      "title": "Tipus GeoJSON no admès",
+      "description": "locations.geojson usa un tipus GeoJSON que no s'admet."
+    },
+    "unsupported_geometry_type": {
+      "title": "Tipus de geometria no admès",
+      "description": "Un element de locations.geojson té una geometria que no s'admet."
+    },
+    "unusable_trip": {
+      "title": "Viatge amb una sola parada",
+      "description": "Un viatge ha de tenir més d'una parada per ser útil."
+    },
+    "unused_shape": {
+      "title": "Traçat sense ús",
+      "description": "Cap viatge de trips.txt no fa servir el traçat."
+    },
+    "unused_station": {
+      "title": "Estació sense ús",
+      "description": "Una estació no té cap parada amb viatges."
+    },
+    "unused_trip": {
+      "title": "Viatge sense hores de pas",
+      "description": "Un viatge no té cap hora de pas."
+    },
+    "wrong_parent_location_type": {
+      "title": "Mare d'un tipus incorrecte",
+      "description": "La mare d'una ubicació no és del tipus que hauria de ser."
+    }
+  },
+  "validationReport": {
+    "subtitle": "Comprovacions de les regles del validador GTFS de MobilityData, calculades al navegador, i les comprovacions de Google Transit.",
+    "typesLabel": "Tipus d'avís",
+    "casesLabel": "Casos",
+    "filterSeverity": "Gravetat",
+    "severityAll": "Tots",
+    "filterFile": "Fitxer",
+    "allFiles": "Tots els fitxers",
+    "examples": "Exemples",
+    "showMore": "Mostra'n més",
+    "showFewer": "Mostra'n menys",
+    "docs": "Documentació",
+    "exportJson": "Exporta el JSON",
+    "exportDone": "Informe exportat",
+    "exportFailed": "No s'ha pogut exportar l'informe",
+    "googleTitle": "Comprovacions de Google Transit",
+    "googleHint": "Comprovacions de la validació estàtica de Google. Són un conjunt a part dels avisos de dalt.",
+    "noMatch": "Cap avís coincideix amb aquests filtres",
+    "row": "Fila {row}",
+    "notComputed": "Avisos del validador de MobilityData que GTFS Manager no calcula: {count}.",
+    "rules": "Regles del validador de MobilityData, versió {version}.",
+    "failedRules": "Algunes comprovacions no s'han pogut executar: {rules}.",
+    "codeLabel": "Codi"
   }
 }
