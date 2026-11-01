@@ -37,6 +37,8 @@ export function useBreadcrumbs(feeds: ShellFeed[]) {
           .filter(Boolean);
         if (rest.length)
           crumbs.push({ label: detail?.label ?? decodeURIComponent(rest[0]), href: pathname });
+      } else if (pathname.startsWith(`/feeds/${feedId}/compare`)) {
+        crumbs.push({ label: t('compare.title'), href: pathname });
       } else if (pathname.startsWith(`/feeds/${feedId}/trips/`)) {
         // Trips are not in the navigation: they hang off the line that runs them.
         crumbs.push({ label: t('nav.routes'), href: `/feeds/${feedId}/routes` });

@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   Clock,
   FileText,
+  GitCompareArrows,
   Info,
   Map as MapIcon,
   MapPin,
@@ -15,13 +16,15 @@ import {
 import { GTFS_SPEC, GTFS_TABLES, transitModeForRouteType } from '@shared/gtfs-spec';
 import BarList from '@/components/charts/BarList';
 import Badge from '@/components/ui/Badge';
-import { ButtonLink } from '@/components/ui/Button';
+import Button, { ButtonLink } from '@/components/ui/Button';
 import { ClockRange } from '@/components/ui/ClockTime';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import EmptyState from '@/components/ui/EmptyState';
 import KPICard from '@/components/ui/KPICard';
 import PageHeader from '@/components/ui/PageHeader';
+import CompareDialog from '@/features/compare/CompareDialog';
 import { DeparturesByHour, NetworkPreview, TripsHeatmap } from '@/features/overview/OverviewClient';
+import { useState } from 'react';
 import type { FeedStats, FeedSummary, ImportReport } from '@shared/contracts';
 import { referenceDateFrom } from '@shared/gtfs-values';
 import Loaded from '@/components/shell/Loaded';
@@ -60,6 +63,7 @@ function Overview({
   const referenceTrips = stats.tripsByDate.find((d) => d.date === reference)?.trips ?? 0;
   const empty = stats.counts.trips === 0 && stats.counts.stops === 0;
   const base = `/feeds/${feedId}`;
+  const [comparing, setComparing] = useState(false);
 
   return (
     <div className="mx-auto max-w-7xl space-y-4">
@@ -81,13 +85,20 @@ function Overview({
           empty ? (
             <ButtonLink href={`${base}/generator`}>{t('overview.startBuilding')}</ButtonLink>
           ) : (
-            <ButtonLink href={`${base}/map`}>
-              <MapIcon />
-              {t('overview.openMap')}
-            </ButtonLink>
+            <>
+              <Button variant="outline" onClick={() => setComparing(true)}>
+                <GitCompareArrows />
+                {t('compare.action')}
+              </Button>
+              <ButtonLink href={`${base}/map`}>
+                <MapIcon />
+                {t('overview.openMap')}
+              </ButtonLink>
+            </>
           )
         }
       />
+      <CompareDialog open={comparing} onClose={() => setComparing(false)} feedId={feedId} />
       {feed.description ? (
         <p className="-mt-2 max-w-3xl text-body-large text-on-surface-variant">
           {feed.description}

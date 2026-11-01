@@ -1,0 +1,62 @@
+/* Comparison and operator outputs: chart colours (validated categorical slots 1 and 2 of the data
+   visualisation palette, stepped per theme) and the print layout of timetables. */
+:root {
+  --viz-base: #2a78d6;
+  --viz-other: #eb6834;
+}
+:root[data-theme='dark'] {
+  --viz-base: #3987e5;
+  --viz-other: #d95926;
+}
+
+/* A timetable is paper: black on white in either theme, so what is previewed is what prints. */
+.print-sheet {
+  background: #fff;
+  color: #1a1a1a;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.print-sheet table {
+  border-collapse: collapse;
+}
+.print-sheet th,
+.print-sheet td {
+  border: 1px solid #c9c9c9;
+}
+
+@media print {
+  @page {
+    margin: 12mm;
+  }
+  /* The app frame is a fixed-height scroller: on paper the page flows. */
+  body[data-print-sheet],
+  body[data-print-sheet] #root,
+  body[data-print-sheet] .h-app,
+  body[data-print-sheet] .h-app > :last-child,
+  body[data-print-sheet] main {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body[data-print-sheet] .h-app > :not(:last-child),
+  body[data-print-sheet] .h-app > :last-child > :not(main),
+  body[data-print-sheet] [data-print-hide] {
+    display: none !important;
+  }
+  body[data-print-sheet] .print-sheet {
+    box-shadow: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  .print-sheet .print-block {
+    break-inside: avoid;
+  }
+  .print-sheet .print-break {
+    break-before: page;
+  }
+}

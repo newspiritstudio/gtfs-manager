@@ -946,5 +946,149 @@
       "one": "{count} vehicle en directe",
       "other": "{count} vehicles en directe"
     }
+  },
+  "compare": {
+    "title": "Compara versions",
+    "action": "Compara",
+    "subtitle": "{base} → {other}",
+    "pickSubtitle": "Tria l'altra versió del feed. La més antiga és la base i es mostra què ha canviat a la més nova.",
+    "needTwo": "Encara no hi ha res per comparar",
+    "needTwoHint": "Importa una altra versió d'aquest feed (per exemple, el proper horari) per veure què ha canviat entre les dues.",
+    "base": "Base (versió més antiga)",
+    "other": "Compara amb (versió més nova)",
+    "swap": "Intercanvia base i comparació",
+    "noPeriod": "Sense període de servei",
+    "identical": "Els dos feeds són idèntics en tot el que es compara.",
+    "category": {
+      "agencies": "Agències",
+      "routes": "Línies",
+      "stops": "Parades",
+      "trips": "Viatges",
+      "services": "Serveis",
+      "shapes": "Traçats",
+      "renames": "Ids canviats"
+    },
+    "status": {
+      "added": "Afegit",
+      "removed": "Eliminat",
+      "changed": "Canviat"
+    },
+    "unchanged": {
+      "one": "{count} sense canvis",
+      "other": "{count} sense canvis"
+    },
+    "serviceTitle": "Viatges per dia",
+    "serviceSubtitle": "Mitjana diària: {base} viatges a la base, {other} a l'altre feed",
+    "overlap": "{days} dies en comú, {differing} amb un nombre de viatges diferent.",
+    "noOverlap": "Els dos feeds no comparteixen cap dia.",
+    "chartLabel": "Viatges per dia a cada feed",
+    "noDays": "No hi ha dies amb servei per dibuixar.",
+    "hideTable": "Amaga la taula",
+    "showTable": "Mostra la taula",
+    "differingDays": "Dies amb un nombre de viatges diferent",
+    "noDifferingDays": "Cap dia té un nombre de viatges diferent.",
+    "feedInfo": "Període de validesa (feed_info)",
+    "feedInfoSame": "feed_info no ha canviat.",
+    "highlights": "Canvis més grans",
+    "noHighlights": "No hi ha canvis grans a destacar.",
+    "movedStops": "Parades que s'han mogut més",
+    "timingShifts": "Canvis d'horari més grans",
+    "details": "Diferències per categoria",
+    "filterKind": "Tipus de canvi",
+    "search": "Cerca per id o nom",
+    "results": {
+      "one": "{count} diferència",
+      "other": "{count} diferències"
+    },
+    "noDifferences": "Aquí no hi ha diferències",
+    "renamesGuess": "Aquests parells són una conjectura: una parada que ha desaparegut i una altra amb el mateix nom a menys de 20 m. Comprova'ls abans de fiar-te'n.",
+    "guess": "Conjectura",
+    "empty": "(buit)",
+    "moved": "Mogut {distance}",
+    "tripsFromTo": "Viatges: {from} → {to}",
+    "tripsAdded": {
+      "one": "{count} viatge afegit",
+      "other": "{count} viatges afegits"
+    },
+    "tripsRemoved": {
+      "one": "{count} viatge eliminat",
+      "other": "{count} viatges eliminats"
+    },
+    "tripsChanged": {
+      "one": "{count} viatge canviat",
+      "other": "{count} viatges canviats"
+    },
+    "stopsDelta": "Parades: +{added} / −{removed}",
+    "timing": "Horaris {shift} de mitjana a {count} parades (fins a {max})",
+    "exceptionsDelta": "Dates d'excepció: +{added} / −{removed}",
+    "shapeFromTo": "{points} punts, {length}",
+    "shapeSize": "{points} punts, {length}",
+    "onRoute": "a la línia {route}",
+    "pattern": {
+      "added": "Patró nou",
+      "removed": "Patró eliminat"
+    },
+    "morePatterns": {
+      "one": "{count} patró més",
+      "other": "{count} patrons més"
+    },
+    "mapLabel": "Mapa de les diferències de parades",
+    "mapNone": "No s'ha afegit, eliminat ni mogut cap parada.",
+    "legendAdded": {
+      "one": "{count} parada afegida",
+      "other": "{count} parades afegides"
+    },
+    "legendRemoved": {
+      "one": "{count} parada eliminada (anell buit)",
+      "other": "{count} parades eliminades (anell buit)"
+    },
+    "legendMoved": {
+      "one": "{count} parada moguda (línia de punts de l'antiga a la nova)",
+      "other": "{count} parades mogudes (línia de punts de l'antiga a la nova)"
+    }
+  },
+  "outputs": {
+    "exportZip": "GTFS (ZIP)",
+    "exportGeojson": "GeoJSON (parades i línies)",
+    "printTimetable": "Imprimeix horaris",
+    "printTitle": "Horari per imprimir",
+    "print": "Imprimeix o desa en PDF",
+    "printHint": "Fes servir Imprimeix del navegador i tria «Desa com a PDF» per obtenir un fitxer. Només s'imprimeix el full de sota.",
+    "note": "Nota per al full",
+    "back": "Torna",
+    "forDate": "Horari del {date}",
+    "validity": "Vigent del {start} al {end}",
+    "towards": "Direcció {headsign}",
+    "direction": "Sentit",
+    "tripCount": {
+      "one": "{count} viatge",
+      "other": "{count} viatges"
+    },
+    "stop": "Parada",
+    "hour": "Hora",
+    "minutes": "Minuts",
+    "noService": "Aquest dia no hi ha servei.",
+    "mapMode": "Mode del mapa",
+    "mode": {
+      "lines": "Línies",
+      "frequency": "Freqüència",
+      "coverage": "Cobertura"
+    },
+    "from": "Des de",
+    "to": "Fins a",
+    "windowInvalid": "El final ha de ser posterior a l'inici.",
+    "radius": "Radi a peu",
+    "loading": "S'està carregant…",
+    "noServiceWindow": "No hi ha servei entre les {from} i les {to} aquest dia.",
+    "segmentsSummary": "{segments} trams i {stops} parades amb servei.",
+    "coverageSummary": "{stops} parades amb servei; àrea a menys de {radius} m.",
+    "legendFrequency": "Viatges per hora",
+    "legendCoverage": "A menys de {radius} m d'una parada amb servei",
+    "window": "Franja {from}–{to}",
+    "tripsPerHourValue": "{value} viatges per hora",
+    "callsInWindow": {
+      "one": "{count} viatge a la franja",
+      "other": "{count} viatges a la franja"
+    }
   }
 }

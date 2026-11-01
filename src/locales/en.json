@@ -946,5 +946,149 @@
       "one": "{count} live vehicle",
       "other": "{count} live vehicles"
     }
+  },
+  "compare": {
+    "title": "Compare versions",
+    "action": "Compare",
+    "subtitle": "{base} → {other}",
+    "pickSubtitle": "Choose the other version of the feed. The older one is the base and what changed in the newer one is shown.",
+    "needTwo": "There is nothing to compare with yet",
+    "needTwoHint": "Import another version of this feed (for example, the next schedule) to see what changed between them.",
+    "base": "Base (older version)",
+    "other": "Compare with (newer version)",
+    "swap": "Swap base and comparison",
+    "noPeriod": "No service period",
+    "identical": "The two feeds are identical in everything that is compared.",
+    "category": {
+      "agencies": "Agencies",
+      "routes": "Routes",
+      "stops": "Stops",
+      "trips": "Trips",
+      "services": "Services",
+      "shapes": "Shapes",
+      "renames": "Renamed ids"
+    },
+    "status": {
+      "added": "Added",
+      "removed": "Removed",
+      "changed": "Changed"
+    },
+    "unchanged": {
+      "one": "{count} unchanged",
+      "other": "{count} unchanged"
+    },
+    "serviceTitle": "Trips per day",
+    "serviceSubtitle": "Daily average: {base} trips in the base, {other} in the other feed",
+    "overlap": "{days} days in common, {differing} with a different number of trips.",
+    "noOverlap": "The two feeds do not share any day.",
+    "chartLabel": "Trips per day in each feed",
+    "noDays": "No days with service to chart.",
+    "hideTable": "Hide table",
+    "showTable": "Show table",
+    "differingDays": "Days with a different number of trips",
+    "noDifferingDays": "No day has a different number of trips.",
+    "feedInfo": "Validity window (feed_info)",
+    "feedInfoSame": "feed_info has no changes.",
+    "highlights": "Biggest changes",
+    "noHighlights": "No big changes to highlight.",
+    "movedStops": "Stops that moved most",
+    "timingShifts": "Largest timing shifts",
+    "details": "Differences by category",
+    "filterKind": "Kind of change",
+    "search": "Search by id or name",
+    "results": {
+      "one": "{count} difference",
+      "other": "{count} differences"
+    },
+    "noDifferences": "No differences here",
+    "renamesGuess": "These pairs are a guess: a stop that disappeared and another with the same name less than 20 m away. Check them before relying on them.",
+    "guess": "Guess",
+    "empty": "(empty)",
+    "moved": "Moved {distance}",
+    "tripsFromTo": "Trips: {from} → {to}",
+    "tripsAdded": {
+      "one": "{count} trip added",
+      "other": "{count} trips added"
+    },
+    "tripsRemoved": {
+      "one": "{count} trip removed",
+      "other": "{count} trips removed"
+    },
+    "tripsChanged": {
+      "one": "{count} trip changed",
+      "other": "{count} trips changed"
+    },
+    "stopsDelta": "Stops: +{added} / −{removed}",
+    "timing": "Times {shift} on average at {count} stops (up to {max})",
+    "exceptionsDelta": "Exception dates: +{added} / −{removed}",
+    "shapeFromTo": "{points} points, {length}",
+    "shapeSize": "{points} points, {length}",
+    "onRoute": "on route {route}",
+    "pattern": {
+      "added": "New pattern",
+      "removed": "Removed pattern"
+    },
+    "morePatterns": {
+      "one": "{count} more pattern",
+      "other": "{count} more patterns"
+    },
+    "mapLabel": "Map of the stop differences",
+    "mapNone": "No stops were added, removed or moved.",
+    "legendAdded": {
+      "one": "{count} stop added",
+      "other": "{count} stops added"
+    },
+    "legendRemoved": {
+      "one": "{count} stop removed (hollow ring)",
+      "other": "{count} stops removed (hollow ring)"
+    },
+    "legendMoved": {
+      "one": "{count} stop moved (dashed line from old to new)",
+      "other": "{count} stops moved (dashed line from old to new)"
+    }
+  },
+  "outputs": {
+    "exportZip": "GTFS (ZIP)",
+    "exportGeojson": "GeoJSON (stops and lines)",
+    "printTimetable": "Print timetable",
+    "printTitle": "Printable timetable",
+    "print": "Print / Save as PDF",
+    "printHint": "Use your browser's Print and choose \"Save as PDF\" to get a file. Only the sheet below is printed.",
+    "note": "Note for the sheet",
+    "back": "Back",
+    "forDate": "Timetable for {date}",
+    "validity": "Valid from {start} to {end}",
+    "towards": "Towards {headsign}",
+    "direction": "Direction",
+    "tripCount": {
+      "one": "{count} trip",
+      "other": "{count} trips"
+    },
+    "stop": "Stop",
+    "hour": "Hour",
+    "minutes": "Minutes",
+    "noService": "No service on this day.",
+    "mapMode": "Map mode",
+    "mode": {
+      "lines": "Lines",
+      "frequency": "Frequency",
+      "coverage": "Coverage"
+    },
+    "from": "From",
+    "to": "To",
+    "windowInvalid": "The end must be after the start.",
+    "radius": "Walking radius",
+    "loading": "Loading…",
+    "noServiceWindow": "No service between {from} and {to} on this day.",
+    "segmentsSummary": "{segments} segments and {stops} stops with service.",
+    "coverageSummary": "{stops} stops served; area within {radius} m of them.",
+    "legendFrequency": "Trips per hour",
+    "legendCoverage": "Within {radius} m of a stop with service",
+    "window": "Window {from}–{to}",
+    "tripsPerHourValue": "{value} trips per hour",
+    "callsInWindow": {
+      "one": "{count} trip in the window",
+      "other": "{count} trips in the window"
+    }
   }
 }

@@ -946,5 +946,149 @@
       "one": "{count} véhicule en direct",
       "other": "{count} véhicules en direct"
     }
+  },
+  "compare": {
+    "title": "Comparer les versions",
+    "action": "Comparer",
+    "subtitle": "{base} → {other}",
+    "pickSubtitle": "Choisissez l'autre version du flux. La plus ancienne sert de base et on montre ce qui a changé dans la plus récente.",
+    "needTwo": "Rien à comparer pour l'instant",
+    "needTwoHint": "Importez une autre version de ce flux (par exemple, le prochain horaire) pour voir ce qui a changé entre les deux.",
+    "base": "Base (version la plus ancienne)",
+    "other": "Comparer avec (version plus récente)",
+    "swap": "Inverser la base et la comparaison",
+    "noPeriod": "Aucune période de service",
+    "identical": "Les deux flux sont identiques sur tout ce qui est comparé.",
+    "category": {
+      "agencies": "Agences",
+      "routes": "Lignes",
+      "stops": "Arrêts",
+      "trips": "Courses",
+      "services": "Services",
+      "shapes": "Tracés",
+      "renames": "Identifiants renommés"
+    },
+    "status": {
+      "added": "Ajouté",
+      "removed": "Supprimé",
+      "changed": "Modifié"
+    },
+    "unchanged": {
+      "one": "{count} inchangé",
+      "other": "{count} inchangés"
+    },
+    "serviceTitle": "Courses par jour",
+    "serviceSubtitle": "Moyenne quotidienne : {base} courses dans la base, {other} dans l'autre flux",
+    "overlap": "{days} jours en commun, dont {differing} avec un nombre de courses différent.",
+    "noOverlap": "Les deux flux ne partagent aucun jour.",
+    "chartLabel": "Courses par jour dans chaque flux",
+    "noDays": "Aucun jour de service à représenter.",
+    "hideTable": "Masquer le tableau",
+    "showTable": "Afficher le tableau",
+    "differingDays": "Jours avec un nombre de courses différent",
+    "noDifferingDays": "Aucun jour n'a un nombre de courses différent.",
+    "feedInfo": "Période de validité (feed_info)",
+    "feedInfoSame": "feed_info n'a pas changé.",
+    "highlights": "Principaux changements",
+    "noHighlights": "Aucun changement important à signaler.",
+    "movedStops": "Arrêts les plus déplacés",
+    "timingShifts": "Plus grands décalages d'horaires",
+    "details": "Différences par catégorie",
+    "filterKind": "Type de changement",
+    "search": "Rechercher par identifiant ou nom",
+    "results": {
+      "one": "{count} différence",
+      "other": "{count} différences"
+    },
+    "noDifferences": "Aucune différence ici",
+    "renamesGuess": "Ces paires sont une supposition : un arrêt disparu et un autre de même nom à moins de 20 m. Vérifiez-les avant de vous y fier.",
+    "guess": "Supposition",
+    "empty": "(vide)",
+    "moved": "Déplacé de {distance}",
+    "tripsFromTo": "Courses : {from} → {to}",
+    "tripsAdded": {
+      "one": "{count} course ajoutée",
+      "other": "{count} courses ajoutées"
+    },
+    "tripsRemoved": {
+      "one": "{count} course supprimée",
+      "other": "{count} courses supprimées"
+    },
+    "tripsChanged": {
+      "one": "{count} course modifiée",
+      "other": "{count} courses modifiées"
+    },
+    "stopsDelta": "Arrêts : +{added} / −{removed}",
+    "timing": "Horaires {shift} en moyenne à {count} arrêts (jusqu'à {max})",
+    "exceptionsDelta": "Dates d'exception : +{added} / −{removed}",
+    "shapeFromTo": "{points} points, {length}",
+    "shapeSize": "{points} points, {length}",
+    "onRoute": "sur la ligne {route}",
+    "pattern": {
+      "added": "Nouveau motif",
+      "removed": "Motif supprimé"
+    },
+    "morePatterns": {
+      "one": "{count} motif de plus",
+      "other": "{count} motifs de plus"
+    },
+    "mapLabel": "Carte des différences d'arrêts",
+    "mapNone": "Aucun arrêt n'a été ajouté, supprimé ou déplacé.",
+    "legendAdded": {
+      "one": "{count} arrêt ajouté",
+      "other": "{count} arrêts ajoutés"
+    },
+    "legendRemoved": {
+      "one": "{count} arrêt supprimé (anneau vide)",
+      "other": "{count} arrêts supprimés (anneau vide)"
+    },
+    "legendMoved": {
+      "one": "{count} arrêt déplacé (ligne pointillée de l'ancien au nouveau)",
+      "other": "{count} arrêts déplacés (ligne pointillée de l'ancien au nouveau)"
+    }
+  },
+  "outputs": {
+    "exportZip": "GTFS (ZIP)",
+    "exportGeojson": "GeoJSON (arrêts et lignes)",
+    "printTimetable": "Imprimer les horaires",
+    "printTitle": "Horaire imprimable",
+    "print": "Imprimer / Enregistrer en PDF",
+    "printHint": "Utilisez la fonction Imprimer du navigateur et choisissez « Enregistrer au format PDF » pour obtenir un fichier. Seule la feuille ci-dessous est imprimée.",
+    "note": "Note pour la feuille",
+    "back": "Retour",
+    "forDate": "Horaire du {date}",
+    "validity": "Valable du {start} au {end}",
+    "towards": "Direction {headsign}",
+    "direction": "Sens",
+    "tripCount": {
+      "one": "{count} course",
+      "other": "{count} courses"
+    },
+    "stop": "Arrêt",
+    "hour": "Heure",
+    "minutes": "Minutes",
+    "noService": "Pas de service ce jour-là.",
+    "mapMode": "Mode de la carte",
+    "mode": {
+      "lines": "Lignes",
+      "frequency": "Fréquence",
+      "coverage": "Couverture"
+    },
+    "from": "De",
+    "to": "À",
+    "windowInvalid": "La fin doit être postérieure au début.",
+    "radius": "Rayon à pied",
+    "loading": "Chargement…",
+    "noServiceWindow": "Pas de service entre {from} et {to} ce jour-là.",
+    "segmentsSummary": "{segments} tronçons et {stops} arrêts desservis.",
+    "coverageSummary": "{stops} arrêts desservis ; zone à moins de {radius} m.",
+    "legendFrequency": "Courses par heure",
+    "legendCoverage": "À moins de {radius} m d'un arrêt desservi",
+    "window": "Plage {from}–{to}",
+    "tripsPerHourValue": "{value} courses par heure",
+    "callsInWindow": {
+      "one": "{count} course dans la plage",
+      "other": "{count} courses dans la plage"
+    }
   }
 }

@@ -5,6 +5,7 @@ import App from './app/App';
 import { preloadLocale, resolveLocale } from './lib/i18n/client';
 import './index.css';
 import './gtfs.css';
+import './outputs.css';
 
 const container = document.getElementById('root')!;
 const app = (
