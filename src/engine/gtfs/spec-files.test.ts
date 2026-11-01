@@ -212,6 +212,20 @@ describe('specification validation', () => {
     expect(await codesFor('fare_media')).toContain('specInvalidEnum:fare_media_type');
   });
 
+  it('does not flag flex stop times for lacking a stop or a time', async () => {
+    await importGtfsFile(
+      SAMPLE_FEED,
+      'stop_times.txt',
+      bytes(
+        'trip_id,stop_id,stop_sequence,arrival_time,location_id,start_pickup_drop_off_window,end_pickup_drop_off_window\nTF,,1,,zone-a,08:00:00,12:00:00\nTF,S2,2,12:30:00,,,\n'
+      )
+    );
+    await importGtfsFile(SAMPLE_FEED, 'locations.geojson', bytes(GEOJSON));
+    const codes = (await validateFeed(SAMPLE_FEED)).map((i) => `${i.table}:${i.code}`);
+    expect(codes).not.toContain('stop_times:stopTimeUnknownStop');
+    expect(codes).not.toContain('stop_times:stopTimeEndpointWithoutTime');
+  });
+
   it('flags conditional requirements and forbidden values', async () => {
     // booking_type 1 needs prior_notice_duration_min; booking_type 0 forbids it.
     await importGtfsFile(

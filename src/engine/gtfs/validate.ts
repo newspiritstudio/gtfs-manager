@@ -187,7 +187,8 @@ const BASE_RULES: ValidationRule[] = [
     code: 'stopTimeUnknownStop',
     severity: 'error',
     table: 'stop_times',
-    query: `SELECT stop_id AS sample FROM stop_times WHERE feed_id = $1
+    // A flex stop time points at a location or a location group instead (stop_id is empty).
+    query: `SELECT stop_id AS sample FROM stop_times WHERE feed_id = $1 AND stop_id IS NOT NULL
             EXCEPT SELECT stop_id FROM stops WHERE feed_id = $1`,
   },
   {
@@ -214,10 +215,11 @@ const BASE_RULES: ValidationRule[] = [
     severity: 'error',
     table: 'stop_times',
     // The first and the last time of each trip by their index position (a correlated lookup per trip).
+    // A flex stop time has its pickup/drop-off window instead of a time.
     query: `SELECT t.trip_id AS sample FROM (SELECT DISTINCT trip_id FROM stop_times WHERE feed_id = $1) t
-            WHERE (SELECT coalesce(departure_time, arrival_time) FROM stop_times x
+            WHERE (SELECT coalesce(departure_time, arrival_time, start_pickup_drop_off_window) FROM stop_times x
                    WHERE x.feed_id = $1 AND x.trip_id = t.trip_id ORDER BY x.stop_sequence LIMIT 1) IS NULL
-               OR (SELECT coalesce(arrival_time, departure_time) FROM stop_times x
+               OR (SELECT coalesce(arrival_time, departure_time, end_pickup_drop_off_window) FROM stop_times x
                    WHERE x.feed_id = $1 AND x.trip_id = t.trip_id ORDER BY x.stop_sequence DESC LIMIT 1) IS NULL`,
   },
   {

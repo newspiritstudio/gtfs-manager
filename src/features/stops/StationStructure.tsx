@@ -69,32 +69,34 @@ export default function StationStructureCard({
         })}
         icon={<Waypoints />}
       />
-      <CardContent className="space-y-4">
-        {groups.map((g) => (
-          <section key={g.key} aria-label={g.title || g.key}>
-            <h3 className="mb-1.5 text-title-small text-on-surface">{g.title || g.key}</h3>
-            <ul className="flex flex-wrap gap-2">
-              {g.nodes.map((n) => (
-                <li key={n.stopId}>
-                  <Link
-                    href={`/feeds/${feedId}/stops/${encodeURIComponent(n.stopId)}`}
-                    className="flex items-center gap-2 rounded-md bg-surface-container-highest px-3 py-2 text-body-medium text-on-surface hover:text-primary focus-ring"
-                  >
-                    <span>{n.name ?? n.stopId}</span>
-                    <Badge tone="neutral">{t(`enums.location_type.${n.locationType}`)}</Badge>
-                    {n.wheelchairBoarding === 1 ? (
-                      <Badge tone="success" icon={<Accessibility />}>
-                        {t('stops.accessible')}
-                      </Badge>
-                    ) : null}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+      <CardContent className="grid items-start gap-6 lg:grid-cols-2">
+        <div className="min-w-0 space-y-4">
+          {groups.map((g) => (
+            <section key={g.key} aria-label={g.title || g.key}>
+              <h3 className="mb-1.5 text-title-small text-on-surface">{g.title || g.key}</h3>
+              <ul className="flex flex-wrap gap-2">
+                {g.nodes.map((n) => (
+                  <li key={n.stopId} className="max-w-full">
+                    <Link
+                      href={`/feeds/${feedId}/stops/${encodeURIComponent(n.stopId)}`}
+                      className="flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-md bg-surface-container-highest px-3 py-2 text-body-medium text-on-surface hover:text-primary focus-ring"
+                    >
+                      <span className="min-w-0 break-words">{n.name ?? n.stopId}</span>
+                      <Badge tone="neutral">{t(`enums.location_type.${n.locationType}`)}</Badge>
+                      {n.wheelchairBoarding === 1 ? (
+                        <Badge tone="success" icon={<Accessibility />}>
+                          {t('stops.accessible')}
+                        </Badge>
+                      ) : null}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
         {pathways.length ? (
-          <section aria-label={t('spec.station.pathways')}>
+          <section aria-label={t('spec.station.pathways')} className="min-w-0">
             <h3 className="mb-1.5 text-title-small text-on-surface">
               {t('spec.station.pathways')}
             </h3>
@@ -124,7 +126,7 @@ function PathwayRow({
     p.length !== null ? `${formatNumber(locale, p.length)} m` : null,
     p.stairCount !== null ? t('spec.station.stairs', { count: Math.abs(p.stairCount) }) : null,
     p.maxSlope !== null ? `${t('fields.max_slope')} ${formatNumber(locale, p.maxSlope)}` : null,
-    p.minWidth !== null ? `${t('fields.min_width')} ${formatNumber(locale, p.minWidth)} m` : null,
+    p.minWidth !== null ? `${t('fields.min_width')} ${formatNumber(locale, p.minWidth)}` : null,
     p.signpostedAs ? `“${p.signpostedAs}”` : null,
   ].filter(Boolean);
   const mode = p.mode ?? 0;
@@ -153,7 +155,11 @@ function PathwayRow({
         <span>{nameOf(p.toStopId)}</span>
       </span>
       {p.traversalTime !== null ? (
-        <Badge tone="primary">{formatDuration(locale, p.traversalTime)}</Badge>
+        <Badge tone="primary">
+          {p.traversalTime < 120
+            ? `${formatNumber(locale, p.traversalTime)} s`
+            : formatDuration(locale, p.traversalTime)}
+        </Badge>
       ) : null}
       {details.length ? (
         <span className="w-full text-body-small text-on-surface-variant">

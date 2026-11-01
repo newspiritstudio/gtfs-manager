@@ -169,7 +169,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
         ) : null}
       </header>
 
-      <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-4 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <Card>
           <CardHeader
             title={t('stops.departures')}
@@ -277,7 +277,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
           </CardContent>
         </Card>
 
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           {stop.lat !== null && stop.lon !== null ? (
             <Card>
               <CardHeader
@@ -302,9 +302,6 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
                 </div>
               </CardContent>
             </Card>
-          ) : null}
-          {detail.station ? (
-            <StationStructureCard feedId={feedId} structure={detail.station} />
           ) : null}
           {children.length ? (
             <Card>
@@ -367,6 +364,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
           </Card>
         </div>
       </div>
+      {detail.station ? <StationStructureCard feedId={feedId} structure={detail.station} /> : null}
     </div>
   );
 }
