@@ -21,6 +21,7 @@ import { distancesAlongShape, type LatLon } from '@shared/shape-geometry';
 import { getSql } from '../db/client';
 import type { Sql } from '../db/sql';
 import { markStatsStale } from './import';
+import { feedVersion } from './network';
 
 export class PatternError extends Error {
   constructor(
@@ -173,7 +174,27 @@ function estimateSecs(meters: number): number {
   return Math.max(60, Math.round(meters / (30_000 / 3600) / 30) * 30);
 }
 
+const patternsCache = new Map<string, { version: string; job: Promise<RoutePatterns> }>();
+
+/**
+ * A route's patterns. The page asks again after every edit, and on a big route (thousands of
+ * trips) grouping them takes seconds, so the result is kept until the feed changes (every edit,
+ * undo and redo bumps its version).
+ */
 export async function getRoutePatterns(feedId: string, routeId: string): Promise<RoutePatterns> {
+  const version = await feedVersion(feedId);
+  if (!version) return computeRoutePatterns(feedId, routeId);
+  const key = `${feedId}|${routeId}`;
+  const hit = patternsCache.get(key);
+  if (hit && hit.version === version) return hit.job;
+  while (patternsCache.size >= 6) patternsCache.delete(patternsCache.keys().next().value!);
+  const job = computeRoutePatterns(feedId, routeId);
+  patternsCache.set(key, { version, job });
+  job.catch(() => patternsCache.delete(key));
+  return job;
+}
+
+async function computeRoutePatterns(feedId: string, routeId: string): Promise<RoutePatterns> {
   const sql = getSql();
   const groups = await routePatternGroups(sql, feedId, routeId);
   const stops = await stopRows(sql, feedId, [...new Set(groups.flatMap((g) => g.stopIds))]);

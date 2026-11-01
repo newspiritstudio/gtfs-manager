@@ -1588,7 +1588,8 @@
       },
       "grid": "Timetable of the pattern",
       "keys": "Arrows: move · Enter or a digit: edit (0630 is 06:30; 2530 is past midnight) · Tab: next · Esc: cancel · Delete: clear · Space: select the trip",
-      "saveFirst": "Save the stop changes to edit the timetable."
+      "saveFirst": "Save the stop changes to edit the timetable.",
+      "nothingExpanded": "Nothing was expanded: the frequencies are not exact. Tick the box to include them."
     },
     "grid": {
       "stopTrip": "Stop / trip",

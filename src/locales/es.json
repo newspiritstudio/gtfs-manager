@@ -1588,7 +1588,8 @@
       },
       "grid": "Horario del patrón",
       "keys": "Flechas: mover · Intro o una cifra: editar (0630 es 06:30; 2530 pasa de medianoche) · Tab: siguiente · Esc: cancela · Supr: vacía · Espacio: selecciona el viaje",
-      "saveFirst": "Guarda los cambios de paradas para editar los horarios."
+      "saveFirst": "Guarda los cambios de paradas para editar los horarios.",
+      "nothingExpanded": "No se ha expandido nada: las frecuencias no son exactas. Marca la casilla para incluirlas."
     },
     "grid": {
       "stopTrip": "Parada / viaje",

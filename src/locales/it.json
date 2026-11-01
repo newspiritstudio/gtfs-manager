@@ -1588,7 +1588,8 @@
       },
       "grid": "Orari dello schema",
       "keys": "Frecce: muovi · Invio o una cifra: modifica (0630 è 06:30; 2530 supera la mezzanotte) · Tab: avanti · Esc: annulla · Canc: svuota · Spazio: seleziona la corsa",
-      "saveFirst": "Salva le modifiche alle fermate per modificare gli orari."
+      "saveFirst": "Salva le modifiche alle fermate per modificare gli orari.",
+      "nothingExpanded": "Non è stato espanso nulla: le frequenze non sono esatte. Seleziona la casella per includerle."
     },
     "grid": {
       "stopTrip": "Fermata / corsa",

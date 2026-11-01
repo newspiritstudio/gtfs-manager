@@ -1588,7 +1588,8 @@
       },
       "grid": "Fahrplan des Fahrtmusters",
       "keys": "Pfeile: bewegen · Eingabe oder eine Ziffer: bearbeiten (0630 ergibt 06:30; 2530 liegt nach Mitternacht) · Tab: weiter · Esc: abbrechen · Entf: leeren · Leertaste: Fahrt auswählen",
-      "saveFirst": "Speichere die Änderungen an den Haltestellen, um den Fahrplan zu bearbeiten."
+      "saveFirst": "Speichere die Änderungen an den Haltestellen, um den Fahrplan zu bearbeiten.",
+      "nothingExpanded": "Nichts wurde aufgelöst: Die Takte sind nicht exakt. Aktiviere das Kontrollkästchen, um sie einzubeziehen."
     },
     "grid": {
       "stopTrip": "Haltestelle / Fahrt",

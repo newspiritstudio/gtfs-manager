@@ -18,7 +18,7 @@ import { ApiError } from '@/lib/api';
 import { formatDistance } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { refreshData, useRefreshKey, useRouter } from '@/lib/router';
-import { parseTimeInput } from '@shared/editing';
+import { parseTimeInput, type PatternStopInfo } from '@shared/editing';
 import DeleteDialog from './DeleteDialog';
 import { editorApi, type StopHit } from './editorApi';
 import NewStopDialog from './NewStopDialog';
@@ -85,6 +85,9 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
   const [shape, setShape] = useState<LatLon[] | null>(null);
   const [shapeId, setShapeId] = useState('');
   const baseSig = useRef('');
+  const baseRef = useRef<{ stops: PatternStopInfo[]; headsign: string; direction: string } | null>(
+    null
+  );
 
   useEffect(() => {
     let alive = true;
@@ -126,13 +129,26 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
       pattern.stops.map((s) => [s.stopId, s.travelSecs, s.dwellSecs]),
     ]);
     if (sig === baseSig.current && draftKey === pattern.key) return;
-    if (draftKey === pattern.key && dirty) return;
+    const base = baseRef.current;
+    const edited =
+      draftKey === pattern.key &&
+      base !== null &&
+      (!sameDraft(draft, base.stops) ||
+        meta.headsign !== base.headsign ||
+        meta.direction !== base.direction);
+    if (edited) return;
     baseSig.current = sig;
+    const nextMeta = metaOf(pattern, services);
+    baseRef.current = {
+      stops: pattern.stops,
+      headsign: nextMeta.headsign,
+      direction: nextMeta.direction,
+    };
     setDraft(draftFrom(pattern.stops));
     setDraftKey(pattern.key);
-    setMeta(metaOf(pattern, services));
+    setMeta(nextMeta);
     setSelected(null);
-    // `dirty` is read at the moment the pattern changes; it must not retrigger this.
+    // The draft and meta are read at the moment the pattern changes; they must not retrigger this.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pattern, creating]);
 
@@ -255,6 +271,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
         headsign: meta.headsign.trim() || null,
       });
       baseSig.current = '';
+      baseRef.current = null;
       setKey(result.key);
       refreshData();
     } catch (error) {
@@ -282,6 +299,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
         copyFrom: creating?.copyFrom ?? undefined,
       });
       baseSig.current = '';
+      baseRef.current = null;
       setCreating(null);
       setKey(result.key);
       refreshData();
@@ -300,6 +318,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
     }
     if (!pattern) return;
     baseSig.current = '';
+    baseRef.current = null;
     setDraft(draftFrom(pattern.stops));
     setMeta(metaOf(pattern, services));
     setSelected(null);
@@ -352,19 +371,25 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
     }
   }
 
-  const enterMode = (next: EditMode) => {
-    setMode(next);
-    if (next === 'shape' && !shape) {
-      setShape(saved?.points ?? null);
-      // A shape other patterns share keeps its id only if this pattern is the one using it.
-      const own = saved && saved.trips <= (pattern?.trips ?? 0);
-      setShapeId(
-        own && saved
-          ? saved.shapeId
-          : `${saved?.shapeId ?? route.routeId}-${pattern?.directionId ?? 'x'}-${(pattern?.key ?? '').slice(0, 4)}`
-      );
-    }
-  };
+  const enterMode = (next: EditMode) => setMode(next);
+
+  // In shape mode the draft starts as a copy of the saved line and follows it (an undo, a save)
+  // for as long as it has not been edited; an edited draft is left alone.
+  const seeded = useRef<LatLon[] | null>(null);
+  useEffect(() => {
+    if (mode !== 'shape' || creating) return;
+    if (shape !== null && shape !== seeded.current) return;
+    const points = saved?.points ?? null;
+    seeded.current = points;
+    setShape(points);
+    // A shape other patterns share keeps its id only if this pattern is the one using it.
+    const own = saved && saved.trips <= (pattern?.trips ?? 0);
+    setShapeId(
+      own && saved
+        ? saved.shapeId
+        : `${saved?.shapeId ?? route.routeId}-${pattern?.directionId ?? 'x'}-${(pattern?.key ?? '').slice(0, 4)}`
+    );
+  }, [mode, creating, saved, shape, pattern, route.routeId]);
 
   const straight = () => {
     const points = view
@@ -397,8 +422,8 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
   const header = (
     <header className="flex flex-wrap items-center gap-4 rounded-lg bg-tonal p-4">
       <RouteBadge name={label} color={route.color} textColor={route.textColor} size="lg" />
-      <div className="min-w-0 flex-1">
-        <h1 className="truncate text-headline-small text-on-surface">
+      <div className="min-w-0 flex-1 basis-56">
+        <h1 className="text-title-large text-on-surface sm:text-headline-small">
           {t('editor.title', { route: route.longName || label })}
         </h1>
         <p className="text-body-small text-on-surface-variant">{t('editor.subtitle')}</p>
@@ -433,7 +458,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
         </div>
       ) : null}
       <div className="grid gap-4 lg:grid-cols-[19rem_minmax(0,1fr)]">
-        <aside className="rounded-lg bg-tonal p-3 lg:max-h-[calc(var(--app-height,100dvh)-180px)] lg:overflow-y-auto">
+        <aside className="rounded-lg bg-tonal p-3 max-lg:max-h-72 max-lg:overflow-y-auto lg:max-h-[calc(var(--app-height,100dvh)-180px)] lg:overflow-y-auto">
           <PatternList
             patterns={patterns}
             selectedKey={pattern?.key ?? null}
@@ -473,7 +498,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
               className="border-t border-outline-variant/60 p-4"
             >
               {creating || tab === 'stops' ? (
-                <div className="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+                <div className="grid gap-4 2xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
                   <div className="space-y-4">
                     <div className="grid gap-3 sm:grid-cols-2">
                       <TextField
@@ -523,6 +548,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
                       selected={selected}
                       onSelect={setSelected}
                       onInsert={insertStop}
+                      markNew={!creating}
                     />
                     <div className="sticky bottom-0 -mx-1 flex flex-wrap items-center gap-2 rounded-md bg-surface-container-high px-3 py-2">
                       {!creating ? (
@@ -556,7 +582,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
                       </p>
                     ) : null}
                   </div>
-                  <div className="space-y-3">
+                  <div className="order-first space-y-3 2xl:order-none">
                     <SegmentedControl
                       label={t('editor.map.mode')}
                       value={mode}
@@ -570,7 +596,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
                     <p className="text-body-small text-on-surface-variant">
                       {t(`editor.map.hint.${mode}`)}
                     </p>
-                    <div className="h-[28rem] overflow-hidden rounded-md xl:sticky xl:top-2 xl:h-[36rem]">
+                    <div className="h-[28rem] overflow-hidden rounded-md 2xl:sticky 2xl:top-2 2xl:h-[36rem]">
                       <EditMap
                         stops={view.map((s) => ({
                           id: s.stopId,
@@ -699,6 +725,7 @@ export default function RouteEditView({ feedId, route }: { feedId: string; route
           setDeleting(null);
           if (gone === pattern?.key) {
             baseSig.current = '';
+            baseRef.current = null;
             setKey(patterns.find((p) => p.key !== gone)?.key ?? null);
           }
           refreshData();

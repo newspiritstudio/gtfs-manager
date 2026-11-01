@@ -1588,7 +1588,8 @@
       },
       "grid": "Horário do padrão",
       "keys": "Setas: mover · Enter ou um algarismo: editar (0630 é 06:30; 2530 passa da meia-noite) · Tab: seguinte · Esc: cancelar · Del: limpar · Espaço: selecionar a viagem",
-      "saveFirst": "Guarde as alterações às paragens para editar os horários."
+      "saveFirst": "Guarde as alterações às paragens para editar os horários.",
+      "nothingExpanded": "Nada foi expandido: as frequências não são exatas. Marque a caixa para as incluir."
     },
     "grid": {
       "stopTrip": "Paragem / viagem",

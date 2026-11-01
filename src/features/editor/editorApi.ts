@@ -64,7 +64,7 @@ export const editorApi = {
   setService: (feedId: string, tripIds: string[], serviceId: string) =>
     apiFetch<{ trips: number }>(
       `${base(feedId)}/trips/service`,
-      json('POST', { tripIds, serviceId })
+      json('PATCH', { tripIds, serviceId })
     ),
   expand: (
     feedId: string,

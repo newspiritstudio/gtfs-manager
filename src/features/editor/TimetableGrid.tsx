@@ -477,12 +477,15 @@ export default function TimetableGrid({
                           aria-invalid={editing.bad}
                           value={editing.text}
                           inputMode="numeric"
-                          onFocus={(e) =>
+                          onFocus={(e) => {
+                            // Enter or F2 opens the stored time selected, so typing replaces it;
+                            // a first digit starts a new entry with the cursor after it.
+                            const full = editing.text.includes(':');
                             e.currentTarget.setSelectionRange(
-                              editing.text.length,
+                              full ? 0 : editing.text.length,
                               editing.text.length
-                            )
-                          }
+                            );
+                          }}
                           onChange={(e) =>
                             setEditing({ ...editing, text: e.target.value, bad: false })
                           }

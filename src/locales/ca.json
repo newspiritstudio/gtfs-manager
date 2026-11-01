@@ -1588,7 +1588,8 @@
       },
       "grid": "Horari del patró",
       "keys": "Fletxes: moure · Intro o una xifra: editar (0630 és 06:30; 2530 passa de mitjanit) · Tab: següent · Esc: cancel·la · Supr: buida · Espai: selecciona el viatge",
-      "saveFirst": "Desa els canvis de parades per editar els horaris."
+      "saveFirst": "Desa els canvis de parades per editar els horaris.",
+      "nothingExpanded": "No s'ha expandit res: les freqüències no són exactes. Marca la casella per incloure-les."
     },
     "grid": {
       "stopTrip": "Parada / viatge",

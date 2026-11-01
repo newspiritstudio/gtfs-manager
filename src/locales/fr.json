@@ -1588,7 +1588,8 @@
       },
       "grid": "Horaires de la mission",
       "keys": "Flèches : se déplacer · Entrée ou un chiffre : modifier (0630 donne 06:30 ; 2530 dépasse minuit) · Tab : suivant · Échap : annuler · Suppr : vider · Espace : sélectionner le voyage",
-      "saveFirst": "Enregistrez les modifications des arrêts pour modifier les horaires."
+      "saveFirst": "Enregistrez les modifications des arrêts pour modifier les horaires.",
+      "nothingExpanded": "Rien n'a été développé : les fréquences ne sont pas exactes. Cochez la case pour les inclure."
     },
     "grid": {
       "stopTrip": "Arrêt / voyage",

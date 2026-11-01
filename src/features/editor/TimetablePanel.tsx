@@ -344,13 +344,15 @@ export default function TimetablePanel({
               loading={busy}
               onClick={() =>
                 run(
-                  () =>
-                    editorApi.expand(feedId, {
+                  async () => {
+                    const result = await editorApi.expand(feedId, {
                       tripIds: ids.length
                         ? ids.filter((id) => frequencyTrips.includes(id))
                         : frequencyTrips,
                       includeInexact: inexact,
-                    }),
+                    });
+                    if (result.created === 0) toast(t('editor.timetable.nothingExpanded'), 'error');
+                  },
                   () => setDialog(null)
                 )
               }

@@ -149,7 +149,16 @@ export default function DeleteDialog({
         <div className="space-y-4">
           {plan.names.length ? (
             <p className="text-body-large text-on-surface">
-              {t('editor.delete.about', { names: plan.names.map((n) => `«${n}»`).join(', ') })}
+              {t('editor.delete.about', {
+                names:
+                  plan.targets.reduce((n, x) => n + x.count, 0) > plan.names.length
+                    ? plan.targets
+                        .map(
+                          (x) => `${tableName(t, x.table)} (${t('units.rows', { count: x.count })})`
+                        )
+                        .join(', ')
+                    : plan.names.map((n) => `«${n}»`).join(', '),
+              })}
             </p>
           ) : null}
           {dependents.length ? (

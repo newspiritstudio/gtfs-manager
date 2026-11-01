@@ -71,6 +71,7 @@ export default function PatternStopsEditor({
   selected,
   onSelect,
   onInsert,
+  markNew = true,
 }: {
   feedId: string;
   stops: DraftStop[];
@@ -79,6 +80,8 @@ export default function PatternStopsEditor({
   onSelect: (index: number | null) => void;
   /** A stop picked from the search: the parent decides where it goes. */
   onInsert: (stop: StopHit) => void;
+  /** Flags the stops that are not in the saved pattern (off while drafting a new one). */
+  markNew?: boolean;
 }) {
   const { t } = useI18n();
   const [query, setQuery] = useState('');
@@ -254,7 +257,7 @@ export default function PatternStopsEditor({
                 </span>
                 <span className="block truncate font-mono text-label-small text-on-surface-muted">
                   {stop.stopId}
-                  {stop.source === null ? ` · ${t('editor.stops.new')}` : ''}
+                  {markNew && stop.source === null ? ` · ${t('editor.stops.new')}` : ''}
                 </span>
               </span>
             </button>
