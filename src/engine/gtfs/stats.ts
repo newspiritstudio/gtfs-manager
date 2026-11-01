@@ -140,7 +140,7 @@ export function ensureStats(feedId: string): Promise<FeedStats | null> {
 }
 
 /** Raise it when the figures or the validation rules change, so stored figures are recomputed. */
-const STATS_VERSION = 2;
+export const STATS_VERSION = 3;
 
 async function refreshStats(feedId: string): Promise<FeedStats | null> {
   const sql = getSql();

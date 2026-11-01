@@ -22,7 +22,8 @@
     "catalog": "目录",
     "home": "首页",
     "realtime": "实时",
-    "history": "历史记录"
+    "history": "历史记录",
+    "fares": "票价"
   },
   "theme": {
     "switch": "主题：{theme}",
@@ -313,7 +314,28 @@
     "shapes": "线形",
     "frequencies": "发车间隔",
     "transfers": "换乘",
-    "feed_info": "数据源信息"
+    "feed_info": "数据源信息",
+    "fare_attributes": "票价属性",
+    "fare_rules": "票价规则",
+    "timeframes": "时间段",
+    "rider_categories": "乘客类别",
+    "fare_media": "票价介质",
+    "fare_products": "票价产品",
+    "fare_leg_rules": "路段规则",
+    "fare_leg_join_rules": "路段合并规则",
+    "fare_transfer_rules": "票价换乘规则",
+    "areas": "区域",
+    "stop_areas": "站点区域",
+    "networks": "网络",
+    "route_networks": "线路网络",
+    "pathways": "通道",
+    "levels": "楼层",
+    "location_groups": "地点组",
+    "location_group_stops": "地点组站点",
+    "locations": "灵活区域 (GeoJSON)",
+    "booking_rules": "预约规则",
+    "translations": "翻译",
+    "attributions": "署名信息"
   },
   "validation": {
     "subtitle": "针对整个数据源的 GTFS 规范和 Google Transit 验证检查。",
@@ -418,7 +440,23 @@
     "transferRouteTripMismatch": "行程不属于所指线路的换乘",
     "transferDuplicate": "重复的换乘",
     "transferMinTimeWrongType": "不使用最短换乘时间的类型却填写了该值",
-    "transferFrequencyTrip": "涉及近似频率行程的换乘"
+    "transferFrequencyTrip": "涉及近似频率行程的换乘",
+    "specRequired": "{file}：「{field}」为空的行",
+    "specConditionRequired": "{file}：「{field}」必填但为空的行",
+    "specConditionForbidden": "{file}：「{field}」应为空的行",
+    "specInvalidEnum": "{file}：「{field}」取值无效",
+    "specInvalidSign": "{file}：「{field}」数值超出允许范围",
+    "specUnknownReference": "{file}：「{field}」指向不存在的标识符",
+    "specDuplicateKey": "{file}：重复行（主键相同）",
+    "specInvalidCurrency": "{file}：「{field}」不是有效的 ISO 4217 货币代码",
+    "specTimeOfDay": "{file}：超过 24:00:00 的时间",
+    "specInvalidGeometry": "{file}：「{field}」的几何图形不是有效的多边形",
+    "specNetworkConflict": "{file}：feed 含 networks.txt 或 route_networks.txt 时仍使用「{field}」",
+    "specLevelsRequired": "pathways.txt 中有电梯，但缺少 {file}",
+    "specIdNamespace": "站点、地点组和灵活区域之间的标识符重复",
+    "specAttributionTarget": "指向多个对象（运营方、线路或班次）的署名信息",
+    "specAttributionRole": "未指定任何角色（生产者、运营方或主管机构）的署名信息",
+    "specSingleRow": "{file} 含有多于一行"
   },
   "data": {
     "subtitle": "逐行编辑数据源中的任意文件。",
@@ -597,7 +635,100 @@
     "feed_end_date": "有效期至",
     "feed_version": "版本",
     "feed_contact_email": "联系邮箱",
-    "feed_contact_url": "联系 URL"
+    "feed_contact_url": "联系 URL",
+    "cemv_support": "EMV 非接触支付",
+    "stop_access": "临街出入口",
+    "cars_allowed": "允许载车",
+    "safe_duration_factor": "安全时长系数",
+    "safe_duration_offset": "安全时长补偿 (分钟)",
+    "location_group_id": "地点组",
+    "location_id": "区域",
+    "start_pickup_drop_off_window": "上下车时段开始",
+    "end_pickup_drop_off_window": "上下车时段结束",
+    "pickup_booking_rule_id": "上车预约规则",
+    "drop_off_booking_rule_id": "下车预约规则",
+    "fare_id": "票价 ID",
+    "price": "价格",
+    "currency_type": "货币",
+    "payment_method": "支付方式",
+    "transfers": "允许换乘次数",
+    "transfer_duration": "换乘有效时长",
+    "origin_id": "起点区域",
+    "destination_id": "终点区域",
+    "contains_id": "途经区域",
+    "timeframe_group_id": "时间段组",
+    "rider_category_id": "乘客类别",
+    "rider_category_name": "类别名称",
+    "is_default_fare_category": "默认类别",
+    "eligibility_url": "资格说明网址",
+    "fare_media_id": "票价介质",
+    "fare_media_name": "介质名称",
+    "fare_media_type": "介质类型",
+    "fare_product_id": "票价产品",
+    "fare_product_name": "产品名称",
+    "amount": "金额",
+    "currency": "货币",
+    "leg_group_id": "路段组",
+    "from_area_id": "起点区域",
+    "to_area_id": "终点区域",
+    "from_timeframe_group_id": "起点时间段",
+    "to_timeframe_group_id": "终点时间段",
+    "rule_priority": "优先级",
+    "from_network_id": "起始网络",
+    "to_network_id": "目的网络",
+    "from_leg_group_id": "来自路段组",
+    "to_leg_group_id": "前往路段组",
+    "transfer_count": "换乘次数",
+    "duration_limit": "时长限制",
+    "duration_limit_type": "时长限制计算方式",
+    "fare_transfer_type": "换乘费用方式",
+    "area_id": "区域",
+    "area_name": "区域名称",
+    "network_name": "网络名称",
+    "pathway_id": "通道 ID",
+    "pathway_mode": "通道类型",
+    "is_bidirectional": "方向",
+    "length": "长度 (米)",
+    "traversal_time": "通行时间 (秒)",
+    "stair_count": "台阶数",
+    "max_slope": "最大坡度",
+    "min_width": "最小宽度 (米)",
+    "signposted_as": "指示牌文字",
+    "reversed_signposted_as": "反向指示牌文字",
+    "level_index": "楼层序号",
+    "level_name": "楼层名称",
+    "location_group_name": "组名称",
+    "geometry": "几何图形 (GeoJSON)",
+    "booking_rule_id": "预约规则",
+    "booking_type": "预约类型",
+    "prior_notice_duration_min": "最短提前时间 (分钟)",
+    "prior_notice_duration_max": "最长提前时间 (分钟)",
+    "prior_notice_last_day": "最后预约日",
+    "prior_notice_last_time": "预约截止时间",
+    "prior_notice_start_day": "预约开始日",
+    "prior_notice_start_time": "预约开始时间",
+    "prior_notice_service_id": "预约适用服务",
+    "message": "信息",
+    "pickup_message": "上车信息",
+    "drop_off_message": "下车信息",
+    "phone_number": "电话号码",
+    "info_url": "信息网址",
+    "booking_url": "预约网址",
+    "table_name": "文件",
+    "field_name": "字段",
+    "language": "语言",
+    "translation": "翻译",
+    "record_id": "记录 ID",
+    "record_sub_id": "记录子 ID",
+    "field_value": "原始值",
+    "attribution_id": "署名 ID",
+    "organization_name": "组织",
+    "is_producer": "数据生产者",
+    "is_operator": "服务运营方",
+    "is_authority": "主管机构",
+    "attribution_url": "组织网址",
+    "attribution_email": "组织邮箱",
+    "attribution_phone": "组织电话"
   },
   "enums": {
     "location_type": {
@@ -697,6 +828,81 @@
     "sunday": {
       "0": "0 · 不运行",
       "1": "1 · 运行"
+    },
+    "cemv_support": {
+      "0": "0 · 无信息",
+      "1": "1 · 支持非接触支付",
+      "2": "2 · 不支持"
+    },
+    "stop_access": {
+      "0": "0 · 经由车站",
+      "1": "1 · 从街道直达"
+    },
+    "cars_allowed": {
+      "0": "0 · 无信息",
+      "1": "1 · 允许载车",
+      "2": "2 · 不允许载车"
+    },
+    "payment_method": {
+      "0": "0 · 车上支付",
+      "1": "1 · 上车前支付"
+    },
+    "transfers": {
+      "0": "0 · 不可换乘",
+      "1": "1 · 1 次",
+      "2": "2 · 2 次"
+    },
+    "is_default_fare_category": {
+      "0": "0 · 否",
+      "1": "1 · 是"
+    },
+    "fare_media_type": {
+      "0": "0 · 无",
+      "1": "1 · 纸质票",
+      "2": "2 · 交通卡",
+      "3": "3 · cEMV (非接触银行卡)",
+      "4": "4 · 手机应用"
+    },
+    "duration_limit_type": {
+      "0": "0 · 首段出发到末段到达",
+      "1": "1 · 首段出发到末段出发",
+      "2": "2 · 首段到达到末段出发",
+      "3": "3 · 首段到达到末段到达"
+    },
+    "fare_transfer_type": {
+      "0": "0 · 前段 + 换乘 (A + AB)",
+      "1": "1 · 前段 + 换乘 + 后段 (A + AB + B)",
+      "2": "2 · 仅换乘 (AB)"
+    },
+    "pathway_mode": {
+      "1": "1 · 步行通道",
+      "2": "2 · 楼梯",
+      "3": "3 · 自动人行道",
+      "4": "4 · 自动扶梯",
+      "5": "5 · 电梯",
+      "6": "6 · 检票闸机 (进站)",
+      "7": "7 · 出站闸机"
+    },
+    "is_bidirectional": {
+      "0": "0 · 单向",
+      "1": "1 · 双向"
+    },
+    "booking_type": {
+      "0": "0 · 实时",
+      "1": "1 · 当天提前预约",
+      "2": "2 · 提前数日"
+    },
+    "is_producer": {
+      "0": "0 · 否",
+      "1": "1 · 是"
+    },
+    "is_operator": {
+      "0": "0 · 否",
+      "1": "1 · 是"
+    },
+    "is_authority": {
+      "0": "0 · 否",
+      "1": "1 · 是"
     }
   },
   "seo": {
@@ -1134,6 +1340,57 @@
     "tripsPerHourValue": "每小时 {value} 班",
     "callsInWindow": {
       "other": "时段内 {count} 班"
+    }
+  },
+  "spec": {
+    "groups": {
+      "core": "基础数据",
+      "fares": "票价",
+      "stations": "车站与无障碍",
+      "flex": "需求响应交通（灵活线路）",
+      "other": "其他"
+    },
+    "groupHints": {
+      "core": "运营方、线路、站点、班次、时刻和日历。",
+      "fares": "价格、产品、路段和换乘规则以及乘客类别。",
+      "stations": "车站内部的楼层和通道。",
+      "flex": "需求响应服务的区域、地点组和预约规则。",
+      "other": "翻译、署名信息和其他可选文件。"
+    },
+    "jsonHint": "请输入有效的 JSON。",
+    "station": {
+      "title": "车站结构",
+      "summary": "{nodes} 个地点、{pathways} 条通道、{levels} 个楼层",
+      "noLevel": "无楼层",
+      "pathways": "通道",
+      "stairs": {
+        "one": "{count} 级台阶",
+        "other": "{count} 级台阶"
+      }
+    },
+    "fares": {
+      "subtitle": "feed 文件中描述的票价（只读）。",
+      "emptyTitle": "此 feed 没有票价",
+      "emptyDescription": "票价文件（fare_attributes.txt、fare_products.txt 等）不存在或为空。",
+      "versionOne": "票价 v1",
+      "versionTwo": "票价 v2",
+      "products": "产品",
+      "legRules": "各路段价格",
+      "legRulesHint": "每条规则把一个路段（网络、起终点区域、时间段）与覆盖它的产品关联起来；优先级高的规则先适用。",
+      "joinRules": "路段合并",
+      "transferRules": "换乘",
+      "riderCategories": "乘客类别",
+      "media": "票价介质",
+      "timeframes": "时间段",
+      "attributes": "票价 (v1)",
+      "rules": "票价规则 (v1)",
+      "rulesHint": "当某行与线路或起点、终点、途经区域匹配时，适用该票价。",
+      "truncated": "显示 {shown} / {total}",
+      "unlimited": "不限"
+    },
+    "map": {
+      "showZones": "显示灵活区域",
+      "hideZones": "隐藏灵活区域"
     }
   }
 }

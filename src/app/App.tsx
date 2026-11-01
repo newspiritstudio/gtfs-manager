@@ -34,6 +34,7 @@ const RealtimePage = lazy(() => import('@/pages/feed/RealtimePage'));
 const ComparePage = lazy(() => import('@/pages/feed/ComparePage'));
 const RoutePrintPage = lazy(() => import('@/pages/feed/RoutePrintPage'));
 const StopPrintPage = lazy(() => import('@/pages/feed/StopPrintPage'));
+const FaresPage = lazy(() => import('@/pages/feed/FaresPage'));
 const ValidationPage = lazy(() => import('@/pages/feed/ValidationPage'));
 const HistoryPage = lazy(() => import('@/pages/feed/HistoryPage'));
 
@@ -82,6 +83,7 @@ function Pages() {
             <Route path="data/:table" element={<TablePage />} />
             <Route path="generator" element={<GeneratorPage />} />
             <Route path="realtime" element={<RealtimePage />} />
+            <Route path="fares" element={<FaresPage />} />
             <Route path="validation" element={<ValidationPage />} />
             <Route path="history" element={<HistoryPage />} />
             <Route path="compare" element={<ComparePage />} />

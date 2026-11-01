@@ -13,6 +13,7 @@ import type {
 import { haversineMeters, routeColors } from '@shared/gtfs-values';
 import { getSql, parseJson } from '../db/client';
 import { getNetwork } from './network';
+import { getStationStructure, type StationStructure } from './stations';
 import { activeServicesFragment, serviceDaysCte } from './service-days';
 
 export interface RouteDetail {
@@ -379,6 +380,8 @@ export interface StopDetail {
   routes: NetworkRoute[];
   nearby: { stopId: string; name: string | null; lat: number; lon: number; distance: number }[];
   serviceDates: { date: string; trips: number }[];
+  /** Levels, locations and pathways, when the stop is a station that has them. */
+  station: StationStructure | null;
 }
 
 export async function getStopDetail(feedId: string, stopId: string): Promise<StopDetail | null> {
@@ -434,7 +437,8 @@ export async function getStopDetail(feedId: string, stopId: string): Promise<Sto
     LEFT JOIN tc ON tc.service_id = a.service_id
     GROUP BY d.date ORDER BY d.date`;
 
-  return { stop, parent: parent ?? null, children, routes, nearby, serviceDates };
+  const station = await getStationStructure(feedId, stopId);
+  return { stop, parent: parent ?? null, children, routes, nearby, serviceDates, station };
 }
 
 /** The departures of a stop (and its platforms) on a day, ordered by time. */

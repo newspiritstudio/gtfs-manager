@@ -22,7 +22,8 @@
     "catalog": "Catàleg",
     "home": "Inici",
     "realtime": "Temps real",
-    "history": "Historial"
+    "history": "Historial",
+    "fares": "Tarifes"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -331,7 +332,28 @@
     "shapes": "Traçats",
     "frequencies": "Freqüències",
     "transfers": "Transbordaments",
-    "feed_info": "Informació del feed"
+    "feed_info": "Informació del feed",
+    "fare_attributes": "Tarifes (v1)",
+    "fare_rules": "Regles de tarifa (v1)",
+    "timeframes": "Franges horàries",
+    "rider_categories": "Categories de viatger",
+    "fare_media": "Suports de pagament",
+    "fare_products": "Productes tarifaris",
+    "fare_leg_rules": "Regles de tram",
+    "fare_leg_join_rules": "Unió de trams",
+    "fare_transfer_rules": "Regles de transbord tarifari",
+    "areas": "Àrees",
+    "stop_areas": "Parades per àrea",
+    "networks": "Xarxes",
+    "route_networks": "Línies per xarxa",
+    "pathways": "Itineraris",
+    "levels": "Nivells",
+    "location_groups": "Grups d'ubicacions",
+    "location_group_stops": "Parades per grup",
+    "locations": "Zones flex (GeoJSON)",
+    "booking_rules": "Normes de reserva",
+    "translations": "Traduccions",
+    "attributions": "Atribucions"
   },
   "validation": {
     "subtitle": "Comprovacions de l'especificació GTFS i de la validació de Google Transit sobre tot el feed.",
@@ -436,7 +458,23 @@
     "transferRouteTripMismatch": "Transbordaments amb un viatge que no és de la línia indicada",
     "transferDuplicate": "Transbordaments duplicats",
     "transferMinTimeWrongType": "Temps mínim de transbordament en un tipus que no el fa servir",
-    "transferFrequencyTrip": "Transbordaments amb viatges de freqüència aproximada"
+    "transferFrequencyTrip": "Transbordaments amb viatges de freqüència aproximada",
+    "specRequired": "{file}: files sense «{field}»",
+    "specConditionRequired": "{file}: files on cal informar «{field}» i és buit",
+    "specConditionForbidden": "{file}: files on «{field}» no s'ha d'informar",
+    "specInvalidEnum": "{file}: «{field}» amb un valor que no és vàlid",
+    "specInvalidSign": "{file}: «{field}» amb un número fora del rang permès",
+    "specUnknownReference": "{file}: «{field}» que apunta a un identificador que no existeix",
+    "specDuplicateKey": "{file}: files repetides (mateixa clau primària)",
+    "specInvalidCurrency": "{file}: «{field}» amb un codi de moneda ISO 4217 que no existeix",
+    "specTimeOfDay": "{file}: hores per sobre de 24:00:00",
+    "specInvalidGeometry": "{file}: «{field}» amb una geometria que no és un polígon vàlid",
+    "specNetworkConflict": "{file}: «{field}» amb networks.txt o route_networks.txt al feed",
+    "specLevelsRequired": "Hi ha ascensors a pathways.txt però falta {file}",
+    "specIdNamespace": "Identificadors repetits entre parades, grups d'ubicacions i zones flex",
+    "specAttributionTarget": "Atribucions amb més d'un destinatari (operador, línia o viatge)",
+    "specAttributionRole": "Atribucions sense cap rol (productor, operador o autoritat)",
+    "specSingleRow": "{file} té més d'una fila"
   },
   "data": {
     "subtitle": "Edita qualsevol fitxer del feed, fila a fila.",
@@ -616,7 +654,100 @@
     "feed_end_date": "Fi de validesa",
     "feed_version": "Versió",
     "feed_contact_email": "Correu de contacte",
-    "feed_contact_url": "Web de contacte"
+    "feed_contact_url": "Web de contacte",
+    "cemv_support": "Pagament sense contacte (EMV)",
+    "stop_access": "Accés des de la via",
+    "cars_allowed": "Cotxes admesos",
+    "safe_duration_factor": "Factor de durada segura",
+    "safe_duration_offset": "Marge de durada segura (min)",
+    "location_group_id": "Grup d'ubicacions",
+    "location_id": "Zona",
+    "start_pickup_drop_off_window": "Inici de la finestra de recollida",
+    "end_pickup_drop_off_window": "Final de la finestra de recollida",
+    "pickup_booking_rule_id": "Norma de reserva (pujada)",
+    "drop_off_booking_rule_id": "Norma de reserva (baixada)",
+    "fare_id": "Identificador de la tarifa",
+    "price": "Preu",
+    "currency_type": "Moneda",
+    "payment_method": "Moment del pagament",
+    "transfers": "Transbords permesos",
+    "transfer_duration": "Durada del transbord",
+    "origin_id": "Zona d'origen",
+    "destination_id": "Zona de destí",
+    "contains_id": "Zona que travessa",
+    "timeframe_group_id": "Grup de franges",
+    "rider_category_id": "Categoria de viatger",
+    "rider_category_name": "Nom de la categoria",
+    "is_default_fare_category": "Categoria per defecte",
+    "eligibility_url": "Web de requisits",
+    "fare_media_id": "Suport de pagament",
+    "fare_media_name": "Nom del suport",
+    "fare_media_type": "Tipus de suport",
+    "fare_product_id": "Producte tarifari",
+    "fare_product_name": "Nom del producte",
+    "amount": "Import",
+    "currency": "Moneda",
+    "leg_group_id": "Grup de trams",
+    "from_area_id": "Àrea d'origen",
+    "to_area_id": "Àrea de destí",
+    "from_timeframe_group_id": "Franges a l'origen",
+    "to_timeframe_group_id": "Franges al destí",
+    "rule_priority": "Prioritat",
+    "from_network_id": "Xarxa d'origen",
+    "to_network_id": "Xarxa de destí",
+    "from_leg_group_id": "Del grup de trams",
+    "to_leg_group_id": "Al grup de trams",
+    "transfer_count": "Nombre de transbords",
+    "duration_limit": "Límit de durada",
+    "duration_limit_type": "Com es compta el límit",
+    "fare_transfer_type": "Cost del transbord",
+    "area_id": "Àrea",
+    "area_name": "Nom de l'àrea",
+    "network_name": "Nom de la xarxa",
+    "pathway_id": "Identificador de l'itinerari",
+    "pathway_mode": "Tipus d'itinerari",
+    "is_bidirectional": "Sentit",
+    "length": "Longitud (m)",
+    "traversal_time": "Temps de recorregut (s)",
+    "stair_count": "Nombre d'esglaons",
+    "max_slope": "Pendent màxim",
+    "min_width": "Amplada mínima (m)",
+    "signposted_as": "Rètol",
+    "reversed_signposted_as": "Rètol en sentit invers",
+    "level_index": "Índex del nivell",
+    "level_name": "Nom del nivell",
+    "location_group_name": "Nom del grup",
+    "geometry": "Geometria (GeoJSON)",
+    "booking_rule_id": "Norma de reserva",
+    "booking_type": "Tipus de reserva",
+    "prior_notice_duration_min": "Antelació mínima (min)",
+    "prior_notice_duration_max": "Antelació màxima (min)",
+    "prior_notice_last_day": "Últim dia d'antelació",
+    "prior_notice_last_time": "Hora límit de reserva",
+    "prior_notice_start_day": "Primer dia d'antelació",
+    "prior_notice_start_time": "Hora d'inici de reserva",
+    "prior_notice_service_id": "Servei de l'antelació",
+    "message": "Missatge",
+    "pickup_message": "Missatge de pujada",
+    "drop_off_message": "Missatge de baixada",
+    "phone_number": "Telèfon",
+    "info_url": "Web d'informació",
+    "booking_url": "Web de reserva",
+    "table_name": "Fitxer",
+    "field_name": "Camp",
+    "language": "Idioma",
+    "translation": "Traducció",
+    "record_id": "Identificador del registre",
+    "record_sub_id": "Subidentificador del registre",
+    "field_value": "Valor original",
+    "attribution_id": "Identificador de l'atribució",
+    "organization_name": "Organització",
+    "is_producer": "Productor de les dades",
+    "is_operator": "Operador del servei",
+    "is_authority": "Autoritat",
+    "attribution_url": "Web de l'organització",
+    "attribution_email": "Correu de l'organització",
+    "attribution_phone": "Telèfon de l'organització"
   },
   "enums": {
     "location_type": {
@@ -716,6 +847,81 @@
     "sunday": {
       "0": "0 · No circula",
       "1": "1 · Circula"
+    },
+    "cemv_support": {
+      "0": "0 · Sense informació",
+      "1": "1 · Admet pagament sense contacte",
+      "2": "2 · No l'admet"
+    },
+    "stop_access": {
+      "0": "0 · Per l'estació",
+      "1": "1 · Directe des de la via"
+    },
+    "cars_allowed": {
+      "0": "0 · Sense informació",
+      "1": "1 · Es permeten cotxes",
+      "2": "2 · No es permeten cotxes"
+    },
+    "payment_method": {
+      "0": "0 · A bord",
+      "1": "1 · Abans d'embarcar"
+    },
+    "transfers": {
+      "0": "0 · Cap",
+      "1": "1 · Un",
+      "2": "2 · Dos"
+    },
+    "is_default_fare_category": {
+      "0": "0 · No",
+      "1": "1 · Sí"
+    },
+    "fare_media_type": {
+      "0": "0 · Cap",
+      "1": "1 · Bitllet de paper",
+      "2": "2 · Targeta de transport",
+      "3": "3 · cEMV (bancària sense contacte)",
+      "4": "4 · Aplicació mòbil"
+    },
+    "duration_limit_type": {
+      "0": "0 · Sortida del 1r tram a arribada de l'últim",
+      "1": "1 · Sortida del 1r tram a sortida de l'últim",
+      "2": "2 · Arribada del 1r tram a sortida de l'últim",
+      "3": "3 · Arribada del 1r tram a arribada de l'últim"
+    },
+    "fare_transfer_type": {
+      "0": "0 · Tram d'origen + transbord (A + AB)",
+      "1": "1 · Tram d'origen + transbord + tram de destí (A + AB + B)",
+      "2": "2 · Només el transbord (AB)"
+    },
+    "pathway_mode": {
+      "1": "1 · Passadís",
+      "2": "2 · Escales",
+      "3": "3 · Cinta transportadora",
+      "4": "4 · Escala mecànica",
+      "5": "5 · Ascensor",
+      "6": "6 · Barrera de pagament",
+      "7": "7 · Barrera de sortida"
+    },
+    "is_bidirectional": {
+      "0": "0 · Un sentit",
+      "1": "1 · Dos sentits"
+    },
+    "booking_type": {
+      "0": "0 · En temps real",
+      "1": "1 · El mateix dia, amb antelació",
+      "2": "2 · Dies abans"
+    },
+    "is_producer": {
+      "0": "0 · No",
+      "1": "1 · Sí"
+    },
+    "is_operator": {
+      "0": "0 · No",
+      "1": "1 · Sí"
+    },
+    "is_authority": {
+      "0": "0 · No",
+      "1": "1 · Sí"
     }
   },
   "seo": {
@@ -1169,6 +1375,57 @@
     "callsInWindow": {
       "one": "{count} viatge a la franja",
       "other": "{count} viatges a la franja"
+    }
+  },
+  "spec": {
+    "groups": {
+      "core": "Dades bàsiques",
+      "fares": "Tarifes",
+      "stations": "Estacions i accessibilitat",
+      "flex": "Transport a demanda (flex)",
+      "other": "Altres"
+    },
+    "groupHints": {
+      "core": "Operadors, línies, parades, viatges, horaris i calendari.",
+      "fares": "Preus, productes, regles de tram i de transbord, i categories de viatger.",
+      "stations": "Nivells i itineraris dins de les estacions.",
+      "flex": "Zones, grups d'ubicacions i normes de reserva del servei a demanda.",
+      "other": "Traduccions, atribucions i altres fitxers opcionals."
+    },
+    "jsonHint": "Escriu un JSON vàlid.",
+    "station": {
+      "title": "Estructura de l'estació",
+      "summary": "{nodes} ubicacions, {pathways} itineraris i {levels} nivells",
+      "noLevel": "Sense nivell",
+      "pathways": "Itineraris",
+      "stairs": {
+        "one": "{count} esglaó",
+        "other": "{count} esglaons"
+      }
+    },
+    "fares": {
+      "subtitle": "Les tarifes tal com les descriuen els fitxers del feed (només lectura).",
+      "emptyTitle": "Aquest feed no té tarifes",
+      "emptyDescription": "Els fitxers de tarifes (fare_attributes.txt, fare_products.txt...) no hi són o són buits.",
+      "versionOne": "Tarifes v1",
+      "versionTwo": "Tarifes v2",
+      "products": "Productes",
+      "legRules": "Preus per tram",
+      "legRulesHint": "Cada regla uneix un tram (xarxa, àrees d'origen i destí, franges horàries) amb el producte que el cobreix; les de prioritat més alta s'apliquen primer.",
+      "joinRules": "Unió de trams",
+      "transferRules": "Transbords",
+      "riderCategories": "Categories de viatger",
+      "media": "Suports de pagament",
+      "timeframes": "Franges horàries",
+      "attributes": "Tarifes (v1)",
+      "rules": "Regles de tarifa (v1)",
+      "rulesHint": "Una tarifa s'aplica quan una fila coincideix amb la línia o amb les zones d'origen, destí i pas.",
+      "truncated": "Es mostren {shown} de {total}",
+      "unlimited": "Il·limitats"
+    },
+    "map": {
+      "showZones": "Mostra les zones flex",
+      "hideZones": "Amaga les zones flex"
     }
   }
 }

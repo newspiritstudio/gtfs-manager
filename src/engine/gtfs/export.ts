@@ -7,7 +7,7 @@ import JSZip from 'jszip';
 import { GTFS_SPEC, GTFS_TABLES, type GtfsField, type GtfsTable } from '@shared/gtfs-spec';
 import { getSql, ident, parseJson } from '../db/client';
 import { csvField } from './csv';
-import { notNullColumns } from './import';
+import { JSON_SUFFIX, notNullColumns } from './import';
 
 const PAGE = 20000;
 
@@ -112,12 +112,59 @@ async function tableCsv(feedId: string, table: GtfsTable): Promise<Uint8Array | 
   return out;
 }
 
+/** `locations.geojson` from the `locations` rows: one feature each, in the order they came. */
+async function locationsGeoJson(feedId: string): Promise<string | null> {
+  const rows = await getSql().unsafe<
+    {
+      location_id: string;
+      stop_name: string | null;
+      stop_desc: string | null;
+      geometry: string;
+      extra: string | null;
+    }[]
+  >(
+    `SELECT location_id, stop_name, stop_desc, geometry, extra FROM locations
+     WHERE feed_id = $1 ORDER BY id`,
+    [feedId]
+  );
+  if (!rows.length) return null;
+  const features = rows.map((row) => {
+    const properties: Record<string, unknown> = {};
+    if (row.stop_name !== null) properties.stop_name = row.stop_name;
+    if (row.stop_desc !== null) properties.stop_desc = row.stop_desc;
+    const members: Record<string, unknown> = {};
+    let replacedProperties: { value: unknown } | null = null;
+    const extra = parseJson<Record<string, string>>(row.extra) ?? {};
+    for (const [key, raw] of Object.entries(extra)) {
+      const isJson = key.endsWith(JSON_SUFFIX);
+      const name = isJson ? key.slice(0, -JSON_SUFFIX.length) : key;
+      const value: unknown = isJson ? JSON.parse(raw) : raw;
+      if (name === 'properties') replacedProperties = { value };
+      else if (name.startsWith('properties.')) properties[name.slice('properties.'.length)] = value;
+      else if (name.startsWith('member.')) members[name.slice('member.'.length)] = value;
+    }
+    return {
+      type: 'Feature',
+      id: row.location_id,
+      properties: replacedProperties ? replacedProperties.value : properties,
+      geometry: JSON.parse(row.geometry),
+      ...members,
+    };
+  });
+  return JSON.stringify({ type: 'FeatureCollection', features });
+}
+
 /** The feed as a GTFS ZIP. Stops between tables if `signal` is aborted. */
 export async function exportFeedZip(feedId: string, signal?: AbortSignal): Promise<Blob> {
   const sql = getSql();
   const zip = new JSZip();
   for (const table of GTFS_TABLES) {
     signal?.throwIfAborted();
+    if (GTFS_SPEC[table].format === 'geojson') {
+      const geojson = await locationsGeoJson(feedId);
+      if (geojson) zip.file(GTFS_SPEC[table].file, geojson);
+      continue;
+    }
     const csv = await tableCsv(feedId, table);
     if (csv) zip.file(GTFS_SPEC[table].file, csv, { binary: true });
   }

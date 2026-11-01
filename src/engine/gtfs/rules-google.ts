@@ -16,6 +16,13 @@ export interface ValidationRule {
   table: GtfsTable | null;
   /** The title of the same check in Google's list, if it has one. */
   google?: string;
+  /** The field the rule is about (generated rules: one message for the whole specification). */
+  field?: string;
+  /**
+   * A predicate over one row of `table`, which it calls `t`: true for a row that breaks the rule.
+   * The rules of a table with a `where` run together in one scan (`validateFeed`).
+   */
+  where?: string;
   /** A query returning one row per violation with the `sample` column; `$1` is the feed id. */
   query?: string;
   /**

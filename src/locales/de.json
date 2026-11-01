@@ -22,7 +22,8 @@
     "catalog": "Katalog",
     "home": "Startseite",
     "realtime": "Echtzeit",
-    "history": "Verlauf"
+    "history": "Verlauf",
+    "fares": "Tarife"
   },
   "theme": {
     "switch": "Darstellung: {theme}",
@@ -331,7 +332,28 @@
     "shapes": "Streckenverläufe",
     "frequencies": "Takte",
     "transfers": "Umstiege",
-    "feed_info": "Feed-Info"
+    "feed_info": "Feed-Info",
+    "fare_attributes": "Tarife (v1)",
+    "fare_rules": "Tarifregeln (v1)",
+    "timeframes": "Zeitfenster",
+    "rider_categories": "Fahrgastkategorien",
+    "fare_media": "Zahlungsmedien",
+    "fare_products": "Tarifprodukte",
+    "fare_leg_rules": "Streckenregeln",
+    "fare_leg_join_rules": "Streckenverbindungen",
+    "fare_transfer_rules": "Umsteigeregeln (Tarif)",
+    "areas": "Gebiete",
+    "stop_areas": "Haltestellen je Gebiet",
+    "networks": "Netze",
+    "route_networks": "Linien je Netz",
+    "pathways": "Wege",
+    "levels": "Ebenen",
+    "location_groups": "Ortsgruppen",
+    "location_group_stops": "Haltestellen je Gruppe",
+    "locations": "Flex-Zonen (GeoJSON)",
+    "booking_rules": "Buchungsregeln",
+    "translations": "Übersetzungen",
+    "attributions": "Quellenangaben"
   },
   "validation": {
     "subtitle": "Prüfungen der GTFS-Spezifikation und der Google-Transit-Validierung für den ganzen Feed.",
@@ -436,7 +458,23 @@
     "transferRouteTripMismatch": "Umstiege, deren Fahrt nicht zur angegebenen Linie gehört",
     "transferDuplicate": "Doppelte Umstiege",
     "transferMinTimeWrongType": "Mindestumstiegszeit bei einem Typ, der sie nicht nutzt",
-    "transferFrequencyTrip": "Umstiege mit Fahrten im ungefähren Takt"
+    "transferFrequencyTrip": "Umstiege mit Fahrten im ungefähren Takt",
+    "specRequired": "{file}: Zeilen ohne „{field}“",
+    "specConditionRequired": "{file}: Zeilen, in denen „{field}“ erforderlich, aber leer ist",
+    "specConditionForbidden": "{file}: Zeilen, in denen „{field}“ leer bleiben muss",
+    "specInvalidEnum": "{file}: „{field}“ mit ungültigem Wert",
+    "specInvalidSign": "{file}: „{field}“ mit einer Zahl außerhalb des erlaubten Bereichs",
+    "specUnknownReference": "{file}: „{field}“ verweist auf eine nicht vorhandene ID",
+    "specDuplicateKey": "{file}: doppelte Zeilen (gleicher Primärschlüssel)",
+    "specInvalidCurrency": "{file}: „{field}“ mit einem nicht existierenden ISO-4217-Währungscode",
+    "specTimeOfDay": "{file}: Zeiten nach 24:00:00",
+    "specInvalidGeometry": "{file}: „{field}“ mit einer Geometrie, die kein gültiges Polygon ist",
+    "specNetworkConflict": "{file}: „{field}“, obwohl der Feed networks.txt oder route_networks.txt enthält",
+    "specLevelsRequired": "pathways.txt enthält Aufzüge, aber {file} fehlt",
+    "specIdNamespace": "IDs doppelt vergeben zwischen Haltestellen, Ortsgruppen und Flex-Zonen",
+    "specAttributionTarget": "Quellenangaben mit mehr als einem Bezug (Unternehmen, Linie oder Fahrt)",
+    "specAttributionRole": "Quellenangaben ohne Rolle (Erzeuger, Betreiber oder Aufgabenträger)",
+    "specSingleRow": "{file} enthält mehr als eine Zeile"
   },
   "data": {
     "subtitle": "Jede Feed-Datei zeilenweise bearbeiten.",
@@ -616,7 +654,100 @@
     "feed_end_date": "Gültig bis",
     "feed_version": "Version",
     "feed_contact_email": "Kontakt-E-Mail",
-    "feed_contact_url": "Kontakt-URL"
+    "feed_contact_url": "Kontakt-URL",
+    "cemv_support": "Kontaktlos zahlen (EMV)",
+    "stop_access": "Zugang von der Straße",
+    "cars_allowed": "Autos erlaubt",
+    "safe_duration_factor": "Faktor sichere Dauer",
+    "safe_duration_offset": "Zuschlag sichere Dauer (Min.)",
+    "location_group_id": "Ortsgruppe",
+    "location_id": "Zone",
+    "start_pickup_drop_off_window": "Beginn des Abholfensters",
+    "end_pickup_drop_off_window": "Ende des Abholfensters",
+    "pickup_booking_rule_id": "Buchungsregel (Einstieg)",
+    "drop_off_booking_rule_id": "Buchungsregel (Ausstieg)",
+    "fare_id": "Tarif-ID",
+    "price": "Preis",
+    "currency_type": "Währung",
+    "payment_method": "Zahlungszeitpunkt",
+    "transfers": "Erlaubte Umstiege",
+    "transfer_duration": "Umsteigedauer",
+    "origin_id": "Starttarifzone",
+    "destination_id": "Zieltarifzone",
+    "contains_id": "Durchfahrene Zone",
+    "timeframe_group_id": "Zeitfenstergruppe",
+    "rider_category_id": "Fahrgastkategorie",
+    "rider_category_name": "Name der Kategorie",
+    "is_default_fare_category": "Standardkategorie",
+    "eligibility_url": "URL der Voraussetzungen",
+    "fare_media_id": "Zahlungsmedium",
+    "fare_media_name": "Name des Mediums",
+    "fare_media_type": "Medientyp",
+    "fare_product_id": "Tarifprodukt",
+    "fare_product_name": "Produktname",
+    "amount": "Betrag",
+    "currency": "Währung",
+    "leg_group_id": "Streckengruppe",
+    "from_area_id": "Startgebiet",
+    "to_area_id": "Zielgebiet",
+    "from_timeframe_group_id": "Zeitfenster am Start",
+    "to_timeframe_group_id": "Zeitfenster am Ziel",
+    "rule_priority": "Priorität",
+    "from_network_id": "Startnetz",
+    "to_network_id": "Zielnetz",
+    "from_leg_group_id": "Von Streckengruppe",
+    "to_leg_group_id": "Zu Streckengruppe",
+    "transfer_count": "Anzahl Umstiege",
+    "duration_limit": "Dauerlimit",
+    "duration_limit_type": "Berechnung des Limits",
+    "fare_transfer_type": "Umsteigekosten",
+    "area_id": "Gebiet",
+    "area_name": "Gebietsname",
+    "network_name": "Netzname",
+    "pathway_id": "Weg-ID",
+    "pathway_mode": "Wegtyp",
+    "is_bidirectional": "Richtung",
+    "length": "Länge (m)",
+    "traversal_time": "Gehzeit (s)",
+    "stair_count": "Anzahl Stufen",
+    "max_slope": "Maximale Steigung",
+    "min_width": "Mindestbreite (m)",
+    "signposted_as": "Beschilderung",
+    "reversed_signposted_as": "Beschilderung Gegenrichtung",
+    "level_index": "Ebenenindex",
+    "level_name": "Ebenenname",
+    "location_group_name": "Gruppenname",
+    "geometry": "Geometrie (GeoJSON)",
+    "booking_rule_id": "Buchungsregel",
+    "booking_type": "Buchungsart",
+    "prior_notice_duration_min": "Mindestvorlauf (Min.)",
+    "prior_notice_duration_max": "Maximaler Vorlauf (Min.)",
+    "prior_notice_last_day": "Letzter Vorlauftag",
+    "prior_notice_last_time": "Buchungsschluss (Uhrzeit)",
+    "prior_notice_start_day": "Erster Vorlauftag",
+    "prior_notice_start_time": "Buchungsbeginn (Uhrzeit)",
+    "prior_notice_service_id": "Vorlauf-Fahrplan",
+    "message": "Nachricht",
+    "pickup_message": "Nachricht Einstieg",
+    "drop_off_message": "Nachricht Ausstieg",
+    "phone_number": "Telefonnummer",
+    "info_url": "Info-URL",
+    "booking_url": "Buchungs-URL",
+    "table_name": "Datei",
+    "field_name": "Feld",
+    "language": "Sprache",
+    "translation": "Übersetzung",
+    "record_id": "Datensatz-ID",
+    "record_sub_id": "Datensatz-Unter-ID",
+    "field_value": "Originalwert",
+    "attribution_id": "Quellen-ID",
+    "organization_name": "Organisation",
+    "is_producer": "Datenerzeuger",
+    "is_operator": "Betreiber",
+    "is_authority": "Aufgabenträger",
+    "attribution_url": "URL der Organisation",
+    "attribution_email": "E-Mail der Organisation",
+    "attribution_phone": "Telefon der Organisation"
   },
   "enums": {
     "location_type": {
@@ -716,6 +847,81 @@
     "sunday": {
       "0": "0 · Kein Betrieb",
       "1": "1 · Betrieb"
+    },
+    "cemv_support": {
+      "0": "0 · Keine Angabe",
+      "1": "1 · Kontaktlos möglich",
+      "2": "2 · Nicht möglich"
+    },
+    "stop_access": {
+      "0": "0 · Über die Station",
+      "1": "1 · Direkt von der Straße"
+    },
+    "cars_allowed": {
+      "0": "0 · Keine Angabe",
+      "1": "1 · Autos erlaubt",
+      "2": "2 · Autos nicht erlaubt"
+    },
+    "payment_method": {
+      "0": "0 · An Bord",
+      "1": "1 · Vor dem Einsteigen"
+    },
+    "transfers": {
+      "0": "0 · Keiner",
+      "1": "1 · Einmal",
+      "2": "2 · Zweimal"
+    },
+    "is_default_fare_category": {
+      "0": "0 · Nein",
+      "1": "1 · Ja"
+    },
+    "fare_media_type": {
+      "0": "0 · Keines",
+      "1": "1 · Papierfahrschein",
+      "2": "2 · Fahrkarte (Chipkarte)",
+      "3": "3 · cEMV (kontaktlose Bankkarte)",
+      "4": "4 · Mobile App"
+    },
+    "duration_limit_type": {
+      "0": "0 · Abfahrt erste Strecke bis Ankunft letzte",
+      "1": "1 · Abfahrt erste bis Abfahrt letzte Strecke",
+      "2": "2 · Ankunft erste bis Abfahrt letzte Strecke",
+      "3": "3 · Ankunft erste bis Ankunft letzte Strecke"
+    },
+    "fare_transfer_type": {
+      "0": "0 · Start-Strecke + Umstieg (A + AB)",
+      "1": "1 · Start-Strecke + Umstieg + Ziel-Strecke (A + AB + B)",
+      "2": "2 · Nur der Umstieg (AB)"
+    },
+    "pathway_mode": {
+      "1": "1 · Gehweg",
+      "2": "2 · Treppe",
+      "3": "3 · Rollsteig",
+      "4": "4 · Rolltreppe",
+      "5": "5 · Aufzug",
+      "6": "6 · Zugangssperre",
+      "7": "7 · Ausgangssperre"
+    },
+    "is_bidirectional": {
+      "0": "0 · Eine Richtung",
+      "1": "1 · Beide Richtungen"
+    },
+    "booking_type": {
+      "0": "0 · In Echtzeit",
+      "1": "1 · Am selben Tag mit Vorlauf",
+      "2": "2 · Tage im Voraus"
+    },
+    "is_producer": {
+      "0": "0 · Nein",
+      "1": "1 · Ja"
+    },
+    "is_operator": {
+      "0": "0 · Nein",
+      "1": "1 · Ja"
+    },
+    "is_authority": {
+      "0": "0 · Nein",
+      "1": "1 · Ja"
     }
   },
   "seo": {
@@ -1169,6 +1375,57 @@
     "callsInWindow": {
       "one": "{count} Fahrt im Zeitfenster",
       "other": "{count} Fahrten im Zeitfenster"
+    }
+  },
+  "spec": {
+    "groups": {
+      "core": "Basisdaten",
+      "fares": "Tarife",
+      "stations": "Stationen und Barrierefreiheit",
+      "flex": "Bedarfsverkehr (Flex)",
+      "other": "Weitere"
+    },
+    "groupHints": {
+      "core": "Unternehmen, Linien, Haltestellen, Fahrten, Fahrpläne und Kalender.",
+      "fares": "Preise, Produkte, Strecken- und Umsteigeregeln sowie Fahrgastkategorien.",
+      "stations": "Ebenen und Wege innerhalb von Stationen.",
+      "flex": "Zonen, Ortsgruppen und Buchungsregeln des Bedarfsverkehrs.",
+      "other": "Übersetzungen, Quellenangaben und weitere optionale Dateien."
+    },
+    "jsonHint": "Gültiges JSON eingeben.",
+    "station": {
+      "title": "Aufbau der Station",
+      "summary": "{nodes} Orte, {pathways} Wege und {levels} Ebenen",
+      "noLevel": "Ohne Ebene",
+      "pathways": "Wege",
+      "stairs": {
+        "one": "{count} Stufe",
+        "other": "{count} Stufen"
+      }
+    },
+    "fares": {
+      "subtitle": "Die Tarife, wie die Dateien des Feeds sie beschreiben (schreibgeschützt).",
+      "emptyTitle": "Dieser Feed enthält keine Tarife",
+      "emptyDescription": "Die Tarifdateien (fare_attributes.txt, fare_products.txt ...) fehlen oder sind leer.",
+      "versionOne": "Tarife v1",
+      "versionTwo": "Tarife v2",
+      "products": "Produkte",
+      "legRules": "Preise je Strecke",
+      "legRulesHint": "Jede Regel verknüpft eine Strecke (Netz, Start- und Zielgebiet, Zeitfenster) mit dem Produkt, das sie abdeckt; Regeln mit höherer Priorität gelten zuerst.",
+      "joinRules": "Streckenverbindungen",
+      "transferRules": "Umstiege",
+      "riderCategories": "Fahrgastkategorien",
+      "media": "Zahlungsmedien",
+      "timeframes": "Zeitfenster",
+      "attributes": "Tarife (v1)",
+      "rules": "Tarifregeln (v1)",
+      "rulesHint": "Ein Tarif gilt, wenn eine Zeile zur Linie oder zu den Start-, Ziel- und Durchfahrzonen passt.",
+      "truncated": "{shown} von {total} angezeigt",
+      "unlimited": "Unbegrenzt"
+    },
+    "map": {
+      "showZones": "Flex-Zonen anzeigen",
+      "hideZones": "Flex-Zonen ausblenden"
     }
   }
 }

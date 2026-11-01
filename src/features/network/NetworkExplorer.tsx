@@ -1,4 +1,4 @@
-import { ArrowRight, Eye, EyeOff, Layers, MapPin, TrainFront, X } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, Hexagon, Layers, MapPin, TrainFront, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { NetworkStop } from '@shared/contracts';
 import type { RealtimeVehicle } from '@shared/realtime';
@@ -28,6 +28,7 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
   const [query, setQuery] = useState('');
   const [hoverGroup, setHoverGroup] = useState<string[] | null>(null);
   const [showStops, setShowStops] = useState(true);
+  const [showZones, setShowZones] = useState(true);
   const [stop, setStop] = useState<NetworkStop | null>(null);
   const [mode, setMode] = useState<MapMode>('lines');
   const [panelOpen, setPanelOpen] = useState(true);
@@ -104,6 +105,7 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
           label={t('nav.map')}
           visibleRouteIds={visible}
           showStops={showStops}
+          showZones={showZones}
           highlightRouteIds={hoverGroup}
           selectedStopId={stop?.stopId ?? null}
           onStopClick={setStop}
@@ -137,6 +139,15 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
                   selected={showVehicles}
                 >
                   <TrainFront />
+                </IconButton>
+              ) : null}
+              {data?.zones?.length ? (
+                <IconButton
+                  label={showZones ? t('spec.map.hideZones') : t('spec.map.showZones')}
+                  onClick={() => setShowZones((v) => !v)}
+                  selected={showZones}
+                >
+                  <Hexagon />
                 </IconButton>
               ) : null}
               <IconButton

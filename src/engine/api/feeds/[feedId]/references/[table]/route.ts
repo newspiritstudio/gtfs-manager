@@ -11,6 +11,8 @@ export async function GET(
   const { response } = await requireFeed(feedId);
   if (response) return response;
   if (!isGtfsTable(table)) return jsonError(404, 'tableNotFound');
-  const q = new URL(request.url).searchParams.get('q') ?? '';
-  return Response.json(await referenceOptions(feedId, table, q));
+  const query = new URL(request.url).searchParams;
+  return Response.json(
+    await referenceOptions(feedId, table, query.get('q') ?? '', query.get('field') ?? undefined)
+  );
 }

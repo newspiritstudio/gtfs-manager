@@ -5,24 +5,16 @@
  */
 import { createSql, type Driver, type Sql } from './sql';
 import { historyFor } from '../history/schema';
-import { SCHEMA_VERSION, schemaStatements } from './schema';
+import { migrate } from './migrations';
 
 export { ident, parseJson } from './sql';
 
 let current: Sql | null = null;
 
-/** Creates or upgrades the schema, then makes `driver` the database `getSql()` returns. */
+/** Creates or upgrades the schema (`migrate`), then makes `driver` the database `getSql()` returns. */
 export function setDriver(driver: Driver): Sql {
   driver.exec('PRAGMA foreign_keys = ON');
-  const [{ user_version: version }] = driver.query('PRAGMA user_version', []) as {
-    user_version: number;
-  }[];
-  if (version < 1) {
-    driver.exec('BEGIN');
-    for (const statement of schemaStatements()) driver.exec(statement);
-    driver.exec(`PRAGMA user_version = ${SCHEMA_VERSION}`);
-    driver.exec('COMMIT');
-  }
+  migrate(driver);
   current = createSql(driver);
   // The edit history's tables and triggers (idempotent: not a versioned migration).
   historyFor(current).catch((error) =>

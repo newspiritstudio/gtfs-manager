@@ -22,7 +22,8 @@
     "catalog": "Catálogo",
     "home": "Inicio",
     "realtime": "Tiempo real",
-    "history": "Historial"
+    "history": "Historial",
+    "fares": "Tarifas"
   },
   "theme": {
     "switch": "Tema: {theme}",
@@ -331,7 +332,28 @@
     "shapes": "Trazados",
     "frequencies": "Frecuencias",
     "transfers": "Transbordos",
-    "feed_info": "Información del feed"
+    "feed_info": "Información del feed",
+    "fare_attributes": "Tarifas (v1)",
+    "fare_rules": "Reglas de tarifa (v1)",
+    "timeframes": "Franjas horarias",
+    "rider_categories": "Categorías de viajero",
+    "fare_media": "Soportes de pago",
+    "fare_products": "Productos tarifarios",
+    "fare_leg_rules": "Reglas de tramo",
+    "fare_leg_join_rules": "Unión de tramos",
+    "fare_transfer_rules": "Reglas de transbordo tarifario",
+    "areas": "Áreas",
+    "stop_areas": "Paradas por área",
+    "networks": "Redes",
+    "route_networks": "Líneas por red",
+    "pathways": "Itinerarios",
+    "levels": "Niveles",
+    "location_groups": "Grupos de ubicaciones",
+    "location_group_stops": "Paradas por grupo",
+    "locations": "Zonas flex (GeoJSON)",
+    "booking_rules": "Reglas de reserva",
+    "translations": "Traducciones",
+    "attributions": "Atribuciones"
   },
   "validation": {
     "subtitle": "Comprobaciones de la especificación GTFS y de la validación de Google Transit sobre todo el feed.",
@@ -436,7 +458,23 @@
     "transferRouteTripMismatch": "Transbordos con un viaje que no es de la línea indicada",
     "transferDuplicate": "Transbordos duplicados",
     "transferMinTimeWrongType": "Tiempo mínimo de transbordo en un tipo que no lo usa",
-    "transferFrequencyTrip": "Transbordos con viajes de frecuencia aproximada"
+    "transferFrequencyTrip": "Transbordos con viajes de frecuencia aproximada",
+    "specRequired": "{file}: filas sin «{field}»",
+    "specConditionRequired": "{file}: filas donde «{field}» es obligatorio y está vacío",
+    "specConditionForbidden": "{file}: filas donde «{field}» no debe informarse",
+    "specInvalidEnum": "{file}: «{field}» con un valor no válido",
+    "specInvalidSign": "{file}: «{field}» con un número fuera del rango permitido",
+    "specUnknownReference": "{file}: «{field}» que apunta a un identificador que no existe",
+    "specDuplicateKey": "{file}: filas repetidas (misma clave primaria)",
+    "specInvalidCurrency": "{file}: «{field}» con un código de moneda ISO 4217 que no existe",
+    "specTimeOfDay": "{file}: horas por encima de 24:00:00",
+    "specInvalidGeometry": "{file}: «{field}» con una geometría que no es un polígono válido",
+    "specNetworkConflict": "{file}: «{field}» con networks.txt o route_networks.txt en el feed",
+    "specLevelsRequired": "Hay ascensores en pathways.txt pero falta {file}",
+    "specIdNamespace": "Identificadores repetidos entre paradas, grupos de ubicaciones y zonas flex",
+    "specAttributionTarget": "Atribuciones con más de un destinatario (operador, línea o viaje)",
+    "specAttributionRole": "Atribuciones sin ningún rol (productor, operador o autoridad)",
+    "specSingleRow": "{file} tiene más de una fila"
   },
   "data": {
     "subtitle": "Edita cualquier fichero del feed, fila a fila.",
@@ -616,7 +654,100 @@
     "feed_end_date": "Fin de validez",
     "feed_version": "Versión",
     "feed_contact_email": "Correo de contacto",
-    "feed_contact_url": "Web de contacto"
+    "feed_contact_url": "Web de contacto",
+    "cemv_support": "Pago sin contacto (EMV)",
+    "stop_access": "Acceso desde la vía",
+    "cars_allowed": "Coches admitidos",
+    "safe_duration_factor": "Factor de duración segura",
+    "safe_duration_offset": "Margen de duración segura (min)",
+    "location_group_id": "Grupo de ubicaciones",
+    "location_id": "Zona",
+    "start_pickup_drop_off_window": "Inicio de la ventana de recogida",
+    "end_pickup_drop_off_window": "Fin de la ventana de recogida",
+    "pickup_booking_rule_id": "Regla de reserva (subida)",
+    "drop_off_booking_rule_id": "Regla de reserva (bajada)",
+    "fare_id": "Identificador de la tarifa",
+    "price": "Precio",
+    "currency_type": "Moneda",
+    "payment_method": "Momento del pago",
+    "transfers": "Transbordos permitidos",
+    "transfer_duration": "Duración del transbordo",
+    "origin_id": "Zona de origen",
+    "destination_id": "Zona de destino",
+    "contains_id": "Zona que atraviesa",
+    "timeframe_group_id": "Grupo de franjas",
+    "rider_category_id": "Categoría de viajero",
+    "rider_category_name": "Nombre de la categoría",
+    "is_default_fare_category": "Categoría por defecto",
+    "eligibility_url": "Web de requisitos",
+    "fare_media_id": "Soporte de pago",
+    "fare_media_name": "Nombre del soporte",
+    "fare_media_type": "Tipo de soporte",
+    "fare_product_id": "Producto tarifario",
+    "fare_product_name": "Nombre del producto",
+    "amount": "Importe",
+    "currency": "Moneda",
+    "leg_group_id": "Grupo de tramos",
+    "from_area_id": "Área de origen",
+    "to_area_id": "Área de destino",
+    "from_timeframe_group_id": "Franjas en el origen",
+    "to_timeframe_group_id": "Franjas en el destino",
+    "rule_priority": "Prioridad",
+    "from_network_id": "Red de origen",
+    "to_network_id": "Red de destino",
+    "from_leg_group_id": "Del grupo de tramos",
+    "to_leg_group_id": "Al grupo de tramos",
+    "transfer_count": "Número de transbordos",
+    "duration_limit": "Límite de duración",
+    "duration_limit_type": "Cómo se cuenta el límite",
+    "fare_transfer_type": "Coste del transbordo",
+    "area_id": "Área",
+    "area_name": "Nombre del área",
+    "network_name": "Nombre de la red",
+    "pathway_id": "Identificador del itinerario",
+    "pathway_mode": "Tipo de itinerario",
+    "is_bidirectional": "Sentido",
+    "length": "Longitud (m)",
+    "traversal_time": "Tiempo de recorrido (s)",
+    "stair_count": "Número de escalones",
+    "max_slope": "Pendiente máxima",
+    "min_width": "Anchura mínima (m)",
+    "signposted_as": "Rótulo",
+    "reversed_signposted_as": "Rótulo en sentido inverso",
+    "level_index": "Índice del nivel",
+    "level_name": "Nombre del nivel",
+    "location_group_name": "Nombre del grupo",
+    "geometry": "Geometría (GeoJSON)",
+    "booking_rule_id": "Regla de reserva",
+    "booking_type": "Tipo de reserva",
+    "prior_notice_duration_min": "Antelación mínima (min)",
+    "prior_notice_duration_max": "Antelación máxima (min)",
+    "prior_notice_last_day": "Último día de antelación",
+    "prior_notice_last_time": "Hora límite de reserva",
+    "prior_notice_start_day": "Primer día de antelación",
+    "prior_notice_start_time": "Hora de inicio de reserva",
+    "prior_notice_service_id": "Servicio de la antelación",
+    "message": "Mensaje",
+    "pickup_message": "Mensaje de subida",
+    "drop_off_message": "Mensaje de bajada",
+    "phone_number": "Teléfono",
+    "info_url": "Web de información",
+    "booking_url": "Web de reserva",
+    "table_name": "Archivo",
+    "field_name": "Campo",
+    "language": "Idioma",
+    "translation": "Traducción",
+    "record_id": "Identificador del registro",
+    "record_sub_id": "Subidentificador del registro",
+    "field_value": "Valor original",
+    "attribution_id": "Identificador de la atribución",
+    "organization_name": "Organización",
+    "is_producer": "Productor de los datos",
+    "is_operator": "Operador del servicio",
+    "is_authority": "Autoridad",
+    "attribution_url": "Web de la organización",
+    "attribution_email": "Correo de la organización",
+    "attribution_phone": "Teléfono de la organización"
   },
   "enums": {
     "location_type": {
@@ -716,6 +847,81 @@
     "sunday": {
       "0": "0 · No circula",
       "1": "1 · Circula"
+    },
+    "cemv_support": {
+      "0": "0 · Sin información",
+      "1": "1 · Admite pago sin contacto",
+      "2": "2 · No lo admite"
+    },
+    "stop_access": {
+      "0": "0 · Por la estación",
+      "1": "1 · Directo desde la vía"
+    },
+    "cars_allowed": {
+      "0": "0 · Sin información",
+      "1": "1 · Se permiten coches",
+      "2": "2 · No se permiten coches"
+    },
+    "payment_method": {
+      "0": "0 · A bordo",
+      "1": "1 · Antes de embarcar"
+    },
+    "transfers": {
+      "0": "0 · Ninguno",
+      "1": "1 · Uno",
+      "2": "2 · Dos"
+    },
+    "is_default_fare_category": {
+      "0": "0 · No",
+      "1": "1 · Sí"
+    },
+    "fare_media_type": {
+      "0": "0 · Ninguno",
+      "1": "1 · Billete de papel",
+      "2": "2 · Tarjeta de transporte",
+      "3": "3 · cEMV (bancaria sin contacto)",
+      "4": "4 · Aplicación móvil"
+    },
+    "duration_limit_type": {
+      "0": "0 · Salida del 1.er tramo a llegada del último",
+      "1": "1 · Salida del 1.er tramo a salida del último",
+      "2": "2 · Llegada del 1.er tramo a salida del último",
+      "3": "3 · Llegada del 1.er tramo a llegada del último"
+    },
+    "fare_transfer_type": {
+      "0": "0 · Tramo de origen + transbordo (A + AB)",
+      "1": "1 · Tramo de origen + transbordo + tramo de destino (A + AB + B)",
+      "2": "2 · Solo el transbordo (AB)"
+    },
+    "pathway_mode": {
+      "1": "1 · Pasillo",
+      "2": "2 · Escaleras",
+      "3": "3 · Cinta transportadora",
+      "4": "4 · Escalera mecánica",
+      "5": "5 · Ascensor",
+      "6": "6 · Barrera de pago",
+      "7": "7 · Barrera de salida"
+    },
+    "is_bidirectional": {
+      "0": "0 · Un sentido",
+      "1": "1 · Dos sentidos"
+    },
+    "booking_type": {
+      "0": "0 · En tiempo real",
+      "1": "1 · El mismo día, con antelación",
+      "2": "2 · Días antes"
+    },
+    "is_producer": {
+      "0": "0 · No",
+      "1": "1 · Sí"
+    },
+    "is_operator": {
+      "0": "0 · No",
+      "1": "1 · Sí"
+    },
+    "is_authority": {
+      "0": "0 · No",
+      "1": "1 · Sí"
     }
   },
   "seo": {
@@ -1169,6 +1375,57 @@
     "callsInWindow": {
       "one": "{count} viaje en la franja",
       "other": "{count} viajes en la franja"
+    }
+  },
+  "spec": {
+    "groups": {
+      "core": "Datos básicos",
+      "fares": "Tarifas",
+      "stations": "Estaciones y accesibilidad",
+      "flex": "Transporte a demanda (flex)",
+      "other": "Otros"
+    },
+    "groupHints": {
+      "core": "Operadores, líneas, paradas, viajes, horarios y calendario.",
+      "fares": "Precios, productos, reglas de tramo y de transbordo, y categorías de viajero.",
+      "stations": "Niveles e itinerarios dentro de las estaciones.",
+      "flex": "Zonas, grupos de ubicaciones y reglas de reserva del servicio a demanda.",
+      "other": "Traducciones, atribuciones y otros archivos opcionales."
+    },
+    "jsonHint": "Escribe un JSON válido.",
+    "station": {
+      "title": "Estructura de la estación",
+      "summary": "{nodes} ubicaciones, {pathways} itinerarios y {levels} niveles",
+      "noLevel": "Sin nivel",
+      "pathways": "Itinerarios",
+      "stairs": {
+        "one": "{count} escalón",
+        "other": "{count} escalones"
+      }
+    },
+    "fares": {
+      "subtitle": "Las tarifas tal como las describen los archivos del feed (solo lectura).",
+      "emptyTitle": "Este feed no tiene tarifas",
+      "emptyDescription": "Los archivos de tarifas (fare_attributes.txt, fare_products.txt...) no existen o están vacíos.",
+      "versionOne": "Tarifas v1",
+      "versionTwo": "Tarifas v2",
+      "products": "Productos",
+      "legRules": "Precios por tramo",
+      "legRulesHint": "Cada regla une un tramo (red, áreas de origen y destino, franjas horarias) con el producto que lo cubre; las de mayor prioridad se aplican primero.",
+      "joinRules": "Unión de tramos",
+      "transferRules": "Transbordos",
+      "riderCategories": "Categorías de viajero",
+      "media": "Soportes de pago",
+      "timeframes": "Franjas horarias",
+      "attributes": "Tarifas (v1)",
+      "rules": "Reglas de tarifa (v1)",
+      "rulesHint": "Una tarifa se aplica cuando una fila coincide con la línea o con las zonas de origen, destino y paso.",
+      "truncated": "Se muestran {shown} de {total}",
+      "unlimited": "Ilimitados"
+    },
+    "map": {
+      "showZones": "Mostrar las zonas flex",
+      "hideZones": "Ocultar las zonas flex"
     }
   }
 }

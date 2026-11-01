@@ -11,6 +11,7 @@ import { useEngine } from '@/lib/engine';
 import { useI18n } from '@/lib/i18n/client';
 import { formatNumber } from '@/lib/i18n/format';
 import { Link } from '@/lib/router';
+import { issueKey, issueTitle } from '@/lib/issueTitle';
 import { useDocumentHead } from '@/lib/seo';
 import { useFeedId } from './useFeedId';
 
@@ -75,7 +76,7 @@ function ValidationReport({ feedId, issues }: { feedId: string; issues: Validati
                 </h2>
                 <ul className="space-y-2">
                   {list.map((issue) => (
-                    <li key={issue.code}>
+                    <li key={issueKey(issue)}>
                       <Card className="flex gap-4 p-4">
                         <span
                           className={`flex size-10 shrink-0 items-center justify-center rounded-sm icon-slot-5 ${s.well}`}
@@ -85,7 +86,7 @@ function ValidationReport({ feedId, issues }: { feedId: string; issues: Validati
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-baseline justify-between gap-2">
                             <h3 className="text-title-small text-on-surface">
-                              {t(`validation.${issue.code}`)}
+                              {issueTitle(t, issue)}
                             </h3>
                             <span className="text-label-large tabular-nums text-on-surface-variant">
                               {t('units.cases', { count: issue.count })}
@@ -94,7 +95,7 @@ function ValidationReport({ feedId, issues }: { feedId: string; issues: Validati
                           <p className="mt-0.5 text-body-small text-on-surface-muted">
                             {[
                               issue.table ? GTFS_SPEC[issue.table].file : t('validation.wholeFeed'),
-                              issue.google ?? issue.code,
+                              issue.google ?? [issue.code, issue.field].filter(Boolean).join(' · '),
                             ].join(' · ')}
                           </p>
                           {issue.samples.length ? (

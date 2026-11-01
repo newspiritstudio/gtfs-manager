@@ -31,6 +31,7 @@ import { formatDistance, formatGtfsDate } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
 import type { StopDetail } from '@/engine/gtfs/details';
+import StationStructureCard from './StationStructure';
 
 /** Remounted when the stop changes (e.g. from the nearby ones) so the filter and date are not carried over. */
 export default function StopDetailView(props: { feedId: string; detail: StopDetail }) {
@@ -178,7 +179,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
         ) : null}
       </header>
 
-      <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-4 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <Card>
           <CardHeader
             title={t('stops.departures')}
@@ -286,7 +287,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
           </CardContent>
         </Card>
 
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           {stop.lat !== null && stop.lon !== null ? (
             <Card>
               <CardHeader
@@ -373,6 +374,7 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
           </Card>
         </div>
       </div>
+      {detail.station ? <StationStructureCard feedId={feedId} structure={detail.station} /> : null}
     </div>
   );
 }

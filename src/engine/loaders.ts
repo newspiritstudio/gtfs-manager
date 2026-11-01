@@ -4,6 +4,7 @@
  */
 import { compareList, compareMap, compareSummary } from './gtfs/compare';
 import { getRouteDetail, getServices, getStopDetail, getTripDetail } from './gtfs/details';
+import { feedHasFares, getFares } from './gtfs/fares';
 import { getFeed, importedCatalogFeeds, listFeedNames, listFeeds } from './gtfs/feeds';
 import { getRoutePrint, getServiceMap, getStopPrint } from './gtfs/outputs';
 import { getNetwork } from './gtfs/network';
@@ -29,6 +30,8 @@ export const loaders = {
   getRoutePrint,
   getStopPrint,
   getServiceMap,
+  feedHasFares,
+  getFares,
 };
 
 export type Loaders = typeof loaders;

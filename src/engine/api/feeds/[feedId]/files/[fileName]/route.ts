@@ -14,7 +14,7 @@ export async function PUT(
   const { feedId, fileName: name } = await params;
   const { response } = await requireFeed(feedId);
   if (response) return response;
-  if (!/^[\w.-]+\.txt$/i.test(name)) return jsonError(400, 'invalidFileName');
+  if (!/^[\w.-]+\.(txt|geojson)$/i.test(name)) return jsonError(400, 'invalidFileName');
   if (!request.body) return jsonError(400, 'emptyBody');
   // An import replaces rows the history refers to: what is there now is the new baseline.
   const hadHistory = (await getHistoryState(feedId)).modifiedAt !== null;

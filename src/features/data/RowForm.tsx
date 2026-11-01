@@ -9,6 +9,7 @@ import { PointPickerMap } from '@/components/map';
 import ColorSwatchPicker from '@/components/ui/ColorSwatchPicker';
 import Combobox from '@/components/ui/Combobox';
 import Select from '@/components/ui/Select';
+import TextArea from '@/components/ui/TextArea';
 import TextField from '@/components/ui/TextField';
 import { apiFetch } from '@/lib/api';
 import { useI18n } from '@/lib/i18n/client';
@@ -31,7 +32,7 @@ function hintFor(t: Translate, field: GtfsField): string | undefined {
   return undefined;
 }
 
-/** A field that points to another file: free text with suggestions from the target file. */
+/** A field that points to another file: free text with suggestions from the target file(s). */
 function ReferenceField({
   feedId,
   field,
@@ -49,20 +50,33 @@ function ReferenceField({
 }) {
   const [options, setOptions] = useState<{ value: string; label: string }[]>([]);
   useEffect(() => {
-    if (!field.ref) return;
+    const refs = field.refs ?? [];
+    if (!refs.length) return;
     let alive = true;
     const handle = setTimeout(() => {
-      apiFetch<{ value: string; label: string }[]>(
-        `/api/feeds/${feedId}/references/${field.ref}?q=${encodeURIComponent(value)}`
-      )
-        .then((list) => alive && setOptions(list))
-        .catch(() => alive && setOptions([]));
+      Promise.all(
+        refs.map((ref) =>
+          apiFetch<{ value: string; label: string }[]>(
+            `/api/feeds/${feedId}/references/${ref.table}?field=${ref.field}&q=${encodeURIComponent(value)}`
+          ).catch(() => [])
+        )
+      ).then((lists) => {
+        if (!alive) return;
+        // A value defined by several files (a service in calendar and calendar_dates) is listed once.
+        const seen = new Set<string>();
+        setOptions(
+          lists
+            .flat()
+            .filter((o) => !seen.has(o.value) && seen.add(o.value))
+            .slice(0, 30)
+        );
+      });
     }, 200);
     return () => {
       alive = false;
       clearTimeout(handle);
     };
-  }, [feedId, field.ref, value]);
+  }, [feedId, field.refs, value]);
   return (
     <Combobox
       label={label}
@@ -147,7 +161,46 @@ export default function RowForm({
               />
             );
           }
-          if (field.ref && field.ref !== table) {
+          if (field.choices) {
+            return (
+              <Select
+                key={field.name}
+                label={label}
+                value={value}
+                required={field.required}
+                error={errorText(field.name)}
+                onChange={(v) => set(field.name, v)}
+                options={[
+                  { value: '', label: t('data.noValue') },
+                  ...field.choices.map((v) => ({ value: v, label: v })),
+                ]}
+              />
+            );
+          }
+          if (field.type === 'json') {
+            return (
+              <div key={field.name} className="sm:col-span-2">
+                <TextArea
+                  label={label}
+                  value={value}
+                  required={field.required}
+                  error={errorText(field.name)}
+                  helper={t('spec.jsonHint')}
+                  spellCheck={false}
+                  className="font-mono"
+                  onChange={(e) => set(field.name, e.target.value)}
+                />
+              </div>
+            );
+          }
+          if (
+            field.refs?.length &&
+            !(
+              field.refs.length === 1 &&
+              field.refs[0].table === table &&
+              field.refs[0].field === field.name
+            )
+          ) {
             return (
               <ReferenceField
                 key={field.name}
@@ -191,7 +244,9 @@ export default function RowForm({
               error={errorText(field.name)}
               helper={hintFor(t, field)}
               inputMode={
-                ['int', 'float', 'lat', 'lon'].includes(field.type) ? 'decimal' : undefined
+                ['int', 'float', 'lat', 'lon', 'amount'].includes(field.type)
+                  ? 'decimal'
+                  : undefined
               }
               onChange={(e) => set(field.name, e.target.value)}
             />

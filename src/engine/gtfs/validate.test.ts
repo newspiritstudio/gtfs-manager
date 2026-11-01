@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { LOCALES } from '@/lib/i18n/config';
 import { openTestDb, SAMPLE_FEED } from '../testing';
-import { VALIDATION_CODES, validateFeed } from './validate';
+import { RULE_KEYS, VALIDATION_CODES, validateFeed } from './validate';
 
 const messages = (locale: string) =>
   import(`../../locales/${locale}.json`).then(
@@ -9,8 +9,8 @@ const messages = (locale: string) =>
   );
 
 describe('validation rules', () => {
-  it('have unique codes', () => {
-    expect(new Set(VALIDATION_CODES).size).toBe(VALIDATION_CODES.length);
+  it('have unique keys (code, file and field)', () => {
+    expect(new Set(RULE_KEYS).size).toBe(RULE_KEYS.length);
   });
 
   it.each(LOCALES)('have a title in %s', async (locale) => {

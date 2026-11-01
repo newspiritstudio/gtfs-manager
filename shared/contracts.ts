@@ -12,6 +12,8 @@ export interface ValidationIssue {
   code: string;
   severity: ValidationSeverity;
   table: GtfsTable | null;
+  /** The field the problem is about (checks generated from the specification). */
+  field?: string;
   /** The title of the same check in Google's static validation, if it has one. */
   google?: string;
   count: number;
@@ -175,11 +177,21 @@ export interface NetworkStop {
   routeIds: string[];
 }
 
+/** A flex zone (`locations.geojson`): demand-responsive service inside a polygon. */
+export interface NetworkZone {
+  locationId: string;
+  name: string | null;
+  /** GeoJSON geometry (Polygon or MultiPolygon), coordinates as [longitude, latitude]. */
+  geometry: { type: string; coordinates: unknown };
+}
+
 export interface NetworkData {
   routes: NetworkRoute[];
   lines: NetworkLine[];
   stops: NetworkStop[];
   bbox: [number, number, number, number] | null;
+  /** Flex zones of the feed; absent when it has none. */
+  zones?: NetworkZone[];
 }
 
 export interface PatternStop {

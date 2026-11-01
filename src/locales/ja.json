@@ -22,7 +22,8 @@
     "catalog": "カタログ",
     "home": "ホーム",
     "realtime": "リアルタイム",
-    "history": "履歴"
+    "history": "履歴",
+    "fares": "運賃"
   },
   "theme": {
     "switch": "テーマ：{theme}",
@@ -313,7 +314,28 @@
     "shapes": "シェイプ",
     "frequencies": "運行間隔",
     "transfers": "乗り換え",
-    "feed_info": "フィード情報"
+    "feed_info": "フィード情報",
+    "fare_attributes": "運賃属性",
+    "fare_rules": "運賃ルール",
+    "timeframes": "時間帯",
+    "rider_categories": "利用者区分",
+    "fare_media": "運賃媒体",
+    "fare_products": "運賃商品",
+    "fare_leg_rules": "区間ルール",
+    "fare_leg_join_rules": "区間結合ルール",
+    "fare_transfer_rules": "運賃乗り換えルール",
+    "areas": "エリア",
+    "stop_areas": "停留所エリア",
+    "networks": "ネットワーク",
+    "route_networks": "路線ネットワーク",
+    "pathways": "経路",
+    "levels": "フロア",
+    "location_groups": "ロケーショングループ",
+    "location_group_stops": "グループの停留所",
+    "locations": "フレックスゾーン (GeoJSON)",
+    "booking_rules": "予約ルール",
+    "translations": "翻訳",
+    "attributions": "クレジット"
   },
   "validation": {
     "subtitle": "フィード全体に対する GTFS 仕様と Google Transit 検証のチェック。",
@@ -418,7 +440,23 @@
     "transferRouteTripMismatch": "指定路線に属さない便を含む乗換",
     "transferDuplicate": "重複した乗換",
     "transferMinTimeWrongType": "最小乗換時間を使わない種別に値がある",
-    "transferFrequencyTrip": "概略間隔の便を含む乗換"
+    "transferFrequencyTrip": "概略間隔の便を含む乗換",
+    "specRequired": "{file}: 「{field}」が空の行",
+    "specConditionRequired": "{file}: 「{field}」が必須なのに空の行",
+    "specConditionForbidden": "{file}: 「{field}」を空にすべき行",
+    "specInvalidEnum": "{file}: 「{field}」の値が不正",
+    "specInvalidSign": "{file}: 「{field}」が許容範囲外の数値",
+    "specUnknownReference": "{file}: 「{field}」が存在しない ID を指している",
+    "specDuplicateKey": "{file}: 重複した行 (主キーが同じ)",
+    "specInvalidCurrency": "{file}: 「{field}」が ISO 4217 に存在しない通貨コード",
+    "specTimeOfDay": "{file}: 24:00:00 を超える時刻",
+    "specInvalidGeometry": "{file}: 「{field}」が有効なポリゴンではないジオメトリ",
+    "specNetworkConflict": "{file}: フィードに networks.txt または route_networks.txt があるのに 「{field}」 を使用",
+    "specLevelsRequired": "pathways.txt にエレベーターがあるが {file} がない",
+    "specIdNamespace": "停留所・ロケーショングループ・フレックスゾーンで ID が重複",
+    "specAttributionTarget": "対象が複数 (事業者・路線・便) のクレジット",
+    "specAttributionRole": "役割 (作成者・運行事業者・管轄機関) のないクレジット",
+    "specSingleRow": "{file} に複数の行がある"
   },
   "data": {
     "subtitle": "フィードのファイルを行単位で編集します。",
@@ -597,7 +635,100 @@
     "feed_end_date": "有効終了日",
     "feed_version": "バージョン",
     "feed_contact_email": "連絡先メールアドレス",
-    "feed_contact_url": "連絡先 URL"
+    "feed_contact_url": "連絡先 URL",
+    "cemv_support": "EMV非接触決済",
+    "stop_access": "道路からのアクセス",
+    "cars_allowed": "自動車の積載",
+    "safe_duration_factor": "安全所要時間の係数",
+    "safe_duration_offset": "安全所要時間の加算 (分)",
+    "location_group_id": "ロケーショングループ",
+    "location_id": "ゾーン",
+    "start_pickup_drop_off_window": "乗降可能時間帯の開始",
+    "end_pickup_drop_off_window": "乗降可能時間帯の終了",
+    "pickup_booking_rule_id": "乗車の予約ルール",
+    "drop_off_booking_rule_id": "降車の予約ルール",
+    "fare_id": "運賃 ID",
+    "price": "価格",
+    "currency_type": "通貨",
+    "payment_method": "支払い方法",
+    "transfers": "乗り換え可能回数",
+    "transfer_duration": "乗り換え有効時間",
+    "origin_id": "出発ゾーン",
+    "destination_id": "到着ゾーン",
+    "contains_id": "通過ゾーン",
+    "timeframe_group_id": "時間帯グループ",
+    "rider_category_id": "利用者区分",
+    "rider_category_name": "区分名",
+    "is_default_fare_category": "既定の区分",
+    "eligibility_url": "利用条件の URL",
+    "fare_media_id": "運賃媒体",
+    "fare_media_name": "媒体名",
+    "fare_media_type": "媒体の種類",
+    "fare_product_id": "運賃商品",
+    "fare_product_name": "商品名",
+    "amount": "金額",
+    "currency": "通貨",
+    "leg_group_id": "区間グループ",
+    "from_area_id": "出発エリア",
+    "to_area_id": "到着エリア",
+    "from_timeframe_group_id": "出発時の時間帯",
+    "to_timeframe_group_id": "到着時の時間帯",
+    "rule_priority": "優先度",
+    "from_network_id": "乗り継ぎ元ネットワーク",
+    "to_network_id": "乗り継ぎ先ネットワーク",
+    "from_leg_group_id": "乗り換え元の区間グループ",
+    "to_leg_group_id": "乗り換え先の区間グループ",
+    "transfer_count": "乗り換え回数",
+    "duration_limit": "時間制限",
+    "duration_limit_type": "時間制限の測り方",
+    "fare_transfer_type": "乗り換え運賃の扱い",
+    "area_id": "エリア",
+    "area_name": "エリア名",
+    "network_name": "ネットワーク名",
+    "pathway_id": "経路 ID",
+    "pathway_mode": "経路の種類",
+    "is_bidirectional": "方向",
+    "length": "長さ (m)",
+    "traversal_time": "所要時間 (秒)",
+    "stair_count": "階段の段数",
+    "max_slope": "最大勾配",
+    "min_width": "最小幅 (m)",
+    "signposted_as": "案内表示",
+    "reversed_signposted_as": "逆方向の案内表示",
+    "level_index": "フロア番号",
+    "level_name": "フロア名",
+    "location_group_name": "グループ名",
+    "geometry": "ジオメトリ (GeoJSON)",
+    "booking_rule_id": "予約ルール",
+    "booking_type": "予約の種類",
+    "prior_notice_duration_min": "最短の事前予約 (分)",
+    "prior_notice_duration_max": "最長の事前予約 (分)",
+    "prior_notice_last_day": "予約締切の日数",
+    "prior_notice_last_time": "予約締切の時刻",
+    "prior_notice_start_day": "予約受付開始の日数",
+    "prior_notice_start_time": "予約受付開始の時刻",
+    "prior_notice_service_id": "事前予約の運行日",
+    "message": "メッセージ",
+    "pickup_message": "乗車メッセージ",
+    "drop_off_message": "降車メッセージ",
+    "phone_number": "電話番号",
+    "info_url": "情報 URL",
+    "booking_url": "予約 URL",
+    "table_name": "ファイル",
+    "field_name": "フィールド",
+    "language": "言語",
+    "translation": "翻訳",
+    "record_id": "レコード ID",
+    "record_sub_id": "レコードのサブ ID",
+    "field_value": "元の値",
+    "attribution_id": "クレジット ID",
+    "organization_name": "組織名",
+    "is_producer": "データ作成者",
+    "is_operator": "運行事業者",
+    "is_authority": "管轄機関",
+    "attribution_url": "組織の URL",
+    "attribution_email": "組織のメール",
+    "attribution_phone": "組織の電話番号"
   },
   "enums": {
     "location_type": {
@@ -697,6 +828,81 @@
     "sunday": {
       "0": "0 · 運行なし",
       "1": "1 · 運行"
+    },
+    "cemv_support": {
+      "0": "0 · 情報なし",
+      "1": "1 · 非接触決済に対応",
+      "2": "2 · 非対応"
+    },
+    "stop_access": {
+      "0": "0 · 駅構内経由",
+      "1": "1 · 道路から直接"
+    },
+    "cars_allowed": {
+      "0": "0 · 情報なし",
+      "1": "1 · 自動車を積載可",
+      "2": "2 · 自動車は積載不可"
+    },
+    "payment_method": {
+      "0": "0 · 乗車中に支払い",
+      "1": "1 · 乗車前に支払い"
+    },
+    "transfers": {
+      "0": "0 · 乗り換え不可",
+      "1": "1 · 1 回",
+      "2": "2 · 2 回"
+    },
+    "is_default_fare_category": {
+      "0": "0 · いいえ",
+      "1": "1 · はい"
+    },
+    "fare_media_type": {
+      "0": "0 · なし",
+      "1": "1 · 紙の切符",
+      "2": "2 · 交通系ICカード",
+      "3": "3 · cEMV (非接触型銀行カード)",
+      "4": "4 · モバイルアプリ"
+    },
+    "duration_limit_type": {
+      "0": "0 · 最初の出発から最後の到着まで",
+      "1": "1 · 最初の出発から最後の出発まで",
+      "2": "2 · 最初の到着から最後の出発まで",
+      "3": "3 · 最初の到着から最後の到着まで"
+    },
+    "fare_transfer_type": {
+      "0": "0 · 前の区間 + 乗り換え (A + AB)",
+      "1": "1 · 前の区間 + 乗り換え + 次の区間 (A + AB + B)",
+      "2": "2 · 乗り換えのみ (AB)"
+    },
+    "pathway_mode": {
+      "1": "1 · 通路",
+      "2": "2 · 階段",
+      "3": "3 · 動く歩道",
+      "4": "4 · エスカレーター",
+      "5": "5 · エレベーター",
+      "6": "6 · 改札 (入場)",
+      "7": "7 · 改札 (出場)"
+    },
+    "is_bidirectional": {
+      "0": "0 · 一方向",
+      "1": "1 · 双方向"
+    },
+    "booking_type": {
+      "0": "0 · リアルタイム",
+      "1": "1 · 当日 (事前予約)",
+      "2": "2 · 前日までに"
+    },
+    "is_producer": {
+      "0": "0 · いいえ",
+      "1": "1 · はい"
+    },
+    "is_operator": {
+      "0": "0 · いいえ",
+      "1": "1 · はい"
+    },
+    "is_authority": {
+      "0": "0 · いいえ",
+      "1": "1 · はい"
     }
   },
   "seo": {
@@ -1134,6 +1340,57 @@
     "tripsPerHourValue": "1時間あたり {value} 便",
     "callsInWindow": {
       "other": "時間帯内 {count} 便"
+    }
+  },
+  "spec": {
+    "groups": {
+      "core": "基本データ",
+      "fares": "運賃",
+      "stations": "駅とアクセシビリティ",
+      "flex": "デマンド交通 (フレックス)",
+      "other": "その他"
+    },
+    "groupHints": {
+      "core": "事業者、路線、停留所、便、時刻、カレンダー。",
+      "fares": "運賃、商品、区間・乗り換えルール、利用者区分。",
+      "stations": "駅構内のフロアと経路。",
+      "flex": "デマンド交通のゾーン、ロケーショングループ、予約ルール。",
+      "other": "翻訳、クレジット、その他の任意ファイル。"
+    },
+    "jsonHint": "有効な JSON を入力してください。",
+    "station": {
+      "title": "駅の構造",
+      "summary": "{nodes} か所、{pathways} 経路、{levels} フロア",
+      "noLevel": "フロアなし",
+      "pathways": "経路",
+      "stairs": {
+        "one": "{count} 段",
+        "other": "{count} 段"
+      }
+    },
+    "fares": {
+      "subtitle": "フィードのファイルに記述された運賃 (読み取り専用)。",
+      "emptyTitle": "このフィードには運賃がありません",
+      "emptyDescription": "運賃ファイル (fare_attributes.txt、fare_products.txt など) がないか、空です。",
+      "versionOne": "運賃 v1",
+      "versionTwo": "運賃 v2",
+      "products": "商品",
+      "legRules": "区間ごとの運賃",
+      "legRulesHint": "各ルールは区間 (ネットワーク、出発・到着エリア、時間帯) とそれを対象とする商品を結び付けます。優先度が高いルールが先に適用されます。",
+      "joinRules": "区間の結合",
+      "transferRules": "乗り換え",
+      "riderCategories": "利用者区分",
+      "media": "運賃媒体",
+      "timeframes": "時間帯",
+      "attributes": "運賃 (v1)",
+      "rules": "運賃ルール (v1)",
+      "rulesHint": "行が路線、または出発・到着・通過ゾーンに一致すると、その運賃が適用されます。",
+      "truncated": "{total} 件中 {shown} 件を表示",
+      "unlimited": "無制限"
+    },
+    "map": {
+      "showZones": "フレックスゾーンを表示",
+      "hideZones": "フレックスゾーンを非表示"
     }
   }
 }

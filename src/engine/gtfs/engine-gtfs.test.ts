@@ -12,7 +12,7 @@ import {
   appendImportReport,
 } from './feeds';
 import { importGtfsFile } from './import';
-import { computeStats, ensureStats } from './stats';
+import { computeStats, ensureStats, STATS_VERSION } from './stats';
 import { createRow, deleteRow, listRows, updateRow, RowValidationError } from './tables';
 
 beforeEach(async () => {
@@ -77,7 +77,7 @@ describe('stats', () => {
     expect(stats.departuresByHour).toHaveLength(30);
     expect(stats.topStops[0].stopId).toBe('S2');
     const cached = await ensureStats(SAMPLE_FEED);
-    expect(cached?.version).toBe(2);
+    expect(cached?.version).toBe(STATS_VERSION);
     expect((await ensureStats(SAMPLE_FEED))?.computedAt).toBe(cached?.computedAt);
   });
 });

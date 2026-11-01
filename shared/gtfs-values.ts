@@ -95,6 +95,19 @@ export function parseFieldValue(type: GtfsFieldType, raw: string): ParsedValue {
       const v = parseGtfsColor(text);
       return { value: v, invalid: v === null };
     }
+    case 'json': {
+      try {
+        JSON.parse(text);
+        return { value: text, invalid: false };
+      } catch {
+        return { value: null, invalid: true };
+      }
+    }
+    case 'amount': {
+      // A decimal amount keeps the text of the file ('2.50' stays '2.50').
+      const valid = /^[-+]?(\d+(\.\d*)?|\.\d+)$/.test(text);
+      return valid ? { value: text, invalid: false } : { value: null, invalid: true };
+    }
     default:
       break;
   }
