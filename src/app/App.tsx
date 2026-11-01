@@ -33,6 +33,7 @@ const GeneratorPage = lazy(() => import('@/pages/feed/GeneratorPage'));
 const RealtimePage = lazy(() => import('@/pages/feed/RealtimePage'));
 const ComparePage = lazy(() => import('@/pages/feed/ComparePage'));
 const RoutePrintPage = lazy(() => import('@/pages/feed/RoutePrintPage'));
+const RouteEditPage = lazy(() => import('@/pages/feed/RouteEditPage'));
 const StopPrintPage = lazy(() => import('@/pages/feed/StopPrintPage'));
 const FaresPage = lazy(() => import('@/pages/feed/FaresPage'));
 const ValidationPage = lazy(() => import('@/pages/feed/ValidationPage'));
@@ -73,6 +74,7 @@ function Pages() {
             <Route path="map" element={<MapPage />} />
             <Route path="routes" element={<RoutesPage />} />
             <Route path="routes/:routeId" element={<RoutePage />} />
+            <Route path="routes/:routeId/edit" element={<RouteEditPage />} />
             <Route path="routes/:routeId/print" element={<RoutePrintPage />} />
             <Route path="stops" element={<StopsPage />} />
             <Route path="stops/:stopId" element={<StopPage />} />

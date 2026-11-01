@@ -1,6 +1,7 @@
 import { Link } from '@/lib/router';
 import type { DayTrip, PatternStop } from '@shared/contracts';
 import { formatClock } from '@shared/gtfs-values';
+import { useI18n } from '@/lib/i18n/client';
 
 /** Timetable: one row per stop and one column per trip, with a fixed first column. */
 export default function Timetable({
@@ -14,6 +15,7 @@ export default function Timetable({
   feedId: string;
   tripLabel: string;
 }) {
+  const { t } = useI18n();
   const columns = trips.map((trip) => {
     const byStop = new Map<string, number | null>();
     for (const [stopId, arr, dep] of trip.times)
@@ -39,7 +41,7 @@ export default function Timetable({
             {columns.map(({ trip }, index) => (
               <th
                 scope="col"
-                key={trip.tripId}
+                key={`${trip.tripId}#${index}`}
                 className="sticky top-0 z-10 bg-surface-container-high px-2 py-2 text-label-small font-medium text-on-surface-variant"
               >
                 <Link
@@ -48,6 +50,11 @@ export default function Timetable({
                   title={trip.tripId}
                 >
                   {/* A long identifier (a hash) says nothing in the header: use the ordinal instead. */}
+                  {trip.frequency ? (
+                    <span className="mr-0.5 text-primary" title={t('editor.grid.frequencyHint')}>
+                      ~
+                    </span>
+                  ) : null}
                   {trip.tripId.length <= 8 ? trip.tripId : `#${index + 1}`}
                 </Link>
               </th>
@@ -63,11 +70,11 @@ export default function Timetable({
               >
                 {stop.name ?? stop.stopId}
               </th>
-              {columns.map(({ trip, byStop }) => {
+              {columns.map(({ trip, byStop }, index) => {
                 const time = byStop.get(stop.stopId);
                 return (
                   <td
-                    key={trip.tripId}
+                    key={`${trip.tripId}#${index}`}
                     className="px-2 py-1.5 text-center text-on-surface group-hover:bg-surface-container-highest"
                   >
                     {time === undefined ? (

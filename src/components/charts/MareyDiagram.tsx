@@ -52,8 +52,10 @@ export default function MareyDiagram({
   const series = useMemo(
     () =>
       trips
-        .map((trip) => ({
+        .map((trip, index) => ({
           trip,
+          // Every start of a frequency-based trip shares its trip_id: the index tells them apart.
+          uid: trip.frequency ? `${trip.tripId}#${index}` : trip.tripId,
           points: trip.times
             .map(([stopId, arr, dep]) => {
               const d = distanceOf.get(stationOf(stopId));
@@ -149,13 +151,13 @@ export default function MareyDiagram({
               : (s.name ?? s.stopId)}
           </text>
         ))}
-        {series.map(({ trip, points }) => {
-          const active = hover?.tripId === trip.tripId;
+        {series.map(({ trip, uid, points }) => {
+          const active = hover?.tripId === uid;
           const d = points
             .map((p, i) => `${i ? 'L' : 'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`)
             .join('');
           return (
-            <g key={trip.tripId}>
+            <g key={uid}>
               <path
                 d={d}
                 fill="none"
@@ -173,10 +175,10 @@ export default function MareyDiagram({
                 onPointerMove={(e) => {
                   const box = svgRef.current!.getBoundingClientRect();
                   setHover({
-                    tripId: trip.tripId,
+                    tripId: uid,
                     x: e.clientX - box.left,
                     y: e.clientY - box.top,
-                    label: `${formatClock(points[0][0])} → ${formatClock(points[points.length - 1][0])} · ${trip.headsign ?? trip.tripId}`,
+                    label: `${trip.frequency ? '~ ' : ''}${formatClock(points[0][0])} → ${formatClock(points[points.length - 1][0])} · ${trip.headsign ?? trip.tripId}`,
                   });
                 }}
                 onClick={() => onTripClick?.(trip.tripId)}

@@ -5,6 +5,7 @@ import {
   GitCommitVertical,
   LineChart,
   Map as MapIcon,
+  Pencil,
   Printer,
   Ruler,
   Table2,
@@ -199,6 +200,13 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
               </p>
             ) : null}
           </div>
+          <ButtonLink
+            href={`/feeds/${feedId}/routes/${encodeURIComponent(route.routeId)}/edit`}
+            variant="tonal"
+          >
+            <Pencil />
+            {t('common.edit')}
+          </ButtonLink>
           <ButtonLink
             href={`/feeds/${feedId}/routes/${encodeURIComponent(route.routeId)}/print`}
             variant="outline"

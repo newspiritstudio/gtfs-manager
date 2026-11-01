@@ -1175,7 +1175,39 @@
         "update": "Informations du feed modifiées"
       },
       "trips": {
-        "generate": "{trips} courses et {stopTimes} horaires aux arrêts créés"
+        "generate": "{trips} courses et {stopTimes} horaires aux arrêts créés",
+        "service": "Service changé en « {service} »"
+      },
+      "pattern": {
+        "update": "Mission modifiée",
+        "delete": "Mission supprimée",
+        "create": "Mission créée",
+        "duplicate": "Mission dupliquée"
+      },
+      "shape": {
+        "save": "Tracé enregistré",
+        "saveNamed": "Tracé « {name} » enregistré"
+      },
+      "stop": {
+        "move": "Arrêt déplacé de {meters} m",
+        "moveNamed": "Arrêt « {name} » déplacé de {meters} m"
+      },
+      "timetable": {
+        "edit": "Horaire modifié",
+        "shift": "Horaires décalés de {minutes} min"
+      },
+      "trip": {
+        "clone": "Voyage cloné",
+        "cloneNamed": "Voyage « {name} » cloné"
+      },
+      "frequencies": {
+        "expand": "Fréquences développées en voyages"
+      },
+      "delete": {
+        "cascade": "Supprimé avec ses dépendances",
+        "cascadeNamed": "« {name} » supprimé avec ses dépendances",
+        "reassign": "Supprimé après réaffectation",
+        "reassignNamed": "« {name} » supprimé après réaffectation"
       }
     },
     "history": {
@@ -1426,6 +1458,170 @@
     "map": {
       "showZones": "Afficher les zones flex",
       "hideZones": "Masquer les zones flex"
+    }
+  },
+  "editor": {
+    "back": "Retour à la ligne",
+    "title": "Modifier la ligne {route}",
+    "subtitle": "Missions, arrêts, horaires et tracé. Chaque modification peut être annulée.",
+    "tabsLabel": "Sections de l'éditeur",
+    "tabs": {
+      "stops": "Arrêts et carte",
+      "timetable": "Horaires"
+    },
+    "discard": "Abandonner",
+    "unsaved": {
+      "title": "Abandonner les modifications ?",
+      "body": "Cette mission a des modifications non enregistrées. Si vous continuez, elles seront perdues.",
+      "discard": "Abandonner les modifications"
+    },
+    "patterns": {
+      "title": "Missions",
+      "new": "Nouvelle mission",
+      "newTitle": "Nouvelle mission",
+      "drafting": "Vous préparez une nouvelle mission. Ajoutez au moins deux arrêts.",
+      "direction0": "Aller",
+      "direction1": "Retour",
+      "directionNone": "Sans sens",
+      "none": "Cette ligne n'a pas encore de mission.",
+      "duplicate": "Dupliquer la mission",
+      "delete": "Supprimer la mission",
+      "deleteTitle": "Supprimer la mission ?",
+      "create": "Créer la mission"
+    },
+    "meta": {
+      "headsign": "Destination",
+      "direction": "Sens",
+      "firstDeparture": "Premier départ",
+      "copyHint": {
+        "one": "{count} voyage sera copié avec les mêmes départs.",
+        "other": "{count} voyages seront copiés avec les mêmes départs."
+      },
+      "retime": {
+        "one": "Recalculer {count} voyage avec ces durées",
+        "other": "Recalculer les {count} voyages avec ces durées"
+      },
+      "affects": {
+        "one": "La modification s'applique à {count} voyage.",
+        "other": "La modification s'applique aux {count} voyages."
+      }
+    },
+    "stops": {
+      "search": "Rechercher un arrêt",
+      "add": "Ajouter",
+      "insertAfter": "Il sera inséré après « {name} »",
+      "insertAtEnd": "Il sera ajouté à la fin",
+      "list": "Arrêts de la mission",
+      "handle": "Réordonner {name}",
+      "handleHint": "Faites glisser, ou utilisez les flèches haut et bas",
+      "travel": "Trajet",
+      "dwell": "Arrêt",
+      "remove": "Retirer {name}",
+      "new": "nouveau",
+      "added": "{name} ajouté",
+      "moved": "{name} est maintenant l'arrêt {position}",
+      "removed": "{name} retiré"
+    },
+    "map": {
+      "mode": "Mode de la carte",
+      "modeStops": "Déplacer des arrêts",
+      "modeAdd": "Ajouter un arrêt",
+      "modeShape": "Tracé",
+      "hint": {
+        "stops": "Faites glisser un arrêt pour le déplacer. Cliquez sur un point gris pour l'ajouter à la mission.",
+        "add": "Cliquez sur la carte pour créer un nouvel arrêt à cet endroit.",
+        "shape": "Faites glisser les sommets, cliquez sur la ligne pour en ajouter un et faites un clic droit pour en supprimer un."
+      }
+    },
+    "shape": {
+      "straight": "Lignes droites entre les arrêts",
+      "summary": "{points} points · {length}",
+      "none": "Cette mission n'a pas de tracé. Générez-en un à partir de ses arrêts.",
+      "id": "Identifiant du tracé",
+      "idHint": "Si d'autres missions partagent le tracé, utilisez un nouvel identifiant.",
+      "save": "Enregistrer le tracé",
+      "saveFirst": "Enregistrez d'abord les modifications des arrêts."
+    },
+    "newStop": {
+      "title": "Nouvel arrêt",
+      "create": "Créer l'arrêt",
+      "name": "Nom",
+      "join": "L'ajouter à la mission",
+      "idRequired": "Un identifiant est requis.",
+      "taken": "Un arrêt avec cet identifiant existe déjà."
+    },
+    "timetable": {
+      "service": "Service",
+      "allServices": "Tous les services",
+      "selectAll": "Tout sélectionner",
+      "clearSelection": "Effacer la sélection",
+      "selected": {
+        "one": "{count} voyage sélectionné",
+        "other": "{count} voyages sélectionnés"
+      },
+      "selectHint": "Sélectionnez des voyages avec les cases de l'en-tête.",
+      "minutes": "Minutes",
+      "earlier": "Avancer",
+      "later": "Retarder",
+      "clone": "Cloner",
+      "cloneOne": "Pour cloner, sélectionnez un seul voyage.",
+      "cloneTitle": "Cloner le voyage",
+      "offset": "Décalage (minutes)",
+      "offsetHint": "Négatif pour partir plus tôt.",
+      "sameService": "Le même service",
+      "changeService": "Changer le service",
+      "serviceTitle": {
+        "one": "Changer le service de {count} voyage",
+        "other": "Changer le service de {count} voyages"
+      },
+      "apply": "Appliquer",
+      "expand": "Développer en voyages",
+      "expandTitle": "Développer les fréquences",
+      "expandHint": {
+        "one": "Un voyage sera créé pour chaque départ de {count} voyage à fréquence, et son modèle sera supprimé.",
+        "other": "Un voyage sera créé pour chaque départ de {count} voyages à fréquence, et leurs modèles seront supprimés."
+      },
+      "includeInexact": "Inclure aussi les fréquences non exactes",
+      "deleteTitle": {
+        "one": "Supprimer {count} voyage ?",
+        "other": "Supprimer {count} voyages ?"
+      },
+      "grid": "Horaires de la mission",
+      "keys": "Flèches : se déplacer · Entrée ou un chiffre : modifier (0630 donne 06:30 ; 2530 dépasse minuit) · Tab : suivant · Échap : annuler · Suppr : vider · Espace : sélectionner le voyage",
+      "saveFirst": "Enregistrez les modifications des arrêts pour modifier les horaires."
+    },
+    "grid": {
+      "stopTrip": "Arrêt / voyage",
+      "selectTrip": "Sélectionner le voyage {trip}",
+      "editTime": "Heure de {stop} pour le voyage {trip}",
+      "backwards": "Cette heure est antérieure à celle d'un arrêt précédent.",
+      "frequencyHint": "Voyage à fréquence : ses heures sont relatives à chaque départ.",
+      "everyWindow": "Toutes les {minutes} min de {from} à {to}",
+      "failed": "La modification n'a pas pu être enregistrée.",
+      "needsTime": "Le premier et le dernier arrêt ont besoin d'une heure."
+    },
+    "delete": {
+      "title": "Supprimer ?",
+      "titleTable": "Supprimer de {table} ?",
+      "about": "{names} sera supprimé.",
+      "dependsOnIt": "Des données en dépendent :",
+      "nothing": "Rien d'autre n'en dépend.",
+      "detached": "Elles sont conservées, mais perdent le lien :",
+      "reassignHint": "Ou réaffectez ce qui en dépend à une autre ligne avant de la supprimer.",
+      "reassignTo": "Réaffecter à ({table})",
+      "reassignAndDelete": "Réaffecter et supprimer",
+      "withDependents": {
+        "one": "Supprimer avec {count} ligne dépendante",
+        "other": "Supprimer avec {count} lignes dépendantes"
+      }
+    },
+    "errors": {
+      "unknownStop": "Cet arrêt n'existe pas.",
+      "unknownService": "Ce service n'existe pas.",
+      "tripIdTaken": "Un voyage avec cet identifiant existe déjà.",
+      "shapeIdTaken": "Un tracé avec cet identifiant existe déjà.",
+      "negativeTime": "Aucune heure ne peut tomber avant 00:00.",
+      "tooMany": "Cela créerait trop de voyages."
     }
   }
 }

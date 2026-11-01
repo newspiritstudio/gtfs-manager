@@ -1153,7 +1153,39 @@
         "update": "フィード情報を変更しました"
       },
       "trips": {
-        "generate": "{trips} 便と停車時刻 {stopTimes} 件を作成しました"
+        "generate": "{trips} 便と停車時刻 {stopTimes} 件を作成しました",
+        "service": "運行日を「{service}」に変更"
+      },
+      "pattern": {
+        "update": "パターンを編集",
+        "delete": "パターンを削除",
+        "create": "パターンを作成",
+        "duplicate": "パターンを複製"
+      },
+      "shape": {
+        "save": "経路を保存",
+        "saveNamed": "経路「{name}」を保存"
+      },
+      "stop": {
+        "move": "停留所を {meters} m 移動",
+        "moveNamed": "停留所「{name}」を {meters} m 移動"
+      },
+      "timetable": {
+        "edit": "時刻表を編集",
+        "shift": "時刻を {minutes} 分ずらしました"
+      },
+      "trip": {
+        "clone": "便を複製",
+        "cloneNamed": "便「{name}」を複製"
+      },
+      "frequencies": {
+        "expand": "運行間隔を便に展開"
+      },
+      "delete": {
+        "cascade": "依存データとともに削除",
+        "cascadeNamed": "「{name}」を依存データとともに削除",
+        "reassign": "付け替えて削除",
+        "reassignNamed": "「{name}」を付け替えて削除"
       }
     },
     "history": {
@@ -1391,6 +1423,162 @@
     "map": {
       "showZones": "フレックスゾーンを表示",
       "hideZones": "フレックスゾーンを非表示"
+    }
+  },
+  "editor": {
+    "back": "路線に戻る",
+    "title": "路線 {route} を編集",
+    "subtitle": "パターン、停留所、時刻表、経路。すべての変更は元に戻せます。",
+    "tabsLabel": "エディターのセクション",
+    "tabs": {
+      "stops": "停留所と地図",
+      "timetable": "時刻表"
+    },
+    "discard": "破棄",
+    "unsaved": {
+      "title": "変更を破棄しますか?",
+      "body": "このパターンには未保存の変更があります。続けると失われます。",
+      "discard": "変更を破棄"
+    },
+    "patterns": {
+      "title": "パターン",
+      "new": "新しいパターン",
+      "newTitle": "新しいパターン",
+      "drafting": "新しいパターンを作成中です。停留所を2つ以上追加してください。",
+      "direction0": "往路",
+      "direction1": "復路",
+      "directionNone": "方向なし",
+      "none": "この路線にはまだパターンがありません。",
+      "duplicate": "パターンを複製",
+      "delete": "パターンを削除",
+      "deleteTitle": "パターンを削除しますか?",
+      "create": "パターンを作成"
+    },
+    "meta": {
+      "headsign": "行き先",
+      "direction": "方向",
+      "firstDeparture": "始発",
+      "copyHint": {
+        "other": "{count} 便が同じ発車時刻でコピーされます。"
+      },
+      "retime": {
+        "other": "この所要時間で {count} 便を再計算"
+      },
+      "affects": {
+        "other": "この変更は {count} 便に適用されます。"
+      }
+    },
+    "stops": {
+      "search": "停留所を検索",
+      "add": "追加",
+      "insertAfter": "「{name}」の後に挿入されます",
+      "insertAtEnd": "末尾に追加されます",
+      "list": "パターンの停留所",
+      "handle": "{name} を並べ替え",
+      "handleHint": "ドラッグするか、上下の矢印キーを使います",
+      "travel": "所要時間",
+      "dwell": "停車時間",
+      "remove": "{name} を削除",
+      "new": "新規",
+      "added": "{name} を追加しました",
+      "moved": "{name} は {position} 番目の停留所になりました",
+      "removed": "{name} を削除しました"
+    },
+    "map": {
+      "mode": "地図モード",
+      "modeStops": "停留所を移動",
+      "modeAdd": "停留所を追加",
+      "modeShape": "経路",
+      "hint": {
+        "stops": "停留所をドラッグして移動します。灰色の点をクリックするとパターンに追加されます。",
+        "add": "地図をクリックすると、その場所に新しい停留所を作成します。",
+        "shape": "頂点をドラッグし、線をクリックして頂点を追加、右クリックで削除します。"
+      }
+    },
+    "shape": {
+      "straight": "停留所間を直線で結ぶ",
+      "summary": "{points} 点 · {length}",
+      "none": "このパターンには経路がありません。停留所から生成してください。",
+      "id": "経路 ID",
+      "idHint": "他のパターンが経路を共有している場合は、新しい ID を使ってください。",
+      "save": "経路を保存",
+      "saveFirst": "先に停留所の変更を保存してください。"
+    },
+    "newStop": {
+      "title": "新しい停留所",
+      "create": "停留所を作成",
+      "name": "名前",
+      "join": "パターンに追加する",
+      "idRequired": "ID が必要です。",
+      "taken": "この ID の停留所はすでに存在します。"
+    },
+    "timetable": {
+      "service": "運行日",
+      "allServices": "すべての運行日",
+      "selectAll": "すべて選択",
+      "clearSelection": "選択を解除",
+      "selected": {
+        "other": "{count} 便を選択中"
+      },
+      "selectHint": "ヘッダーのチェックボックスで便を選択します。",
+      "minutes": "分",
+      "earlier": "早める",
+      "later": "遅らせる",
+      "clone": "複製",
+      "cloneOne": "複製するには便を1つだけ選択してください。",
+      "cloneTitle": "便を複製",
+      "offset": "ずらす時間(分)",
+      "offsetHint": "負の値で早く出発します。",
+      "sameService": "同じ運行日",
+      "changeService": "運行日を変更",
+      "serviceTitle": {
+        "other": "{count} 便の運行日を変更"
+      },
+      "apply": "適用",
+      "expand": "便に展開",
+      "expandTitle": "運行間隔を展開",
+      "expandHint": {
+        "other": "運行間隔方式の {count} 便について、発車ごとに便を作成し、元のテンプレートを削除します。"
+      },
+      "includeInexact": "正確でない運行間隔も含める",
+      "deleteTitle": {
+        "other": "{count} 便を削除しますか?"
+      },
+      "grid": "パターンの時刻表",
+      "keys": "矢印: 移動 · Enter または数字: 編集(0630 は 06:30、2530 は深夜0時超え)· Tab: 次へ · Esc: キャンセル · Delete: 空にする · Space: 便を選択",
+      "saveFirst": "時刻表を編集するには、停留所の変更を保存してください。"
+    },
+    "grid": {
+      "stopTrip": "停留所 / 便",
+      "selectTrip": "便 {trip} を選択",
+      "editTime": "便 {trip} の {stop} の時刻",
+      "backwards": "この時刻は前の停留所より早くなっています。",
+      "frequencyHint": "運行間隔方式の便: 時刻は各発車からの相対値です。",
+      "everyWindow": "{from} から {to} まで {minutes} 分ごと",
+      "failed": "変更を保存できませんでした。",
+      "needsTime": "始点と終点の停留所には時刻が必要です。"
+    },
+    "delete": {
+      "title": "削除しますか?",
+      "titleTable": "{table} から削除しますか?",
+      "about": "{names} を削除します。",
+      "dependsOnIt": "これに依存するデータがあります:",
+      "nothing": "これに依存するものは他にありません。",
+      "detached": "残りますが、リンクが外れます:",
+      "reassignHint": "または、削除する前に、依存するものを別の行に付け替えます。",
+      "reassignTo": "付け替え先 ({table})",
+      "reassignAndDelete": "付け替えて削除",
+      "withDependents": {
+        "other": "依存する {count} 行とともに削除"
+      }
+    },
+    "errors": {
+      "unknownStop": "この停留所は存在しません。",
+      "unknownService": "この運行日は存在しません。",
+      "tripIdTaken": "この ID の便はすでに存在します。",
+      "shapeIdTaken": "この ID の経路はすでに存在します。",
+      "negativeTime": "00:00 より前の時刻にはできません。",
+      "tooMany": "便が多くなりすぎます。"
     }
   }
 }

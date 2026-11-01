@@ -7,6 +7,7 @@ import { historyFor } from '../history/schema';
 import { openTestDb, SAMPLE_FEED } from '../testing';
 import { expandDayFrequencies, expandFrequencies, windowStarts } from './frequencies';
 import { moveStop, savePatternShape } from './geometry';
+import { computeStats } from './stats';
 import { deleteWithDependents, DeletionError, planDeletion, referencesFromSpec } from './integrity';
 import {
   createPattern,
@@ -420,6 +421,17 @@ describe('frequencies', () => {
       { n: number }[]
     >`SELECT count(*) AS n FROM frequencies WHERE trip_id = 'T3'`;
     expect(left[0].n).toBe(1);
+  });
+
+  it('counts every start of a window in the departures by hour', async () => {
+    const hours = async () => (await computeStats(F)).departuresByHour;
+    const before = await hours();
+    await addWindows();
+    const after = await hours();
+    // T3's single departure (08:30) is swapped for 09:00, 09:30 and 12:00, 12:20, 12:40.
+    expect(after[8]).toBe(before[8] - 1);
+    expect(after[9]).toBe(before[9] + 2);
+    expect(after[12]).toBe(before[12] + 3);
   });
 
   it('expands every window when asked and removes the template', async () => {

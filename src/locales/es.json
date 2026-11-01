@@ -1175,7 +1175,39 @@
         "update": "Datos del feed modificados"
       },
       "trips": {
-        "generate": "Se han creado {trips} viajes y {stopTimes} horas de paso"
+        "generate": "Se han creado {trips} viajes y {stopTimes} horas de paso",
+        "service": "Servicio cambiado a «{service}»"
+      },
+      "pattern": {
+        "update": "Patrón modificado",
+        "delete": "Patrón borrado",
+        "create": "Patrón creado",
+        "duplicate": "Patrón duplicado"
+      },
+      "shape": {
+        "save": "Trazado guardado",
+        "saveNamed": "Trazado «{name}» guardado"
+      },
+      "stop": {
+        "move": "Parada movida {meters} m",
+        "moveNamed": "Parada «{name}» movida {meters} m"
+      },
+      "timetable": {
+        "edit": "Horario modificado",
+        "shift": "Horarios desplazados {minutes} min"
+      },
+      "trip": {
+        "clone": "Viaje clonado",
+        "cloneNamed": "Viaje «{name}» clonado"
+      },
+      "frequencies": {
+        "expand": "Frecuencias expandidas en viajes"
+      },
+      "delete": {
+        "cascade": "Borrado con sus dependencias",
+        "cascadeNamed": "Borrado «{name}» con sus dependencias",
+        "reassign": "Borrado tras reasignar",
+        "reassignNamed": "Borrado «{name}» tras reasignar"
       }
     },
     "history": {
@@ -1426,6 +1458,170 @@
     "map": {
       "showZones": "Mostrar las zonas flex",
       "hideZones": "Ocultar las zonas flex"
+    }
+  },
+  "editor": {
+    "back": "Vuelve a la línea",
+    "title": "Edita la línea {route}",
+    "subtitle": "Patrones, paradas, horarios y trazado. Cada cambio se puede deshacer.",
+    "tabsLabel": "Secciones del editor",
+    "tabs": {
+      "stops": "Paradas y mapa",
+      "timetable": "Horarios"
+    },
+    "discard": "Descarta",
+    "unsaved": {
+      "title": "¿Descartar los cambios?",
+      "body": "Tienes cambios sin guardar en este patrón. Si continúas, se perderán.",
+      "discard": "Descarta los cambios"
+    },
+    "patterns": {
+      "title": "Patrones",
+      "new": "Nuevo patrón",
+      "newTitle": "Nuevo patrón",
+      "drafting": "Estás preparando un patrón nuevo. Añade al menos dos paradas.",
+      "direction0": "Ida",
+      "direction1": "Vuelta",
+      "directionNone": "Sin sentido",
+      "none": "Esta línea todavía no tiene ningún patrón.",
+      "duplicate": "Duplica el patrón",
+      "delete": "Borra el patrón",
+      "deleteTitle": "¿Borrar el patrón?",
+      "create": "Crea el patrón"
+    },
+    "meta": {
+      "headsign": "Destino",
+      "direction": "Sentido",
+      "firstDeparture": "Primera salida",
+      "copyHint": {
+        "one": "Se copiará {count} viaje con las mismas salidas.",
+        "other": "Se copiarán {count} viajes con las mismas salidas."
+      },
+      "retime": {
+        "one": "Recalcula {count} viaje con estos tiempos",
+        "other": "Recalcula los {count} viajes con estos tiempos"
+      },
+      "affects": {
+        "one": "El cambio se aplica a {count} viaje.",
+        "other": "El cambio se aplica a los {count} viajes."
+      }
+    },
+    "stops": {
+      "search": "Busca una parada",
+      "add": "Añade",
+      "insertAfter": "Se insertará después de «{name}»",
+      "insertAtEnd": "Se añadirá al final",
+      "list": "Paradas del patrón",
+      "handle": "Reordena {name}",
+      "handleHint": "Arrastra, o usa las flechas arriba y abajo",
+      "travel": "Trayecto",
+      "dwell": "Detención",
+      "remove": "Quita {name}",
+      "new": "nueva",
+      "added": "Añadida {name}",
+      "moved": "{name} es ahora la parada {position}",
+      "removed": "Quitada {name}"
+    },
+    "map": {
+      "mode": "Modo del mapa",
+      "modeStops": "Mueve paradas",
+      "modeAdd": "Añade parada",
+      "modeShape": "Trazado",
+      "hint": {
+        "stops": "Arrastra una parada para moverla. Haz clic en un punto gris para añadirlo al patrón.",
+        "add": "Haz clic en el mapa para crear una parada nueva en ese punto.",
+        "shape": "Arrastra los vértices, haz clic en la línea para añadir uno y clic derecho para borrarlo."
+      }
+    },
+    "shape": {
+      "straight": "Líneas rectas entre paradas",
+      "summary": "{points} puntos · {length}",
+      "none": "Este patrón no tiene trazado. Genéralo a partir de las paradas.",
+      "id": "Identificador del trazado",
+      "idHint": "Si otros patrones comparten el trazado, conviene un identificador nuevo.",
+      "save": "Guarda el trazado",
+      "saveFirst": "Guarda antes los cambios de paradas."
+    },
+    "newStop": {
+      "title": "Nueva parada",
+      "create": "Crea la parada",
+      "name": "Nombre",
+      "join": "Añádela al patrón",
+      "idRequired": "Hace falta un identificador.",
+      "taken": "Ya existe una parada con este identificador."
+    },
+    "timetable": {
+      "service": "Servicio",
+      "allServices": "Todos los servicios",
+      "selectAll": "Selecciona todo",
+      "clearSelection": "Quita la selección",
+      "selected": {
+        "one": "{count} viaje seleccionado",
+        "other": "{count} viajes seleccionados"
+      },
+      "selectHint": "Selecciona viajes con las casillas de la cabecera.",
+      "minutes": "Minutos",
+      "earlier": "Adelanta",
+      "later": "Retrasa",
+      "clone": "Clona",
+      "cloneOne": "Para clonar, selecciona un solo viaje.",
+      "cloneTitle": "Clona el viaje",
+      "offset": "Desplazamiento (minutos)",
+      "offsetHint": "Negativo para salir antes.",
+      "sameService": "El mismo servicio",
+      "changeService": "Cambia el servicio",
+      "serviceTitle": {
+        "one": "Cambia el servicio de {count} viaje",
+        "other": "Cambia el servicio de {count} viajes"
+      },
+      "apply": "Aplica",
+      "expand": "Expande en viajes",
+      "expandTitle": "Expande las frecuencias",
+      "expandHint": {
+        "one": "Se creará un viaje por cada salida de {count} viaje basado en frecuencia y se borrará la plantilla.",
+        "other": "Se creará un viaje por cada salida de {count} viajes basados en frecuencia y se borrarán las plantillas."
+      },
+      "includeInexact": "Incluye también las frecuencias no exactas",
+      "deleteTitle": {
+        "one": "¿Borrar {count} viaje?",
+        "other": "¿Borrar {count} viajes?"
+      },
+      "grid": "Horario del patrón",
+      "keys": "Flechas: mover · Intro o una cifra: editar (0630 es 06:30; 2530 pasa de medianoche) · Tab: siguiente · Esc: cancela · Supr: vacía · Espacio: selecciona el viaje",
+      "saveFirst": "Guarda los cambios de paradas para editar los horarios."
+    },
+    "grid": {
+      "stopTrip": "Parada / viaje",
+      "selectTrip": "Selecciona el viaje {trip}",
+      "editTime": "Hora de {stop} en el viaje {trip}",
+      "backwards": "La hora es anterior a la de una parada previa.",
+      "frequencyHint": "Viaje basado en frecuencia: las horas son relativas a cada salida.",
+      "everyWindow": "Cada {minutes} min de {from} a {to}",
+      "failed": "No se ha podido guardar el cambio.",
+      "needsTime": "La primera y la última parada necesitan hora."
+    },
+    "delete": {
+      "title": "¿Borrar?",
+      "titleTable": "¿Borrar de {table}?",
+      "about": "Se borrará {names}.",
+      "dependsOnIt": "Hay datos que dependen de ello:",
+      "nothing": "No hay nada más que dependa de ello.",
+      "detached": "Se mantendrán, pero perderán el enlace:",
+      "reassignHint": "O asigna lo que depende de ello a otra fila antes de borrarla.",
+      "reassignTo": "Reasigna a ({table})",
+      "reassignAndDelete": "Reasigna y borra",
+      "withDependents": {
+        "one": "Borra con {count} fila dependiente",
+        "other": "Borra con {count} filas dependientes"
+      }
+    },
+    "errors": {
+      "unknownStop": "Esta parada no existe.",
+      "unknownService": "Este servicio no existe.",
+      "tripIdTaken": "Ya hay un viaje con este identificador.",
+      "shapeIdTaken": "Ya hay un trazado con este identificador.",
+      "negativeTime": "Ninguna hora puede quedar antes de las 00:00.",
+      "tooMany": "Habría demasiados viajes."
     }
   }
 }

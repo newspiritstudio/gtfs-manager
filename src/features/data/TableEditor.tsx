@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight, Pencil, Plus, Table2 } from 'lucide-react';
 import { usePathname, useRefreshKey, useRouter, useSearchParams } from '@/lib/router';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { TablePage, TableRow } from '@shared/contracts';
 import { GTFS_SPEC, type GtfsTable } from '@shared/gtfs-spec';
 import Button from '@/components/ui/Button';
@@ -14,6 +14,7 @@ import { apiFetch, ApiError } from '@/lib/api';
 import { formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
+import DeleteDialog from '../editor/DeleteDialog';
 import RowForm, { enumLabel, type FieldErrors } from './RowForm';
 
 const PAGE_SIZE = 50;
@@ -45,8 +46,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
   } | null>(null);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [saving, setSaving] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const confirmRef = useRef<HTMLButtonElement>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (query === debounced) return;
@@ -62,11 +62,6 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
     // Only the typed search moves the URL.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
-
-  // When confirmation is requested, the button that was clicked disappears: focus moves to the new one.
-  useEffect(() => {
-    if (confirmDelete) confirmRef.current?.focus();
-  }, [confirmDelete]);
 
   const load = () => setReloadKey((n) => n + 1);
 
@@ -120,7 +115,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
     for (const f of spec.fields) values[f.name] = row?.values[f.name] ?? '';
     setEditing({ row, values });
     setErrors({});
-    setConfirmDelete(false);
+    setDeleting(false);
   }
 
   async function save() {
@@ -154,23 +149,6 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
       } else if (error instanceof ApiError && error.code === 'duplicateKey')
         toast(t('data.conflict'), 'error');
       else toast(t('errors.generic'), 'error');
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function remove() {
-    if (!editing?.row) return;
-    setSaving(true);
-    try {
-      await apiFetch(`/api/feeds/${feedId}/tables/${table}/${editing.row.id}`, {
-        method: 'DELETE',
-      });
-      setEditing(null);
-      load();
-      router.refresh();
-    } catch {
-      toast(t('errors.generic'), 'error');
     } finally {
       setSaving(false);
     }
@@ -338,7 +316,7 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
       )}
 
       <Modal
-        open={editing !== null}
+        open={editing !== null && !deleting}
         onClose={() => setEditing(null)}
         title={editing?.row ? t('data.editRow') : t('data.newRow')}
         closeLabel={t('common.close')}
@@ -346,26 +324,9 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
         footer={
           <div className="flex w-full flex-wrap items-center gap-2">
             {editing?.row ? (
-              confirmDelete ? (
-                <span className="flex flex-wrap items-center gap-2">
-                  <span className="text-body-small text-on-surface-variant">
-                    {t('data.deleteConfirm')}
-                  </span>
-                  <Button
-                    ref={confirmRef}
-                    variant="destructive"
-                    size="sm"
-                    onClick={remove}
-                    loading={saving}
-                  >
-                    {t('common.delete')}
-                  </Button>
-                </span>
-              ) : (
-                <Button variant="ghost" onClick={() => setConfirmDelete(true)}>
-                  {t('common.delete')}
-                </Button>
-              )
+              <Button variant="ghost" onClick={() => setDeleting(true)}>
+                {t('common.delete')}
+              </Button>
             ) : null}
             <span className="ml-auto flex gap-2">
               <Button variant="outline" onClick={() => setEditing(null)}>
@@ -405,6 +366,18 @@ function TableEditorBody({ feedId, table }: { feedId: string; table: GtfsTable }
           </>
         ) : null}
       </Modal>
+      <DeleteDialog
+        feedId={feedId}
+        open={deleting && editing?.row != null}
+        onClose={() => setDeleting(false)}
+        seeds={editing?.row ? [{ table, rowIds: [editing.row.id] }] : []}
+        onDeleted={() => {
+          setDeleting(false);
+          setEditing(null);
+          load();
+          router.refresh();
+        }}
+      />
     </div>
   );
 }

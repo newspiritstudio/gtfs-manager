@@ -1175,7 +1175,39 @@
         "update": "Feed-Angaben geändert"
       },
       "trips": {
-        "generate": "{trips} Fahrten und {stopTimes} Haltezeiten erstellt"
+        "generate": "{trips} Fahrten und {stopTimes} Haltezeiten erstellt",
+        "service": "Verkehrstage auf „{service}“ geändert"
+      },
+      "pattern": {
+        "update": "Fahrtmuster bearbeitet",
+        "delete": "Fahrtmuster gelöscht",
+        "create": "Fahrtmuster erstellt",
+        "duplicate": "Fahrtmuster dupliziert"
+      },
+      "shape": {
+        "save": "Linienführung gespeichert",
+        "saveNamed": "Linienführung „{name}“ gespeichert"
+      },
+      "stop": {
+        "move": "Haltestelle um {meters} m verschoben",
+        "moveNamed": "Haltestelle „{name}“ um {meters} m verschoben"
+      },
+      "timetable": {
+        "edit": "Fahrplan bearbeitet",
+        "shift": "Zeiten um {minutes} Min. verschoben"
+      },
+      "trip": {
+        "clone": "Fahrt geklont",
+        "cloneNamed": "Fahrt „{name}“ geklont"
+      },
+      "frequencies": {
+        "expand": "Takte in Fahrten aufgelöst"
+      },
+      "delete": {
+        "cascade": "Mit Abhängigkeiten gelöscht",
+        "cascadeNamed": "„{name}“ mit Abhängigkeiten gelöscht",
+        "reassign": "Nach Neuzuweisung gelöscht",
+        "reassignNamed": "„{name}“ nach Neuzuweisung gelöscht"
       }
     },
     "history": {
@@ -1426,6 +1458,170 @@
     "map": {
       "showZones": "Flex-Zonen anzeigen",
       "hideZones": "Flex-Zonen ausblenden"
+    }
+  },
+  "editor": {
+    "back": "Zurück zur Linie",
+    "title": "Linie {route} bearbeiten",
+    "subtitle": "Fahrtmuster, Haltestellen, Fahrplan und Linienführung. Jede Änderung lässt sich rückgängig machen.",
+    "tabsLabel": "Bereiche des Editors",
+    "tabs": {
+      "stops": "Haltestellen und Karte",
+      "timetable": "Fahrplan"
+    },
+    "discard": "Verwerfen",
+    "unsaved": {
+      "title": "Änderungen verwerfen?",
+      "body": "Dieses Fahrtmuster hat ungespeicherte Änderungen. Wenn du fortfährst, gehen sie verloren.",
+      "discard": "Änderungen verwerfen"
+    },
+    "patterns": {
+      "title": "Fahrtmuster",
+      "new": "Neues Fahrtmuster",
+      "newTitle": "Neues Fahrtmuster",
+      "drafting": "Du entwirfst ein neues Fahrtmuster. Füge mindestens zwei Haltestellen hinzu.",
+      "direction0": "Hinfahrt",
+      "direction1": "Rückfahrt",
+      "directionNone": "Ohne Richtung",
+      "none": "Diese Linie hat noch kein Fahrtmuster.",
+      "duplicate": "Fahrtmuster duplizieren",
+      "delete": "Fahrtmuster löschen",
+      "deleteTitle": "Fahrtmuster löschen?",
+      "create": "Fahrtmuster erstellen"
+    },
+    "meta": {
+      "headsign": "Fahrtziel",
+      "direction": "Richtung",
+      "firstDeparture": "Erste Abfahrt",
+      "copyHint": {
+        "one": "{count} Fahrt wird mit denselben Abfahrten kopiert.",
+        "other": "{count} Fahrten werden mit denselben Abfahrten kopiert."
+      },
+      "retime": {
+        "one": "{count} Fahrt mit diesen Zeiten neu berechnen",
+        "other": "Alle {count} Fahrten mit diesen Zeiten neu berechnen"
+      },
+      "affects": {
+        "one": "Die Änderung gilt für {count} Fahrt.",
+        "other": "Die Änderung gilt für alle {count} Fahrten."
+      }
+    },
+    "stops": {
+      "search": "Haltestelle suchen",
+      "add": "Hinzufügen",
+      "insertAfter": "Wird nach „{name}“ eingefügt",
+      "insertAtEnd": "Wird am Ende hinzugefügt",
+      "list": "Haltestellen des Fahrtmusters",
+      "handle": "{name} neu anordnen",
+      "handleHint": "Ziehen oder die Pfeiltasten nach oben und unten verwenden",
+      "travel": "Fahrzeit",
+      "dwell": "Aufenthalt",
+      "remove": "{name} entfernen",
+      "new": "neu",
+      "added": "{name} hinzugefügt",
+      "moved": "{name} ist jetzt Haltestelle {position}",
+      "removed": "{name} entfernt"
+    },
+    "map": {
+      "mode": "Kartenmodus",
+      "modeStops": "Haltestellen verschieben",
+      "modeAdd": "Haltestelle hinzufügen",
+      "modeShape": "Linienführung",
+      "hint": {
+        "stops": "Ziehe eine Haltestelle, um sie zu verschieben. Klicke auf einen grauen Punkt, um ihn dem Fahrtmuster hinzuzufügen.",
+        "add": "Klicke auf die Karte, um dort eine neue Haltestelle zu erstellen.",
+        "shape": "Ziehe die Stützpunkte, klicke auf die Linie, um einen hinzuzufügen, und mit der rechten Maustaste, um einen zu löschen."
+      }
+    },
+    "shape": {
+      "straight": "Gerade Linien zwischen Haltestellen",
+      "summary": "{points} Punkte · {length}",
+      "none": "Dieses Fahrtmuster hat keine Linienführung. Erzeuge sie aus den Haltestellen.",
+      "id": "Kennung der Linienführung",
+      "idHint": "Wenn andere Fahrtmuster die Linienführung teilen, verwende eine neue Kennung.",
+      "save": "Linienführung speichern",
+      "saveFirst": "Speichere zuerst die Änderungen an den Haltestellen."
+    },
+    "newStop": {
+      "title": "Neue Haltestelle",
+      "create": "Haltestelle erstellen",
+      "name": "Name",
+      "join": "Zum Fahrtmuster hinzufügen",
+      "idRequired": "Eine Kennung ist erforderlich.",
+      "taken": "Eine Haltestelle mit dieser Kennung existiert bereits."
+    },
+    "timetable": {
+      "service": "Verkehrstage",
+      "allServices": "Alle Verkehrstage",
+      "selectAll": "Alles auswählen",
+      "clearSelection": "Auswahl aufheben",
+      "selected": {
+        "one": "{count} Fahrt ausgewählt",
+        "other": "{count} Fahrten ausgewählt"
+      },
+      "selectHint": "Wähle Fahrten über die Kästchen in der Kopfzeile aus.",
+      "minutes": "Minuten",
+      "earlier": "Früher",
+      "later": "Später",
+      "clone": "Klonen",
+      "cloneOne": "Wähle zum Klonen genau eine Fahrt aus.",
+      "cloneTitle": "Fahrt klonen",
+      "offset": "Versatz (Minuten)",
+      "offsetHint": "Negativ für eine frühere Abfahrt.",
+      "sameService": "Dieselben Verkehrstage",
+      "changeService": "Verkehrstage ändern",
+      "serviceTitle": {
+        "one": "Verkehrstage von {count} Fahrt ändern",
+        "other": "Verkehrstage von {count} Fahrten ändern"
+      },
+      "apply": "Anwenden",
+      "expand": "In Fahrten auflösen",
+      "expandTitle": "Takte auflösen",
+      "expandHint": {
+        "one": "Für jede Abfahrt von {count} taktbasierten Fahrt wird eine Fahrt erstellt und die Vorlage gelöscht.",
+        "other": "Für jede Abfahrt von {count} taktbasierten Fahrten wird eine Fahrt erstellt und die Vorlagen werden gelöscht."
+      },
+      "includeInexact": "Auch ungenaue Takte einbeziehen",
+      "deleteTitle": {
+        "one": "{count} Fahrt löschen?",
+        "other": "{count} Fahrten löschen?"
+      },
+      "grid": "Fahrplan des Fahrtmusters",
+      "keys": "Pfeile: bewegen · Eingabe oder eine Ziffer: bearbeiten (0630 ergibt 06:30; 2530 liegt nach Mitternacht) · Tab: weiter · Esc: abbrechen · Entf: leeren · Leertaste: Fahrt auswählen",
+      "saveFirst": "Speichere die Änderungen an den Haltestellen, um den Fahrplan zu bearbeiten."
+    },
+    "grid": {
+      "stopTrip": "Haltestelle / Fahrt",
+      "selectTrip": "Fahrt {trip} auswählen",
+      "editTime": "Zeit von {stop} bei Fahrt {trip}",
+      "backwards": "Diese Zeit liegt vor der einer früheren Haltestelle.",
+      "frequencyHint": "Taktbasierte Fahrt: Die Zeiten beziehen sich auf jede Abfahrt.",
+      "everyWindow": "Alle {minutes} Min. von {from} bis {to}",
+      "failed": "Die Änderung konnte nicht gespeichert werden.",
+      "needsTime": "Erste und letzte Haltestelle brauchen eine Zeit."
+    },
+    "delete": {
+      "title": "Löschen?",
+      "titleTable": "Aus {table} löschen?",
+      "about": "{names} wird gelöscht.",
+      "dependsOnIt": "Davon hängen Daten ab:",
+      "nothing": "Sonst hängt nichts davon ab.",
+      "detached": "Diese bleiben erhalten, verlieren aber die Verknüpfung:",
+      "reassignHint": "Oder weise das, was davon abhängt, vor dem Löschen einer anderen Zeile zu.",
+      "reassignTo": "Neu zuweisen an ({table})",
+      "reassignAndDelete": "Neu zuweisen und löschen",
+      "withDependents": {
+        "one": "Mit {count} abhängiger Zeile löschen",
+        "other": "Mit {count} abhängigen Zeilen löschen"
+      }
+    },
+    "errors": {
+      "unknownStop": "Diese Haltestelle existiert nicht.",
+      "unknownService": "Diese Verkehrstage existieren nicht.",
+      "tripIdTaken": "Eine Fahrt mit dieser Kennung existiert bereits.",
+      "shapeIdTaken": "Eine Linienführung mit dieser Kennung existiert bereits.",
+      "negativeTime": "Keine Zeit darf vor 00:00 liegen.",
+      "tooMany": "Dabei würden zu viele Fahrten entstehen."
     }
   }
 }

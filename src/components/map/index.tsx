@@ -18,3 +18,4 @@ export const RouteMap = lazyMap(() => import('./RouteMap'));
 export const PointPickerMap = lazyMap(() => import('./PointPickerMap'));
 export const CompareMap = lazyMap(() => import('./CompareMap'));
 export const ServiceMap = lazyMap(() => import('./ServiceMap'));
+export const EditMap = lazyMap(() => import('./EditMap'));

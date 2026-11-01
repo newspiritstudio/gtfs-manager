@@ -123,3 +123,32 @@ export async function savePatternShape(
   await markStatsStale(feedId);
   return { points: input.points.length, trips: tripIds.length };
 }
+
+export interface StopHit {
+  stopId: string;
+  name: string | null;
+  lat: number | null;
+  lon: number | null;
+}
+
+/**
+ * Stops by text (id or name) and/or inside a box `[south, west, north, east]`, for the editor's
+ * stop picker and the context stops of its map. Capped, never the whole table.
+ */
+export async function searchStops(
+  feedId: string,
+  options: { q?: string; bbox?: [number, number, number, number] | null; limit?: number }
+): Promise<StopHit[]> {
+  const sql = getSql();
+  const limit = Math.max(1, Math.min(1000, options.limit ?? 30));
+  const text = (options.q ?? '').replace(/\0/g, '').trim();
+  const like = `%${text.replace(/[%_\\]/g, (c) => `\\${c}`)}%`;
+  const [s, w, n, e] = options.bbox ?? [-91, -181, 91, 181];
+  return sql<StopHit[]>`
+    SELECT stop_id AS "stopId", stop_name AS name, stop_lat AS lat, stop_lon AS lon
+    FROM stops
+    WHERE feed_id = ${feedId}
+      AND (${text} = '' OR stop_id LIKE ${like} ESCAPE '\\' OR coalesce(stop_name, '') LIKE ${like} ESCAPE '\\')
+      AND (${options.bbox ? 1 : 0} = 0 OR (stop_lat BETWEEN ${s} AND ${n} AND stop_lon BETWEEN ${w} AND ${e}))
+    ORDER BY stop_name, stop_id LIMIT ${limit}`;
+}

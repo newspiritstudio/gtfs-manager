@@ -1175,7 +1175,39 @@
         "update": "Dados do feed alterados"
       },
       "trips": {
-        "generate": "Criadas {trips} viagens e {stopTimes} horas de paragem"
+        "generate": "Criadas {trips} viagens e {stopTimes} horas de paragem",
+        "service": "Serviço mudado para «{service}»"
+      },
+      "pattern": {
+        "update": "Padrão alterado",
+        "delete": "Padrão eliminado",
+        "create": "Padrão criado",
+        "duplicate": "Padrão duplicado"
+      },
+      "shape": {
+        "save": "Traçado guardado",
+        "saveNamed": "Traçado «{name}» guardado"
+      },
+      "stop": {
+        "move": "Paragem movida {meters} m",
+        "moveNamed": "Paragem «{name}» movida {meters} m"
+      },
+      "timetable": {
+        "edit": "Horário alterado",
+        "shift": "Horários deslocados {minutes} min"
+      },
+      "trip": {
+        "clone": "Viagem clonada",
+        "cloneNamed": "Viagem «{name}» clonada"
+      },
+      "frequencies": {
+        "expand": "Frequências expandidas em viagens"
+      },
+      "delete": {
+        "cascade": "Eliminado com as dependências",
+        "cascadeNamed": "«{name}» eliminado com as dependências",
+        "reassign": "Eliminado após reatribuir",
+        "reassignNamed": "«{name}» eliminado após reatribuir"
       }
     },
     "history": {
@@ -1426,6 +1458,170 @@
     "map": {
       "showZones": "Mostrar as zonas flex",
       "hideZones": "Ocultar as zonas flex"
+    }
+  },
+  "editor": {
+    "back": "Voltar à linha",
+    "title": "Editar a linha {route}",
+    "subtitle": "Padrões, paragens, horários e traçado. Cada alteração pode ser desfeita.",
+    "tabsLabel": "Secções do editor",
+    "tabs": {
+      "stops": "Paragens e mapa",
+      "timetable": "Horários"
+    },
+    "discard": "Descartar",
+    "unsaved": {
+      "title": "Descartar as alterações?",
+      "body": "Este padrão tem alterações por guardar. Se continuar, perdem-se.",
+      "discard": "Descartar alterações"
+    },
+    "patterns": {
+      "title": "Padrões",
+      "new": "Novo padrão",
+      "newTitle": "Novo padrão",
+      "drafting": "Está a preparar um novo padrão. Adicione pelo menos duas paragens.",
+      "direction0": "Ida",
+      "direction1": "Volta",
+      "directionNone": "Sem sentido",
+      "none": "Esta linha ainda não tem nenhum padrão.",
+      "duplicate": "Duplicar o padrão",
+      "delete": "Eliminar o padrão",
+      "deleteTitle": "Eliminar o padrão?",
+      "create": "Criar o padrão"
+    },
+    "meta": {
+      "headsign": "Destino",
+      "direction": "Sentido",
+      "firstDeparture": "Primeira partida",
+      "copyHint": {
+        "one": "{count} viagem será copiada com as mesmas partidas.",
+        "other": "{count} viagens serão copiadas com as mesmas partidas."
+      },
+      "retime": {
+        "one": "Recalcular {count} viagem com estes tempos",
+        "other": "Recalcular as {count} viagens com estes tempos"
+      },
+      "affects": {
+        "one": "A alteração aplica-se a {count} viagem.",
+        "other": "A alteração aplica-se às {count} viagens."
+      }
+    },
+    "stops": {
+      "search": "Procurar uma paragem",
+      "add": "Adicionar",
+      "insertAfter": "Será inserida depois de «{name}»",
+      "insertAtEnd": "Será adicionada no fim",
+      "list": "Paragens do padrão",
+      "handle": "Reordenar {name}",
+      "handleHint": "Arraste, ou use as setas para cima e para baixo",
+      "travel": "Percurso",
+      "dwell": "Paragem",
+      "remove": "Remover {name}",
+      "new": "nova",
+      "added": "{name} adicionada",
+      "moved": "{name} é agora a paragem {position}",
+      "removed": "{name} removida"
+    },
+    "map": {
+      "mode": "Modo do mapa",
+      "modeStops": "Mover paragens",
+      "modeAdd": "Adicionar paragem",
+      "modeShape": "Traçado",
+      "hint": {
+        "stops": "Arraste uma paragem para a mover. Clique num ponto cinzento para o adicionar ao padrão.",
+        "add": "Clique no mapa para criar uma nova paragem nesse ponto.",
+        "shape": "Arraste os vértices, clique na linha para adicionar um e clique com o botão direito para eliminar um."
+      }
+    },
+    "shape": {
+      "straight": "Linhas retas entre paragens",
+      "summary": "{points} pontos · {length}",
+      "none": "Este padrão não tem traçado. Gere um a partir das paragens.",
+      "id": "Identificador do traçado",
+      "idHint": "Se outros padrões partilham o traçado, use um novo identificador.",
+      "save": "Guardar o traçado",
+      "saveFirst": "Guarde primeiro as alterações às paragens."
+    },
+    "newStop": {
+      "title": "Nova paragem",
+      "create": "Criar a paragem",
+      "name": "Nome",
+      "join": "Adicioná-la ao padrão",
+      "idRequired": "É preciso um identificador.",
+      "taken": "Já existe uma paragem com este identificador."
+    },
+    "timetable": {
+      "service": "Serviço",
+      "allServices": "Todos os serviços",
+      "selectAll": "Selecionar tudo",
+      "clearSelection": "Limpar seleção",
+      "selected": {
+        "one": "{count} viagem selecionada",
+        "other": "{count} viagens selecionadas"
+      },
+      "selectHint": "Selecione viagens com as caixas do cabeçalho.",
+      "minutes": "Minutos",
+      "earlier": "Adiantar",
+      "later": "Atrasar",
+      "clone": "Clonar",
+      "cloneOne": "Para clonar, selecione uma única viagem.",
+      "cloneTitle": "Clonar a viagem",
+      "offset": "Deslocamento (minutos)",
+      "offsetHint": "Negativo para partir mais cedo.",
+      "sameService": "O mesmo serviço",
+      "changeService": "Mudar o serviço",
+      "serviceTitle": {
+        "one": "Mudar o serviço de {count} viagem",
+        "other": "Mudar o serviço de {count} viagens"
+      },
+      "apply": "Aplicar",
+      "expand": "Expandir em viagens",
+      "expandTitle": "Expandir as frequências",
+      "expandHint": {
+        "one": "Será criada uma viagem por cada partida de {count} viagem por frequência e o modelo será eliminado.",
+        "other": "Será criada uma viagem por cada partida de {count} viagens por frequência e os modelos serão eliminados."
+      },
+      "includeInexact": "Incluir também as frequências não exatas",
+      "deleteTitle": {
+        "one": "Eliminar {count} viagem?",
+        "other": "Eliminar {count} viagens?"
+      },
+      "grid": "Horário do padrão",
+      "keys": "Setas: mover · Enter ou um algarismo: editar (0630 é 06:30; 2530 passa da meia-noite) · Tab: seguinte · Esc: cancelar · Del: limpar · Espaço: selecionar a viagem",
+      "saveFirst": "Guarde as alterações às paragens para editar os horários."
+    },
+    "grid": {
+      "stopTrip": "Paragem / viagem",
+      "selectTrip": "Selecionar a viagem {trip}",
+      "editTime": "Hora de {stop} na viagem {trip}",
+      "backwards": "Esta hora é anterior à de uma paragem anterior.",
+      "frequencyHint": "Viagem por frequência: as horas são relativas a cada partida.",
+      "everyWindow": "A cada {minutes} min das {from} às {to}",
+      "failed": "Não foi possível guardar a alteração.",
+      "needsTime": "A primeira e a última paragem precisam de hora."
+    },
+    "delete": {
+      "title": "Eliminar?",
+      "titleTable": "Eliminar de {table}?",
+      "about": "{names} será eliminado.",
+      "dependsOnIt": "Há dados que dependem disto:",
+      "nothing": "Nada mais depende disto.",
+      "detached": "Mantêm-se, mas perdem a ligação:",
+      "reassignHint": "Ou atribua o que depende disto a outra linha antes de a eliminar.",
+      "reassignTo": "Reatribuir a ({table})",
+      "reassignAndDelete": "Reatribuir e eliminar",
+      "withDependents": {
+        "one": "Eliminar com {count} linha dependente",
+        "other": "Eliminar com {count} linhas dependentes"
+      }
+    },
+    "errors": {
+      "unknownStop": "Esta paragem não existe.",
+      "unknownService": "Este serviço não existe.",
+      "tripIdTaken": "Já existe uma viagem com este identificador.",
+      "shapeIdTaken": "Já existe um traçado com este identificador.",
+      "negativeTime": "Nenhuma hora pode ficar antes das 00:00.",
+      "tooMany": "Seriam criadas viagens a mais."
     }
   }
 }

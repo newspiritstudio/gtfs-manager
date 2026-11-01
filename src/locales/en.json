@@ -1175,7 +1175,39 @@
         "update": "Feed details changed"
       },
       "trips": {
-        "generate": "Created {trips} trips and {stopTimes} stop times"
+        "generate": "Created {trips} trips and {stopTimes} stop times",
+        "service": "Service changed to “{service}”"
+      },
+      "pattern": {
+        "update": "Pattern edited",
+        "delete": "Pattern deleted",
+        "create": "Pattern created",
+        "duplicate": "Pattern duplicated"
+      },
+      "shape": {
+        "save": "Shape saved",
+        "saveNamed": "Shape “{name}” saved"
+      },
+      "stop": {
+        "move": "Stop moved {meters} m",
+        "moveNamed": "Stop “{name}” moved {meters} m"
+      },
+      "timetable": {
+        "edit": "Timetable edited",
+        "shift": "Times shifted {minutes} min"
+      },
+      "trip": {
+        "clone": "Trip cloned",
+        "cloneNamed": "Trip “{name}” cloned"
+      },
+      "frequencies": {
+        "expand": "Frequencies expanded into trips"
+      },
+      "delete": {
+        "cascade": "Deleted with dependents",
+        "cascadeNamed": "Deleted “{name}” with dependents",
+        "reassign": "Deleted after reassigning",
+        "reassignNamed": "Deleted “{name}” after reassigning"
       }
     },
     "history": {
@@ -1426,6 +1458,170 @@
     "map": {
       "showZones": "Show flex zones",
       "hideZones": "Hide flex zones"
+    }
+  },
+  "editor": {
+    "back": "Back to the line",
+    "title": "Edit line {route}",
+    "subtitle": "Patterns, stops, timetable and shape. Every change can be undone.",
+    "tabsLabel": "Editor sections",
+    "tabs": {
+      "stops": "Stops and map",
+      "timetable": "Timetable"
+    },
+    "discard": "Discard",
+    "unsaved": {
+      "title": "Discard the changes?",
+      "body": "This pattern has unsaved changes. If you continue, they will be lost.",
+      "discard": "Discard changes"
+    },
+    "patterns": {
+      "title": "Patterns",
+      "new": "New pattern",
+      "newTitle": "New pattern",
+      "drafting": "You are drafting a new pattern. Add at least two stops.",
+      "direction0": "Outbound",
+      "direction1": "Inbound",
+      "directionNone": "No direction",
+      "none": "This line has no pattern yet.",
+      "duplicate": "Duplicate pattern",
+      "delete": "Delete pattern",
+      "deleteTitle": "Delete the pattern?",
+      "create": "Create pattern"
+    },
+    "meta": {
+      "headsign": "Headsign",
+      "direction": "Direction",
+      "firstDeparture": "First departure",
+      "copyHint": {
+        "one": "{count} trip will be copied with the same departures.",
+        "other": "{count} trips will be copied with the same departures."
+      },
+      "retime": {
+        "one": "Recalculate {count} trip from these times",
+        "other": "Recalculate all {count} trips from these times"
+      },
+      "affects": {
+        "one": "The change applies to {count} trip.",
+        "other": "The change applies to all {count} trips."
+      }
+    },
+    "stops": {
+      "search": "Search for a stop",
+      "add": "Add",
+      "insertAfter": "It will go after “{name}”",
+      "insertAtEnd": "It will be added at the end",
+      "list": "Stops of the pattern",
+      "handle": "Reorder {name}",
+      "handleHint": "Drag, or use the up and down arrow keys",
+      "travel": "Travel",
+      "dwell": "Dwell",
+      "remove": "Remove {name}",
+      "new": "new",
+      "added": "Added {name}",
+      "moved": "{name} is now stop {position}",
+      "removed": "Removed {name}"
+    },
+    "map": {
+      "mode": "Map mode",
+      "modeStops": "Move stops",
+      "modeAdd": "Add stop",
+      "modeShape": "Shape",
+      "hint": {
+        "stops": "Drag a stop to move it. Click a grey dot to add it to the pattern.",
+        "add": "Click the map to create a new stop at that point.",
+        "shape": "Drag the vertices, click the line to add one and right-click to delete one."
+      }
+    },
+    "shape": {
+      "straight": "Straight lines between stops",
+      "summary": "{points} points · {length}",
+      "none": "This pattern has no shape. Generate one from its stops.",
+      "id": "Shape ID",
+      "idHint": "If other patterns share the shape, use a new ID.",
+      "save": "Save shape",
+      "saveFirst": "Save the stop changes first."
+    },
+    "newStop": {
+      "title": "New stop",
+      "create": "Create stop",
+      "name": "Name",
+      "join": "Add it to the pattern",
+      "idRequired": "An ID is required.",
+      "taken": "A stop with this ID already exists."
+    },
+    "timetable": {
+      "service": "Service",
+      "allServices": "All services",
+      "selectAll": "Select all",
+      "clearSelection": "Clear selection",
+      "selected": {
+        "one": "{count} trip selected",
+        "other": "{count} trips selected"
+      },
+      "selectHint": "Select trips with the checkboxes in the header.",
+      "minutes": "Minutes",
+      "earlier": "Earlier",
+      "later": "Later",
+      "clone": "Clone",
+      "cloneOne": "To clone, select a single trip.",
+      "cloneTitle": "Clone the trip",
+      "offset": "Offset (minutes)",
+      "offsetHint": "Negative to leave earlier.",
+      "sameService": "The same service",
+      "changeService": "Change service",
+      "serviceTitle": {
+        "one": "Change the service of {count} trip",
+        "other": "Change the service of {count} trips"
+      },
+      "apply": "Apply",
+      "expand": "Expand into trips",
+      "expandTitle": "Expand frequencies",
+      "expandHint": {
+        "one": "One trip will be created for each departure of {count} frequency-based trip, and its template deleted.",
+        "other": "One trip will be created for each departure of {count} frequency-based trips, and their templates deleted."
+      },
+      "includeInexact": "Also include inexact frequencies",
+      "deleteTitle": {
+        "one": "Delete {count} trip?",
+        "other": "Delete {count} trips?"
+      },
+      "grid": "Timetable of the pattern",
+      "keys": "Arrows: move · Enter or a digit: edit (0630 is 06:30; 2530 is past midnight) · Tab: next · Esc: cancel · Delete: clear · Space: select the trip",
+      "saveFirst": "Save the stop changes to edit the timetable."
+    },
+    "grid": {
+      "stopTrip": "Stop / trip",
+      "selectTrip": "Select trip {trip}",
+      "editTime": "Time of {stop} on trip {trip}",
+      "backwards": "This time is earlier than that of a previous stop.",
+      "frequencyHint": "Frequency-based trip: its times are relative to each departure.",
+      "everyWindow": "Every {minutes} min from {from} to {to}",
+      "failed": "The change could not be saved.",
+      "needsTime": "The first and last stops need a time."
+    },
+    "delete": {
+      "title": "Delete?",
+      "titleTable": "Delete from {table}?",
+      "about": "{names} will be deleted.",
+      "dependsOnIt": "Some data depends on it:",
+      "nothing": "Nothing else depends on it.",
+      "detached": "These stay, but lose the link:",
+      "reassignHint": "Or point what depends on it at another row before deleting it.",
+      "reassignTo": "Reassign to ({table})",
+      "reassignAndDelete": "Reassign and delete",
+      "withDependents": {
+        "one": "Delete with {count} dependent row",
+        "other": "Delete with {count} dependent rows"
+      }
+    },
+    "errors": {
+      "unknownStop": "This stop does not exist.",
+      "unknownService": "This service does not exist.",
+      "tripIdTaken": "A trip with this ID already exists.",
+      "shapeIdTaken": "A shape with this ID already exists.",
+      "negativeTime": "No time can end up before 00:00.",
+      "tooMany": "That would create too many trips."
     }
   }
 }

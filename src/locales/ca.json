@@ -1175,7 +1175,39 @@
         "update": "Dades del feed modificades"
       },
       "trips": {
-        "generate": "S'han creat {trips} viatges i {stopTimes} hores de pas"
+        "generate": "S'han creat {trips} viatges i {stopTimes} hores de pas",
+        "service": "Servei canviat a «{service}»"
+      },
+      "pattern": {
+        "update": "Patró modificat",
+        "delete": "Patró esborrat",
+        "create": "Patró creat",
+        "duplicate": "Patró duplicat"
+      },
+      "shape": {
+        "save": "Traçat desat",
+        "saveNamed": "Traçat «{name}» desat"
+      },
+      "stop": {
+        "move": "Parada moguda {meters} m",
+        "moveNamed": "Parada «{name}» moguda {meters} m"
+      },
+      "timetable": {
+        "edit": "Horari modificat",
+        "shift": "Horaris desplaçats {minutes} min"
+      },
+      "trip": {
+        "clone": "Viatge clonat",
+        "cloneNamed": "Viatge «{name}» clonat"
+      },
+      "frequencies": {
+        "expand": "Freqüències expandides en viatges"
+      },
+      "delete": {
+        "cascade": "Esborrat amb les dependències",
+        "cascadeNamed": "Esborrat «{name}» amb les dependències",
+        "reassign": "Esborrat després de reassignar",
+        "reassignNamed": "Esborrat «{name}» després de reassignar"
       }
     },
     "history": {
@@ -1426,6 +1458,170 @@
     "map": {
       "showZones": "Mostra les zones flex",
       "hideZones": "Amaga les zones flex"
+    }
+  },
+  "editor": {
+    "back": "Torna a la línia",
+    "title": "Edita la línia {route}",
+    "subtitle": "Patrons, parades, horaris i traçat. Cada canvi es pot desfer.",
+    "tabsLabel": "Seccions de l'editor",
+    "tabs": {
+      "stops": "Parades i mapa",
+      "timetable": "Horaris"
+    },
+    "discard": "Descarta",
+    "unsaved": {
+      "title": "Descartar els canvis?",
+      "body": "Tens canvis sense desar en aquest patró. Si continues, es perdran.",
+      "discard": "Descarta els canvis"
+    },
+    "patterns": {
+      "title": "Patrons",
+      "new": "Nou patró",
+      "newTitle": "Nou patró",
+      "drafting": "Estàs preparant un patró nou. Afegeix-hi com a mínim dues parades.",
+      "direction0": "Anada",
+      "direction1": "Tornada",
+      "directionNone": "Sense sentit",
+      "none": "Aquesta línia encara no té cap patró.",
+      "duplicate": "Duplica el patró",
+      "delete": "Esborra el patró",
+      "deleteTitle": "Esborrar el patró?",
+      "create": "Crea el patró"
+    },
+    "meta": {
+      "headsign": "Destinació",
+      "direction": "Sentit",
+      "firstDeparture": "Primera sortida",
+      "copyHint": {
+        "one": "Es copiarà {count} viatge amb les mateixes sortides.",
+        "other": "Es copiaran {count} viatges amb les mateixes sortides."
+      },
+      "retime": {
+        "one": "Recalcula {count} viatge amb aquests temps",
+        "other": "Recalcula els {count} viatges amb aquests temps"
+      },
+      "affects": {
+        "one": "El canvi s'aplica a {count} viatge.",
+        "other": "El canvi s'aplica als {count} viatges."
+      }
+    },
+    "stops": {
+      "search": "Cerca una parada",
+      "add": "Afegeix",
+      "insertAfter": "S'inserirà després de «{name}»",
+      "insertAtEnd": "S'afegirà al final",
+      "list": "Parades del patró",
+      "handle": "Reordena {name}",
+      "handleHint": "Arrossega, o usa les fletxes amunt i avall",
+      "travel": "Trajecte",
+      "dwell": "Aturada",
+      "remove": "Treu {name}",
+      "new": "nova",
+      "added": "Afegida {name}",
+      "moved": "{name} ara és la parada {position}",
+      "removed": "Treta {name}"
+    },
+    "map": {
+      "mode": "Mode del mapa",
+      "modeStops": "Mou parades",
+      "modeAdd": "Afegeix parada",
+      "modeShape": "Traçat",
+      "hint": {
+        "stops": "Arrossega una parada per moure-la. Clica un punt gris per afegir-lo al patró.",
+        "add": "Clica el mapa per crear una parada nova en aquell punt.",
+        "shape": "Arrossega els vèrtexs, clica la línia per afegir-ne i clic dret per esborrar-ne."
+      }
+    },
+    "shape": {
+      "straight": "Línies rectes entre parades",
+      "summary": "{points} punts · {length}",
+      "none": "Aquest patró no té traçat. Genera'l a partir de les parades.",
+      "id": "Identificador del traçat",
+      "idHint": "Si altres patrons comparteixen el traçat, en convé un identificador nou.",
+      "save": "Desa el traçat",
+      "saveFirst": "Desa abans els canvis de parades."
+    },
+    "newStop": {
+      "title": "Nova parada",
+      "create": "Crea la parada",
+      "name": "Nom",
+      "join": "Afegeix-la al patró",
+      "idRequired": "Cal un identificador.",
+      "taken": "Ja existeix una parada amb aquest identificador."
+    },
+    "timetable": {
+      "service": "Servei",
+      "allServices": "Tots els serveis",
+      "selectAll": "Selecciona-ho tot",
+      "clearSelection": "Treu la selecció",
+      "selected": {
+        "one": "{count} viatge seleccionat",
+        "other": "{count} viatges seleccionats"
+      },
+      "selectHint": "Selecciona viatges amb les caselles de la capçalera.",
+      "minutes": "Minuts",
+      "earlier": "Avança",
+      "later": "Retarda",
+      "clone": "Clona",
+      "cloneOne": "Per clonar, selecciona un sol viatge.",
+      "cloneTitle": "Clona el viatge",
+      "offset": "Desplaçament (minuts)",
+      "offsetHint": "Negatiu per sortir abans.",
+      "sameService": "El mateix servei",
+      "changeService": "Canvia el servei",
+      "serviceTitle": {
+        "one": "Canvia el servei de {count} viatge",
+        "other": "Canvia el servei de {count} viatges"
+      },
+      "apply": "Aplica",
+      "expand": "Expandeix en viatges",
+      "expandTitle": "Expandeix les freqüències",
+      "expandHint": {
+        "one": "Es crearà un viatge per cada sortida de {count} viatge basat en freqüència i s'esborrarà la plantilla.",
+        "other": "Es crearà un viatge per cada sortida de {count} viatges basats en freqüència i s'esborraran les plantilles."
+      },
+      "includeInexact": "Inclou també les freqüències no exactes",
+      "deleteTitle": {
+        "one": "Esborrar {count} viatge?",
+        "other": "Esborrar {count} viatges?"
+      },
+      "grid": "Horari del patró",
+      "keys": "Fletxes: moure · Intro o una xifra: editar (0630 és 06:30; 2530 passa de mitjanit) · Tab: següent · Esc: cancel·la · Supr: buida · Espai: selecciona el viatge",
+      "saveFirst": "Desa els canvis de parades per editar els horaris."
+    },
+    "grid": {
+      "stopTrip": "Parada / viatge",
+      "selectTrip": "Selecciona el viatge {trip}",
+      "editTime": "Hora de {stop} al viatge {trip}",
+      "backwards": "L'hora és anterior a la d'una parada prèvia.",
+      "frequencyHint": "Viatge basat en freqüència: les hores són relatives a cada sortida.",
+      "everyWindow": "Cada {minutes} min de {from} a {to}",
+      "failed": "No s'ha pogut desar el canvi.",
+      "needsTime": "La primera i l'última parada necessiten hora."
+    },
+    "delete": {
+      "title": "Esborrar?",
+      "titleTable": "Esborrar de {table}?",
+      "about": "S'esborrarà {names}.",
+      "dependsOnIt": "Hi ha dades que en depenen:",
+      "nothing": "No hi ha res més que en depengui.",
+      "detached": "Es mantindran, però perdran l'enllaç:",
+      "reassignHint": "O bé assigna el que en depèn a una altra fila abans d'esborrar-la.",
+      "reassignTo": "Reassigna a ({table})",
+      "reassignAndDelete": "Reassigna i esborra",
+      "withDependents": {
+        "one": "Esborra amb {count} fila dependent",
+        "other": "Esborra amb {count} files dependents"
+      }
+    },
+    "errors": {
+      "unknownStop": "Aquesta parada no existeix.",
+      "unknownService": "Aquest servei no existeix.",
+      "tripIdTaken": "Ja hi ha un viatge amb aquest identificador.",
+      "shapeIdTaken": "Ja hi ha un traçat amb aquest identificador.",
+      "negativeTime": "Cap hora pot quedar abans de les 00:00.",
+      "tooMany": "Hi hauria massa viatges."
     }
   }
 }

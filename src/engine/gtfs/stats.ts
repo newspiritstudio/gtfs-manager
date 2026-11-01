@@ -88,6 +88,35 @@ export async function computeStats(feedId: string): Promise<FeedStats> {
       FROM firsts WHERE dep IS NOT NULL GROUP BY 1`;
     for (const { h, n } of hours) departuresByHour[h] = n;
 
+    // A frequency-based trip is one row here but runs at every start of its windows: swap its
+    // single departure for the starts (exact_times does not matter for a count by hour).
+    const windows = await sql<
+      { tripId: string; start: number; end: number; headway: number; dep: number | null }[]
+    >`
+      WITH svc AS (${activeServicesFragment(sql, feedId, busiest)})
+      SELECT f.trip_id AS "tripId", f.start_time AS start, f.end_time AS "end",
+             f.headway_secs AS headway,
+             (SELECT coalesce(st.departure_time, st.arrival_time) FROM stop_times st
+              WHERE st.feed_id = f.feed_id AND st.trip_id = f.trip_id
+              ORDER BY st.stop_sequence LIMIT 1) AS dep
+      FROM frequencies f
+      JOIN trips t ON t.feed_id = f.feed_id AND t.trip_id = f.trip_id
+      WHERE f.feed_id = ${feedId} AND t.service_id IN (SELECT service_id FROM svc)
+      ORDER BY f.trip_id, f.start_time`;
+    const swapped = new Set<string>();
+    for (const w of windows) {
+      if (!swapped.has(w.tripId)) {
+        swapped.add(w.tripId);
+        if (w.dep !== null) {
+          const hour = Math.min(29, Math.floor(w.dep / 3600));
+          departuresByHour[hour] = Math.max(0, departuresByHour[hour] - 1);
+        }
+      }
+      if (w.headway > 0)
+        for (let at = w.start, n = 0; at < w.end && n < 3000; at += w.headway, n += 1)
+          departuresByHour[Math.min(29, Math.floor(at / 3600))] += 1;
+    }
+
     topStops = await sql<FeedStats['topStops']>`
       WITH svc AS (${activeServicesFragment(sql, feedId, busiest)})
       SELECT st.stop_id AS "stopId", s.stop_name AS "stopName",

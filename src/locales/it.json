@@ -1175,7 +1175,39 @@
         "update": "Dati del feed modificati"
       },
       "trips": {
-        "generate": "Create {trips} corse e {stopTimes} orari alle fermate"
+        "generate": "Create {trips} corse e {stopTimes} orari alle fermate",
+        "service": "Servizio cambiato in «{service}»"
+      },
+      "pattern": {
+        "update": "Schema modificato",
+        "delete": "Schema eliminato",
+        "create": "Schema creato",
+        "duplicate": "Schema duplicato"
+      },
+      "shape": {
+        "save": "Tracciato salvato",
+        "saveNamed": "Tracciato «{name}» salvato"
+      },
+      "stop": {
+        "move": "Fermata spostata di {meters} m",
+        "moveNamed": "Fermata «{name}» spostata di {meters} m"
+      },
+      "timetable": {
+        "edit": "Orario modificato",
+        "shift": "Orari spostati di {minutes} min"
+      },
+      "trip": {
+        "clone": "Corsa clonata",
+        "cloneNamed": "Corsa «{name}» clonata"
+      },
+      "frequencies": {
+        "expand": "Frequenze espanse in corse"
+      },
+      "delete": {
+        "cascade": "Eliminato con le dipendenze",
+        "cascadeNamed": "«{name}» eliminato con le dipendenze",
+        "reassign": "Eliminato dopo la riassegnazione",
+        "reassignNamed": "«{name}» eliminato dopo la riassegnazione"
       }
     },
     "history": {
@@ -1426,6 +1458,170 @@
     "map": {
       "showZones": "Mostra le zone flex",
       "hideZones": "Nascondi le zone flex"
+    }
+  },
+  "editor": {
+    "back": "Torna alla linea",
+    "title": "Modifica la linea {route}",
+    "subtitle": "Corse tipo, fermate, orari e tracciato. Ogni modifica si può annullare.",
+    "tabsLabel": "Sezioni dell'editor",
+    "tabs": {
+      "stops": "Fermate e mappa",
+      "timetable": "Orari"
+    },
+    "discard": "Scarta",
+    "unsaved": {
+      "title": "Scartare le modifiche?",
+      "body": "Questo schema ha modifiche non salvate. Se continui, andranno perse.",
+      "discard": "Scarta le modifiche"
+    },
+    "patterns": {
+      "title": "Schemi",
+      "new": "Nuovo schema",
+      "newTitle": "Nuovo schema",
+      "drafting": "Stai preparando un nuovo schema. Aggiungi almeno due fermate.",
+      "direction0": "Andata",
+      "direction1": "Ritorno",
+      "directionNone": "Senza direzione",
+      "none": "Questa linea non ha ancora nessuno schema.",
+      "duplicate": "Duplica lo schema",
+      "delete": "Elimina lo schema",
+      "deleteTitle": "Eliminare lo schema?",
+      "create": "Crea lo schema"
+    },
+    "meta": {
+      "headsign": "Destinazione",
+      "direction": "Direzione",
+      "firstDeparture": "Prima partenza",
+      "copyHint": {
+        "one": "{count} corsa verrà copiata con le stesse partenze.",
+        "other": "{count} corse verranno copiate con le stesse partenze."
+      },
+      "retime": {
+        "one": "Ricalcola {count} corsa con questi tempi",
+        "other": "Ricalcola tutte le {count} corse con questi tempi"
+      },
+      "affects": {
+        "one": "La modifica si applica a {count} corsa.",
+        "other": "La modifica si applica a tutte le {count} corse."
+      }
+    },
+    "stops": {
+      "search": "Cerca una fermata",
+      "add": "Aggiungi",
+      "insertAfter": "Verrà inserita dopo «{name}»",
+      "insertAtEnd": "Verrà aggiunta alla fine",
+      "list": "Fermate dello schema",
+      "handle": "Riordina {name}",
+      "handleHint": "Trascina, oppure usa le frecce su e giù",
+      "travel": "Percorrenza",
+      "dwell": "Sosta",
+      "remove": "Rimuovi {name}",
+      "new": "nuova",
+      "added": "{name} aggiunta",
+      "moved": "{name} ora è la fermata {position}",
+      "removed": "{name} rimossa"
+    },
+    "map": {
+      "mode": "Modalità della mappa",
+      "modeStops": "Sposta fermate",
+      "modeAdd": "Aggiungi fermata",
+      "modeShape": "Tracciato",
+      "hint": {
+        "stops": "Trascina una fermata per spostarla. Clicca un punto grigio per aggiungerlo allo schema.",
+        "add": "Clicca sulla mappa per creare una nuova fermata in quel punto.",
+        "shape": "Trascina i vertici, clicca sulla linea per aggiungerne uno e fai clic destro per eliminarne uno."
+      }
+    },
+    "shape": {
+      "straight": "Linee rette tra le fermate",
+      "summary": "{points} punti · {length}",
+      "none": "Questo schema non ha un tracciato. Generalo dalle sue fermate.",
+      "id": "ID del tracciato",
+      "idHint": "Se altri schemi condividono il tracciato, usa un nuovo ID.",
+      "save": "Salva il tracciato",
+      "saveFirst": "Salva prima le modifiche alle fermate."
+    },
+    "newStop": {
+      "title": "Nuova fermata",
+      "create": "Crea la fermata",
+      "name": "Nome",
+      "join": "Aggiungila allo schema",
+      "idRequired": "Serve un ID.",
+      "taken": "Esiste già una fermata con questo ID."
+    },
+    "timetable": {
+      "service": "Servizio",
+      "allServices": "Tutti i servizi",
+      "selectAll": "Seleziona tutto",
+      "clearSelection": "Deseleziona",
+      "selected": {
+        "one": "{count} corsa selezionata",
+        "other": "{count} corse selezionate"
+      },
+      "selectHint": "Seleziona le corse con le caselle dell'intestazione.",
+      "minutes": "Minuti",
+      "earlier": "Anticipa",
+      "later": "Ritarda",
+      "clone": "Clona",
+      "cloneOne": "Per clonare, seleziona una sola corsa.",
+      "cloneTitle": "Clona la corsa",
+      "offset": "Scostamento (minuti)",
+      "offsetHint": "Negativo per partire prima.",
+      "sameService": "Lo stesso servizio",
+      "changeService": "Cambia servizio",
+      "serviceTitle": {
+        "one": "Cambia il servizio di {count} corsa",
+        "other": "Cambia il servizio di {count} corse"
+      },
+      "apply": "Applica",
+      "expand": "Espandi in corse",
+      "expandTitle": "Espandi le frequenze",
+      "expandHint": {
+        "one": "Verrà creata una corsa per ogni partenza di {count} corsa a frequenza e il modello verrà eliminato.",
+        "other": "Verrà creata una corsa per ogni partenza di {count} corse a frequenza e i modelli verranno eliminati."
+      },
+      "includeInexact": "Includi anche le frequenze non esatte",
+      "deleteTitle": {
+        "one": "Eliminare {count} corsa?",
+        "other": "Eliminare {count} corse?"
+      },
+      "grid": "Orari dello schema",
+      "keys": "Frecce: muovi · Invio o una cifra: modifica (0630 è 06:30; 2530 supera la mezzanotte) · Tab: avanti · Esc: annulla · Canc: svuota · Spazio: seleziona la corsa",
+      "saveFirst": "Salva le modifiche alle fermate per modificare gli orari."
+    },
+    "grid": {
+      "stopTrip": "Fermata / corsa",
+      "selectTrip": "Seleziona la corsa {trip}",
+      "editTime": "Orario di {stop} nella corsa {trip}",
+      "backwards": "Questo orario è precedente a quello di una fermata precedente.",
+      "frequencyHint": "Corsa a frequenza: gli orari sono relativi a ogni partenza.",
+      "everyWindow": "Ogni {minutes} min dalle {from} alle {to}",
+      "failed": "Non è stato possibile salvare la modifica.",
+      "needsTime": "La prima e l'ultima fermata richiedono un orario."
+    },
+    "delete": {
+      "title": "Eliminare?",
+      "titleTable": "Eliminare da {table}?",
+      "about": "{names} verrà eliminato.",
+      "dependsOnIt": "Alcuni dati dipendono da questo:",
+      "nothing": "Nient'altro dipende da questo.",
+      "detached": "Restano, ma perdono il collegamento:",
+      "reassignHint": "Oppure assegna ciò che ne dipende a un'altra riga prima di eliminarla.",
+      "reassignTo": "Riassegna a ({table})",
+      "reassignAndDelete": "Riassegna ed elimina",
+      "withDependents": {
+        "one": "Elimina con {count} riga dipendente",
+        "other": "Elimina con {count} righe dipendenti"
+      }
+    },
+    "errors": {
+      "unknownStop": "Questa fermata non esiste.",
+      "unknownService": "Questo servizio non esiste.",
+      "tripIdTaken": "Esiste già una corsa con questo ID.",
+      "shapeIdTaken": "Esiste già un tracciato con questo ID.",
+      "negativeTime": "Nessun orario può finire prima delle 00:00.",
+      "tooMany": "Verrebbero create troppe corse."
     }
   }
 }

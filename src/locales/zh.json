@@ -1153,7 +1153,39 @@
         "update": "已修改数据源信息"
       },
       "trips": {
-        "generate": "已创建 {trips} 个车次和 {stopTimes} 条停靠时间"
+        "generate": "已创建 {trips} 个车次和 {stopTimes} 条停靠时间",
+        "service": "运营日已改为“{service}”"
+      },
+      "pattern": {
+        "update": "已编辑停靠模式",
+        "delete": "已删除停靠模式",
+        "create": "已创建停靠模式",
+        "duplicate": "已复制停靠模式"
+      },
+      "shape": {
+        "save": "已保存线形",
+        "saveNamed": "已保存线形“{name}”"
+      },
+      "stop": {
+        "move": "站点已移动 {meters} 米",
+        "moveNamed": "站点“{name}”已移动 {meters} 米"
+      },
+      "timetable": {
+        "edit": "已编辑时刻表",
+        "shift": "时间已平移 {minutes} 分钟"
+      },
+      "trip": {
+        "clone": "已克隆班次",
+        "cloneNamed": "已克隆班次“{name}”"
+      },
+      "frequencies": {
+        "expand": "已将发车间隔展开为班次"
+      },
+      "delete": {
+        "cascade": "已连同依赖数据删除",
+        "cascadeNamed": "已连同依赖数据删除“{name}”",
+        "reassign": "已改指向后删除",
+        "reassignNamed": "已改指向后删除“{name}”"
       }
     },
     "history": {
@@ -1391,6 +1423,162 @@
     "map": {
       "showZones": "显示灵活区域",
       "hideZones": "隐藏灵活区域"
+    }
+  },
+  "editor": {
+    "back": "返回线路",
+    "title": "编辑线路 {route}",
+    "subtitle": "停靠模式、站点、时刻表和线形。每项更改都可以撤销。",
+    "tabsLabel": "编辑器分区",
+    "tabs": {
+      "stops": "站点和地图",
+      "timetable": "时刻表"
+    },
+    "discard": "放弃",
+    "unsaved": {
+      "title": "放弃更改?",
+      "body": "此停靠模式有未保存的更改。继续将丢失这些更改。",
+      "discard": "放弃更改"
+    },
+    "patterns": {
+      "title": "停靠模式",
+      "new": "新建停靠模式",
+      "newTitle": "新建停靠模式",
+      "drafting": "你正在起草新的停靠模式。请至少添加两个站点。",
+      "direction0": "去程",
+      "direction1": "返程",
+      "directionNone": "无方向",
+      "none": "此线路还没有停靠模式。",
+      "duplicate": "复制停靠模式",
+      "delete": "删除停靠模式",
+      "deleteTitle": "删除停靠模式?",
+      "create": "创建停靠模式"
+    },
+    "meta": {
+      "headsign": "终点站标识",
+      "direction": "方向",
+      "firstDeparture": "首班发车",
+      "copyHint": {
+        "other": "将复制 {count} 个班次,发车时间相同。"
+      },
+      "retime": {
+        "other": "按这些时间重新计算 {count} 个班次"
+      },
+      "affects": {
+        "other": "此更改适用于 {count} 个班次。"
+      }
+    },
+    "stops": {
+      "search": "搜索站点",
+      "add": "添加",
+      "insertAfter": "将插入到“{name}”之后",
+      "insertAtEnd": "将添加到末尾",
+      "list": "停靠模式的站点",
+      "handle": "重新排序 {name}",
+      "handleHint": "拖动,或使用向上和向下方向键",
+      "travel": "行驶时间",
+      "dwell": "停留时间",
+      "remove": "移除 {name}",
+      "new": "新",
+      "added": "已添加 {name}",
+      "moved": "{name} 现在是第 {position} 站",
+      "removed": "已移除 {name}"
+    },
+    "map": {
+      "mode": "地图模式",
+      "modeStops": "移动站点",
+      "modeAdd": "添加站点",
+      "modeShape": "线形",
+      "hint": {
+        "stops": "拖动站点即可移动。点击灰色圆点可将其加入停靠模式。",
+        "add": "点击地图,在该位置创建新站点。",
+        "shape": "拖动顶点,点击线段添加顶点,右键点击删除顶点。"
+      }
+    },
+    "shape": {
+      "straight": "站点之间用直线连接",
+      "summary": "{points} 个点 · {length}",
+      "none": "此停靠模式没有线形。请根据站点生成。",
+      "id": "线形 ID",
+      "idHint": "如果其他停靠模式共用该线形,请使用新的 ID。",
+      "save": "保存线形",
+      "saveFirst": "请先保存站点的更改。"
+    },
+    "newStop": {
+      "title": "新站点",
+      "create": "创建站点",
+      "name": "名称",
+      "join": "加入停靠模式",
+      "idRequired": "需要填写 ID。",
+      "taken": "已存在使用此 ID 的站点。"
+    },
+    "timetable": {
+      "service": "运营日",
+      "allServices": "全部运营日",
+      "selectAll": "全选",
+      "clearSelection": "清除选择",
+      "selected": {
+        "other": "已选择 {count} 个班次"
+      },
+      "selectHint": "使用表头的复选框选择班次。",
+      "minutes": "分钟",
+      "earlier": "提前",
+      "later": "推迟",
+      "clone": "克隆",
+      "cloneOne": "要克隆,请只选择一个班次。",
+      "cloneTitle": "克隆班次",
+      "offset": "偏移(分钟)",
+      "offsetHint": "负数表示提前发车。",
+      "sameService": "相同运营日",
+      "changeService": "更改运营日",
+      "serviceTitle": {
+        "other": "更改 {count} 个班次的运营日"
+      },
+      "apply": "应用",
+      "expand": "展开为班次",
+      "expandTitle": "展开发车间隔",
+      "expandHint": {
+        "other": "将为 {count} 个按间隔运行的班次的每次发车创建一个班次,并删除其模板。"
+      },
+      "includeInexact": "同时包含非精确的发车间隔",
+      "deleteTitle": {
+        "other": "删除 {count} 个班次?"
+      },
+      "grid": "停靠模式的时刻表",
+      "keys": "方向键:移动 · Enter 或数字:编辑(0630 即 06:30;2530 表示过午夜)· Tab:下一格 · Esc:取消 · Delete:清空 · 空格:选择班次",
+      "saveFirst": "请先保存站点的更改,再编辑时刻表。"
+    },
+    "grid": {
+      "stopTrip": "站点 / 班次",
+      "selectTrip": "选择班次 {trip}",
+      "editTime": "班次 {trip} 在 {stop} 的时间",
+      "backwards": "此时间早于前一站的时间。",
+      "frequencyHint": "按间隔运行的班次:时间相对于每次发车。",
+      "everyWindow": "{from} 至 {to},每 {minutes} 分钟",
+      "failed": "无法保存此更改。",
+      "needsTime": "首站和末站需要填写时间。"
+    },
+    "delete": {
+      "title": "删除?",
+      "titleTable": "从 {table} 中删除?",
+      "about": "将删除 {names}。",
+      "dependsOnIt": "有数据依赖于它:",
+      "nothing": "没有其他内容依赖于它。",
+      "detached": "这些会保留,但会失去关联:",
+      "reassignHint": "或者在删除前,把依赖它的内容改指向另一行。",
+      "reassignTo": "改指向 ({table})",
+      "reassignAndDelete": "改指向并删除",
+      "withDependents": {
+        "other": "连同 {count} 行依赖数据一起删除"
+      }
+    },
+    "errors": {
+      "unknownStop": "此站点不存在。",
+      "unknownService": "此运营日不存在。",
+      "tripIdTaken": "已存在使用此 ID 的班次。",
+      "shapeIdTaken": "已存在使用此 ID 的线形。",
+      "negativeTime": "时间不能早于 00:00。",
+      "tooMany": "这将创建过多班次。"
     }
   }
 }

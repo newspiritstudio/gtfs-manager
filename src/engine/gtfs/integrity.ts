@@ -58,7 +58,7 @@ function groupOf(table: GtfsTable): GtfsTable[] {
   return KEY_GROUPS.find((g) => g.includes(table)) ?? [table];
 }
 
-/** Every reference between the files, read from the specification . */
+/** Every reference between the files, read from the specification. */
 export function referencesFromSpec(): Reference[] {
   const refs = new Map<string, Reference>();
   const add = (table: GtfsTable, field: string, target: string, key?: string) => {
