@@ -15,7 +15,9 @@ import { dedupeRouteBadges, groupRoutes } from '@/features/routes/groupRoutes';
 import { formatNumber } from '@/lib/i18n/format';
 import { useI18n } from '@/lib/i18n/client';
 import { cn } from '@/lib/utils';
+import MapModeSelect, { type MapMode } from './MapModeSelect';
 import NetworkError from './NetworkError';
+import ServiceModeView from './ServiceModeView';
 import { useNetwork } from './useNetwork';
 
 /** The full-screen map: line filter, stops scaled by volume and the stop panel. */
@@ -27,6 +29,7 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
   const [hoverGroup, setHoverGroup] = useState<string[] | null>(null);
   const [showStops, setShowStops] = useState(true);
   const [stop, setStop] = useState<NetworkStop | null>(null);
+  const [mode, setMode] = useState<MapMode>('lines');
   const [panelOpen, setPanelOpen] = useState(true);
   const { snapshot } = useRealtime(feedId);
   const [showVehicles, setShowVehicles] = useState(true);
@@ -88,6 +91,9 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
     ? dedupeRouteBadges(groupRoutes(stop.routeIds.map((id) => routeById.get(id)!).filter(Boolean)))
     : [];
 
+  if (mode !== 'lines')
+    return <ServiceModeView feedId={feedId} mode={mode} onModeChange={setMode} />;
+
   return (
     <div className="absolute inset-0 overflow-hidden md:rounded-lg">
       {data ? (
@@ -123,6 +129,7 @@ export default function NetworkExplorer({ feedId }: { feedId: string }) {
           <section className="pointer-events-auto flex max-h-full min-h-0 flex-col rounded-lg bg-surface-container">
             <header className="flex items-center gap-2 px-4 pt-3">
               <h1 className="flex-1 text-title-medium text-on-surface">{t('map.lines')}</h1>
+              <MapModeSelect value={mode} onChange={setMode} />
               {vehicles ? (
                 <IconButton
                   label={showVehicles ? t('map.hideVehicles') : t('map.showVehicles')}

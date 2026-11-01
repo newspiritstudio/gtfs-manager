@@ -1026,5 +1026,149 @@
       "reload": "Recarga",
       "offlineReady": "La aplicación ya funciona sin conexión"
     }
+  },
+  "compare": {
+    "title": "Comparar versiones",
+    "action": "Comparar",
+    "subtitle": "{base} → {other}",
+    "pickSubtitle": "Elige la otra versión del feed. La más antigua es la base y se muestra qué ha cambiado en la más nueva.",
+    "needTwo": "Todavía no hay nada con qué comparar",
+    "needTwoHint": "Importa otra versión de este feed (por ejemplo, el próximo horario) para ver qué ha cambiado entre las dos.",
+    "base": "Base (versión más antigua)",
+    "other": "Comparar con (versión más nueva)",
+    "swap": "Intercambiar base y comparación",
+    "noPeriod": "Sin periodo de servicio",
+    "identical": "Los dos feeds son idénticos en todo lo que se compara.",
+    "category": {
+      "agencies": "Agencias",
+      "routes": "Líneas",
+      "stops": "Paradas",
+      "trips": "Viajes",
+      "services": "Servicios",
+      "shapes": "Trazados",
+      "renames": "Ids renombrados"
+    },
+    "status": {
+      "added": "Añadido",
+      "removed": "Eliminado",
+      "changed": "Cambiado"
+    },
+    "unchanged": {
+      "one": "{count} sin cambios",
+      "other": "{count} sin cambios"
+    },
+    "serviceTitle": "Viajes por día",
+    "serviceSubtitle": "Media diaria: {base} viajes en la base, {other} en el otro feed",
+    "overlap": "{days} días en común, {differing} con un número de viajes distinto.",
+    "noOverlap": "Los dos feeds no comparten ningún día.",
+    "chartLabel": "Viajes por día en cada feed",
+    "noDays": "No hay días con servicio que dibujar.",
+    "hideTable": "Ocultar la tabla",
+    "showTable": "Mostrar la tabla",
+    "differingDays": "Días con un número de viajes distinto",
+    "noDifferingDays": "Ningún día tiene un número de viajes distinto.",
+    "feedInfo": "Periodo de validez (feed_info)",
+    "feedInfoSame": "feed_info no ha cambiado.",
+    "highlights": "Cambios más grandes",
+    "noHighlights": "No hay cambios grandes que destacar.",
+    "movedStops": "Paradas que más se han movido",
+    "timingShifts": "Mayores cambios de horario",
+    "details": "Diferencias por categoría",
+    "filterKind": "Tipo de cambio",
+    "search": "Buscar por id o nombre",
+    "results": {
+      "one": "{count} diferencia",
+      "other": "{count} diferencias"
+    },
+    "noDifferences": "Aquí no hay diferencias",
+    "renamesGuess": "Estos pares son una suposición: una parada que ha desaparecido y otra con el mismo nombre a menos de 20 m. Compruébalos antes de fiarte.",
+    "guess": "Suposición",
+    "empty": "(vacío)",
+    "moved": "Movida {distance}",
+    "tripsFromTo": "Viajes: {from} → {to}",
+    "tripsAdded": {
+      "one": "{count} viaje añadido",
+      "other": "{count} viajes añadidos"
+    },
+    "tripsRemoved": {
+      "one": "{count} viaje eliminado",
+      "other": "{count} viajes eliminados"
+    },
+    "tripsChanged": {
+      "one": "{count} viaje cambiado",
+      "other": "{count} viajes cambiados"
+    },
+    "stopsDelta": "Paradas: +{added} / −{removed}",
+    "timing": "Horarios {shift} de media en {count} paradas (hasta {max})",
+    "exceptionsDelta": "Fechas de excepción: +{added} / −{removed}",
+    "shapeFromTo": "{points} puntos, {length}",
+    "shapeSize": "{points} puntos, {length}",
+    "onRoute": "en la línea {route}",
+    "pattern": {
+      "added": "Patrón nuevo",
+      "removed": "Patrón eliminado"
+    },
+    "morePatterns": {
+      "one": "{count} patrón más",
+      "other": "{count} patrones más"
+    },
+    "mapLabel": "Mapa de las diferencias de paradas",
+    "mapNone": "No se ha añadido, eliminado ni movido ninguna parada.",
+    "legendAdded": {
+      "one": "{count} parada añadida",
+      "other": "{count} paradas añadidas"
+    },
+    "legendRemoved": {
+      "one": "{count} parada eliminada (anillo vacío)",
+      "other": "{count} paradas eliminadas (anillo vacío)"
+    },
+    "legendMoved": {
+      "one": "{count} parada movida (línea de puntos de la antigua a la nueva)",
+      "other": "{count} paradas movidas (línea de puntos de la antigua a la nueva)"
+    }
+  },
+  "outputs": {
+    "exportZip": "GTFS (ZIP)",
+    "exportGeojson": "GeoJSON (paradas y líneas)",
+    "printTimetable": "Imprimir horarios",
+    "printTitle": "Horario para imprimir",
+    "print": "Imprimir o guardar en PDF",
+    "printHint": "Usa Imprimir del navegador y elige «Guardar como PDF» para obtener un archivo. Solo se imprime la hoja de abajo.",
+    "note": "Nota para la hoja",
+    "back": "Volver",
+    "forDate": "Horario del {date}",
+    "validity": "Vigente del {start} al {end}",
+    "towards": "Dirección {headsign}",
+    "direction": "Sentido",
+    "tripCount": {
+      "one": "{count} viaje",
+      "other": "{count} viajes"
+    },
+    "stop": "Parada",
+    "hour": "Hora",
+    "minutes": "Minutos",
+    "noService": "Este día no hay servicio.",
+    "mapMode": "Modo del mapa",
+    "mode": {
+      "lines": "Líneas",
+      "frequency": "Frecuencia",
+      "coverage": "Cobertura"
+    },
+    "from": "Desde",
+    "to": "Hasta",
+    "windowInvalid": "El final debe ser posterior al inicio.",
+    "radius": "Radio a pie",
+    "loading": "Cargando…",
+    "noServiceWindow": "No hay servicio entre las {from} y las {to} este día.",
+    "segmentsSummary": "{segments} tramos y {stops} paradas con servicio.",
+    "coverageSummary": "{stops} paradas con servicio; área a menos de {radius} m.",
+    "legendFrequency": "Viajes por hora",
+    "legendCoverage": "A menos de {radius} m de una parada con servicio",
+    "window": "Franja {from}–{to}",
+    "tripsPerHourValue": "{value} viajes por hora",
+    "callsInWindow": {
+      "one": "{count} viaje en la franja",
+      "other": "{count} viajes en la franja"
+    }
   }
 }

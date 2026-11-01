@@ -6,6 +6,7 @@ import {
   Clock,
   MapPin,
   Navigation,
+  Printer,
 } from 'lucide-react';
 import { Link, useRefreshKey, useRouter } from '@/lib/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -15,7 +16,7 @@ import CalendarHeatmap from '@/components/charts/CalendarHeatmap';
 import HourBars from '@/components/charts/HourBars';
 import { RouteMap } from '@/components/map';
 import Badge from '@/components/ui/Badge';
-import Button from '@/components/ui/Button';
+import Button, { ButtonLink } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import DateStepper from '@/components/ui/DateStepper';
 import RouteBadge from '@/components/ui/RouteBadge';
@@ -152,6 +153,13 @@ function StopDetailBody({ feedId, detail }: { feedId: string; detail: StopDetail
               </p>
             ) : null}
           </div>
+          <ButtonLink
+            href={`/feeds/${feedId}/stops/${encodeURIComponent(stop.stopId)}/print`}
+            variant="outline"
+          >
+            <Printer />
+            {t('outputs.printTimetable')}
+          </ButtonLink>
         </div>
         {groups.length ? (
           <div className="mt-4 flex flex-wrap gap-1.5">

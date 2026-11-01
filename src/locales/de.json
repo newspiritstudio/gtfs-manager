@@ -1026,5 +1026,149 @@
       "reload": "Neu laden",
       "offlineReady": "Die App funktioniert jetzt offline"
     }
+  },
+  "compare": {
+    "title": "Versionen vergleichen",
+    "action": "Vergleichen",
+    "subtitle": "{base} → {other}",
+    "pickSubtitle": "Wählen Sie die andere Version des Feeds. Die ältere ist die Basis, angezeigt wird, was sich in der neueren geändert hat.",
+    "needTwo": "Es gibt noch nichts zum Vergleichen",
+    "needTwoHint": "Importieren Sie eine weitere Version dieses Feeds (zum Beispiel den nächsten Fahrplan), um die Unterschiede zu sehen.",
+    "base": "Basis (ältere Version)",
+    "other": "Vergleichen mit (neuere Version)",
+    "swap": "Basis und Vergleich tauschen",
+    "noPeriod": "Kein Betriebszeitraum",
+    "identical": "Die beiden Feeds sind in allem Verglichenen identisch.",
+    "category": {
+      "agencies": "Betreiber",
+      "routes": "Linien",
+      "stops": "Haltestellen",
+      "trips": "Fahrten",
+      "services": "Verkehrstage",
+      "shapes": "Linienverläufe",
+      "renames": "Umbenannte IDs"
+    },
+    "status": {
+      "added": "Hinzugefügt",
+      "removed": "Entfernt",
+      "changed": "Geändert"
+    },
+    "unchanged": {
+      "one": "{count} unverändert",
+      "other": "{count} unverändert"
+    },
+    "serviceTitle": "Fahrten pro Tag",
+    "serviceSubtitle": "Tagesdurchschnitt: {base} Fahrten in der Basis, {other} im anderen Feed",
+    "overlap": "{days} gemeinsame Tage, davon {differing} mit abweichender Fahrtenzahl.",
+    "noOverlap": "Die beiden Feeds haben keinen gemeinsamen Tag.",
+    "chartLabel": "Fahrten pro Tag in jedem Feed",
+    "noDays": "Keine Betriebstage zum Darstellen.",
+    "hideTable": "Tabelle ausblenden",
+    "showTable": "Tabelle anzeigen",
+    "differingDays": "Tage mit abweichender Fahrtenzahl",
+    "noDifferingDays": "Kein Tag hat eine abweichende Fahrtenzahl.",
+    "feedInfo": "Gültigkeitszeitraum (feed_info)",
+    "feedInfoSame": "feed_info hat sich nicht geändert.",
+    "highlights": "Größte Änderungen",
+    "noHighlights": "Keine größeren Änderungen hervorzuheben.",
+    "movedStops": "Am stärksten verschobene Haltestellen",
+    "timingShifts": "Größte Zeitverschiebungen",
+    "details": "Unterschiede nach Kategorie",
+    "filterKind": "Art der Änderung",
+    "search": "Nach ID oder Name suchen",
+    "results": {
+      "one": "{count} Unterschied",
+      "other": "{count} Unterschiede"
+    },
+    "noDifferences": "Hier gibt es keine Unterschiede",
+    "renamesGuess": "Diese Paare sind eine Vermutung: eine verschwundene Haltestelle und eine gleichnamige im Abstand von unter 20 m. Prüfen Sie sie, bevor Sie sich darauf verlassen.",
+    "guess": "Vermutung",
+    "empty": "(leer)",
+    "moved": "Um {distance} verschoben",
+    "tripsFromTo": "Fahrten: {from} → {to}",
+    "tripsAdded": {
+      "one": "{count} Fahrt hinzugefügt",
+      "other": "{count} Fahrten hinzugefügt"
+    },
+    "tripsRemoved": {
+      "one": "{count} Fahrt entfernt",
+      "other": "{count} Fahrten entfernt"
+    },
+    "tripsChanged": {
+      "one": "{count} Fahrt geändert",
+      "other": "{count} Fahrten geändert"
+    },
+    "stopsDelta": "Haltestellen: +{added} / −{removed}",
+    "timing": "Zeiten {shift} im Schnitt an {count} Haltestellen (bis zu {max})",
+    "exceptionsDelta": "Ausnahmedaten: +{added} / −{removed}",
+    "shapeFromTo": "{points} Punkte, {length}",
+    "shapeSize": "{points} Punkte, {length}",
+    "onRoute": "auf Linie {route}",
+    "pattern": {
+      "added": "Neues Muster",
+      "removed": "Entferntes Muster"
+    },
+    "morePatterns": {
+      "one": "{count} weiteres Muster",
+      "other": "{count} weitere Muster"
+    },
+    "mapLabel": "Karte der Haltestellenunterschiede",
+    "mapNone": "Es wurden keine Haltestellen hinzugefügt, entfernt oder verschoben.",
+    "legendAdded": {
+      "one": "{count} Haltestelle hinzugefügt",
+      "other": "{count} Haltestellen hinzugefügt"
+    },
+    "legendRemoved": {
+      "one": "{count} Haltestelle entfernt (leerer Ring)",
+      "other": "{count} Haltestellen entfernt (leerer Ring)"
+    },
+    "legendMoved": {
+      "one": "{count} Haltestelle verschoben (gestrichelte Linie von alt nach neu)",
+      "other": "{count} Haltestellen verschoben (gestrichelte Linie von alt nach neu)"
+    }
+  },
+  "outputs": {
+    "exportZip": "GTFS (ZIP)",
+    "exportGeojson": "GeoJSON (Haltestellen und Linien)",
+    "printTimetable": "Fahrplan drucken",
+    "printTitle": "Druckbarer Fahrplan",
+    "print": "Drucken / Als PDF speichern",
+    "printHint": "Nutzen Sie die Druckfunktion des Browsers und wählen Sie „Als PDF speichern“, um eine Datei zu erhalten. Gedruckt wird nur das Blatt unten.",
+    "note": "Notiz für das Blatt",
+    "back": "Zurück",
+    "forDate": "Fahrplan für {date}",
+    "validity": "Gültig vom {start} bis {end}",
+    "towards": "Richtung {headsign}",
+    "direction": "Richtung",
+    "tripCount": {
+      "one": "{count} Fahrt",
+      "other": "{count} Fahrten"
+    },
+    "stop": "Haltestelle",
+    "hour": "Stunde",
+    "minutes": "Minuten",
+    "noService": "An diesem Tag gibt es keinen Betrieb.",
+    "mapMode": "Kartenmodus",
+    "mode": {
+      "lines": "Linien",
+      "frequency": "Taktdichte",
+      "coverage": "Abdeckung"
+    },
+    "from": "Von",
+    "to": "Bis",
+    "windowInvalid": "Das Ende muss nach dem Beginn liegen.",
+    "radius": "Gehradius",
+    "loading": "Wird geladen…",
+    "noServiceWindow": "Zwischen {from} und {to} gibt es an diesem Tag keinen Betrieb.",
+    "segmentsSummary": "{segments} Abschnitte und {stops} bediente Haltestellen.",
+    "coverageSummary": "{stops} bediente Haltestellen; Gebiet im Umkreis von {radius} m.",
+    "legendFrequency": "Fahrten pro Stunde",
+    "legendCoverage": "Im Umkreis von {radius} m einer bedienten Haltestelle",
+    "window": "Zeitfenster {from}–{to}",
+    "tripsPerHourValue": "{value} Fahrten pro Stunde",
+    "callsInWindow": {
+      "one": "{count} Fahrt im Zeitfenster",
+      "other": "{count} Fahrten im Zeitfenster"
+    }
   }
 }

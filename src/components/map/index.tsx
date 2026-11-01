@@ -16,3 +16,5 @@ function lazyMap<P extends object>(load: () => Promise<{ default: ComponentType<
 export const NetworkMap = lazyMap(() => import('./NetworkMap'));
 export const RouteMap = lazyMap(() => import('./RouteMap'));
 export const PointPickerMap = lazyMap(() => import('./PointPickerMap'));
+export const CompareMap = lazyMap(() => import('./CompareMap'));
+export const ServiceMap = lazyMap(() => import('./ServiceMap'));

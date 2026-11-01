@@ -1002,5 +1002,138 @@
       "reload": "再読み込み",
       "offlineReady": "アプリがオフラインで使えるようになりました"
     }
+  },
+  "compare": {
+    "title": "バージョンを比較",
+    "action": "比較",
+    "subtitle": "{base} → {other}",
+    "pickSubtitle": "もう一方のバージョンを選んでください。古い方が基準となり、新しい方での変更点が表示されます。",
+    "needTwo": "比較できるものがまだありません",
+    "needTwoHint": "このフィードの別バージョン(たとえば次のダイヤ)を取り込むと、両者の違いを確認できます。",
+    "base": "基準(古いバージョン)",
+    "other": "比較先(新しいバージョン)",
+    "swap": "基準と比較先を入れ替える",
+    "noPeriod": "運行期間なし",
+    "identical": "比較した範囲では、2つのフィードは同一です。",
+    "category": {
+      "agencies": "事業者",
+      "routes": "路線",
+      "stops": "停留所",
+      "trips": "便",
+      "services": "運行パターン",
+      "shapes": "形状",
+      "renames": "ID の変更"
+    },
+    "status": {
+      "added": "追加",
+      "removed": "削除",
+      "changed": "変更"
+    },
+    "unchanged": {
+      "other": "変更なし {count}"
+    },
+    "serviceTitle": "1日あたりの便数",
+    "serviceSubtitle": "1日平均:基準 {base} 便、比較先 {other} 便",
+    "overlap": "共通する {days} 日のうち {differing} 日は便数が異なります。",
+    "noOverlap": "2つのフィードに共通する日はありません。",
+    "chartLabel": "各フィードの1日あたりの便数",
+    "noDays": "グラフにする運行日がありません。",
+    "hideTable": "表を隠す",
+    "showTable": "表を表示",
+    "differingDays": "便数が異なる日",
+    "noDifferingDays": "便数が異なる日はありません。",
+    "feedInfo": "有効期間(feed_info)",
+    "feedInfoSame": "feed_info に変更はありません。",
+    "highlights": "主な変更",
+    "noHighlights": "目立った変更はありません。",
+    "movedStops": "移動が大きい停留所",
+    "timingShifts": "時刻の変化が大きい便",
+    "details": "カテゴリ別の違い",
+    "filterKind": "変更の種類",
+    "search": "ID または名前で検索",
+    "results": {
+      "other": "{count} 件の違い"
+    },
+    "noDifferences": "ここに違いはありません",
+    "renamesGuess": "これらの組み合わせは推測です。消えた停留所と、20 m 未満に同名の停留所がある場合です。信頼する前に確認してください。",
+    "guess": "推測",
+    "empty": "(空)",
+    "moved": "{distance} 移動",
+    "tripsFromTo": "便数:{from} → {to}",
+    "tripsAdded": {
+      "other": "{count} 便追加"
+    },
+    "tripsRemoved": {
+      "other": "{count} 便削除"
+    },
+    "tripsChanged": {
+      "other": "{count} 便変更"
+    },
+    "stopsDelta": "停留所:+{added} / −{removed}",
+    "timing": "{count} か所の停留所で平均 {shift}(最大 {max})",
+    "exceptionsDelta": "例外日:+{added} / −{removed}",
+    "shapeFromTo": "{points} 点、{length}",
+    "shapeSize": "{points} 点、{length}",
+    "onRoute": "路線 {route}",
+    "pattern": {
+      "added": "新しいパターン",
+      "removed": "削除されたパターン"
+    },
+    "morePatterns": {
+      "other": "ほか {count} パターン"
+    },
+    "mapLabel": "停留所の違いの地図",
+    "mapNone": "追加・削除・移動された停留所はありません。",
+    "legendAdded": {
+      "other": "追加 {count} か所"
+    },
+    "legendRemoved": {
+      "other": "削除 {count} か所(中空の円)"
+    },
+    "legendMoved": {
+      "other": "移動 {count} か所(旧位置から新位置への破線)"
+    }
+  },
+  "outputs": {
+    "exportZip": "GTFS (ZIP)",
+    "exportGeojson": "GeoJSON(停留所と路線)",
+    "printTimetable": "時刻表を印刷",
+    "printTitle": "印刷用時刻表",
+    "print": "印刷 / PDF として保存",
+    "printHint": "ブラウザーの印刷機能で「PDF として保存」を選ぶとファイルにできます。印刷されるのは下のシートだけです。",
+    "note": "シートへのメモ",
+    "back": "戻る",
+    "forDate": "{date} の時刻表",
+    "validity": "有効期間:{start} ~ {end}",
+    "towards": "{headsign} 方面",
+    "direction": "方向",
+    "tripCount": {
+      "other": "{count} 便"
+    },
+    "stop": "停留所",
+    "hour": "時",
+    "minutes": "分",
+    "noService": "この日は運行がありません。",
+    "mapMode": "地図モード",
+    "mode": {
+      "lines": "路線",
+      "frequency": "運行頻度",
+      "coverage": "カバー範囲"
+    },
+    "from": "開始",
+    "to": "終了",
+    "windowInvalid": "終了は開始より後にしてください。",
+    "radius": "徒歩圏の半径",
+    "loading": "読み込み中…",
+    "noServiceWindow": "この日の {from} ~ {to} に運行はありません。",
+    "segmentsSummary": "運行のある区間 {segments}、停留所 {stops}。",
+    "coverageSummary": "運行のある停留所 {stops}、半径 {radius} m 以内の範囲。",
+    "legendFrequency": "1時間あたりの便数",
+    "legendCoverage": "運行のある停留所から {radius} m 以内",
+    "window": "時間帯 {from}–{to}",
+    "tripsPerHourValue": "1時間あたり {value} 便",
+    "callsInWindow": {
+      "other": "時間帯内 {count} 便"
+    }
   }
 }

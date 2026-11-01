@@ -1002,5 +1002,138 @@
       "reload": "重新加载",
       "offlineReady": "应用现已可离线使用"
     }
+  },
+  "compare": {
+    "title": "比较版本",
+    "action": "比较",
+    "subtitle": "{base} → {other}",
+    "pickSubtitle": "选择该数据源的另一个版本。较旧的为基准,并显示较新版本中的变化。",
+    "needTwo": "暂时没有可比较的内容",
+    "needTwoHint": "导入该数据源的另一个版本(例如下一期时刻表),即可查看两者之间的变化。",
+    "base": "基准(较旧版本)",
+    "other": "比较对象(较新版本)",
+    "swap": "交换基准与比较对象",
+    "noPeriod": "无运营期间",
+    "identical": "在比较的所有内容上,两个数据源完全相同。",
+    "category": {
+      "agencies": "运营机构",
+      "routes": "线路",
+      "stops": "站点",
+      "trips": "班次",
+      "services": "服务日历",
+      "shapes": "线形",
+      "renames": "重命名的 ID"
+    },
+    "status": {
+      "added": "新增",
+      "removed": "删除",
+      "changed": "变更"
+    },
+    "unchanged": {
+      "other": "未变化 {count}"
+    },
+    "serviceTitle": "每日班次",
+    "serviceSubtitle": "日均:基准 {base} 班,另一个 {other} 班",
+    "overlap": "共有 {days} 天,其中 {differing} 天班次数不同。",
+    "noOverlap": "两个数据源没有共同的日期。",
+    "chartLabel": "各数据源的每日班次",
+    "noDays": "没有可绘制的运营日。",
+    "hideTable": "隐藏表格",
+    "showTable": "显示表格",
+    "differingDays": "班次数不同的日期",
+    "noDifferingDays": "没有班次数不同的日期。",
+    "feedInfo": "有效期(feed_info)",
+    "feedInfoSame": "feed_info 没有变化。",
+    "highlights": "最大的变化",
+    "noHighlights": "没有需要突出的重大变化。",
+    "movedStops": "移动最多的站点",
+    "timingShifts": "时刻变化最大的班次",
+    "details": "按类别查看差异",
+    "filterKind": "变更类型",
+    "search": "按 ID 或名称搜索",
+    "results": {
+      "other": "{count} 处差异"
+    },
+    "noDifferences": "此处没有差异",
+    "renamesGuess": "这些配对只是推测:一个消失的站点,以及 20 米内同名的另一个站点。请先核对再使用。",
+    "guess": "推测",
+    "empty": "(空)",
+    "moved": "移动了 {distance}",
+    "tripsFromTo": "班次:{from} → {to}",
+    "tripsAdded": {
+      "other": "新增 {count} 个班次"
+    },
+    "tripsRemoved": {
+      "other": "删除 {count} 个班次"
+    },
+    "tripsChanged": {
+      "other": "变更 {count} 个班次"
+    },
+    "stopsDelta": "站点:+{added} / −{removed}",
+    "timing": "{count} 个站点平均 {shift}(最大 {max})",
+    "exceptionsDelta": "例外日期:+{added} / −{removed}",
+    "shapeFromTo": "{points} 个点,{length}",
+    "shapeSize": "{points} 个点,{length}",
+    "onRoute": "线路 {route}",
+    "pattern": {
+      "added": "新增模式",
+      "removed": "删除的模式"
+    },
+    "morePatterns": {
+      "other": "另有 {count} 个模式"
+    },
+    "mapLabel": "站点差异地图",
+    "mapNone": "没有新增、删除或移动的站点。",
+    "legendAdded": {
+      "other": "新增 {count} 个站点"
+    },
+    "legendRemoved": {
+      "other": "删除 {count} 个站点(空心圆)"
+    },
+    "legendMoved": {
+      "other": "移动 {count} 个站点(虚线连接旧位置与新位置)"
+    }
+  },
+  "outputs": {
+    "exportZip": "GTFS (ZIP)",
+    "exportGeojson": "GeoJSON(站点和线路)",
+    "printTimetable": "打印时刻表",
+    "printTitle": "可打印时刻表",
+    "print": "打印 / 另存为 PDF",
+    "printHint": "使用浏览器的打印功能并选择“另存为 PDF”即可得到文件。只会打印下方的页面。",
+    "note": "页面备注",
+    "back": "返回",
+    "forDate": "{date} 的时刻表",
+    "validity": "有效期:{start} 至 {end}",
+    "towards": "开往 {headsign}",
+    "direction": "方向",
+    "tripCount": {
+      "other": "{count} 个班次"
+    },
+    "stop": "站点",
+    "hour": "时",
+    "minutes": "分",
+    "noService": "这一天没有运营。",
+    "mapMode": "地图模式",
+    "mode": {
+      "lines": "线路",
+      "frequency": "发车频率",
+      "coverage": "覆盖范围"
+    },
+    "from": "开始",
+    "to": "结束",
+    "windowInvalid": "结束时间必须晚于开始时间。",
+    "radius": "步行半径",
+    "loading": "正在加载…",
+    "noServiceWindow": "当天 {from} 至 {to} 没有运营。",
+    "segmentsSummary": "{segments} 个区段和 {stops} 个有服务的站点。",
+    "coverageSummary": "{stops} 个有服务的站点;范围为 {radius} 米以内。",
+    "legendFrequency": "每小时班次",
+    "legendCoverage": "距有服务的站点 {radius} 米以内",
+    "window": "时段 {from}–{to}",
+    "tripsPerHourValue": "每小时 {value} 班",
+    "callsInWindow": {
+      "other": "时段内 {count} 班"
+    }
   }
 }

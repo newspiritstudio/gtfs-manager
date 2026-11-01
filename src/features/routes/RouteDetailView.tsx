@@ -5,6 +5,7 @@ import {
   GitCommitVertical,
   LineChart,
   Map as MapIcon,
+  Printer,
   Ruler,
   Table2,
   TrainFront,
@@ -20,7 +21,7 @@ import MareyDiagram from '@/components/charts/MareyDiagram';
 import Timetable from '@/components/charts/Timetable';
 import { RouteMap } from '@/components/map';
 import Badge from '@/components/ui/Badge';
-import Button from '@/components/ui/Button';
+import Button, { ButtonLink } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { ClockRange } from '@/components/ui/ClockTime';
 import DateStepper from '@/components/ui/DateStepper';
@@ -198,6 +199,13 @@ function RouteDetailBody({ feedId, detail }: { feedId: string; detail: RouteDeta
               </p>
             ) : null}
           </div>
+          <ButtonLink
+            href={`/feeds/${feedId}/routes/${encodeURIComponent(route.routeId)}/print`}
+            variant="outline"
+          >
+            <Printer />
+            {t('outputs.printTimetable')}
+          </ButtonLink>
         </div>
         {variants.length > 1 ? (
           <RouteVariants

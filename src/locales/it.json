@@ -1026,5 +1026,149 @@
       "reload": "Ricarica",
       "offlineReady": "L'app ora funziona offline"
     }
+  },
+  "compare": {
+    "title": "Confronta le versioni",
+    "action": "Confronta",
+    "subtitle": "{base} → {other}",
+    "pickSubtitle": "Scegli l'altra versione del feed. La più vecchia è la base e si mostra cosa è cambiato in quella più recente.",
+    "needTwo": "Non c'è ancora nulla da confrontare",
+    "needTwoHint": "Importa un'altra versione di questo feed (ad esempio il prossimo orario) per vedere cosa è cambiato tra le due.",
+    "base": "Base (versione più vecchia)",
+    "other": "Confronta con (versione più recente)",
+    "swap": "Scambia base e confronto",
+    "noPeriod": "Nessun periodo di servizio",
+    "identical": "I due feed sono identici in tutto ciò che viene confrontato.",
+    "category": {
+      "agencies": "Agenzie",
+      "routes": "Linee",
+      "stops": "Fermate",
+      "trips": "Corse",
+      "services": "Servizi",
+      "shapes": "Tracciati",
+      "renames": "ID rinominati"
+    },
+    "status": {
+      "added": "Aggiunto",
+      "removed": "Rimosso",
+      "changed": "Modificato"
+    },
+    "unchanged": {
+      "one": "{count} invariato",
+      "other": "{count} invariati"
+    },
+    "serviceTitle": "Corse al giorno",
+    "serviceSubtitle": "Media giornaliera: {base} corse nella base, {other} nell'altro feed",
+    "overlap": "{days} giorni in comune, {differing} con un numero di corse diverso.",
+    "noOverlap": "I due feed non hanno giorni in comune.",
+    "chartLabel": "Corse al giorno in ciascun feed",
+    "noDays": "Nessun giorno di servizio da rappresentare.",
+    "hideTable": "Nascondi la tabella",
+    "showTable": "Mostra la tabella",
+    "differingDays": "Giorni con un numero di corse diverso",
+    "noDifferingDays": "Nessun giorno ha un numero di corse diverso.",
+    "feedInfo": "Periodo di validità (feed_info)",
+    "feedInfoSame": "feed_info non è cambiato.",
+    "highlights": "Cambiamenti maggiori",
+    "noHighlights": "Nessun cambiamento rilevante da evidenziare.",
+    "movedStops": "Fermate spostate di più",
+    "timingShifts": "Maggiori variazioni di orario",
+    "details": "Differenze per categoria",
+    "filterKind": "Tipo di modifica",
+    "search": "Cerca per id o nome",
+    "results": {
+      "one": "{count} differenza",
+      "other": "{count} differenze"
+    },
+    "noDifferences": "Nessuna differenza qui",
+    "renamesGuess": "Queste coppie sono un'ipotesi: una fermata scomparsa e un'altra con lo stesso nome a meno di 20 m. Verificale prima di fidartene.",
+    "guess": "Ipotesi",
+    "empty": "(vuoto)",
+    "moved": "Spostata di {distance}",
+    "tripsFromTo": "Corse: {from} → {to}",
+    "tripsAdded": {
+      "one": "{count} corsa aggiunta",
+      "other": "{count} corse aggiunte"
+    },
+    "tripsRemoved": {
+      "one": "{count} corsa rimossa",
+      "other": "{count} corse rimosse"
+    },
+    "tripsChanged": {
+      "one": "{count} corsa modificata",
+      "other": "{count} corse modificate"
+    },
+    "stopsDelta": "Fermate: +{added} / −{removed}",
+    "timing": "Orari {shift} in media a {count} fermate (fino a {max})",
+    "exceptionsDelta": "Date di eccezione: +{added} / −{removed}",
+    "shapeFromTo": "{points} punti, {length}",
+    "shapeSize": "{points} punti, {length}",
+    "onRoute": "sulla linea {route}",
+    "pattern": {
+      "added": "Nuovo schema",
+      "removed": "Schema rimosso"
+    },
+    "morePatterns": {
+      "one": "{count} altro schema",
+      "other": "{count} altri schemi"
+    },
+    "mapLabel": "Mappa delle differenze tra fermate",
+    "mapNone": "Nessuna fermata è stata aggiunta, rimossa o spostata.",
+    "legendAdded": {
+      "one": "{count} fermata aggiunta",
+      "other": "{count} fermate aggiunte"
+    },
+    "legendRemoved": {
+      "one": "{count} fermata rimossa (anello vuoto)",
+      "other": "{count} fermate rimosse (anello vuoto)"
+    },
+    "legendMoved": {
+      "one": "{count} fermata spostata (linea tratteggiata dalla vecchia alla nuova)",
+      "other": "{count} fermate spostate (linea tratteggiata dalla vecchia alla nuova)"
+    }
+  },
+  "outputs": {
+    "exportZip": "GTFS (ZIP)",
+    "exportGeojson": "GeoJSON (fermate e linee)",
+    "printTimetable": "Stampa gli orari",
+    "printTitle": "Orario stampabile",
+    "print": "Stampa / Salva come PDF",
+    "printHint": "Usa Stampa del browser e scegli «Salva come PDF» per ottenere un file. Viene stampato solo il foglio qui sotto.",
+    "note": "Nota per il foglio",
+    "back": "Indietro",
+    "forDate": "Orario del {date}",
+    "validity": "Valido dal {start} al {end}",
+    "towards": "Direzione {headsign}",
+    "direction": "Direzione",
+    "tripCount": {
+      "one": "{count} corsa",
+      "other": "{count} corse"
+    },
+    "stop": "Fermata",
+    "hour": "Ora",
+    "minutes": "Minuti",
+    "noService": "Nessun servizio in questo giorno.",
+    "mapMode": "Modalità mappa",
+    "mode": {
+      "lines": "Linee",
+      "frequency": "Frequenza",
+      "coverage": "Copertura"
+    },
+    "from": "Dalle",
+    "to": "Alle",
+    "windowInvalid": "La fine deve essere successiva all'inizio.",
+    "radius": "Raggio a piedi",
+    "loading": "Caricamento…",
+    "noServiceWindow": "Nessun servizio tra le {from} e le {to} in questo giorno.",
+    "segmentsSummary": "{segments} tratte e {stops} fermate con servizio.",
+    "coverageSummary": "{stops} fermate servite; area entro {radius} m.",
+    "legendFrequency": "Corse all'ora",
+    "legendCoverage": "Entro {radius} m da una fermata con servizio",
+    "window": "Fascia {from}–{to}",
+    "tripsPerHourValue": "{value} corse all'ora",
+    "callsInWindow": {
+      "one": "{count} corsa nella fascia",
+      "other": "{count} corse nella fascia"
+    }
   }
 }
